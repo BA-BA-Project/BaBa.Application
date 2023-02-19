@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(private val authRepository: AuthRepository) {
-    private val TAG = "LoginUseCase"
+    private val tag = "LoginUseCase"
 
     suspend fun login(socialToken: String) {
         authRepository.login(socialToken).catch {
             if (it is UserNotFoundException) {
-                Log.i(TAG, it.message.toString())
+                Log.i(tag, it.message.toString())
                 EncryptedPrefs.putString(PrefsKey.SIGN_TOKEN_KEY, it.signToken)
             } else {
-                Log.e(TAG, "로그인 실패 - ${it.message}")
+                Log.e(tag, "로그인 실패 - ${it.message}")
             }
             throw it
         }.collect {
