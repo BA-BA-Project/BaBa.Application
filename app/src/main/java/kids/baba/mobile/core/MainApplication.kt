@@ -1,4 +1,4 @@
-package kids.baba.mobile
+package kids.baba.mobile.core
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
