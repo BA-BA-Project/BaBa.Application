@@ -21,7 +21,7 @@ object ApiHelper {
 
     fun <T> create(
         service: Class<T>,
-        baseUrl: String
+        baseUrl: String = "https://baba.kids"
     ): T = Retrofit.Builder().apply {
         baseUrl(baseUrl)
         addConverterFactory(GsonConverterFactory.create(gson))
