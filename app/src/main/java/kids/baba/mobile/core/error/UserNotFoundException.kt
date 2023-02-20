@@ -1,3 +1,5 @@
 package kids.baba.mobile.core.error
 
-class UserNotFoundException(val signToken: String, message: String): Exception(message)
+import kids.baba.mobile.domain.model.TokenResponse
+
+class UserNotFoundException(val tokenResponse: TokenResponse, message: String): Exception(message)

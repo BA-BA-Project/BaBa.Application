@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kids.baba.mobile.data.repository.auth.AuthRemoteDataSource
-import kids.baba.mobile.data.repository.auth.AuthRemoteDataSourceImpl
+import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSource
+import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSourceImpl
 import javax.inject.Singleton
 
 @Module
