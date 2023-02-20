@@ -37,6 +37,26 @@ android {
         viewBinding true
         dataBinding true
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        dev {
+            dimension "app"
+            manifestPlaceholders = [
+                    appLabel: "BABA-dev"
+            ]
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids\""
+        }
+        product {
+            dimension "app"
+            manifestPlaceholders = [
+                    appLabel: "BABA"
+            ]
+            buildConfigField "String", "BASE_URL", "\"https://baba.kids\""
+        }
+    }
 }
 
 dependencies {
