@@ -41,10 +41,9 @@ private class AuthorizationInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
         val hasAuthorization = chain.request().headers.names().contains("Authorization")
-        val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
 
         if (hasAuthorization) {
-            request.removeHeader("Authorization")
+            val accessToken = chain.request().header("Authorization")
             request.addHeader("Authorization", "Bearer $accessToken")
         }
 
