@@ -1,6 +1,7 @@
 package kids.baba.mobile.data
 
 import com.google.gson.GsonBuilder
+import kids.baba.mobile.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,7 +22,7 @@ object ApiHelper {
 
     fun <T> create(
         service: Class<T>,
-        baseUrl: String
+        baseUrl: String = BuildConfig.BASE_URL
     ): T = Retrofit.Builder().apply {
         baseUrl(baseUrl)
         addConverterFactory(GsonConverterFactory.create(gson))

@@ -37,20 +37,47 @@ android {
         viewBinding true
         dataBinding true
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        dev {
+            dimension "app"
+            manifestPlaceholders = [
+                    appLabel: "BABA-dev"
+            ]
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids\""
+        }
+        product {
+            dimension "app"
+            manifestPlaceholders = [
+                    appLabel: "BABA"
+            ]
+            buildConfigField "String", "BASE_URL", "\"https://baba.kids\""
+        }
+    }
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'androidx.activity:activity-ktx:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
+
+    // 정식 버전인 security-crypto:1.0.0을 사용하면 좋겠으나....
+    // 의미 없는 스택 트레이스가 눈에 거슬리게 뜨는 관계로 아래 라이브러리 이용
+    // 추후 앱 출시할 때도 아래 라이브러리의 정식 버전이 안 나오면 security-crypto:1.0.0 으로 대체
+    // TODO: 앱 출시전 아래 라이브러리 검토 필요
+    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha04"
 
     // hilt
     def hiltVersion = "2.44"
