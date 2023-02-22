@@ -6,12 +6,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSource
 import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSourceImpl
-import javax.inject.Singleton
+import kids.baba.mobile.data.datasource.member.MemberRemoteDataSource
+import kids.baba.mobile.data.datasource.member.MemberRemoteDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceModule {
-    @Singleton
     @Binds
     abstract fun bindAuthRemoteDataSource(authRemoteDataSourceImpl: AuthRemoteDataSourceImpl): AuthRemoteDataSource
+
+    @Binds
+    abstract fun bindMemberRemoteDataSource(memberRemoteDataSourceImpl: MemberRemoteDataSourceImpl): MemberRemoteDataSource
 }
