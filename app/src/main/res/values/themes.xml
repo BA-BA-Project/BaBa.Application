@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.Baba.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/group_1817</item>
+        <item name="android:windowSplashScreenBrandingImage" tools:targetApi="s">@drawable/group_21</item>
+        <item name="postSplashScreenTheme">@style/Theme.Baba</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+    </style>
+
 </resources>
