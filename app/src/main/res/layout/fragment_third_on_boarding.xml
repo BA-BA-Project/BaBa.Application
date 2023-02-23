@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.IntroViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_on_boarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/img_on_boarding3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_on_boarding_title"
+            style="@style/BABA.TextStyle.H1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="@string/on_boarding_title3"
+            app:layout_constraintEnd_toEndOf="@+id/iv_on_boarding"
+            app:layout_constraintStart_toStartOf="@+id/iv_on_boarding"
+            app:layout_constraintTop_toBottomOf="@+id/iv_on_boarding" />
+
+        <TextView
+            android:id="@+id/tv_on_boarding_body"
+            style="@style/BABA.TextStyle.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="@string/on_boarding_body3"
+            app:layout_constraintEnd_toEndOf="@id/tv_on_boarding_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/tv_on_boarding_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_on_boarding_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start_baba"
+            style="@style/BABA.TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/baba_main"
+            android:text="@string/baba_start"
+            android:onClick="@{()->viewModel.setOnBoardingEnd()}"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

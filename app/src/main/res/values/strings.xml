@@ -1,3 +1,10 @@
 <resources>
 
+    <string name="on_boarding_title1">쑥쑥 크는 우리 아이</string>
+    <string name="on_boarding_body1">가족과 함께 하루에 한 장\n아이의 성장을 기록해요!</string>
+    <string name="on_boarding_title2">행복한 시간을 함께</string>
+    <string name="on_boarding_body2">가족과 지인을 초대해 소식을 공유하고,\n이야기를 나눠볼까요?</string>
+    <string name="on_boarding_title3">속닥속닥, 우리끼리</string>
+    <string name="on_boarding_body3">같은 그룹인 경우에만 댓글이 보여요!\n편하게 대화를 나누어요 :)</string>
+    <string name="baba_start">시작하기</string>
 </resources>

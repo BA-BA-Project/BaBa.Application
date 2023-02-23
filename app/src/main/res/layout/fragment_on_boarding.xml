@@ -9,8 +9,9 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_on_boarding"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/ci_on_boarding"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,9 +20,12 @@
         android:id="@+id/ci_on_boarding"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        app:layout_constraintStart_toStartOf="@id/vp_on_boarding"
+        android:layout_marginBottom="100dp"
+        app:ci_drawable="@drawable/circle_black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/vp_on_boarding"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/vp_on_boarding"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

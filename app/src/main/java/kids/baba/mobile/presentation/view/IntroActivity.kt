@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.extension.repeatOnStarted
@@ -19,6 +18,7 @@ class IntroActivity : AppCompatActivity() {
     private val onBoardingFragment by lazy {
         OnBoardingFragment()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -29,6 +29,7 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun collectUiState() {
+        val transaction = supportFragmentManager.beginTransaction()
         repeatOnStarted {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
@@ -42,9 +43,7 @@ class IntroActivity : AppCompatActivity() {
                     }
 
                     IntroUiState.NeedToOnboard -> {
-                        supportFragmentManager.commit {
-                            add(R.id.fcv_intro, onBoardingFragment)
-                        }
+                        transaction.replace(R.id.fcv_intro, onBoardingFragment).commit()
                     }
 
                     else -> {
