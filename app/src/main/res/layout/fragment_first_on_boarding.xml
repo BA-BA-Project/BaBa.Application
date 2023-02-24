@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:layout_marginTop="17dp"
         android:text="@string/on_boarding_body1"
         app:layout_constraintEnd_toEndOf="@id/tv_on_boarding_title"
         app:layout_constraintHorizontal_bias="0.0"

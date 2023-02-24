@@ -18,8 +18,6 @@ class IntroViewModel @Inject constructor(
     private var _uiState = MutableStateFlow<IntroUiState>(IntroUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private var isLoggedIn = false
-
     init {
         checkLogin()
     }
@@ -27,14 +25,9 @@ class IntroViewModel @Inject constructor(
     private fun checkLogin() {
         viewModelScope.launch {
             getMemberUseCase.getMe().catch {
-                isLoggedIn = false
-            }.collect {
-                isLoggedIn = true
-            }
-            if (isLoggedIn) {
-                _uiState.value = IntroUiState.AlreadyLoggedIn
-            } else {
                 _uiState.value = IntroUiState.NeedToOnboard
+            }.collect {
+                _uiState.value = IntroUiState.AlreadyLoggedIn
             }
         }
     }
