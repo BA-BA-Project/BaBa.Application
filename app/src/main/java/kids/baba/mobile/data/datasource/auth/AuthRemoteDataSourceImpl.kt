@@ -1,5 +1,8 @@
 package kids.baba.mobile.data.datasource.auth
 
+import android.util.Log
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.domain.model.LoginRequest
@@ -20,14 +23,11 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val api: AuthApi) :
                 emit(data)
             }
             404 -> {
-                val jsonData = JSONObject(resp.errorBody().toString())
-                val tokenResponse = TokenResponse(
-                    accessToken = jsonData.getString("accessToken"),
-                    refreshToken = jsonData.getString("refreshToken")
-                )
+                val jsonString = resp.errorBody()!!.string()
+                val jsonObject = JSONObject(jsonString)
 
                 throw UserNotFoundException(
-                    tokenResponse = tokenResponse,
+                    signToken = jsonObject.getString("signToken"),
                     message = "신규 로그인"
                 )
             }
