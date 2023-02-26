@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'kids.baba.mobile'
     compileSdk 33
@@ -44,17 +47,20 @@ android {
         dev {
             dimension "app"
             manifestPlaceholders = [
-                    appLabel: "BABA-dev"
+                    appLabel: "BABA-dev",
+                    KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
-            applicationIdSuffix ".dev"
             buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids\""
+            buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
         product {
             dimension "app"
             manifestPlaceholders = [
-                    appLabel: "BABA"
+                    appLabel: "BABA",
+                    KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://baba.kids\""
+            buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
     }
 }
@@ -77,7 +83,7 @@ dependencies {
     // 의미 없는 스택 트레이스가 눈에 거슬리게 뜨는 관계로 아래 라이브러리 이용
     // 추후 앱 출시할 때도 아래 라이브러리의 정식 버전이 안 나오면 security-crypto:1.0.0 으로 대체
     // TODO: 앱 출시전 아래 라이브러리 검토 필요
-    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha04"
+    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha05"
 
     // hilt
     def hiltVersion = "2.44"
@@ -102,8 +108,8 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "me.relex:circleindicator:2.1.6"
 
-    //kakao login
-    implementation "com.kakao.sdk:v2-all:2.12.1"
+    // kakao
+    implementation "com.kakao.sdk:v2-user:2.12.1" // 카카오 로그인
 }
 
 kapt {
