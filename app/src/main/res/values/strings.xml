@@ -7,4 +7,7 @@
     <string name="on_boarding_title3">속닥속닥, 우리끼리</string>
     <string name="on_boarding_body3">같은 그룹인 경우에만 댓글이 보여요!\n편하게 대화를 나누어요 :)</string>
     <string name="baba_start">시작하기</string>
+   <string name="baba_login_title">바바에서\n추억을 기록해요</string>
+    <string name="baba_login_body">아이와 함께 성장을 기록해요</string>
+    <string name="baba_terms_description">로그인 시 바바 개인정보처리방침,\n이용약관에 동의합니다.</string>
 </resources>

@@ -19,6 +19,10 @@ class IntroActivity : AppCompatActivity() {
         OnBoardingFragment()
     }
 
+    private val loginFragment by lazy {
+        LoginFragment()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -29,9 +33,9 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun collectUiState() {
-        val transaction = supportFragmentManager.beginTransaction()
         repeatOnStarted {
             viewModel.uiState.collect { uiState ->
+                val transaction = supportFragmentManager.beginTransaction()
                 when (uiState) {
                     IntroUiState.AlreadyLoggedIn -> {
                         MainActivity.startActivity(this)
@@ -39,7 +43,7 @@ class IntroActivity : AppCompatActivity() {
                     }
 
                     IntroUiState.NeedToLogin -> {
-                        //로그인 화면으로
+                        transaction.replace(R.id.fcv_intro, loginFragment).commit()
                     }
 
                     IntroUiState.NeedToOnboard -> {

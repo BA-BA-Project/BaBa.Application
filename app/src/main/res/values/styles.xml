@@ -2,8 +2,8 @@
 <resources>
     <style name="BABA.TextStyle" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/notosanskr</item>
-
     </style>
+
     <style name="BABA.TextStyle.H1" parent="BABA.TextStyle">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_0</item>
@@ -12,5 +12,10 @@
     <style name="BABA.TextStyle.Body1" parent="BABA.TextStyle">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_2</item>
+    </style>
+
+    <style name="BABA.TextStyle.Body2" parent="BABA.TextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_0</item>
     </style>
 </resources>
