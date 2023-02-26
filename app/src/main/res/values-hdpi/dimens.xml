@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="on_boarding_top">0dp</dimen>
+    <dimen name="on_boarding_bottom">20dp</dimen>
+</resources>
