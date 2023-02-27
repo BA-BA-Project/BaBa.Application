@@ -32,7 +32,11 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun setOnBoardingEnd() {
+    fun isOnBoardingEnd() {
         _uiState.value = IntroUiState.NeedToLogin
+    }
+
+    fun isLoginSuccess() {
+        _uiState.value = IntroUiState.AlreadyLoggedIn
     }
 }

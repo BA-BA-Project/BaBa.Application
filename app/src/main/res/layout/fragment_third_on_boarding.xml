@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.IntroViewModel" />
@@ -55,8 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/baba_main"
+            android:onClick="@{()->viewModel.isOnBoardingEnd()}"
             android:text="@string/baba_start"
-            android:onClick="@{()->viewModel.setOnBoardingEnd()}"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
