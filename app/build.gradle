@@ -110,6 +110,11 @@ dependencies {
 
     // kakao
     implementation "com.kakao.sdk:v2-user:2.12.1" // 카카오 로그인
+
+    // navigation
+    def navVersion = "2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 }
 
 kapt {
