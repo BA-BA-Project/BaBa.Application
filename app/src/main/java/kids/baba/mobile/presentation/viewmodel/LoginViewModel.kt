@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.core.error.kakao.KakaoLoginCanceledException
 import kids.baba.mobile.domain.usecase.BabaLoginUseCase
 import kids.baba.mobile.presentation.state.LoginUiState
@@ -24,6 +25,7 @@ class LoginViewModel @Inject constructor(
             babaLoginUseCase.login().onFailure {
                 _loginUiState.value = when (it) {
                     is KakaoLoginCanceledException -> LoginUiState.LoginCanceled
+                    is UserNotFoundException -> LoginUiState.NeedToSignUp(it.signToken)
                     else -> LoginUiState.Failure
                 }
             }

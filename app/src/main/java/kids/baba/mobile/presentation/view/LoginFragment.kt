@@ -46,23 +46,14 @@ class LoginFragment : Fragment() {
         repeatOnStarted {
             viewModel.loginUiState.collect { uiState ->
                 when (uiState) {
-                    LoginUiState.LoginCanceled -> {
-                        showSnackBar(R.string.kakao_login_canceled)
-                    }
-
-                    LoginUiState.NeedToSignUp -> {
+                    is LoginUiState.LoginCanceled -> showSnackBar(R.string.kakao_login_canceled)
+                    is LoginUiState.NeedToSignUp -> {
+                        val signToken = uiState.signToken
                         //가입 화면으로 이동
                     }
-
-                    LoginUiState.Success -> {
-                        activityViewModel.isLoginSuccess()
-                    }
-
-                    LoginUiState.Failure -> {
-                        showSnackBar(R.string.baba_login_failed)
-                    }
-
-                    LoginUiState.Loading -> Unit
+                    is LoginUiState.Success -> activityViewModel.isLoginSuccess()
+                    is LoginUiState.Failure -> showSnackBar(R.string.baba_login_failed)
+                    is LoginUiState.Loading -> Unit
                 }
             }
         }
