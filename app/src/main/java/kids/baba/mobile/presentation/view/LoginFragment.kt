@@ -44,14 +44,11 @@ class LoginFragment : Fragment() {
 
     private fun collectUiState() {
         repeatOnStarted {
-            viewModel.loginUiState.collect { uiState ->
-                when (uiState) {
+            viewModel.loginUiState.collect { loginUiState ->
+                when (loginUiState) {
                     is LoginUiState.LoginCanceled -> showSnackBar(R.string.kakao_login_canceled)
-                    is LoginUiState.NeedToSignUp -> {
-                        val signToken = uiState.signToken
-                        //가입 화면으로 이동
-                    }
-                    is LoginUiState.Success -> activityViewModel.isLoginSuccess()
+                    is LoginUiState.NeedToSignUp -> activityViewModel.isSignUpStart(loginUiState.signToken)
+                    is LoginUiState.Success -> activityViewModel.isLoginSuccess(loginUiState.member)
                     is LoginUiState.Failure -> showSnackBar(R.string.baba_login_failed)
                     is LoginUiState.Loading -> Unit
                 }

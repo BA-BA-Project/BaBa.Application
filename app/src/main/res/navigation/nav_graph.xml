@@ -10,12 +10,21 @@
         android:label="fragment_on_boarding"
         tools:layout="@layout/fragment_on_boarding">
         <action
-            android:id="@+id/action_onBoardingFragment_to_loginFragment"
+            android:id="@+id/action_onBoardingFragment_to_loginFragment3"
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="kids.baba.mobile.presentation.view.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="kids.baba.mobile.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>
