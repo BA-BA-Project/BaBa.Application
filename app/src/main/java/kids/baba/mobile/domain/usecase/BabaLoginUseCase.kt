@@ -6,13 +6,16 @@ import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.TokenResponse
 import kids.baba.mobile.domain.repository.AuthRepository
 import kids.baba.mobile.domain.repository.KakaoLogin
+import kids.baba.mobile.domain.repository.MemberRepository
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class BabaLoginUseCase @Inject constructor(
     private val authRepository: AuthRepository,
+    private val memberRepository: MemberRepository,
     private val kakaoLogin: KakaoLogin
-    ) {
+) {
     private val tag = "LoginUseCase"
 
     suspend fun login() = runCatching {
@@ -23,6 +26,7 @@ class BabaLoginUseCase @Inject constructor(
             Log.i(tag, "서버에서 JWT토큰 발급 완료")
             setJWTToken(token)
         }
+        memberRepository.getMe(accessToken).first()
     }
 
     private fun setJWTToken(token: TokenResponse) {

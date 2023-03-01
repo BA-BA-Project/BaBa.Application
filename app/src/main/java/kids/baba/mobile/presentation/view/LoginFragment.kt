@@ -10,10 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentLoginBinding
+import kids.baba.mobile.presentation.event.LoginEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.LoginUiState
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 import kids.baba.mobile.presentation.viewmodel.LoginViewModel
 
@@ -39,18 +38,15 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        collectUiState()
+        collectEvent()
     }
 
-    private fun collectUiState() {
+    private fun collectEvent() {
         repeatOnStarted {
-            viewModel.loginUiState.collect { loginUiState ->
-                when (loginUiState) {
-                    is LoginUiState.LoginCanceled -> showSnackBar(R.string.kakao_login_canceled)
-                    is LoginUiState.NeedToSignUp -> activityViewModel.isSignUpStart(loginUiState.signToken)
-                    is LoginUiState.Success -> activityViewModel.isLoginSuccess(loginUiState.member)
-                    is LoginUiState.Failure -> showSnackBar(R.string.baba_login_failed)
-                    is LoginUiState.Loading -> Unit
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is LoginEvent.ShowSnackBar -> showSnackBar(event.text)
+                    is LoginEvent.MoveToSignUp -> activityViewModel.isSignUpStart(event.token)
                 }
             }
         }

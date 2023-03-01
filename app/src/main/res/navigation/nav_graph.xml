@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="kids.baba.mobile.SignUpFragment"
+        android:name="kids.baba.mobile.presentation.view.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
 </navigation>

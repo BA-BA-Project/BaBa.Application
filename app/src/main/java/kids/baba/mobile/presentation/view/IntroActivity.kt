@@ -46,7 +46,7 @@ class IntroActivity : AppCompatActivity() {
                     }
                     is IntroEvent.MoveToLogin -> navController.navigate(R.id.action_onBoardingFragment_to_loginFragment3)
                     is IntroEvent.MoveToSignUp -> navController.navigate(R.id.action_loginFragment_to_signUpFragment)
-                    else -> UInt
+                    else -> Unit
                 }
             }
         }
