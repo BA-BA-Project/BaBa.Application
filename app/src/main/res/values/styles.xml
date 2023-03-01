@@ -2,6 +2,7 @@
 <resources>
     <style name="BABA.TextStyle" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/notosanskr</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="BABA.TextStyle.H1" parent="BABA.TextStyle">
