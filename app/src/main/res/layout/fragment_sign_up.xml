@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.SignUpFragment">
+        tools:context=".presentation.view.signup.SignUpFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/ab_sign_up"
@@ -25,16 +25,16 @@
                 android:id="@+id/tb_sigh_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/create_profile"
                 app:navigationIcon="@drawable/ic_back"
+                app:title="@string/create_profile"
                 app:titleCentered="true" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/rv_sign_up_chat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/fcv_input_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,11 +43,15 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_input_profile"
-            android:layout_width="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
             android:layout_height="80dp"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/ab_sign_up"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:navGraph="@navigation/sign_up_nav_graph"
+            tools:layout="@layout/fragment_greeting_select" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
