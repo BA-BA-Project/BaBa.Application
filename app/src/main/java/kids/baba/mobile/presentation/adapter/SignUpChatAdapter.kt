@@ -11,9 +11,9 @@ import kids.baba.mobile.databinding.ItemBabaSendWithProfileBinding
 import kids.baba.mobile.databinding.ItemUserSendBinding
 import kids.baba.mobile.presentation.model.ChatItem
 
-class SignUpChatAdapter():
-    ListAdapter<ChatItem,RecyclerView.ViewHolder>(diffUtil) {
-override fun getItemViewType(position: Int): Int {
+class SignUpChatAdapter() :
+    ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil) {
+    override fun getItemViewType(position: Int): Int {
         return getItem(position).sender.type
     }
 
@@ -21,16 +21,18 @@ override fun getItemViewType(position: Int): Int {
         return when (viewType) {
             BABA_FIRST ->
                 BabaFirstChatViewHolder(parent)
-            BABA ->  BabaChatViewHolder(parent)
+
+            BABA -> BabaChatViewHolder(parent)
             USER ->
                 UserChatViewHolder(parent)
+
             else -> throw Exception("unknown type")
         }
     }
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
+        when (holder) {
             is BabaFirstChatViewHolder -> holder.bind(getItem(position))
             is BabaChatViewHolder -> holder.bind(getItem(position))
             is UserChatViewHolder -> holder.bind(getItem(position))
@@ -46,8 +48,8 @@ override fun getItemViewType(position: Int): Int {
     ) {
         private val binding = ItemBabaSendWithProfileBinding.bind(itemView)
 
-        fun bind(item: ChatItem){
-            binding.tvMessage.setText(item.message)
+        fun bind(item: ChatItem) {
+            binding.tvMessage.text = item.message
         }
     }
 
@@ -56,10 +58,10 @@ override fun getItemViewType(position: Int): Int {
     ) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_baba_send, parent, false)
-    ){
+    ) {
         private val binding = ItemBabaSendBinding.bind(itemView)
 
-        fun bind(item: ChatItem){
+        fun bind(item: ChatItem) {
             binding.tvMessage.setText(item.message)
         }
     }
@@ -69,10 +71,10 @@ override fun getItemViewType(position: Int): Int {
     ) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_user_send, parent, false)
-    ){
+    ) {
         private val binding = ItemUserSendBinding.bind(itemView)
 
-        fun bind(item: ChatItem){
+        fun bind(item: ChatItem) {
             binding.chatItem = item
         }
     }
@@ -95,7 +97,7 @@ override fun getItemViewType(position: Int): Int {
                 oldItem: ChatItem,
                 newItem: ChatItem
             ): Boolean {
-                return false
+                return oldItem.hashCode() == newItem.hashCode()
             }
         }
     }

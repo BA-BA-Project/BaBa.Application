@@ -23,4 +23,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="baba_greeting_1">안녕😄</string>
     <string name="baba_greeting_2">반가워, 바바!</string>
+    <string name="send">전송</string>
+    <string name="can_enter_up_to_10_chars">최대 10자 입력 가능해요</string>
+    <string name="see_term_content"><u>보기</u></string>
+    <string name="term_1">이용약관 동의</string>
+    <string name="term_2">개인정보 수집 및 이용 동의</string>
+    <string name="agree_all_terms">약관 전체 동의</string>
+    <string name="next">다음</string>
+    <string name="essential">[필수]</string>
+    <string name="choice">[선택]</string>
+    <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
 </resources>

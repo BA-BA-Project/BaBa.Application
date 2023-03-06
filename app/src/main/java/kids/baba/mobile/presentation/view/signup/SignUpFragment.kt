@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentSignUpBinding
 import kids.baba.mobile.presentation.adapter.SignUpChatAdapter
@@ -18,6 +19,7 @@ import kids.baba.mobile.presentation.model.ChatUserType
 import kids.baba.mobile.presentation.state.SignUpUiState
 import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
 
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null

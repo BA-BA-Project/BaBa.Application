@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.TermsAgreeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.view.TermsAgreeFragment">
+        
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="30dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="30dp"/>
+
+        <ImageView
+            android:id="@+id/iv_baba_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:src="@drawable/baba_logo_reverse"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_login_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:includeFontPadding="false"
+            android:text="@string/baba_login_title"
+            android:textAppearance="@style/BABA.TextStyle.H1"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/iv_baba_logo"
+            app:layout_constraintTop_toBottomOf="@+id/iv_baba_logo" />
+
+        <TextView
+            android:id="@+id/tv_login_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:includeFontPadding="false"
+            android:text="@string/baba_login_body"
+            android:textAppearance="@style/BABA.TextStyle.Body1"
+            android:textColor="@color/text_0"
+            app:layout_constraintStart_toStartOf="@+id/tv_login_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_title" />
+
+        <CheckBox
+            android:id="@+id/cb_all_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:button="@drawable/baba_checkbox_all_check"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:onClick="@{() -> viewModel.isAllAgreeChecked()}"
+            android:text="@string/agree_all_terms"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tv_login_body"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_body" />
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/cb_all_agree"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/btn_sign_up_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/cb_all_agree"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_baba_terms" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/rv_terms"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_sign_up_start"
+            style="@style/BABA.TextStyle.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/bg_button_next"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

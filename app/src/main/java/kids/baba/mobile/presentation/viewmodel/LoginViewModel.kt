@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor(
                 .onFailure {
                     when (it) {
                         is KakaoLoginCanceledException -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.kakao_login_canceled))
-                        is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToSignUp(it.signToken))
+                        is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToAgree(it.signToken))
                         else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
                     }
                 }

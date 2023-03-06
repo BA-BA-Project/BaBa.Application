@@ -48,7 +48,13 @@ class IntroViewModel @Inject constructor(
 
     fun isSignUpStart(signToken: String){
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToSignUp)
+            _eventFlow.emit(IntroEvent.MoveToSignUp(signToken))
+        }
+    }
+
+    fun isNeedToAgree(signToken: String){
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToAgree(signToken))
         }
     }
 }

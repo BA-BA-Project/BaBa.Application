@@ -14,25 +14,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.view.LoginFragment">
-
-        <TextView
-            android:id="@+id/tv_login_title"
-            style="@style/BABA.TextStyle.H1"
+        <ImageView
+            android:id="@+id/iv_baba_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="186dp"
-            android:text="@string/baba_login_title"
-            android:textStyle="bold"
+            android:src="@drawable/baba_logo_reverse"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="158dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_login_title"
+            android:textAppearance="@style/BABA.TextStyle.H1"
+            android:includeFontPadding="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/baba_login_title"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/iv_baba_logo"
+            app:layout_constraintTop_toBottomOf="@+id/iv_baba_logo" />
+
+        <TextView
             android:id="@+id/tv_login_body"
-            style="@style/BABA.TextStyle.Body1"
+            android:textAppearance="@style/BABA.TextStyle.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
+            android:layout_marginTop="8dp"
             android:text="@string/baba_login_body"
             android:textColor="@color/text_0"
             app:layout_constraintStart_toStartOf="@+id/tv_login_title"
