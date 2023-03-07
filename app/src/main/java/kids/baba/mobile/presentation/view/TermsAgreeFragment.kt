@@ -82,7 +82,11 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
     private fun setNextBtn() {
         binding.btnSignUpStart.setOnClickListener {
             if(viewModel.isAllChecked.value){
-                activityViewModel.isSignUpStart("")
+                viewModel.getSignToken()
+                val signToken = viewModel.signToken.value
+                if(signToken.isNotEmpty()){
+                    activityViewModel.isSignUpStart(signToken)
+                }
             } else {
                 showSnackBar(R.string.required_terms_acceptance)
             }

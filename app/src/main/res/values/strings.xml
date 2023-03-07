@@ -11,6 +11,7 @@
     <string name="baba_login_body">아이와 함께 성장을 기록해요</string>
     <string name="baba_terms_description">로그인 시 바바 개인정보처리방침,\n이용약관에 동의합니다.</string>
     <string name="baba_terms_loading_failed">이용약관을 불러오는것에 실패 했습니다.</string>
+    <string name="baba_terms_agree_failed">이용약관 동의 과정에서 문제가 발생했습니다.</string>
     <string name="kakao_login_canceled">카카오 로그인이 취소되었습니다.</string>
     <string name="baba_login_failed">로그인에 실패했습니다. 다시 한번 확인해 주세요</string>
     <string name="baba_name">바바</string>

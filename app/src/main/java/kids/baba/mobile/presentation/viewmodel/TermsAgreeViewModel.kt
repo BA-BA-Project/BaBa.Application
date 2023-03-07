@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.usecase.GetSignTokenUseCase
 import kids.baba.mobile.domain.usecase.GetTermsListUseCase
 import kids.baba.mobile.presentation.event.TermsAgreeEvent
+import kids.baba.mobile.presentation.mapper.toDomain
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.TermsUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -17,10 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TermsAgreeViewModel @Inject constructor(
-    private val getTermsListUseCase: GetTermsListUseCase
+    private val getTermsListUseCase: GetTermsListUseCase,
+    private val getSignTokenUseCase: GetSignTokenUseCase
 ) : ViewModel() {
     private val _isAllChecked = MutableStateFlow(false)
     val isAllChecked = _isAllChecked.asStateFlow()
+
+    private val _signToken = MutableStateFlow("")
+    val signToken = _signToken.asStateFlow()
 
     private val tempTermsList =
         listOf(
@@ -58,11 +64,11 @@ class TermsAgreeViewModel @Inject constructor(
         var checkedCnt = 0
         _termsList.value = _termsList.value.map {
             if (it.name == termsData.name) {
-                val newTermsData = it.copy(isChecked = checked)
-                if (newTermsData.isChecked) checkedCnt += 1
+                val newTermsData = it.copy(selected = checked)
+                if (newTermsData.selected) checkedCnt += 1
                 newTermsData
             } else {
-                if (it.isChecked) checkedCnt += 1
+                if (it.selected) checkedCnt += 1
                 it
             }
         }
@@ -71,6 +77,21 @@ class TermsAgreeViewModel @Inject constructor(
 
     fun isAllAgreeChecked() {
         _isAllChecked.value = _isAllChecked.value.not()
-        _termsList.value = _termsList.value.map { it.copy(isChecked = _isAllChecked.value) }
+        _termsList.value = _termsList.value.map { it.copy(selected = _isAllChecked.value) }
+    }
+
+    fun getSignToken() {
+        viewModelScope.launch {
+            getSignTokenUseCase(
+                socialToken = "",
+                termsData = termsList.value.map {
+                    it.toDomain()
+                }
+            ).onSuccess {
+                _signToken.value = it
+            }.onFailure {
+                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+            }
+        }
     }
 }

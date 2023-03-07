@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
     private suspend fun loginToBaba(socialToken: String) {
         loginUseCase.babaLogin(socialToken).onFailure {
             when (it) {
-                is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToAgree)
+                is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
                 else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
             }
         }

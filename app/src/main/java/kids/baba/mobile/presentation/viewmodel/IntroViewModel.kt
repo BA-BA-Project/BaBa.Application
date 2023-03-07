@@ -52,9 +52,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isNeedToAgree(){
+    fun isNeedToAgree(socialToken: String){
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToAgree)
+            _eventFlow.emit(IntroEvent.MoveToAgree(socialToken))
         }
     }
 }
