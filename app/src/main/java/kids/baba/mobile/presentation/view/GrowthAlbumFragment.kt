@@ -56,11 +56,22 @@ class GrowthAlbumFragment : Fragment() {
         }.collect { baby ->
             Log.e("baby", "$baby")
         }
+        InitializeAlbumHolder()
+
+        adapter.setItem(Album(1))
+        adapter.setItem(Album(2))
+        adapter.setItem(Album(3))
+        adapter.setItem(Album(4))
+
+    }
+
+    private fun InitializeAlbumHolder() {
         binding.viewPager.adapter = adapter
         binding.viewPager.offscreenPageLimit = 1
 
         val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
-        val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
+        val currentItemHorizontalMarginPx =
+            resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
         val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
@@ -74,12 +85,6 @@ class GrowthAlbumFragment : Fragment() {
             R.dimen.viewpager_current_item_horizontal_margin
         )
         binding.viewPager.addItemDecoration(itemDecoration)
-
-        adapter.setItem(Album(1))
-        adapter.setItem(Album(2))
-        adapter.setItem(Album(3))
-        adapter.setItem(Album(4))
-
     }
 
     private fun initView() {
