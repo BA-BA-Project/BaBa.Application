@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="BABA.TextStyle" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/notosanskr</item>
+    </style>
+
+    <style name="BABA.TextStyle.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/notosanskr</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BABA.TextStyle.Chip" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="fontFamily">@font/notosanskr</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="BABA.TextStyle.H1" parent="BABA.TextStyle">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_0</item>
-    </style>>
+    </style>
 
     <style name="BABA.TextStyle.Body1" parent="BABA.TextStyle">
         <item name="android:textSize">16sp</item>
@@ -18,4 +29,15 @@
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/text_0</item>
     </style>
+
+    <style name="BABA.ChatAnswerBtnStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textAppearance">@style/BABA.TextStyle.Button</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:paddingVertical">7dp</item>
+        <item name="android:background">@drawable/bg_select_chat_answer_button</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_up_nav_graph"
+    app:startDestination="@id/greetingSelectFragment">
+
+    <fragment
+        android:id="@+id/greetingSelectFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.GreetingSelectFragment"
+        android:label="fragment_greeting_select"
+        tools:layout="@layout/fragment_greeting_select" />
+    <fragment
+        android:id="@+id/relationSelectFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.RelationSelectFragment"
+        android:label="fragment_relation_select"
+        tools:layout="@layout/fragment_relation_select" />
+    <fragment
+        android:id="@+id/textInputFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.TextInputFragment"
+        android:label="fragment_text_input"
+        tools:layout="@layout/fragment_text_input" />
+    <fragment
+        android:id="@+id/birthSelectFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.BirthSelectFragment"
+        android:label="fragment_birth_select"
+        tools:layout="@layout/fragment_birth_select" />
+    <action
+        android:id="@+id/action_global_greetingSelectFragment"
+        app:destination="@id/greetingSelectFragment" />
+    <action
+        android:id="@+id/action_global_relationSelectFragment"
+        app:destination="@id/relationSelectFragment" />
+    <action
+        android:id="@+id/action_global_textInputFragment"
+        app:destination="@id/textInputFragment" />
+    <action
+        android:id="@+id/action_global_birthSelectFragment"
+        app:destination="@id/birthSelectFragment" />
+</navigation>

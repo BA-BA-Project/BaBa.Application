@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/onBoardingFragment">
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="kids.baba.mobile.presentation.view.onboarding.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_onBoardingFragment_to_loginFragment3"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="kids.baba.mobile.presentation.view.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_termsAgreeFragment"
+            app:destination="@id/termsAgreeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/termsAgreeFragment"
+        android:name="kids.baba.mobile.presentation.view.TermsAgreeFragment"
+        android:label="TermsAgreeFragment"
+        tools:layout="@layout/fragment_terms_agree">
+        <action
+            android:id="@+id/action_termsAgreeFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <argument
+            android:name="socialToken"
+            app:argType="string" />
+    </fragment>
+</navigation>
