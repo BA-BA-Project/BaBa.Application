@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_baba_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_chat_profile"
+            android:padding="8dp"
+            android:src="@drawable/ic_baba_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_sender_name"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/baba_name"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_message"
+            app:layout_constraintTop_toTopOf="@+id/iv_baba_profile" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="48dp"
+            android:background="@drawable/speech_bubble_left"
+            android:paddingHorizontal="12dp"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sender_name"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="반가워요반가워요반가워요반가워요반반가워요" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
