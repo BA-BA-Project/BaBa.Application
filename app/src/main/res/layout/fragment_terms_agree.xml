@@ -20,14 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="30dp"/>
+            app:layout_constraintGuide_begin="20dp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="30dp"/>
+            app:layout_constraintGuide_end="20dp"/>
 
         <ImageView
             android:id="@+id/iv_baba_logo"

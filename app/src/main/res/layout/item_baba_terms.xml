@@ -6,7 +6,7 @@
     <data>
         <variable
             name="termsItem"
-            type="kids.baba.mobile.presentation.model.TermsData" />
+            type="kids.baba.mobile.presentation.model.TermsUiModel" />
 
     </data>
 
@@ -21,7 +21,7 @@
             android:button="@drawable/baba_checkbox"
             android:checked="@{termsItem.checked}"
             android:clickable="false"
-            android:text="@{termsItem.required ? String.format(@string/essential + termsItem.content) : String.format(@string/choice + termsItem.content)}"
+            android:text="@{termsItem.required ? String.format(@string/essential + termsItem.name) : String.format(@string/choice + termsItem.name)}"
             android:textAppearance="@style/BABA.TextStyle"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

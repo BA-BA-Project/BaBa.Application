@@ -15,8 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentTermsAgreeBinding
 import kids.baba.mobile.presentation.adapter.TermsAdapter
+import kids.baba.mobile.presentation.event.TermsAgreeEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.TermsData
+import kids.baba.mobile.presentation.model.TermsUiModel
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 import kids.baba.mobile.presentation.viewmodel.TermsAgreeViewModel
 
@@ -48,6 +49,17 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
 
         setNextBtn()
         setTermsCheckBox()
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        repeatOnStarted {
+            viewModel.eventFlow.collect{event ->
+                when(event) {
+                    is TermsAgreeEvent.ShowSnackBar -> showSnackBar(event.text)
+                }
+            }
+        }
     }
 
     private fun setTermsCheckBox() {
@@ -76,12 +88,11 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
             }
         }
     }
-
     private fun showSnackBar(@StringRes text: Int) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onTermsClickListener(termsData: TermsData, checked: Boolean) {
+    override fun onTermsClickListener(termsData: TermsUiModel, checked: Boolean) {
         viewModel.changeTermsAgree(termsData, checked)
     }
 
@@ -89,6 +100,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

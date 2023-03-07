@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is LoginEvent.ShowSnackBar -> showSnackBar(event.text)
-                    is LoginEvent.MoveToAgree -> activityViewModel.isNeedToAgree(event.token)
+                    is LoginEvent.MoveToAgree -> activityViewModel.isNeedToAgree()
                 }
             }
         }

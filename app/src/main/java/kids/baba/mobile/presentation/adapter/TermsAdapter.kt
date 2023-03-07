@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ItemBabaTermsBinding
-import kids.baba.mobile.presentation.model.TermsData
+import kids.baba.mobile.presentation.model.TermsUiModel
 
 class TermsAdapter(
     private val termsClickListener: TermsClickListener
-) : ListAdapter<TermsData, TermsAdapter.TermsDataViewHolder>(diffUtil) {
+) : ListAdapter<TermsUiModel, TermsAdapter.TermsDataViewHolder>(diffUtil) {
 
     interface TermsClickListener{
-        fun onTermsClickListener(termsData: TermsData, checked: Boolean)
+        fun onTermsClickListener(termsData: TermsUiModel, checked: Boolean)
         fun onDetailContentClickListener(url: String)
     }
 
@@ -32,7 +32,7 @@ class TermsAdapter(
         LayoutInflater.from(parent.context).inflate(R.layout.item_baba_terms, parent, false)
     ) {
         private val binding = ItemBabaTermsBinding.bind(itemView)
-        private lateinit var termsData: TermsData
+        private lateinit var termsData: TermsUiModel
 
         init {
             binding.cbAgree.setOnClickListener {
@@ -43,12 +43,12 @@ class TermsAdapter(
             }
             binding.tvSeeDetailContent.setOnClickListener {
                 termsClickListener.onDetailContentClickListener(
-                    termsData.detailUrl
+                    termsData.url
                 )
             }
         }
 
-        fun bind(item: TermsData) {
+        fun bind(item: TermsUiModel) {
             this.termsData = item
             binding.termsItem = item
 
@@ -56,11 +56,11 @@ class TermsAdapter(
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<TermsData>() {
-            override fun areItemsTheSame(oldItem: TermsData, newItem: TermsData) =
-                oldItem.content == newItem.content
+        val diffUtil = object : DiffUtil.ItemCallback<TermsUiModel>() {
+            override fun areItemsTheSame(oldItem: TermsUiModel, newItem: TermsUiModel) =
+                oldItem.name == newItem.name
 
-            override fun areContentsTheSame(oldItem: TermsData, newItem: TermsData) =
+            override fun areContentsTheSame(oldItem: TermsUiModel, newItem: TermsUiModel) =
                 oldItem.hashCode() == newItem.hashCode()
         }
     }

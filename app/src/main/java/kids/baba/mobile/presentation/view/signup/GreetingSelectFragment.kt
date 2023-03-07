@@ -46,7 +46,7 @@ class GreetingSelectFragment : Fragment() {
 
         binding.btnGreeting2.setOnClickListener {
             viewModel.addChat(ChatUserType.USER, binding.btnGreeting2.text.toString(), false)
-            viewModel.setUiState(SignUpUiState.SelectProfile)
+            viewModel.setUiState(SignUpUiState.InputName)
         }
     }
 

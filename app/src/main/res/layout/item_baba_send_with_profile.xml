@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/tv_sender_name"
-            style="@style/BABA.TextStyle"
+            android:textAppearance="@style/BABA.TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="@string/baba_name"
@@ -34,13 +34,12 @@
 
         <TextView
             android:id="@+id/tv_message"
-            style="@style/BABA.TextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="48dp"
             android:background="@drawable/speech_bubble_left"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="5dp"
+            android:textAppearance="@style/BABA.TextStyle"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -24,4 +24,8 @@ class AuthRepositoryImpl @Inject constructor(private val authRemoteDataSource: A
             emit(it)
         }
     }
+
+    override suspend fun getTerms(socialToken: String) = runCatching {
+        authRemoteDataSource.getTerms(socialToken)
+    }
 }

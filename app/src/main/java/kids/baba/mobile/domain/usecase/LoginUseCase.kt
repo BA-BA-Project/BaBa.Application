@@ -11,22 +11,25 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class BabaLoginUseCase @Inject constructor(
+class LoginUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val memberRepository: MemberRepository,
     private val kakaoLogin: KakaoLogin
 ) {
     private val tag = "LoginUseCase"
 
-    suspend fun login() = runCatching {
-        val accessToken = kakaoLogin.login().getOrThrow()
-        authRepository.login(accessToken).catch {
+    suspend fun babaLogin(socialToken: String) = runCatching {
+        authRepository.login(socialToken).catch {
             throw it
         }.collect { token ->
             Log.i(tag, "서버에서 JWT토큰 발급 완료")
             setJWTToken(token)
         }
-        memberRepository.getMe(accessToken).first()
+        memberRepository.getMe(socialToken).first()
+    }
+
+    suspend fun kakaoLogin() = runCatching {
+        kakaoLogin.login().getOrThrow()
     }
 
     private fun setJWTToken(token: TokenResponse) {

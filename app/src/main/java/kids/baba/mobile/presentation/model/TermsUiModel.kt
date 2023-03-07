@@ -1,8 +1,8 @@
 package kids.baba.mobile.presentation.model
 
-data class TermsData(
+data class TermsUiModel(
     val required: Boolean,
-    val content: String,
+    val name: String,
     var isChecked: Boolean,
-    val detailUrl: String
+    val url: String
 )
