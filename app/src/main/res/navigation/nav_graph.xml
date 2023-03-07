@@ -17,7 +17,7 @@
         android:id="@+id/loginFragment"
         android:name="kids.baba.mobile.presentation.view.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_termsAgreeFragment"
             app:destination="@id/termsAgreeFragment" />
@@ -35,5 +35,8 @@
         <action
             android:id="@+id/action_termsAgreeFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <argument
+            android:name="socialToken"
+            app:argType="string" />
     </fragment>
 </navigation>

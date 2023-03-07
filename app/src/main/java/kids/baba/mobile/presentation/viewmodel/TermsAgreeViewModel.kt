@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,13 +21,16 @@ import javax.inject.Inject
 @HiltViewModel
 class TermsAgreeViewModel @Inject constructor(
     private val getTermsListUseCase: GetTermsListUseCase,
-    private val getSignTokenUseCase: GetSignTokenUseCase
+    private val getSignTokenUseCase: GetSignTokenUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _isAllChecked = MutableStateFlow(false)
     val isAllChecked = _isAllChecked.asStateFlow()
 
     private val _signToken = MutableStateFlow("")
     val signToken = _signToken.asStateFlow()
+
+    private val socialToken = savedStateHandle.get<String>(KEY_SOCIAL_TOKEN) ?: ""
 
     private val tempTermsList =
         listOf(
@@ -52,7 +56,7 @@ class TermsAgreeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getTermsListUseCase("").onSuccess { termsList ->
+            getTermsListUseCase(socialToken).onSuccess { termsList ->
                 _termsList.value = termsList.map { it.toPresentation() }
             }.onFailure {
                 _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
@@ -83,7 +87,7 @@ class TermsAgreeViewModel @Inject constructor(
     fun getSignToken() {
         viewModelScope.launch {
             getSignTokenUseCase(
-                socialToken = "",
+                socialToken = socialToken,
                 termsData = termsList.value.map {
                     it.toDomain()
                 }
@@ -93,5 +97,9 @@ class TermsAgreeViewModel @Inject constructor(
                 _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
             }
         }
+    }
+
+    companion object {
+        const val KEY_SOCIAL_TOKEN = "socialToken"
     }
 }
