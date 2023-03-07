@@ -4,6 +4,6 @@ sealed class SignUpUiState{
     object Loading: SignUpUiState()
     object SelectGreeting: SignUpUiState()
     object InputName: SignUpUiState()
-    object ModifyName: SignUpUiState()
+    data class ModifyName(val position: Int): SignUpUiState()
     object SelectProfile: SignUpUiState()
 }

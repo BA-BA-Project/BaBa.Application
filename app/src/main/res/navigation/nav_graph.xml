@@ -26,7 +26,11 @@
         android:id="@+id/signUpFragment"
         android:name="kids.baba.mobile.presentation.view.signup.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <argument
+            android:name="signToken"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/termsAgreeFragment"
         android:name="kids.baba.mobile.presentation.view.TermsAgreeFragment"

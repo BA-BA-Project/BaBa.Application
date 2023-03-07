@@ -34,6 +34,7 @@
             android:id="@+id/rv_sign_up_chat"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingBottom="5dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/fcv_input_profile"
             app:layout_constraintEnd_toEndOf="parent"

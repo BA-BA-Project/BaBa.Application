@@ -15,12 +15,12 @@ import kids.baba.mobile.databinding.FragmentSignUpBinding
 import kids.baba.mobile.presentation.adapter.SignUpChatAdapter
 import kids.baba.mobile.presentation.event.SignUpEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.ChatUserType
+import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.state.SignUpUiState
 import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment() {
+class SignUpFragment : Fragment(),SignUpChatAdapter.ModifyClickLister {
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding
@@ -49,12 +49,15 @@ class SignUpFragment : Fragment() {
             findNavController().navigateUp()
         }
         setNavController()
-
-        signUpChatAdapter = SignUpChatAdapter()
-        binding.rvSignUpChat.adapter = signUpChatAdapter
+        setRecyclerView()
         collectUiState()
         collectEvent()
     }
+
+    private fun setRecyclerView() {
+        signUpChatAdapter = SignUpChatAdapter(this)
+        binding.rvSignUpChat.adapter = signUpChatAdapter
+}
 
     private fun setNavController() {
         val navHostFragment =
@@ -68,29 +71,26 @@ class SignUpFragment : Fragment() {
                 when (uiState) {
                     is SignUpUiState.SelectGreeting -> {
                         viewModel.addChat(
-                            ChatUserType.BABA_FIRST,
-                            getString(R.string.sitn_up_greeting1),
-                            false
+                            ChatItem.BabaFirstChatItem(
+                                getString(R.string.sitn_up_greeting1))
                         )
                         viewModel.addChat(
-                            ChatUserType.BABA,
-                            getString(R.string.sitn_up_greeting2),
-                            false
+                            ChatItem.BabaChatItem(getString(R.string.sitn_up_greeting2))
                         )
                         viewModel.setEvent(SignUpEvent.WaitGreeting)
                     }
 
                     is SignUpUiState.InputName -> {
                         viewModel.addChat(
-                            ChatUserType.BABA_FIRST,
-                            getString(R.string.please_input_name),
-                            false
+                            ChatItem.BabaFirstChatItem(getString(R.string.please_input_name))
                         )
                         viewModel.setEvent(SignUpEvent.WaitName)
                     }
 
                     is SignUpUiState.ModifyName -> {
-                        viewModel.setEvent(SignUpEvent.WaitProfile)
+                        viewModel.changeModifyState(uiState.position)
+
+                        viewModel.setEvent(SignUpEvent.WaitName)
                     }
 
                     is SignUpUiState.SelectProfile -> {
@@ -126,9 +126,13 @@ class SignUpFragment : Fragment() {
         }
     }
 
+    override fun onModifyClickListener(position: Int) {
+        viewModel.setUiState(SignUpUiState.ModifyName(position))
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
