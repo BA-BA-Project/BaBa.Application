@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
 import kids.baba.mobile.presentation.event.SignUpEvent
 import kids.baba.mobile.presentation.model.ChatItem
+import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.model.UserProfile
 import kids.baba.mobile.presentation.state.SignUpUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -32,11 +34,8 @@ class SignUpViewModel @Inject constructor(
 
     val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
-    private val _userName: MutableStateFlow<String?> = MutableStateFlow(null)
-    val userName = _userName.asStateFlow()
-
-    private val _userIcon: MutableStateFlow<String?> = MutableStateFlow(null)
-    val userIcon = _userIcon.asStateFlow()
+    private var userName: String? = null
+    private var userIcon: ProfileIcon? = null
 
     private val _userProfile: MutableStateFlow<UserProfile?> = MutableStateFlow(null)
     val userProfile = _userProfile.asStateFlow()
@@ -61,16 +60,40 @@ class SignUpViewModel @Inject constructor(
 
     fun setUserName(chatItem: ChatItem.UserChatItem) {
         addChat(chatItem)
-        _userName.value = chatItem.message
+        userName = chatItem.message
+        checkProfile()
+    }
+
+    fun setUserIcon(profileIcon: ProfileIcon, idx: Int, position: Int) {
+        userIcon = profileIcon
+        _chatList.value = List(_chatList.value.size) { nowPosition ->
+            if (nowPosition == position) {
+                val babaChatSelectListItem =
+                    _chatList.value[position] as ChatItem.BabaChatSelectListItem
+                val itemList = babaChatSelectListItem.iconList
+                ChatItem.BabaChatSelectListItem(List(itemList.size) { nowIdx ->
+                    if (idx == nowIdx) {
+                        itemList[nowIdx].copy(selected = true)
+                    } else {
+                        itemList[nowIdx].copy(selected = false)
+                    }
+                })
+            } else {
+                _chatList.value[nowPosition]
+            }
+        }
         checkProfile()
     }
 
     private fun checkProfile() {
-        if (_userName.value.isNullOrEmpty()) {
+        val name = userName
+        val icon = userIcon
+        if (name.isNullOrEmpty()) {
             _signUpUiState.value = SignUpUiState.InputName
-        } else if (_userIcon.value.isNullOrEmpty()) {
+        } else if (icon == null) {
             _signUpUiState.value = SignUpUiState.SelectProfile
         } else {
+            _userProfile.value = UserProfile(name, icon.name)
             setEvent(SignUpEvent.EndCreateProfile)
         }
     }
@@ -94,11 +117,33 @@ class SignUpViewModel @Inject constructor(
                 _chatList.value[idx]
             }
         }
-        _userName.value = newChatItem.message
+        userName = newChatItem.message
         checkProfile()
+    }
+
+    fun addProfileList() {
+        addChat(ChatItem.BabaChatSelectListItem(defaultProfileIconList))
     }
 
     companion object {
         const val KEY_SIGN_TOKEN = "signToken"
+
+        private val defaultProfileIconList = listOf(
+            ProfileIcon("PROFILE_W_1", R.drawable.profile_w_1, false),
+            ProfileIcon("PROFILE_W_2", R.drawable.profile_w_2, false),
+            ProfileIcon("PROFILE_W_3", R.drawable.profile_w_3, false),
+            ProfileIcon("PROFILE_W_4", R.drawable.profile_w_4, false),
+            ProfileIcon("PROFILE_W_5", R.drawable.profile_w_5, false),
+            ProfileIcon("PROFILE_M_1", R.drawable.profile_m_1, false),
+            ProfileIcon("PROFILE_M_2", R.drawable.profile_m_2, false),
+            ProfileIcon("PROFILE_M_3", R.drawable.profile_m_3, false),
+            ProfileIcon("PROFILE_M_4", R.drawable.profile_m_4, false),
+            ProfileIcon("PROFILE_M_5", R.drawable.profile_m_5, false),
+            ProfileIcon("PROFILE_M_6", R.drawable.profile_m_6, false),
+            ProfileIcon("PROFILE_G_1", R.drawable.profile_g_1, false),
+            ProfileIcon("PROFILE_G_2", R.drawable.profile_g_2, false),
+            ProfileIcon("PROFILE_G_3", R.drawable.profile_g_3, false),
+            ProfileIcon("PROFILE_G_4", R.drawable.profile_g_4, false),
+        )
     }
 }

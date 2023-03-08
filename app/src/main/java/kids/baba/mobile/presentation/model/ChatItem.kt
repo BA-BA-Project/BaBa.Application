@@ -9,6 +9,10 @@ sealed class ChatItem {
         val message: String,
     ) : ChatItem()
 
+    data class BabaChatSelectListItem(
+        val iconList: List<ProfileIcon>
+    ) : ChatItem()
+
     data class UserChatItem(
         val message: String,
         val canModify: Boolean,
