@@ -34,4 +34,5 @@
     <string name="essential">[필수]</string>
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
+    <string name="create_profile_complete">프로필 생성 완료</string>
 </resources>

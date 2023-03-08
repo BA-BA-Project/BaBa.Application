@@ -36,6 +36,7 @@ class SignUpViewModel @Inject constructor(
 
     private var userName: String? = null
     private var userIcon: ProfileIcon? = null
+    private var isAlreadyAskIcon = false
 
     private val _userProfile: MutableStateFlow<UserProfile?> = MutableStateFlow(null)
     val userProfile = _userProfile.asStateFlow()
@@ -61,6 +62,7 @@ class SignUpViewModel @Inject constructor(
     fun setUserName(chatItem: ChatItem.UserChatItem) {
         addChat(chatItem)
         userName = chatItem.message
+        setUiState(SignUpUiState.Loading)
         checkProfile()
     }
 
@@ -82,19 +84,24 @@ class SignUpViewModel @Inject constructor(
                 _chatList.value[nowPosition]
             }
         }
+        setUiState(SignUpUiState.Loading)
         checkProfile()
     }
 
     private fun checkProfile() {
         val name = userName
         val icon = userIcon
+
         if (name.isNullOrEmpty()) {
-            _signUpUiState.value = SignUpUiState.InputName
+            setUiState(SignUpUiState.InputName)
         } else if (icon == null) {
-            _signUpUiState.value = SignUpUiState.SelectProfile
+            if(isAlreadyAskIcon.not()){
+                isAlreadyAskIcon = true
+                setUiState(SignUpUiState.SelectProfileIcon)
+            }
         } else {
             _userProfile.value = UserProfile(name, icon.name)
-            setEvent(SignUpEvent.EndCreateProfile)
+            setUiState(SignUpUiState.EndCreateProfile)
         }
     }
 
@@ -118,6 +125,7 @@ class SignUpViewModel @Inject constructor(
             }
         }
         userName = newChatItem.message
+        setUiState(SignUpUiState.Loading)
         checkProfile()
     }
 

@@ -5,5 +5,6 @@ sealed class SignUpUiState{
     object SelectGreeting: SignUpUiState()
     object InputName: SignUpUiState()
     data class ModifyName(val position: Int): SignUpUiState()
-    object SelectProfile: SignUpUiState()
+    object SelectProfileIcon: SignUpUiState()
+    object EndCreateProfile: SignUpUiState()
 }

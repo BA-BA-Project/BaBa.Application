@@ -33,7 +33,6 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
     private lateinit var childNavController: NavController
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -94,16 +93,21 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                         viewModel.changeModifyState(uiState.position)
                     }
 
-                    is SignUpUiState.SelectProfile -> {
+                    is SignUpUiState.SelectProfileIcon -> {
                         viewModel.addChat(
                             ChatItem.BabaFirstChatItem(getString(R.string.please_select_profile_icon))
                         )
-                        viewModel.addProfileList(
-
-                        )
+                        viewModel.addProfileList()
                     }
 
-                    else -> Unit
+                    is SignUpUiState.EndCreateProfile -> {
+                        viewModel.setEvent(SignUpEvent.EndCreateProfile)
+                    }
+
+                    is SignUpUiState.Loading -> {
+                        viewModel.setEvent(SignUpEvent.ProfileSelectLoading)
+                    }
+
                 }
             }
         }
@@ -117,6 +121,7 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
+                childNavController.popBackStack()
                 when (event) {
                     is SignUpEvent.WaitGreeting -> {
                         childNavController.navigate(R.id.action_global_greetingSelectFragment)
@@ -126,12 +131,17 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                         childNavController.navigate(R.id.action_global_textInputFragment)
                     }
 
-                    is SignUpEvent.WaitProfile -> {
+                    is SignUpEvent.ProfileSelectLoading -> {
                         childNavController.navigate(R.id.action_global_blankFragment)
                     }
 
                     is SignUpEvent.EndCreateProfile -> {
                         childNavController.navigate(R.id.action_global_InputEndFragment)
+                    }
+
+                    is SignUpEvent.MoveToInputChildInfo -> {
+                        val userInfo = event.userProfile
+                        //아이 정보 기입 화면으로 이동
                     }
                 }
             }
@@ -143,7 +153,7 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     }
 
     override fun onIconSelectedListener(profileIcon: ProfileIcon, idx: Int, position: Int) {
-        viewModel.setUserIcon(profileIcon,idx, position)
+        viewModel.setUserIcon(profileIcon, idx, position)
     }
 
     override fun onDestroyView() {
