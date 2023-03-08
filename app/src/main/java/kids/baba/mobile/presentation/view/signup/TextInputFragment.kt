@@ -13,15 +13,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentTextInputBinding
 import kids.baba.mobile.presentation.model.ChatItem
-import kids.baba.mobile.presentation.state.SignUpUiState
-import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
+import kids.baba.mobile.presentation.state.CreateProfileUiState
+import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 class TextInputFragment : Fragment() {
     private var _binding: FragmentTextInputBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: SignUpViewModel by viewModels(
+    val viewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while (parent is NavHostFragment) {
@@ -48,7 +48,7 @@ class TextInputFragment : Fragment() {
 
             tvSend.setOnClickListener {
                 when (val nowState = viewModel.signUpUiState.value) {
-                    is SignUpUiState.InputName -> {
+                    is CreateProfileUiState.InputName -> {
                         viewModel.setUserName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),
@@ -58,7 +58,7 @@ class TextInputFragment : Fragment() {
                         )
                     }
 
-                    is SignUpUiState.ModifyName -> {
+                    is CreateProfileUiState.ModifyName -> {
                         viewModel.modifyName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),

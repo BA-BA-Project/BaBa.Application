@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.presentation.event.SignUpEvent
+import kids.baba.mobile.presentation.event.CreateProfileEvent
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.model.UserProfile
-import kids.baba.mobile.presentation.state.SignUpUiState
+import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,14 +19,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
+class CreateProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _signUpUiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Loading)
-    val signUpUiState = _signUpUiState.asStateFlow()
+    private val _createProfileUiState = MutableStateFlow<CreateProfileUiState>(CreateProfileUiState.Loading)
+    val signUpUiState = _createProfileUiState.asStateFlow()
 
-    private val _eventFlow = MutableEventFlow<SignUpEvent>()
+    private val _eventFlow = MutableEventFlow<CreateProfileEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     private val _chatList = MutableStateFlow<List<ChatItem>>(listOf())
@@ -42,27 +42,27 @@ class SignUpViewModel @Inject constructor(
     val userProfile = _userProfile.asStateFlow()
 
     init {
-        _signUpUiState.value = SignUpUiState.SelectGreeting
+        _createProfileUiState.value = CreateProfileUiState.SelectGreeting
     }
 
     fun addChat(chatItem: ChatItem) {
         _chatList.value += chatItem
     }
 
-    fun setEvent(event: SignUpEvent) {
+    fun setEvent(event: CreateProfileEvent) {
         viewModelScope.launch {
             _eventFlow.emit(event)
         }
     }
 
-    fun setUiState(uiState: SignUpUiState) {
-        _signUpUiState.value = uiState
+    fun setUiState(uiState: CreateProfileUiState) {
+        _createProfileUiState.value = uiState
     }
 
     fun setUserName(chatItem: ChatItem.UserChatItem) {
         addChat(chatItem)
         userName = chatItem.message
-        setUiState(SignUpUiState.Loading)
+        setUiState(CreateProfileUiState.Loading)
         checkProfile()
     }
 
@@ -84,7 +84,7 @@ class SignUpViewModel @Inject constructor(
                 _chatList.value[nowPosition]
             }
         }
-        setUiState(SignUpUiState.Loading)
+        setUiState(CreateProfileUiState.Loading)
         checkProfile()
     }
 
@@ -93,15 +93,15 @@ class SignUpViewModel @Inject constructor(
         val icon = userIcon
 
         if (name.isNullOrEmpty()) {
-            setUiState(SignUpUiState.InputName)
+            setUiState(CreateProfileUiState.InputName)
         } else if (icon == null) {
             if(isAlreadyAskIcon.not()){
                 isAlreadyAskIcon = true
-                setUiState(SignUpUiState.SelectProfileIcon)
+                setUiState(CreateProfileUiState.SelectProfileIcon)
             }
         } else {
             _userProfile.value = UserProfile(name, icon.name)
-            setUiState(SignUpUiState.EndCreateProfile)
+            setUiState(CreateProfileUiState.EndCreateProfile)
         }
     }
 
@@ -125,7 +125,7 @@ class SignUpViewModel @Inject constructor(
             }
         }
         userName = newChatItem.message
-        setUiState(SignUpUiState.Loading)
+        setUiState(CreateProfileUiState.Loading)
         checkProfile()
     }
 

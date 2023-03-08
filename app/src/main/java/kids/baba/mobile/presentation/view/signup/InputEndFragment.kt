@@ -9,9 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputEndBinding
-import kids.baba.mobile.presentation.event.SignUpEvent
+import kids.baba.mobile.presentation.event.CreateProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
+import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 class InputEndFragment : Fragment() {
 
@@ -19,7 +19,7 @@ class InputEndFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: SignUpViewModel by viewModels(
+    val viewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while (parent is NavHostFragment) {
@@ -46,7 +46,7 @@ class InputEndFragment : Fragment() {
                     binding.btnInputEnd.apply {
                         text = context.getString(R.string.create_profile_complete)
                         setOnClickListener {
-                            viewModel.setEvent(SignUpEvent.MoveToInputChildInfo(userProfile))
+                            viewModel.setEvent(CreateProfileEvent.MoveToInputChildInfo(userProfile))
                         }
                     }
                 }

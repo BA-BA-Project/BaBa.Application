@@ -11,25 +11,25 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
-import kids.baba.mobile.databinding.FragmentSignUpBinding
+import kids.baba.mobile.databinding.FragmentCreateProfileBinding
 import kids.baba.mobile.presentation.adapter.SignUpChatAdapter
-import kids.baba.mobile.presentation.event.SignUpEvent
+import kids.baba.mobile.presentation.event.CreateProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ProfileIcon
-import kids.baba.mobile.presentation.state.SignUpUiState
-import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
+import kids.baba.mobile.presentation.state.CreateProfileUiState
+import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
+class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
-    private var _binding: FragmentSignUpBinding? = null
+    private var _binding: FragmentCreateProfileBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private lateinit var signUpChatAdapter: SignUpChatAdapter
 
-    val viewModel: SignUpViewModel by viewModels()
+    val viewModel: CreateProfileViewModel by viewModels()
 
     private lateinit var childNavController: NavController
 
@@ -37,7 +37,7 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -69,7 +69,7 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         repeatOnStarted {
             viewModel.signUpUiState.collect { uiState ->
                 when (uiState) {
-                    is SignUpUiState.SelectGreeting -> {
+                    is CreateProfileUiState.SelectGreeting -> {
                         viewModel.addChat(
                             ChatItem.BabaFirstChatItem(
                                 getString(R.string.sitn_up_greeting1)
@@ -78,34 +78,34 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                         viewModel.addChat(
                             ChatItem.BabaChatItem(getString(R.string.sitn_up_greeting2))
                         )
-                        viewModel.setEvent(SignUpEvent.WaitGreeting)
+                        viewModel.setEvent(CreateProfileEvent.WaitGreeting)
                     }
 
-                    is SignUpUiState.InputName -> {
+                    is CreateProfileUiState.InputName -> {
                         viewModel.addChat(
                             ChatItem.BabaFirstChatItem(getString(R.string.please_input_name))
                         )
-                        viewModel.setEvent(SignUpEvent.WaitName)
+                        viewModel.setEvent(CreateProfileEvent.WaitName)
                     }
 
-                    is SignUpUiState.ModifyName -> {
-                        viewModel.setEvent(SignUpEvent.WaitName)
+                    is CreateProfileUiState.ModifyName -> {
+                        viewModel.setEvent(CreateProfileEvent.WaitName)
                         viewModel.changeModifyState(uiState.position)
                     }
 
-                    is SignUpUiState.SelectProfileIcon -> {
+                    is CreateProfileUiState.SelectProfileIcon -> {
                         viewModel.addChat(
                             ChatItem.BabaFirstChatItem(getString(R.string.please_select_profile_icon))
                         )
                         viewModel.addProfileList()
                     }
 
-                    is SignUpUiState.EndCreateProfile -> {
-                        viewModel.setEvent(SignUpEvent.EndCreateProfile)
+                    is CreateProfileUiState.EndCreateProfile -> {
+                        viewModel.setEvent(CreateProfileEvent.EndCreateProfile)
                     }
 
-                    is SignUpUiState.Loading -> {
-                        viewModel.setEvent(SignUpEvent.ProfileSelectLoading)
+                    is CreateProfileUiState.Loading -> {
+                        viewModel.setEvent(CreateProfileEvent.ProfileSelectLoading)
                     }
 
                 }
@@ -123,23 +123,23 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
             viewModel.eventFlow.collect { event ->
                 childNavController.popBackStack()
                 when (event) {
-                    is SignUpEvent.WaitGreeting -> {
+                    is CreateProfileEvent.WaitGreeting -> {
                         childNavController.navigate(R.id.action_global_greetingSelectFragment)
                     }
 
-                    is SignUpEvent.WaitName -> {
+                    is CreateProfileEvent.WaitName -> {
                         childNavController.navigate(R.id.action_global_textInputFragment)
                     }
 
-                    is SignUpEvent.ProfileSelectLoading -> {
+                    is CreateProfileEvent.ProfileSelectLoading -> {
                         childNavController.navigate(R.id.action_global_blankFragment)
                     }
 
-                    is SignUpEvent.EndCreateProfile -> {
+                    is CreateProfileEvent.EndCreateProfile -> {
                         childNavController.navigate(R.id.action_global_InputEndFragment)
                     }
 
-                    is SignUpEvent.MoveToInputChildInfo -> {
+                    is CreateProfileEvent.MoveToInputChildInfo -> {
                         val userInfo = event.userProfile
                         //아이 정보 기입 화면으로 이동
                     }
@@ -149,7 +149,7 @@ class SignUpFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     }
 
     override fun onModifyClickListener(position: Int) {
-        viewModel.setUiState(SignUpUiState.ModifyName(position))
+        viewModel.setUiState(CreateProfileUiState.ModifyName(position))
     }
 
     override fun onIconSelectedListener(profileIcon: ProfileIcon, idx: Int, position: Int) {

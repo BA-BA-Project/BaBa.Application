@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentGreetingSelectBinding
 import kids.baba.mobile.presentation.model.ChatItem
-import kids.baba.mobile.presentation.state.SignUpUiState
-import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
+import kids.baba.mobile.presentation.state.CreateProfileUiState
+import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 
 class GreetingSelectFragment : Fragment() {
@@ -18,7 +18,7 @@ class GreetingSelectFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: SignUpViewModel by viewModels(
+    val viewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while(parent is NavHostFragment){
@@ -44,7 +44,7 @@ class GreetingSelectFragment : Fragment() {
                 canModify = false,
                 isModifying = false
             ))
-            viewModel.setUiState(SignUpUiState.InputName)
+            viewModel.setUiState(CreateProfileUiState.InputName)
         }
 
         binding.btnGreeting2.setOnClickListener {
@@ -52,7 +52,7 @@ class GreetingSelectFragment : Fragment() {
                 canModify = false,
                 isModifying = false
             ))
-            viewModel.setUiState(SignUpUiState.InputName)
+            viewModel.setUiState(CreateProfileUiState.InputName)
         }
     }
 
