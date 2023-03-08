@@ -39,17 +39,17 @@ class TextInputFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            etTextInput.setOnEditorActionListener(getEditorActionListener(tvSend))
-
-            tvSend.setOnClickListener {
-                viewModel.addChat(ChatUserType.USER,etTextInput.text.toString(), true)
-                if (viewModel.signUpUiState.value == SignUpUiState.InputName) {
-                    viewModel.setUiState(SignUpUiState.SelectProfile)
-                }
-                etTextInput.setText("")
-            }
-        }
+//        binding.apply {
+//            etTextInput.setOnEditorActionListener(getEditorActionListener(tvSend))
+//
+//            tvSend.setOnClickListener {
+//                viewModel.addChat(ChatUserType.USER,etTextInput.text.toString(), true)
+//                if (viewModel.signUpUiState.value == SignUpUiState.InputName) {
+//                    viewModel.setUiState(SignUpUiState.SelectProfile)
+//                }
+//                etTextInput.setText("")
+//            }
+//        }
     }
 
     private fun getEditorActionListener(view: View): TextView.OnEditorActionListener {

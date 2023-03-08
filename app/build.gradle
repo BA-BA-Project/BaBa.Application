@@ -116,6 +116,12 @@ dependencies {
     def navVersion = "2.5.3"
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+
+
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
+
+
 }
 
 kapt {
