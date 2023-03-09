@@ -73,18 +73,46 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun setHaveInviteCode(haveInviteCode: Boolean) {
         _haveInviteCode.value = haveInviteCode
         val answerRes = if (haveInviteCode) R.string.answer_yes else R.string.answer_no
-        addChat(
-            ChatItem.UserChatItem(
-                getStringResource(answerRes),
-                UserChatType.SELECTION_HAVE_INVITE_CODE,
-                canModify = true,
-                isModifying = false
-            )
+
+        val chatItem = ChatItem.UserChatItem(
+            getStringResource(answerRes),
+            UserChatType.SELECTION_HAVE_INVITE_CODE,
+            canModify = true,
+            isModifying = false
         )
+        val nowUiState = uiState.value
+        if (nowUiState is InputChildrenInfoUiState.ModifySelection) {
+            modifyText(chatItem, nowUiState.position)
+        } else {
+            addChat(chatItem)
+        }
     }
 
     fun setInputEnd() {
         setEvent(InputBabiesInfoEvent.InputEnd)
+    }
+
+    fun modifyingUserChat(position: Int) {
+        _chatList.value = _chatList.value.subList(0, position + 1).mapIndexed { idx, chatItem ->
+            if (idx == position) {
+                val modifyChatItem = chatItem as ChatItem.UserChatItem
+                modifyChatItem.copy(isModifying = true)
+            } else {
+                chatItem
+            }
+        }
+        setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
+        setUiState(InputChildrenInfoUiState.ModifySelection(position))
+    }
+
+    private fun modifyText(newChatItem: ChatItem.UserChatItem, position: Int) {
+        _chatList.value = _chatList.value.mapIndexed { idx, chatItem ->
+            if (idx == position) {
+                newChatItem
+            } else {
+                chatItem
+            }
+        }
     }
 
     companion object {

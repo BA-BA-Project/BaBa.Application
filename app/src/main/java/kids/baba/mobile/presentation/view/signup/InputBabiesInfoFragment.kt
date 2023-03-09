@@ -56,8 +56,6 @@ class InputBabiesInfoFragment : Fragment() {
                     is InputBabiesInfoEvent.SelectHaveInviteCode -> {
                         childNavController.navigate(R.id.action_global_checkHaveInviteCodeFragment)
                     }
-                    else -> {
-                    }
                 }
 
             }
@@ -74,7 +72,7 @@ class InputBabiesInfoFragment : Fragment() {
         val adapter = SignUpChatAdapter(object :
             SignUpChatAdapter.ChatEventListener {
             override fun onModifyClickListener(position: Int) {
-//                viewModel.setUiState(InputChildrenInfoUiState.ModifyInputUi(position))
+                viewModel.modifyingUserChat(position)
             }
 
             override fun onIconSelectedListener(profileIcon: ProfileIcon, idx: Int, position: Int) {
