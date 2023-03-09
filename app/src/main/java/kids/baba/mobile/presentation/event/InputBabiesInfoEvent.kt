@@ -4,4 +4,5 @@ sealed class InputBabiesInfoEvent {
     object InputEnd: InputBabiesInfoEvent()
     object SelectHaveInviteCode: InputBabiesInfoEvent()
     object InputText: InputBabiesInfoEvent()
+    object InputBirthDay: InputBabiesInfoEvent()
 }

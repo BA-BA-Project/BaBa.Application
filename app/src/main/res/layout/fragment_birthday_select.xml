@@ -7,7 +7,7 @@
     tools:context=".presentation.view.signup.InputEndFragment">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_Input_end"
+        android:id="@+id/btn_birthday"
         style="@style/BABA.InputEndBtnStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,5 +15,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="프로필 생성 완료" />
+        tools:text="2023 - 03 - 10 (목)" />
 </androidx.constraintlayout.widget.ConstraintLayout>

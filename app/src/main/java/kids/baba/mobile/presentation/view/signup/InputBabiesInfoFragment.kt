@@ -82,6 +82,10 @@ class InputBabiesInfoFragment : Fragment() {
                     is InputBabiesInfoEvent.InputText -> {
                         childNavController.navigate(R.id.action_global_textInputBabyInfoFragment)
                     }
+
+                    is InputBabiesInfoEvent.InputBirthDay -> {
+                        childNavController.navigate(R.id.action_global_birthdaySelectFragment)
+                    }
                 }
 
             }

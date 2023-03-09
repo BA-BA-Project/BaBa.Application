@@ -41,4 +41,12 @@
     <string name="answer_no">아니</string>
     <string name="need_to_baby_info">추억을 기록하기 전 아이의 정보가 필요해요!</string>
     <string name="what_is_the_name_of_baby">기록할 아이의 이름이 무엇인가요?</string>
+
+    <string name="monday"> 월</string>
+    <string name="tuesday"> 화</string>
+    <string name="wednesday"> 수</string>
+    <string name="thursday"> 목</string>
+    <string name="friday"> 금</string>
+    <string name="saturday"> 토</string>
+    <string name="sunday"> 일</string>
 </resources>

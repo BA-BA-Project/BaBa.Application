@@ -44,8 +44,8 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     private val relation: String? = null
 
-    lateinit var nowBabyName: String
-    lateinit var nowBabyBirth: LocalDate
+    private var nowBabyName: String? = null
+    private var nowBabyBirth: LocalDate? = null
 
     private var inputMoreBaby = true
 
@@ -82,8 +82,10 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun setBabyName(chatItem: ChatItem, name: String) {
         addChat(chatItem)
         nowBabyName = name
-        setEvent(InputBabiesInfoEvent.InputEnd)
+        setUiState(InputBabiesInfoUiState.InputBabyBirthDay)
+        setEvent(InputBabiesInfoEvent.InputBirthDay)
     }
+
 
 
     fun setHaveInviteCode(haveInviteCode: Boolean) {
