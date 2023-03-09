@@ -35,12 +35,15 @@ class CameraActivity : AppCompatActivity() {
         viewBinding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        /*
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
+         */
+        startCamera()
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -75,7 +78,7 @@ class CameraActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val msg = "Photo capture succeeded: ${outputFileResults.savedUri}"
-                    Toast.makeText(baseContext, "msg", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                 }
 
@@ -110,7 +113,7 @@ class CameraActivity : AppCompatActivity() {
                     .build()
                     .also {
                         it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                            Log.d(TAG, "Average luminosity: $luma")
+//                            Log.d(TAG, "Average luminosity: $luma")
                         })
                     }
 
@@ -137,29 +140,30 @@ class CameraActivity : AppCompatActivity() {
 
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
+//    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+//        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        }
-    }
+//    @SuppressLint("MissingSuperCall")
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int, permissions: Array<String>, grantResults:
+//        IntArray
+//    ) {
+//        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+//            if (allPermissionsGranted()) {
+//                startCamera()
+//            } else {
+//                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+//                finish()
+//            }
+//        }
+//    }
+
 
     companion object {
         private const val TAG = "CameraXApp"
@@ -177,6 +181,7 @@ class CameraActivity : AppCompatActivity() {
             }.toTypedArray()
 
     }
+
 
 }
 
