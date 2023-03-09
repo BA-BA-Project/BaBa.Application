@@ -42,12 +42,11 @@
         <item>갤러리</item>
     </string-array>
 
-<!--    카메라-->
+    <!--    카메라-->
     <string name="show_camera">Show camera preview</string>
     <string name="camera_unavailable"><b>Camera could not be opened.</b>\nThis occurs when the camera is not available (for example it is already in use) or if the system has denied access (for example when camera access has been disabled).</string>
     <string name="intro">This sample shows a basic implementation for requesting permissions at runtime.\nClick the button below to request the Camera permission and open a full-screen camera preview.</string>
     <string name="open_camera_preview">Open Camera Preview</string>
-    <string name="app_name">RuntimePermissionsBasic</string>
     <string name="intro_message"><![CDATA[
 This sample shows a basic implementation for requesting permissions at runtime. Click the button to
 request the Camera permission and open a full-screen camera preview.
@@ -61,6 +60,14 @@ features available.]]>
     <string name="camera_permission_available">Camera permission is available. Starting preview.</string>
     <string name="camera_permission_granted">Camera permission was granted. Starting preview.</string>
     <string name="camera_permission_denied">Camera permission request was denied.</string>
+
+    <string name="rationale_title">We need permission to use your camera</string>
+    <string name="rationale_desc">This app relies on read access to your contacts. We require access to this permission to find your contacts in our database and suggest people you may know. We will not store any contact info in our data base if they are not a part of our platform. For further info read our privacy policy.</string>
+
+    <string name="app_name">CameraXApp</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="start_capture">Start Capture</string>
+    <string name="stop_capture">Stop Capture</string>
 
 
 </resources>
