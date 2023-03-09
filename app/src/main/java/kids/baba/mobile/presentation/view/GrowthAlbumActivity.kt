@@ -76,8 +76,8 @@ class GrowthAlbumActivity : AppCompatActivity(), FilmDialog.FilmDialogListener,
 
 
     private fun startCamera() {
-//        val intent = Intent(this, CameraActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, CameraActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

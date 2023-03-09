@@ -5,15 +5,11 @@ import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.Recorder
 import androidx.camera.video.Recording
@@ -21,6 +17,7 @@ import androidx.camera.video.VideoCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kids.baba.mobile.databinding.ActivityCameraBinding
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
@@ -29,14 +26,13 @@ import java.util.concurrent.Executors
 typealias LumaListener = (luma: Double) -> Unit
 
 class CameraActivity : AppCompatActivity() {
-
     private lateinit var viewBinding: ActivityCameraBinding
 
     private var imageCaputre: ImageCapture? = null
 
     private var videoCapture: VideoCapture<Recorder>? = null
-    private var recording: Recording? = null
 
+    private var recording: Recording? = null
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +49,6 @@ class CameraActivity : AppCompatActivity() {
         }
 
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
-        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
 
 
@@ -99,13 +93,11 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
-
-    private fun captureVideo() {}
-
     private fun startCamera() {
 
         // used to bind the lifecycle of camera to the lifecycle owner
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
 
         cameraProviderFuture.addListener(
             {
@@ -120,6 +112,15 @@ class CameraActivity : AppCompatActivity() {
                     }
                 imageCaputre = ImageCapture.Builder().build()
 
+                val imageAnalyzer = ImageAnalysis.Builder()
+                    .build()
+                    .also {
+                        it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                            Log.d(TAG, "Average luminosity: $luma")
+                        })
+                    }
+
+
                 // select back camera as a default
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -129,7 +130,8 @@ class CameraActivity : AppCompatActivity() {
 
                     // bind use cases to camera
                     cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCaputre)
+                        this, cameraSelector, preview, imageCaputre, imageAnalyzer
+                    )
                 } catch (exc: Exception) {
                     // focus 가 없으면 실패 -> 예외 처리
                     Log.e(TAG, "Use case binding failed", exc)
@@ -150,6 +152,7 @@ class CameraActivity : AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray
@@ -164,12 +167,10 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
         private const val TAG = "CameraXApp"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
-
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
                 android.Manifest.permission.CAMERA,
@@ -180,7 +181,30 @@ class CameraActivity : AppCompatActivity() {
                     add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
+
     }
 
+}
 
+/**
+ * ImageAnalyzer
+ */
+private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
+    private fun ByteBuffer.toByteArray(): ByteArray {
+        rewind() // Rewind the buffer to zero
+        val data = ByteArray(remaining())
+        get(data) // copy the buffer into a byte array
+        return data
+    }
+
+    override fun analyze(image: ImageProxy) {
+        val buffer = image.planes[0].buffer
+        val data = buffer.toByteArray()
+        val pixels = data.map { it.toInt() and 0xFF }
+        val luma = pixels.average()
+
+        listener(luma)
+
+        image.close()
+    }
 }
