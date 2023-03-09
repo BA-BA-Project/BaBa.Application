@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:name=".core.MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="${appLabel}"
         android:supportsRtl="true"
         android:theme="@style/Theme.Baba"
-        android:enableOnBackInvokedCallback="true"
-        tools:targetApi="tiramisu" >
+        tools:targetApi="tiramisu">
 
-        <activity
-            android:name=".presentation.view.GrowthAlbumActivity"
-            android:exported="true" >
+        <activity android:name=".presentation.view.film.CameraActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity" >
+
+
+        <activity
+            android:name=".presentation.view.GrowthAlbumActivity">
+        </activity>
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
 
             <!-- android:exported="true"> -->
             <!-- <intent-filter> -->
@@ -44,7 +53,7 @@
             <!-- android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".presentation.view.IntroActivity" >
+        <activity android:name=".presentation.view.IntroActivity">
 
             <!-- android:exported="true" -->
             <!-- android:theme="@style/Theme.Baba.Starting"> -->
