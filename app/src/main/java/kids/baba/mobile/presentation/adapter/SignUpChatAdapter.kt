@@ -65,7 +65,7 @@ class SignUpChatAdapter(
         private val binding = ItemBabaSendWithProfileBinding.bind(itemView)
 
         fun bind(item: BabaFirstChatItem) {
-            binding.tvMessage.text = item.message
+            binding.chatItem = item
         }
     }
 
@@ -78,7 +78,7 @@ class SignUpChatAdapter(
         private val binding = ItemBabaSendBinding.bind(itemView)
 
         fun bind(item: BabaChatItem) {
-            binding.tvMessage.text = item.message
+            binding.chatItem = item
         }
     }
 
