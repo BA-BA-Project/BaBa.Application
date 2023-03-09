@@ -7,21 +7,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import kids.baba.mobile.databinding.FragmentGreetingSelectBinding
-import kids.baba.mobile.presentation.model.ChatItem
-import kids.baba.mobile.presentation.state.CreateProfileUiState
+import kids.baba.mobile.R
+import kids.baba.mobile.databinding.FragmentInputEndBinding
+import kids.baba.mobile.presentation.event.CreateProfileEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
+class InputEndFragment : Fragment() {
 
-class GreetingSelectFragment : Fragment() {
-    private var _binding: FragmentGreetingSelectBinding? = null
+    private var _binding: FragmentInputEndBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
-            while(parent is NavHostFragment){
+            while (parent is NavHostFragment) {
                 parent = parent.requireParentFragment()
             }
             parent
@@ -32,32 +33,31 @@ class GreetingSelectFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGreetingSelectBinding.inflate(inflater,container,false)
+        _binding = FragmentInputEndBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnGreeting1.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(binding.btnGreeting1.text.toString(),
-                canModify = false,
-                isModifying = false
-            ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
+        repeatOnStarted {
+            viewModel.userProfile.collect { userProfile ->
+                if (userProfile != null) {
+                    binding.btnInputEnd.apply {
+                        text = context.getString(R.string.create_profile_complete)
+                        setOnClickListener {
+                            viewModel.setEvent(CreateProfileEvent.MoveToInputChildInfo(userProfile))
+                        }
+                    }
+                }
+            }
         }
 
-        binding.btnGreeting2.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(binding.btnGreeting2.text.toString(),
-                canModify = false,
-                isModifying = false
-            ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
