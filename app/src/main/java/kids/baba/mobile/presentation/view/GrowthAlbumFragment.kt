@@ -55,7 +55,7 @@ class GrowthAlbumFragment : Fragment() {
         CalendarChangesObserver {
         override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
             binding.tvDate.text =
-                "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)}일 "
+                "${DateUtils.getYear(date)}.${DateUtils.getMonthNumber(date)}"
             binding.tvDay.text = DateUtils.getDayName(date)
             //터치했을때만 처리 binding.viewPager.setCurrentItem(position,true)
             super.whenSelectionChanged(isSelected, position, date)
@@ -126,13 +126,13 @@ class GrowthAlbumFragment : Fragment() {
             init()
         }
 
-        binding.btnRight.setOnClickListener {
-            singleRowCalendar.setDates(getDatesOfNextMonth())
-        }
-
-        binding.btnLeft.setOnClickListener {
-            singleRowCalendar.setDates(getDatesOfPreviousMonth())
-        }
+//        binding.btnRight.setOnClickListener {
+//            singleRowCalendar.setDates(getDatesOfNextMonth())
+//        }
+//
+//        binding.btnLeft.setOnClickListener {
+//            singleRowCalendar.setDates(getDatesOfPreviousMonth())
+//        }
     }
 
     private fun getDatesOfNextMonth(): List<Date> {
