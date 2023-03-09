@@ -43,7 +43,7 @@ class GreetingSelectFragment : Fragment() {
         binding.btnGreeting1.setOnClickListener {
             viewModel.addChat(ChatItem.UserChatItem(
                 binding.btnGreeting1.text.toString(),
-                UserChatType.SELECTION_GREETING,
+                UserChatType.GREETING,
                 canModify = false,
                 isModifying = false
             ))
@@ -53,7 +53,7 @@ class GreetingSelectFragment : Fragment() {
         binding.btnGreeting2.setOnClickListener {
             viewModel.addChat(ChatItem.UserChatItem(
                 binding.btnGreeting2.text.toString(),
-                UserChatType.SELECTION_GREETING,
+                UserChatType.GREETING,
                 canModify = false,
                 isModifying = false
             ))

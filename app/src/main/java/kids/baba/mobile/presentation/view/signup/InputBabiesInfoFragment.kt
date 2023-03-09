@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.signup
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputBabiesInfoBinding
@@ -38,23 +40,47 @@ class InputBabiesInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.tbInputBabiesInfo.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         setRecyclerView()
         setNavController()
         collectEvent()
-//        collectUiState()
+        collectHaveInviteCode()
+    }
+
+    private fun collectHaveInviteCode() {
+        repeatOnStarted {
+            viewModel.haveInviteCode.collect { haveInviteCode ->
+                if (haveInviteCode != null) {
+                    if (haveInviteCode) {
+                        viewModel.inputInviteCode()
+                    } else {
+                        viewModel.inputBabiesInfo()
+                    }
+                }
+            }
+        }
     }
 
 
-
-    private fun collectEvent(){
+    private fun collectEvent() {
         repeatOnStarted {
-            viewModel.eventFlow.collect{event ->
-                when(event) {
+            viewModel.eventFlow.collect { event ->
+                childNavController.popBackStack()
+                Log.d("eventPrint", "$event")
+                when (event) {
                     is InputBabiesInfoEvent.InputEnd -> {
                         childNavController.navigate(R.id.action_global_blankFragment)
                     }
+
                     is InputBabiesInfoEvent.SelectHaveInviteCode -> {
                         childNavController.navigate(R.id.action_global_checkHaveInviteCodeFragment)
+                    }
+
+                    is InputBabiesInfoEvent.InputText -> {
+                        childNavController.navigate(R.id.action_global_textInputBabyInfoFragment)
                     }
                 }
 
@@ -72,7 +98,7 @@ class InputBabiesInfoFragment : Fragment() {
         val adapter = SignUpChatAdapter(object :
             SignUpChatAdapter.ChatEventListener {
             override fun onModifyClickListener(position: Int) {
-                viewModel.modifyingUserChat(position)
+                viewModel.modifyUserChat(position)
             }
 
             override fun onIconSelectedListener(profileIcon: ProfileIcon, idx: Int, position: Int) {
@@ -80,7 +106,7 @@ class InputBabiesInfoFragment : Fragment() {
             }
 
         })
-        binding.rvInputChildrenInfoChat.adapter = adapter
+        binding.rvInputBabiesInfoChat.adapter = adapter
 
         repeatOnStarted {
             viewModel.chatList.collect {

@@ -17,9 +17,9 @@
         tools:layout="@layout/fragment_relation_select" />
     <fragment
         android:id="@+id/textInputFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.TextInputFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.InputUserNameFragment"
         android:label="fragment_text_input"
-        tools:layout="@layout/fragment_text_input" />
+        tools:layout="@layout/fragment_input_user_name" />
     <fragment
         android:id="@+id/inputEndFragment"
         android:name="kids.baba.mobile.presentation.view.signup.InputEndFragment"
@@ -50,4 +50,10 @@
         android:name="kids.baba.mobile.presentation.view.signup.CheckHaveInviteCodeFragment"
         android:label="CheckHaveInviteCodeFragment"
         tools:layout="@layout/fragment_check_have_invite_code"/><action android:id="@+id/action_global_checkHaveInviteCodeFragment" app:destination="@id/checkHaveInviteCodeFragment"/>
+    <fragment
+        android:id="@+id/textInputBabyInfoFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.TextInputBabyInfoFragment"
+        android:label="TextInputBabyInfoFragment"
+        tools:layout="@layout/fragment_text_input_baby_info"/>
+    <action android:id="@+id/action_global_textInputBabyInfoFragment" app:destination="@id/textInputBabyInfoFragment" />
 </navigation>

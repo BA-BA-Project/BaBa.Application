@@ -39,12 +39,10 @@ class CheckHaveInviteCodeFragment : Fragment() {
 
         binding.btnAnswerYes.setOnClickListener {
             viewModel.setHaveInviteCode(true)
-            viewModel.setInputEnd()
         }
 
         binding.btnAnswerNo.setOnClickListener {
             viewModel.setHaveInviteCode(false)
-            viewModel.setInputEnd()
         }
     }
 

@@ -45,7 +45,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tbSighUp.setNavigationOnClickListener {
+        binding.tbCreateProfile.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
         setNavController()
@@ -56,7 +56,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
     private fun setRecyclerView() {
         signUpChatAdapter = SignUpChatAdapter(this)
-        binding.rvSignUpChat.adapter = signUpChatAdapter
+        binding.rvCreateProfile.adapter = signUpChatAdapter
     }
 
     private fun setNavController() {

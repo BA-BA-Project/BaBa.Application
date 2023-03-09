@@ -39,4 +39,6 @@
     <string name="check_have_invite_code">초대코드를 받으셨나요?</string>
     <string name="answer_yes">응, 맞아</string>
     <string name="answer_no">아니</string>
+    <string name="need_to_baby_info">추억을 기록하기 전 아이의 정보가 필요해요!</string>
+    <string name="what_is_the_name_of_baby">기록할 아이의 이름이 무엇인가요?</string>
 </resources>
