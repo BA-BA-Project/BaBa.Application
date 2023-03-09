@@ -71,12 +71,10 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                 when (uiState) {
                     is CreateProfileUiState.SelectGreeting -> {
                         viewModel.addChat(
-                            ChatItem.BabaFirstChatItem(
-                                getString(R.string.sitn_up_greeting1)
-                            )
+                            ChatItem.BabaFirstChatItem(getString(R.string.sign_up_greeting1))
                         )
                         viewModel.addChat(
-                            ChatItem.BabaChatItem(getString(R.string.sitn_up_greeting2))
+                            ChatItem.BabaChatItem(getString(R.string.sign_up_greeting2))
                         )
                         viewModel.setEvent(CreateProfileEvent.WaitGreeting)
                     }
@@ -141,7 +139,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
                     is CreateProfileEvent.MoveToInputChildInfo -> {
                         val action = CreateProfileFragmentDirections
-                            .actionCreateProfileFragmentToInputChildrenInfoFragment(event.userProfile)
+                            .actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile)
                         findNavController().navigate(action)
                     }
                 }
@@ -161,6 +159,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         super.onDestroyView()
         _binding = null
     }
+
 
 
 }

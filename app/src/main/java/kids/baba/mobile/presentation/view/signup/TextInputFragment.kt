@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentTextInputBinding
 import kids.baba.mobile.presentation.model.ChatItem
+import kids.baba.mobile.presentation.model.UserChatType
 import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
@@ -52,6 +53,7 @@ class TextInputFragment : Fragment() {
                         viewModel.setUserName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),
+                                UserChatType.INPUT_TEXT,
                                 canModify = true,
                                 isModifying = false
                             )
@@ -62,6 +64,7 @@ class TextInputFragment : Fragment() {
                         viewModel.modifyName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),
+                                UserChatType.INPUT_TEXT,
                                 canModify = true,
                                 isModifying = false
                             ),

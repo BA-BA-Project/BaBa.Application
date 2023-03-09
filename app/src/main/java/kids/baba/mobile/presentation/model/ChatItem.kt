@@ -15,6 +15,7 @@ sealed class ChatItem {
 
     data class UserChatItem(
         val message: String,
+        val userChatType: UserChatType,
         val canModify: Boolean,
         var isModifying: Boolean
     ) : ChatItem()
