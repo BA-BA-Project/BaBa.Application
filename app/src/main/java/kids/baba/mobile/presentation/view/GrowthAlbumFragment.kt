@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
+import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
@@ -31,7 +33,6 @@ import java.util.*
 class GrowthAlbumFragment : Fragment() {
 
     private var _binding: FragmentGrowthalbumBinding? = null
-    private lateinit var calendarBinding: ItemCalendarBinding
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
@@ -39,6 +40,64 @@ class GrowthAlbumFragment : Fragment() {
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+
+    private lateinit var singleRowCalendar : SingleRowCalendar
+    private val mySelectionManager = object : CalendarSelectionManager {
+        override fun canBeItemSelected(position: Int, date: Date): Boolean {
+            val cal = Calendar.getInstance()
+            cal.time = date
+            return when (cal[Calendar.DAY_OF_WEEK]) {
+                else -> true
+            }
+        }
+    }
+    private val myCalendarChangesObserver = object :
+        CalendarChangesObserver {
+        override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
+            binding.tvDate.text =
+                "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)}일 "
+            binding.tvDay.text = DateUtils.getDayName(date)
+            //터치했을때만 처리 binding.viewPager.setCurrentItem(position,true)
+            super.whenSelectionChanged(isSelected, position, date)
+        }
+    }
+    private val myCalendarViewManager = object :
+        CalendarViewManager {
+        override fun setCalendarViewResourceId(
+            position: Int,
+            date: Date,
+            isSelected: Boolean
+        ): Int {
+            val cal = Calendar.getInstance()
+            cal.time = date
+            return if (isSelected)
+                when (cal[Calendar.DAY_OF_WEEK]) {
+                    Calendar.MONDAY -> R.layout.first_special_selected_calendar_item
+                    Calendar.WEDNESDAY -> R.layout.second_special_selected_calendar_item
+                    Calendar.FRIDAY -> R.layout.third_special_selected_calendar_item
+                    else -> R.layout.selected_calendar_item
+                }
+            else
+                when (cal[Calendar.DAY_OF_WEEK]) {
+                    Calendar.MONDAY -> R.layout.first_special_calendar_item
+                    Calendar.WEDNESDAY -> R.layout.second_special_calendar_item
+                    Calendar.FRIDAY -> R.layout.third_special_calendar_item
+                    else -> R.layout.item_calendar
+                }
+        }
+
+        override fun bindDataToCalendarView(
+            holder: SingleRowCalendarAdapter.CalendarViewHolder,
+            date: Date,
+            position: Int,
+            isSelected: Boolean
+        ) {
+            val calendarItem = ItemCalendarBinding.bind(holder.itemView)
+            calendarItem.tvDateCalendarItem.text = DateUtils.getDayNumber(date)
+            calendarItem.tvDayCalendarItem.text = DateUtils.getDay3LettersName(date)
+
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +107,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun initCalendar() {
-        // set current date to calendar and current month to currentMonth variable
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
 
@@ -59,84 +117,8 @@ class GrowthAlbumFragment : Fragment() {
             requireActivity().window.statusBarColor = Color.WHITE
         }
 
-        // calendar view manager is responsible for our displaying logic
-        val myCalendarViewManager = object :
-            CalendarViewManager {
-            override fun setCalendarViewResourceId(
-                position: Int,
-                date: Date,
-                isSelected: Boolean
-            ): Int {
-                // set date to calendar according to position where we are
-                val cal = Calendar.getInstance()
-                cal.time = date
-                // if item is selected we return this layout items
-                // in this example. monday, wednesday and friday will have special item views and other days
-                // will be using basic item view
-                return if (isSelected)
-                    when (cal[Calendar.DAY_OF_WEEK]) {
-                        Calendar.MONDAY -> R.layout.first_special_selected_calendar_item
-                        Calendar.WEDNESDAY -> R.layout.second_special_selected_calendar_item
-                        Calendar.FRIDAY -> R.layout.third_special_selected_calendar_item
-                        else -> R.layout.selected_calendar_item
-                    }
-                else
-                // here we return items which are not selected
-                    when (cal[Calendar.DAY_OF_WEEK]) {
-                        Calendar.MONDAY -> R.layout.first_special_calendar_item
-                        Calendar.WEDNESDAY -> R.layout.second_special_calendar_item
-                        Calendar.FRIDAY -> R.layout.third_special_calendar_item
-                        else -> R.layout.item_calendar
-                    }
 
-                // NOTE: if we don't want to do it this way, we can simply change color of background
-                // in bindDataToCalendarView method
-            }
-
-            override fun bindDataToCalendarView(
-                holder: SingleRowCalendarAdapter.CalendarViewHolder,
-                date: Date,
-                position: Int,
-                isSelected: Boolean
-            ) {
-                // using this method we can bind data to calendar view
-                // good practice is if all views in layout have same IDs in all item views
-                calendarBinding.tvDateCalendarItem.text = DateUtils.getDayNumber(date)
-                calendarBinding.tvDayCalendarItem.text = DateUtils.getDay3LettersName(date)
-
-            }
-        }
-
-        // using calendar changes observer we can track changes in calendar
-        val myCalendarChangesObserver = object :
-            CalendarChangesObserver {
-            // you can override more methods, in this example we need only this one
-            override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-//                tvDate.text = "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} "
-//                tvDay.text = DateUtils.getDayName(date)
-                super.whenSelectionChanged(isSelected, position, date)
-            }
-
-
-        }
-
-        // selection manager is responsible for managing selection
-        val mySelectionManager = object : CalendarSelectionManager {
-            override fun canBeItemSelected(position: Int, date: Date): Boolean {
-                // set date to calendar according to position
-                val cal = Calendar.getInstance()
-                cal.time = date
-                // in this example sunday and saturday can't be selected, others can
-                return when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.SATURDAY -> false
-                    Calendar.SUNDAY -> false
-                    else -> true
-                }
-            }
-        }
-
-        // here we init our calendar, also you can set more properties if you haven't specified in XML layout
-        val singleRowCalendar = binding.myCalendar.apply {
+        singleRowCalendar = binding.myCalendar.apply {
             calendarViewManager = myCalendarViewManager
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
@@ -154,9 +136,8 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun getDatesOfNextMonth(): List<Date> {
-        currentMonth++ // + because we want next month
+        currentMonth++
         if (currentMonth == 12) {
-            // we will switch to january of next year, when we reach last month of year
             calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
             currentMonth = 0 // 0 == january
         }
@@ -164,9 +145,8 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun getDatesOfPreviousMonth(): List<Date> {
-        currentMonth-- // - because we want previous month
+        currentMonth--
         if (currentMonth == -1) {
-            // we will switch to december of previous year, when we reach first month of year
             calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] - 1)
             currentMonth = 11 // 11 == december
         }
@@ -174,14 +154,12 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun getFutureDatesOfCurrentMonth(): List<Date> {
-        // get all next dates of current month
         currentMonth = calendar[Calendar.MONTH]
         return getDates(mutableListOf())
     }
 
 
     private fun getDates(list: MutableList<Date>): List<Date> {
-        // load dates of whole month
         calendar.set(Calendar.MONTH, currentMonth)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         list.add(calendar.time)
@@ -217,13 +195,15 @@ class GrowthAlbumFragment : Fragment() {
         }.collect { baby ->
             Log.e("baby", "${baby.myBaby}")
         }
-        InitializeAlbumHolder()
+        initializeAlbumHolder()
 
-        adapter.setItem(Album(1, "", "", "", "", false, "", ""))
+        repeat(31){
+            adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
+        }
 
     }
 
-    private fun InitializeAlbumHolder() {
+    private fun initializeAlbumHolder() {
         binding.viewPager.adapter = adapter
         binding.viewPager.offscreenPageLimit = 1
 
@@ -233,7 +213,7 @@ class GrowthAlbumFragment : Fragment() {
         val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             page.translationX = -pageTranslationX * position
-            page.scaleY = 1 - (0.25f * abs(position))
+            page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
         }
 
         binding.viewPager.setPageTransformer(pageTransformer)
@@ -243,6 +223,14 @@ class GrowthAlbumFragment : Fragment() {
             R.dimen.viewpager_current_item_horizontal_margin
         )
         binding.viewPager.addItemDecoration(itemDecoration)
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                singleRowCalendar.select(position)
+                singleRowCalendar.scrollToPosition(position)
+            }
+        })
+        binding.viewPager.currentItem
     }
 
     private fun initView() {
@@ -255,7 +243,6 @@ class GrowthAlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGrowthalbumBinding.inflate(inflater, container, false)
-        calendarBinding = ItemCalendarBinding.inflate(inflater, container, false)
         return binding.root
     }
 }

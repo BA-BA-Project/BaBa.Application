@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,15 +14,25 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/date_temp"
+            android:id="@+id/tvDate"
+            android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="2023.3"
-            android:textSize="25dp"
-            android:layout_marginStart="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/myCalendar"
+            android:text="123"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/myCalendar"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toTopOf="@id/myCalendar"
+            app:layout_constraintStart_toEndOf="@+id/tvDate" />
 
         <Button
             android:layout_width="wrap_content"
@@ -34,20 +45,12 @@
         <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
             android:id="@+id/myCalendar"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="70dp"
             android:background="@color/baba_main"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="달력예정"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/myCalendar" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <androidx.viewpager2.widget.ViewPager2
