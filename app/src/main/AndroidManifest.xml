@@ -15,7 +15,8 @@
         android:label="${appLabel}"
         android:supportsRtl="true"
         android:theme="@style/Theme.Baba"
-        tools:targetApi="31" >
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="tiramisu" >
 
         <activity
             android:name=".presentation.view.GrowthAlbumActivity"
