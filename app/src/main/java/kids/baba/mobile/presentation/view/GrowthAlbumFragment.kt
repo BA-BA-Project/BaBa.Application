@@ -46,22 +46,19 @@ class GrowthAlbumFragment : Fragment() {
 
     private suspend fun initialize() {
         Log.e("state", "initialize")
-        viewModel.loadAlbum(123).await().catch {
+        viewModel.loadAlbum(1).await().catch {
             Log.e("error", "${it.message}")
         }.collect { album ->
-            Log.e("album", "$album")
+            Log.e("album", "${album.album}")
         }
         viewModel.loadBaby().await().catch {
             Log.e("error", "${it.message}")
         }.collect { baby ->
-            Log.e("baby", "$baby")
+            Log.e("baby", "${baby.myBaby}")
         }
         InitializeAlbumHolder()
 
-        adapter.setItem(Album(1))
-        adapter.setItem(Album(2))
-        adapter.setItem(Album(3))
-        adapter.setItem(Album(4))
+        adapter.setItem(Album(1, "", "", "", "", false, "", ""))
 
     }
 

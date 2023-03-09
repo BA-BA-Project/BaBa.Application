@@ -20,7 +20,7 @@
             android:text="2023.3"
             android:textSize="25dp"
             android:layout_marginStart="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/calendar_temp"
+            app:layout_constraintBottom_toTopOf="@+id/calendar"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -28,18 +28,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:text="날짜별 보기"
-            app:layout_constraintBottom_toTopOf="@+id/calendar_temp"
+            app:layout_constraintBottom_toTopOf="@+id/calendar"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <View
-            android:id="@+id/calendar_temp"
+        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+            android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="20dp"
             android:background="@color/baba_main"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:text="달력예정"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/calendar_temp" />
+            app:layout_constraintTop_toTopOf="@+id/calendar" />
 
 
         <androidx.viewpager2.widget.ViewPager2

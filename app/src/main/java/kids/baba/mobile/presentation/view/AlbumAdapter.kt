@@ -12,7 +12,7 @@ class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ItemAlbumBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
-            binding.test.text = item.id.toString()
+            binding.test.text = item.contentId.toString()
         }
     }
 

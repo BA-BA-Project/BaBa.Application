@@ -1,7 +1,6 @@
 package kids.baba.mobile.data.api
 
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
+import kids.baba.mobile.domain.model.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -11,15 +10,15 @@ interface AlbumApi {
 
     //아기 리스트 가져오기
     @GET("/baby")
-    suspend fun getBaby(): Baby
+    suspend fun getBaby(): BabyResponse
 
     //성장 앨범 메인
     @GET("/album/{babyId}")
-    suspend fun getAlbum(@Path("babyId") id: Int): Album
+    suspend fun getAlbum(@Path("babyId") id: Int): AlbumResponse
 
     //성장 앨범 추가
     @POST("/album/{babyId}")
-    suspend fun addAlbum(@Path("babyId") id: Int, @Body album: Album) : Album
+    suspend fun addArticle(@Path("babyId") id: Int, @Body article: Article) : Article
 
     //성장 앨범 좋아요
 
