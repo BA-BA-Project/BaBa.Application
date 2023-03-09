@@ -5,8 +5,9 @@
 
     <data>
         <variable
-            name="userChatItem"
-            type="kids.baba.mobile.presentation.model.ChatItem.UserChatItem" />
+            name="chatItem"
+            type="kids.baba.mobile.presentation.model.ChatItem" />
+
         <import type="android.view.View"/>
 
     </data>
@@ -19,7 +20,7 @@
             android:id="@+id/tv_message"
             style="@style/BABA.TextStyle"
             android:layout_width="0dp"
-            android:text="@{userChatItem.message}"
+            android:text="@{chatItem.message}"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -38,10 +39,10 @@
         <TextView
             android:id="@+id/tv_modify"
             android:layout_width="0dp"
-            android:visibility="@{userChatItem.canModify ? View.VISIBLE : View.INVISIBLE }"
+            android:visibility="@{chatItem.canModify ? View.VISIBLE : View.INVISIBLE }"
             android:layout_height="wrap_content"
             style="@style/BABA.TextStyle"
-            android:text="@{userChatItem.modifying ? String.format(@string/modifying): String.format(@string/modify)}"
+            android:text="@string/modify"
             android:textColor="@color/baba_main"
             android:textSize="12sp"
             android:layout_marginStart="48dp"
@@ -52,8 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintWidth_default="wrap"
-            tools:ignore="SmallSp"
-            tools:text="수정"/>
+            tools:ignore="SmallSp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

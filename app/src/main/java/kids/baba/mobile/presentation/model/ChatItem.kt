@@ -1,21 +1,7 @@
 package kids.baba.mobile.presentation.model
 
-sealed class ChatItem {
-    data class BabaFirstChatItem(
-        val message: String,
-    ) : ChatItem()
-
-    data class BabaChatItem(
-        val message: String,
-    ) : ChatItem()
-
-    data class BabaChatSelectListItem(
-        val iconList: List<ProfileIcon>
-    ) : ChatItem()
-
-    data class UserChatItem(
-        val message: String,
-        val canModify: Boolean,
-        var isModifying: Boolean
-    ) : ChatItem()
-}
+class ChatItem(
+    val sender : ChatUserType,
+    val message: String,
+    val canModify: Boolean
+)

@@ -49,10 +49,7 @@ class IntroActivity : AppCompatActivity() {
                         val action = LoginFragmentDirections.actionLoginFragmentToTermsAgreeFragment(event.socialToken)
                         navController.navigate(action)
                     }
-                    is IntroEvent.MoveToSignUp -> {
-                        val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
-                        navController.navigate(action)
-                    }
+                    is IntroEvent.MoveToSignUp -> navController.navigate(R.id.action_termsAgreeFragment_to_signUpFragment)
                     else -> Unit
                 }
             }

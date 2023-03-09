@@ -21,10 +21,10 @@
         android:label="fragment_text_input"
         tools:layout="@layout/fragment_text_input" />
     <fragment
-        android:id="@+id/inputEndFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.InputEndFragment"
-        android:label="fragment_input_end"
-        tools:layout="@layout/fragment_input_end" />
+        android:id="@+id/birthSelectFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.BirthSelectFragment"
+        android:label="fragment_birth_select"
+        tools:layout="@layout/fragment_birth_select" />
     <action
         android:id="@+id/action_global_greetingSelectFragment"
         app:destination="@id/greetingSelectFragment" />
@@ -35,14 +35,6 @@
         android:id="@+id/action_global_textInputFragment"
         app:destination="@id/textInputFragment" />
     <action
-        android:id="@+id/action_global_InputEndFragment"
-        app:destination="@id/inputEndFragment" />
-    <fragment
-        android:id="@+id/blankFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.BlankFragment"
-        android:label="BlankFragment"
-        tools:layout="@layout/fragment_blank"/>
-    <action
-        android:id="@+id/action_global_blankFragment"
-        app:destination="@id/blankFragment" />
+        android:id="@+id/action_global_birthSelectFragment"
+        app:destination="@id/birthSelectFragment" />
 </navigation>

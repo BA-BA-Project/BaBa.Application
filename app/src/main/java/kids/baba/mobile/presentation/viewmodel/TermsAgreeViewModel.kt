@@ -30,7 +30,7 @@ class TermsAgreeViewModel @Inject constructor(
     private val _signToken = MutableStateFlow("")
     val signToken = _signToken.asStateFlow()
 
-    private val socialToken = savedStateHandle[KEY_SOCIAL_TOKEN] ?: ""
+    private val socialToken = savedStateHandle.get<String>(KEY_SOCIAL_TOKEN) ?: ""
 
     private val tempTermsList =
         listOf(
@@ -94,8 +94,7 @@ class TermsAgreeViewModel @Inject constructor(
             ).onSuccess {
                 _signToken.value = it
             }.onFailure {
-                _signToken.value = "testSignToken" //임시로 사용할 signToken api구현이 완료되면 수정하기
-//                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
             }
         }
     }

@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import kids.baba.mobile.R
 
-class BlankFragment : Fragment() {
+class BirthSelectFragment : Fragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_blank, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_birth_select, container, false)
     }
 
 }

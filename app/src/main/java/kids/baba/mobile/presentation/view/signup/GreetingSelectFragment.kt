@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentGreetingSelectBinding
-import kids.baba.mobile.presentation.model.ChatItem
-import kids.baba.mobile.presentation.state.CreateProfileUiState
-import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
+import kids.baba.mobile.presentation.model.ChatUserType
+import kids.baba.mobile.presentation.state.SignUpUiState
+import kids.baba.mobile.presentation.viewmodel.SignUpViewModel
 
 
 class GreetingSelectFragment : Fragment() {
@@ -18,7 +18,7 @@ class GreetingSelectFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: CreateProfileViewModel by viewModels(
+    val viewModel: SignUpViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while(parent is NavHostFragment){
@@ -40,19 +40,13 @@ class GreetingSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnGreeting1.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(binding.btnGreeting1.text.toString(),
-                canModify = false,
-                isModifying = false
-            ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
+            viewModel.addChat(ChatUserType.USER, binding.btnGreeting1.text.toString(), false)
+            viewModel.setUiState(SignUpUiState.InputName)
         }
 
         binding.btnGreeting2.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(binding.btnGreeting2.text.toString(),
-                canModify = false,
-                isModifying = false
-            ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
+            viewModel.addChat(ChatUserType.USER, binding.btnGreeting2.text.toString(), false)
+            viewModel.setUiState(SignUpUiState.InputName)
         }
     }
 
