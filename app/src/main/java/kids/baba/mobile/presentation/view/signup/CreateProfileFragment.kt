@@ -140,8 +140,9 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                     }
 
                     is CreateProfileEvent.MoveToInputChildInfo -> {
-                        val userInfo = event.userProfile
-                        //아이 정보 기입 화면으로 이동
+                        val action = CreateProfileFragmentDirections
+                            .actionCreateProfileFragmentToInputChildrenInfoFragment(event.userProfile)
+                        findNavController().navigate(action)
                     }
                 }
             }

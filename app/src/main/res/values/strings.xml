@@ -35,4 +35,7 @@
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
     <string name="create_profile_complete">프로필 생성 완료</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_children_info">아이 정보 기입</string>
 </resources>
