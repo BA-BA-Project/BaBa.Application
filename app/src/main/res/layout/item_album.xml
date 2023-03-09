@@ -6,7 +6,7 @@
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true"
     app:strokeColor="@color/baba_main"
-    app:strokeWidth="2dp">
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

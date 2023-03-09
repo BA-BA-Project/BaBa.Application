@@ -41,7 +41,7 @@ class GrowthAlbumFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
 
-    private lateinit var singleRowCalendar : SingleRowCalendar
+    private lateinit var singleRowCalendar: SingleRowCalendar
     private val mySelectionManager = object : CalendarSelectionManager {
         override fun canBeItemSelected(position: Int, date: Date): Boolean {
             val cal = Calendar.getInstance()
@@ -72,16 +72,16 @@ class GrowthAlbumFragment : Fragment() {
             cal.time = date
             return if (isSelected)
                 when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.first_special_selected_calendar_item
-                    Calendar.WEDNESDAY -> R.layout.second_special_selected_calendar_item
-                    Calendar.FRIDAY -> R.layout.third_special_selected_calendar_item
+                    Calendar.MONDAY -> R.layout.selected_calendar_item
+                    Calendar.WEDNESDAY -> R.layout.selected_calendar_item
+                    Calendar.FRIDAY -> R.layout.selected_calendar_item
                     else -> R.layout.selected_calendar_item
                 }
             else
                 when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.first_special_calendar_item
-                    Calendar.WEDNESDAY -> R.layout.second_special_calendar_item
-                    Calendar.FRIDAY -> R.layout.third_special_calendar_item
+                    Calendar.MONDAY -> R.layout.item_calendar
+                    Calendar.WEDNESDAY -> R.layout.item_calendar
+                    Calendar.FRIDAY -> R.layout.item_calendar
                     else -> R.layout.item_calendar
                 }
         }
@@ -126,13 +126,13 @@ class GrowthAlbumFragment : Fragment() {
             init()
         }
 
-//        btnRight.setOnClickListener {
-//            singleRowCalendar.setDates(getDatesOfNextMonth())
-//        }
-//
-//        btnLeft.setOnClickListener {
-//            singleRowCalendar.setDates(getDatesOfPreviousMonth())
-//        }
+        binding.btnRight.setOnClickListener {
+            singleRowCalendar.setDates(getDatesOfNextMonth())
+        }
+
+        binding.btnLeft.setOnClickListener {
+            singleRowCalendar.setDates(getDatesOfPreviousMonth())
+        }
     }
 
     private fun getDatesOfNextMonth(): List<Date> {
@@ -157,7 +157,6 @@ class GrowthAlbumFragment : Fragment() {
         currentMonth = calendar[Calendar.MONTH]
         return getDates(mutableListOf())
     }
-
 
     private fun getDates(list: MutableList<Date>): List<Date> {
         calendar.set(Calendar.MONTH, currentMonth)
@@ -197,7 +196,7 @@ class GrowthAlbumFragment : Fragment() {
         }
         initializeAlbumHolder()
 
-        repeat(31){
+        repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
 
