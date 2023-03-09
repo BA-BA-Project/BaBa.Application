@@ -80,6 +80,9 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
+    api 'androidx.recyclerview:recyclerview:1.2.1'
+    api 'androidx.recyclerview:recyclerview-selection:1.2.0-alpha01'
+
     // 정식 버전인 security-crypto:1.0.0을 사용하면 좋겠으나....
     // 의미 없는 스택 트레이스가 눈에 거슬리게 뜨는 관계로 아래 라이브러리 이용
     // 추후 앱 출시할 때도 아래 라이브러리의 정식 버전이 안 나오면 security-crypto:1.0.0 으로 대체

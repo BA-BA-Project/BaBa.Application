@@ -1,0 +1,11 @@
+<resources>
+    <declare-styleable name="SingleRowCalendar">
+        <attr name="pastDaysCount" format="integer" />
+        <attr name="futureDaysCount" format="integer" />
+        <attr name="includeCurrentDate" format="boolean" />
+        <attr name="initialPositionIndex" format="integer" />
+        <attr name="multiSelection" format="boolean" />
+        <attr name="deselection" format="boolean" />
+        <attr name="longPress" format="boolean" />
+    </declare-styleable>
+</resources>
