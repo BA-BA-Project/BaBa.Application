@@ -11,9 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.video.Recorder
-import androidx.camera.video.Recording
-import androidx.camera.video.VideoCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kids.baba.mobile.databinding.ActivityCameraBinding
@@ -28,11 +25,8 @@ typealias LumaListener = (luma: Double) -> Unit
 class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityCameraBinding
 
-    private var imageCaputre: ImageCapture? = null
+    private var imageCapture: ImageCapture? = null
 
-    private var videoCapture: VideoCapture<Recorder>? = null
-
-    private var recording: Recording? = null
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +51,7 @@ class CameraActivity : AppCompatActivity() {
     private fun takePhoto() {
 
         // get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCaputre ?: return
+        val imageCapture = imageCapture ?: return
 
         // time stamped name , MediaStore entry
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA)
@@ -110,7 +104,7 @@ class CameraActivity : AppCompatActivity() {
                     .also {
                         it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                     }
-                imageCaputre = ImageCapture.Builder().build()
+                imageCapture = ImageCapture.Builder().build()
 
                 val imageAnalyzer = ImageAnalysis.Builder()
                     .build()
@@ -130,7 +124,7 @@ class CameraActivity : AppCompatActivity() {
 
                     // bind use cases to camera
                     cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCaputre, imageAnalyzer
+                        this, cameraSelector, preview, imageCapture, imageAnalyzer
                     )
                 } catch (exc: Exception) {
                     // focus 가 없으면 실패 -> 예외 처리

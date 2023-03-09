@@ -1,13 +1,16 @@
 package kids.baba.mobile.presentation.view
 
+import android.content.Intent
+import android.graphics.Camera
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGrowthAlbumBinding
-import kids.baba.mobile.presentation.view.film.FilmDialog
+import kids.baba.mobile.presentation.view.film.CameraActivity
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -29,13 +32,13 @@ class GrowthAlbumFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.testBtn.setOnClickListener {
-            showDialog()
+            startCameraActivity()
         }
     }
 
-    private fun showDialog() {
-        val dialog = FilmDialog()
-        dialog.show(parentFragmentManager, "FilmDialog")
+    private fun startCameraActivity() {
+        val intent = Intent(requireContext(), CameraActivity::class.java)
+        requireContext().startActivity(intent)
     }
 
 

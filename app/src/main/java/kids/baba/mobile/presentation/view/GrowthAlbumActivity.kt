@@ -18,10 +18,9 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.view.film.CameraActivity
-import kids.baba.mobile.presentation.view.film.FilmDialog
 
 @AndroidEntryPoint
-class GrowthAlbumActivity : AppCompatActivity(), FilmDialog.FilmDialogListener,
+class GrowthAlbumActivity : AppCompatActivity(),
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private val tag = "GrowthAlbumActivity"
@@ -65,14 +64,7 @@ class GrowthAlbumActivity : AppCompatActivity(), FilmDialog.FilmDialogListener,
         navController = navHostFragment.navController
     }
 
-    override fun onDialogCameraClick(dialog: DialogFragment) {
-        Log.d(tag, "CAMERA Click")
-        checkContactsPermission()
-    }
 
-    override fun onDialogGalleryClick(dialog: DialogFragment) {
-        Log.d(tag, "Gallery Click")
-    }
 
 
     private fun startCamera() {
