@@ -18,8 +18,8 @@
     <string name="create_profile">프로필 생성</string>
     <string name="modify">수정</string>
     <string name="modifying">수정 중</string>
-    <string name="sitn_up_greeting1">반가워요☺</string>
-    <string name="sitn_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
+    <string name="sign_up_greeting1">반가워요☺</string>
+    <string name="sign_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
     <string name="please_input_name">바바에서 사용할 이름을 입력해주세요.\n[마이]에서 변경 가능해요."</string>
     <string name="please_select_profile_icon">프로필을 선택해봐요.\n[마이]에서 변경 가능해요.</string>
     <string name="baba_greeting_1">안녕😄</string>
@@ -35,7 +35,5 @@
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
     <string name="create_profile_complete">프로필 생성 완료</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="input_children_info">아이 정보 기입</string>
 </resources>
