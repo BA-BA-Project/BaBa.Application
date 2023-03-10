@@ -10,11 +10,13 @@ import kids.baba.mobile.databinding.ItemBabaSendBinding
 import kids.baba.mobile.databinding.ItemBabaSendIconListBinding
 import kids.baba.mobile.databinding.ItemBabaSendWithProfileBinding
 import kids.baba.mobile.databinding.ItemUserSendBinding
+import kids.baba.mobile.databinding.ItemUserSendWithBabyInfoBinding
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ChatItem.BabaChatItem
 import kids.baba.mobile.presentation.model.ChatItem.BabaChatSelectListItem
 import kids.baba.mobile.presentation.model.ChatItem.BabaFirstChatItem
 import kids.baba.mobile.presentation.model.ChatItem.UserChatItem
+import kids.baba.mobile.presentation.model.ChatItem.UserChatWithBabyInfoItem
 import kids.baba.mobile.presentation.model.ProfileIcon
 
 class SignUpChatAdapter(
@@ -33,6 +35,7 @@ class SignUpChatAdapter(
             is BabaChatItem -> BABA
             is BabaChatSelectListItem -> BABA_SELECT_LIST
             is UserChatItem -> USER
+            is UserChatWithBabyInfoItem -> USER_WITH_BABY
         }
     }
 
@@ -42,6 +45,7 @@ class SignUpChatAdapter(
             BABA -> BabaChatViewHolder(parent)
             BABA_SELECT_LIST -> BabaChatSelectItemListViewHolder(chatEventListener, parent)
             USER -> UserChatViewHolder(chatEventListener, parent)
+            USER_WITH_BABY -> UserChatWithBabyInfoViewHolder(chatEventListener,parent)
             else -> throw Exception("unknown type")
         }
     }
@@ -52,6 +56,7 @@ class SignUpChatAdapter(
             is BabaChatSelectItemListViewHolder -> holder.bind(getItem(position) as BabaChatSelectListItem)
             is BabaChatViewHolder -> holder.bind(getItem(position) as BabaChatItem)
             is UserChatViewHolder -> holder.bind(getItem(position) as UserChatItem)
+            is UserChatWithBabyInfoViewHolder -> holder.bind(getItem(position) as UserChatWithBabyInfoItem)
         }
     }
 
@@ -146,11 +151,35 @@ class SignUpChatAdapter(
         }
     }
 
+    class UserChatWithBabyInfoViewHolder(
+        chatEventListener: ChatEventListener,
+        parent: ViewGroup,
+    ) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_user_send_with_baby_info, parent, false)
+    ) {
+        private val binding = ItemUserSendWithBabyInfoBinding.bind(itemView)
+        private lateinit var chatItem: UserChatWithBabyInfoItem
+
+        init {
+            binding.tvModify.setOnClickListener {
+                chatEventListener.onModifyClickListener(layoutPosition)
+            }
+        }
+
+        fun bind(item: UserChatWithBabyInfoItem) {
+            chatItem = item
+            binding.userChatWithBabyInfoItem = item
+        }
+    }
+
+
     companion object {
         private const val BABA_FIRST = 0
         private const val BABA = 1
         private const val BABA_SELECT_LIST = 2
         private const val USER = 3
+        private const val USER_WITH_BABY = 4
 
 
         val diffUtil = object : DiffUtil.ItemCallback<ChatItem>() {

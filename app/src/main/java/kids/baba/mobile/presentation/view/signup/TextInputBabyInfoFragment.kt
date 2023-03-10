@@ -51,26 +51,26 @@ class TextInputBabyInfoFragment : Fragment() {
                 when(val uiState = inputBabiesInfoViewModel.uiState.value) {
                     is InputBabiesInfoUiState.InputBabyName -> {
                         val babyName = etTextInput.text.toString()
+                        uiState.babyInfo.name = babyName
                         inputBabiesInfoViewModel.setBabyName(
-                            ChatItem.UserChatItem(
+                            ChatItem.UserChatWithBabyInfoItem(
                                 etTextInput.text.toString(),
                                 UserChatType.BABY_NAME,
-                                canModify = true,
+                                uiState.babyInfo,
                                 isModifying = false
-                            ),
-                            babyName
+                            )
                         )
                     }
                     is InputBabiesInfoUiState.ModifyName -> {
                         val babyName = etTextInput.text.toString()
-                        inputBabiesInfoViewModel.modifyBabyName(
-                            ChatItem.UserChatItem(
-                                etTextInput.text.toString(),
+                        uiState.babyInfo.name = babyName
+                        inputBabiesInfoViewModel.modifyBabyInfo(
+                            ChatItem.UserChatWithBabyInfoItem(
+                                babyName,
                                 UserChatType.BABY_NAME,
-                                canModify = true,
+                                uiState.babyInfo,
                                 isModifying = false
                             ),
-                            babyName,
                             uiState.position
                         )
                     }

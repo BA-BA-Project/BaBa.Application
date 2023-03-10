@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBirthdaySelectBinding
+import kids.baba.mobile.presentation.model.ChatItem
+import kids.baba.mobile.presentation.model.UserChatType
+import kids.baba.mobile.presentation.state.InputBabiesInfoUiState
 import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -82,12 +85,43 @@ class BirthdaySelectFragment : Fragment() {
                 selectedDate = LocalDate.of(selectedYear, selectedMonth, selectedDay)
                 val dateText = "${selectedDate.format(dateTimeFormatter)}${getDayOfWeek()}"
                 binding.btnBirthday.text = dateText
+                when (val uiState = viewModel.uiState.value) {
+                    is InputBabiesInfoUiState.InputBabyBirthDay -> {
+                        uiState.babyInfo.birthday = selectedDate
+                        viewModel.setBabyBirthday(
+                            ChatItem.UserChatWithBabyInfoItem(
+                                dateText,
+                                UserChatType.BABY_BIRTH,
+                                uiState.babyInfo,
+                                isModifying = false
+                            )
+                        )
+                    }
+
+                    is InputBabiesInfoUiState.ModifyBirthday -> {
+                        selectedDate = LocalDate.of(selectedYear, selectedMonth, selectedDay)
+                        uiState.babyInfo.birthday = selectedDate
+                        viewModel.modifyBabyInfo(
+                            ChatItem.UserChatWithBabyInfoItem(
+                                dateText,
+                                UserChatType.BABY_BIRTH,
+                                uiState.babyInfo,
+                                isModifying = false
+                            ),
+                            uiState.position
+                        )
+                    }
+
+                    else -> Unit
+                }
             }, cYear, cMonth, cDay
         )
 
 
-        val minDate = LocalDate.of(cYear - 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-        val maxDate = LocalDate.of(cYear + 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        val minDate = LocalDate.of(cYear - 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+            .toEpochMilli()
+        val maxDate = LocalDate.of(cYear + 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+            .toEpochMilli()
 
         datePickerDialog.datePicker.minDate = minDate
         datePickerDialog.datePicker.maxDate = maxDate

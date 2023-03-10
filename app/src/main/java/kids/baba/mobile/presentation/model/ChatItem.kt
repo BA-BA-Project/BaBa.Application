@@ -19,4 +19,11 @@ sealed class ChatItem {
         val canModify: Boolean,
         var isModifying: Boolean
     ) : ChatItem()
+
+    data class UserChatWithBabyInfoItem(
+        val message: String,
+        val userChatType: UserChatType,
+        var babyInfo: BabyInfo,
+        var isModifying: Boolean
+    ) : ChatItem()
 }

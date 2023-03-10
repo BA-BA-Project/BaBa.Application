@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
-import kids.baba.mobile.presentation.model.Baby
+import kids.baba.mobile.presentation.model.BabyInfo
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.UserChatType
 import kids.baba.mobile.presentation.model.UserProfile
@@ -16,6 +16,7 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -33,13 +34,17 @@ class InputBabiesInfoViewModel @Inject constructor(
         MutableStateFlow(InputBabiesInfoUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    private val _lastUiState: MutableStateFlow<InputBabiesInfoUiState> = MutableStateFlow(InputBabiesInfoUiState.Loading)
+
     private val _eventFlow = MutableEventFlow<InputBabiesInfoEvent>()
     val eventFlow = _eventFlow.asEventFlow()
+
+    private val _lastEventFlow = MutableEventFlow<InputBabiesInfoEvent>()
 
     private val _chatList = MutableStateFlow<List<ChatItem>>(emptyList())
     val chatList = _chatList.asStateFlow().map { it.toList() }
 
-    private val _babiesList = MutableStateFlow<List<Baby>>(emptyList())
+    private val _babiesList = MutableStateFlow<List<BabyInfo>>(emptyList())
     private val babiesList = _babiesList.asStateFlow()
 
     private val relation: String? = null
@@ -75,17 +80,44 @@ class InputBabiesInfoViewModel @Inject constructor(
                 getStringResource(R.string.what_is_the_name_of_baby)
             )
         )
-        setUiState(InputBabiesInfoUiState.InputBabyName)
+        createNewBaby()
+    }
+
+    private fun createNewBaby() {
+        val babyInfo = BabyInfo()
+        setUiState(InputBabiesInfoUiState.InputBabyName(babyInfo))
         setEvent(InputBabiesInfoEvent.InputText)
     }
 
-    fun setBabyName(chatItem: ChatItem, name: String) {
+    fun setBabyName(chatItem: ChatItem.UserChatWithBabyInfoItem) {
         addChat(chatItem)
-        nowBabyName = name
-        setUiState(InputBabiesInfoUiState.InputBabyBirthDay)
+        setUiState(InputBabiesInfoUiState.InputBabyBirthDay(chatItem.babyInfo))
         setEvent(InputBabiesInfoEvent.InputBirthDay)
     }
 
+    fun setBabyBirthday(chatItem: ChatItem.UserChatWithBabyInfoItem) {
+        addChat(chatItem)
+        if (checkBabyInfo(chatItem.babyInfo)) {
+            setUiState(InputBabiesInfoUiState.CheckMoreBaby)
+            setEvent(InputBabiesInfoEvent.InputEnd)
+        }
+    }
+
+    private fun checkBabyInfo(babyInfo: BabyInfo): Boolean {
+        val name = babyInfo.name
+        val birthday = babyInfo.birthday
+
+        if (name.isNullOrEmpty().not() && birthday != null) {
+            _babiesList.value += babyInfo
+            return true
+        } else {
+            addChat(
+                ChatItem.BabaFirstChatItem(getStringResource(R.string.baby_info_error))
+            )
+            createNewBaby()
+            return false
+        }
+    }
 
 
     fun setHaveInviteCode(haveInviteCode: Boolean) {
@@ -108,20 +140,34 @@ class InputBabiesInfoViewModel @Inject constructor(
     }
 
     fun modifyUserChat(position: Int) {
-        val chatItem = _chatList.value[position] as ChatItem.UserChatItem
-        when(chatItem.userChatType){
-            UserChatType.HAVE_INVITE_CODE -> {
-                modifyingHaveInviteCode(position)
-            }
-            UserChatType.BABY_NAME -> {
-                modifyingBabyInfo(position)
-            }
-            UserChatType.BABY_BIRTH -> {}
-            else -> {
+        val chatItem = _chatList.value[position]
 
+        if(chatItem is ChatItem.UserChatItem) {
+            when (chatItem.userChatType) {
+                UserChatType.HAVE_INVITE_CODE -> {
+                    modifyingHaveInviteCode(position)
+                }
+
+                else -> {}
+            }
+        } else if(chatItem is ChatItem.UserChatWithBabyInfoItem){
+            when (chatItem.userChatType) {
+                UserChatType.BABY_NAME -> {
+                    modifyingBabyInfo(position)
+                    setEvent(InputBabiesInfoEvent.InputText)
+                    setUiState(InputBabiesInfoUiState.ModifyName(chatItem.babyInfo, position))
+                }
+
+                UserChatType.BABY_BIRTH -> {
+                    modifyingBabyInfo(position)
+                    setEvent(InputBabiesInfoEvent.InputBirthDay)
+                    setUiState(InputBabiesInfoUiState.ModifyBirthday(chatItem.babyInfo, position))
+                }
+                else -> {}
             }
         }
     }
+
     private fun modifyingHaveInviteCode(position: Int) {
         _chatList.value = _chatList.value.subList(0, position + 1).mapIndexed { idx, chatItem ->
             if (idx == position) {
@@ -138,14 +184,12 @@ class InputBabiesInfoViewModel @Inject constructor(
     private fun modifyingBabyInfo(position: Int) {
         _chatList.value = _chatList.value.mapIndexed { idx, chatItem ->
             if (idx == position) {
-                val modifyChatItem = chatItem as ChatItem.UserChatItem
+                val modifyChatItem = chatItem as ChatItem.UserChatWithBabyInfoItem
                 modifyChatItem.copy(isModifying = true)
             } else {
                 chatItem
             }
         }
-        setEvent(InputBabiesInfoEvent.InputText)
-        setUiState(InputBabiesInfoUiState.ModifyName(position))
     }
 
     private fun modifyText(newChatItem: ChatItem.UserChatItem, position: Int) {
@@ -158,37 +202,34 @@ class InputBabiesInfoViewModel @Inject constructor(
         }
     }
 
-    fun modifyBabyName(userChatItem: ChatItem.UserChatItem, babyName: String, position: Int) {
-
+    fun modifyBabyInfo(
+        newChatItem: ChatItem.UserChatWithBabyInfoItem,
+        position: Int
+    ) {
+        val newBabyInfo = newChatItem.babyInfo
         _chatList.value = _chatList.value.mapIndexed { idx, chatItem ->
             if (idx == position) {
-                val nowChatItem = chatItem as ChatItem.UserChatItem
+                val nowChatItem = chatItem as ChatItem.UserChatWithBabyInfoItem
 
-                //이미 이름과 생일이 정해진 아이의 배열에서 찾는다.
-                var oldBabyIdx: Int? = null
-                for (babyIdx in _babiesList.value.indices) {
-                    if (_babiesList.value[babyIdx].name == nowChatItem.message) {
-                        oldBabyIdx = babyIdx
-                        break
+                val oldBabyInfo = nowChatItem.babyInfo
+                _babiesList.value = _babiesList.value.map {
+                    if (it == oldBabyInfo) {
+                        newBabyInfo
+                    } else {
+                        it
                     }
                 }
-                //찾았다면 그 위치에 새로운 이름을 저장한다.
-                if (oldBabyIdx != null) {
-                    _babiesList.value = _babiesList.value.mapIndexed { babyIdx, baby ->
-                        if (babyIdx == oldBabyIdx) {
-                            baby.copy(name = babyName)
-                        } else {
-                            baby
-                        }
-                    }
-                    userChatItem
-                } else {//만약 찾지 못했다면 아직 이름만 정해진 아이이다.
-                    nowBabyName = babyName
-                    userChatItem
-                }
+                newChatItem
             } else {
                 chatItem
             }
+        }
+        if(newBabyInfo.birthday == null) {
+            setUiState(InputBabiesInfoUiState.InputBabyBirthDay(newBabyInfo))
+            setEvent(InputBabiesInfoEvent.InputBirthDay)
+        } else {
+            setUiState(InputBabiesInfoUiState.CheckMoreBaby)
+            setEvent(InputBabiesInfoEvent.InputEnd)
         }
     }
 
@@ -203,6 +244,7 @@ class InputBabiesInfoViewModel @Inject constructor(
     }
 
     private fun setUiState(uiState: InputBabiesInfoUiState) {
+        _lastUiState.value = _uiState.value
         _uiState.value = uiState
     }
 
@@ -215,8 +257,6 @@ class InputBabiesInfoViewModel @Inject constructor(
             _eventFlow.emit(event)
         }
     }
-
-
 
 
     companion object {

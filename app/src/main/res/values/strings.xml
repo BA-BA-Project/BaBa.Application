@@ -49,4 +49,5 @@
     <string name="friday"> 금</string>
     <string name="saturday"> 토</string>
     <string name="sunday"> 일</string>
+    <string name="baby_info_error">아이의 정보가 잘못 입력되었습니다. 다시 한번 입력해 주세요</string>
 </resources>
