@@ -38,15 +38,13 @@ class InputBabiesInfoViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<InputBabiesInfoEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val _lastEvent = MutableEventFlow<InputBabiesInfoEvent>()
-
     private val _chatList = MutableStateFlow<List<ChatItem>>(emptyList())
     val chatList = _chatList.asStateFlow().map { it.toList() }
 
     private val _babiesList = MutableStateFlow<List<BabyInfo>>(emptyList())
     private val babiesList = _babiesList.asStateFlow()
 
-    private val relation: String? = null
+    private var relation: String? = null
 
     private var inputMoreBaby = true
 
@@ -243,8 +241,29 @@ class InputBabiesInfoViewModel @Inject constructor(
         }
     }
 
+
+    fun setRelation(relation: String) {
+        this.relation = relation
+        addChat(
+            ChatItem.UserChatItem(
+                relation,
+                UserChatType.RELATION,
+                canModify = false,
+                isModifying = false
+            )
+        )
+        setUiState(InputBabiesInfoUiState.InputEnd)
+    }
+
     fun inputInviteCode() {
 
+    }
+
+    fun signUp(){
+        val userName = userProfile?.name
+        val userIcon = userProfile?.iconName
+        val relationName = relation
+        val babies = babiesList.value
     }
 
 

@@ -91,6 +91,7 @@ class InputBabiesInfoFragment : Fragment() {
                     }
 
                     is InputBabiesInfoUiState.InputEnd -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
                     }
 
                     is InputBabiesInfoUiState.InputRelation -> {
@@ -123,7 +124,7 @@ class InputBabiesInfoFragment : Fragment() {
                 Log.d("eventPrint", "$event")
                 when (event) {
                     is InputBabiesInfoEvent.InputEnd -> {
-                        childNavController.navigate(R.id.action_global_blankFragment)
+                        childNavController.navigate(R.id.action_global_inputBabyInfoEndFragment)
                     }
 
                     is InputBabiesInfoEvent.SelectHaveInviteCode -> {

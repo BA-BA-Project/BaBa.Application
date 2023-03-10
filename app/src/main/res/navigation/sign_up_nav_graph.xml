@@ -69,4 +69,8 @@
     <action
         android:id="@+id/action_global_birthdaySelectFragment"
         app:destination="@id/birthdaySelectFragment" />
+    <fragment
+        android:id="@+id/inputBabyInfoEndFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.InputBabyInfoEndFragment"
+        android:label="InputBabyInfoEndFragment" /><action android:id="@+id/action_global_inputBabyInfoEndFragment" app:destination="@id/inputBabyInfoEndFragment"/>
 </navigation>

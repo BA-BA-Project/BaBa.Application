@@ -74,6 +74,9 @@ class TextInputBabyInfoFragment : Fragment() {
                             uiState.position
                         )
                     }
+                    is InputBabiesInfoUiState.InputRelation -> {
+                        inputBabiesInfoViewModel.setRelation(etTextInput.text.toString())
+                    }
                     else -> {
 
                     }
