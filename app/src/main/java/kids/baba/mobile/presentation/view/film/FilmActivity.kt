@@ -25,4 +25,6 @@ class FilmActivity: AppCompatActivity() {
         navController = navHostFragment.navController
     }
 
+
+
 }

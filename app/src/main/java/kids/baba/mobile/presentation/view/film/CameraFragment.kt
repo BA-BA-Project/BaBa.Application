@@ -22,6 +22,7 @@ import java.util.Locale
 
 typealias LumaListener = (luma: Double) -> Unit
 
+
 class CameraFragment : Fragment() {
 
     private val tag = "CameraXApp"
@@ -50,6 +51,9 @@ class CameraFragment : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
     }
+
+
+
     private fun startCamera() {
         // used to bind the lifecycle of camera to the lifecycle owner
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
@@ -101,7 +105,7 @@ class CameraFragment : Fragment() {
         val imageCapture = imageCapture ?: return
 
         // time stamped name , MediaStore entry
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA)
+        val name = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA)
             .format(System.currentTimeMillis())
 
         // 이미지 저장할 공간 (mediaStore)
@@ -125,8 +129,7 @@ class CameraFragment : Fragment() {
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     Log.d(tag, msg)
 
-                    // TODO: 제목입력 액티비티로 이동
-
+                    // TODO: 제목입력 프래그먼트로 이동
 
                 }
 
@@ -145,29 +148,12 @@ class CameraFragment : Fragment() {
 
     }
 
-    companion object {
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-//        private const val REQUEST_CODE_PERMISSIONS = 10
-//        private val REQUIRED_PERMISSIONS =
-//            mutableListOf(
-//                android.Manifest.permission.CAMERA,
-//                android.Manifest.permission.RECORD_AUDIO
-//            ).apply {
-//
-//                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-//                    add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                }
-//            }.toTypedArray()
-
-    }
-
 
 }
 
 /**
  * ImageAnalyzer
  */
-
 private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
     private fun ByteBuffer.toByteArray(): ByteArray {
         rewind() // Rewind the buffer to zero

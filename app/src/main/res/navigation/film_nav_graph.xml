@@ -54,6 +54,9 @@
 
 <!--        여기서 완료 누르면 원래 MainActivity 로-->
 
+        <action
+            android:id="@+id/action_writeTitleFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
     </fragment>
 
 
