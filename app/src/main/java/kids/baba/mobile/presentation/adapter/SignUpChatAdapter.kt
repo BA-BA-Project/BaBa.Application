@@ -212,6 +212,7 @@ class SignUpChatAdapter(
                     false
                 }
             }
+
         }
     }
 }

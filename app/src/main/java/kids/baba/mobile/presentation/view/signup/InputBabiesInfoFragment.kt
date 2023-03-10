@@ -17,6 +17,7 @@ import kids.baba.mobile.presentation.adapter.SignUpChatAdapter
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.ProfileIcon
+import kids.baba.mobile.presentation.state.InputBabiesInfoUiState
 import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
 
 @AndroidEntryPoint
@@ -46,6 +47,7 @@ class InputBabiesInfoFragment : Fragment() {
         }
         setRecyclerView()
         setNavController()
+        collectUiState()
         collectEvent()
         collectHaveInviteCode()
     }
@@ -64,6 +66,55 @@ class InputBabiesInfoFragment : Fragment() {
         }
     }
 
+    private fun collectUiState() {
+        repeatOnStarted {
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    is InputBabiesInfoUiState.CheckInviteCode -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
+                    }
+
+                    is InputBabiesInfoUiState.CheckMoreBaby -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputCheckMoreBaby)
+                    }
+
+                    is InputBabiesInfoUiState.InputBabyBirthDay -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputBirthDay)
+                    }
+
+                    is InputBabiesInfoUiState.InputBabyName -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputText)
+                    }
+
+                    is InputBabiesInfoUiState.InputInviteCode -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputText)
+                    }
+
+                    is InputBabiesInfoUiState.InputEnd -> {
+                    }
+
+                    is InputBabiesInfoUiState.InputRelation -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputRelation)
+                    }
+
+                    is InputBabiesInfoUiState.Loading -> {
+                    }
+
+                    is InputBabiesInfoUiState.ModifyBirthday -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputBirthDay)
+                    }
+
+                    is InputBabiesInfoUiState.ModifyHaveInviteCode -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
+                    }
+
+                    is InputBabiesInfoUiState.ModifyName -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputText)
+                    }
+                }
+            }
+        }
+    }
 
     private fun collectEvent() {
         repeatOnStarted {
@@ -85,6 +136,14 @@ class InputBabiesInfoFragment : Fragment() {
 
                     is InputBabiesInfoEvent.InputBirthDay -> {
                         childNavController.navigate(R.id.action_global_birthdaySelectFragment)
+                    }
+
+                    is InputBabiesInfoEvent.InputCheckMoreBaby -> {
+                        childNavController.navigate(R.id.action_global_checkHaveInviteCodeFragment)
+                    }
+
+                    is InputBabiesInfoEvent.InputRelation -> {
+                        childNavController.navigate(R.id.action_global_relationSelectFragment)
                     }
                 }
 
@@ -111,14 +170,16 @@ class InputBabiesInfoFragment : Fragment() {
 
         })
         binding.rvInputBabiesInfoChat.adapter = adapter
+        binding.rvInputBabiesInfoChat.itemAnimator = null
 
         repeatOnStarted {
             viewModel.chatList.collect {
                 adapter.submitList(it)
+                binding.rvInputBabiesInfoChat.post {
+                    binding.rvInputBabiesInfoChat.scrollToPosition(it.size - 1)
+                }
             }
         }
-
-
     }
 
     override fun onDestroyView() {

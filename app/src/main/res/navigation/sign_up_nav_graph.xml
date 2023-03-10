@@ -47,9 +47,9 @@
         app:destination="@id/blankFragment" />
     <fragment
         android:id="@+id/checkHaveInviteCodeFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.CheckHaveInviteCodeFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.SelectYesOrNoFragment"
         android:label="CheckHaveInviteCodeFragment"
-        tools:layout="@layout/fragment_check_have_invite_code" />
+        tools:layout="@layout/fragment_select_yes_or_no" />
     <action
         android:id="@+id/action_global_checkHaveInviteCodeFragment"
         app:destination="@id/checkHaveInviteCodeFragment" />

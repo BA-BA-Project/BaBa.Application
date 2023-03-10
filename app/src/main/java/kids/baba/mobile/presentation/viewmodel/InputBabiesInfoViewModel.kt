@@ -16,10 +16,8 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,12 +32,13 @@ class InputBabiesInfoViewModel @Inject constructor(
         MutableStateFlow(InputBabiesInfoUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _lastUiState: MutableStateFlow<InputBabiesInfoUiState> = MutableStateFlow(InputBabiesInfoUiState.Loading)
+    private val _lastUiState: MutableStateFlow<InputBabiesInfoUiState> =
+        MutableStateFlow(InputBabiesInfoUiState.Loading)
 
     private val _eventFlow = MutableEventFlow<InputBabiesInfoEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val _lastEventFlow = MutableEventFlow<InputBabiesInfoEvent>()
+    private val _lastEvent = MutableEventFlow<InputBabiesInfoEvent>()
 
     private val _chatList = MutableStateFlow<List<ChatItem>>(emptyList())
     val chatList = _chatList.asStateFlow().map { it.toList() }
@@ -48,9 +47,6 @@ class InputBabiesInfoViewModel @Inject constructor(
     private val babiesList = _babiesList.asStateFlow()
 
     private val relation: String? = null
-
-    private var nowBabyName: String? = null
-    private var nowBabyBirth: LocalDate? = null
 
     private var inputMoreBaby = true
 
@@ -64,7 +60,7 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     private fun checkInviteCode() {
         addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.check_have_invite_code)))
-        setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
+        setUiState(InputBabiesInfoUiState.CheckInviteCode)
     }
 
     fun inputBabiesInfo() {
@@ -75,31 +71,30 @@ class InputBabiesInfoViewModel @Inject constructor(
                 getStringResource(R.string.need_to_baby_info)
             )
         )
-        addChat(
-            ChatItem.BabaFirstChatItem(
-                getStringResource(R.string.what_is_the_name_of_baby)
-            )
-        )
         createNewBaby()
     }
 
     private fun createNewBaby() {
         val babyInfo = BabyInfo()
+        addChat(
+            ChatItem.BabaFirstChatItem(
+                getStringResource(R.string.what_is_the_name_of_baby)
+            )
+        )
         setUiState(InputBabiesInfoUiState.InputBabyName(babyInfo))
-        setEvent(InputBabiesInfoEvent.InputText)
     }
 
     fun setBabyName(chatItem: ChatItem.UserChatWithBabyInfoItem) {
         addChat(chatItem)
+        addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_baby_birthday)))
         setUiState(InputBabiesInfoUiState.InputBabyBirthDay(chatItem.babyInfo))
-        setEvent(InputBabiesInfoEvent.InputBirthDay)
     }
 
     fun setBabyBirthday(chatItem: ChatItem.UserChatWithBabyInfoItem) {
         addChat(chatItem)
+        addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_more_baby)))
         if (checkBabyInfo(chatItem.babyInfo)) {
             setUiState(InputBabiesInfoUiState.CheckMoreBaby)
-            setEvent(InputBabiesInfoEvent.InputEnd)
         }
     }
 
@@ -107,15 +102,15 @@ class InputBabiesInfoViewModel @Inject constructor(
         val name = babyInfo.name
         val birthday = babyInfo.birthday
 
-        if (name.isNullOrEmpty().not() && birthday != null) {
+        return if (name.isNullOrEmpty().not() && birthday != null) {
             _babiesList.value += babyInfo
-            return true
+            true
         } else {
             addChat(
                 ChatItem.BabaFirstChatItem(getStringResource(R.string.baby_info_error))
             )
             createNewBaby()
-            return false
+            false
         }
     }
 
@@ -142,7 +137,7 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun modifyUserChat(position: Int) {
         val chatItem = _chatList.value[position]
 
-        if(chatItem is ChatItem.UserChatItem) {
+        if (chatItem is ChatItem.UserChatItem) {
             when (chatItem.userChatType) {
                 UserChatType.HAVE_INVITE_CODE -> {
                     modifyingHaveInviteCode(position)
@@ -150,19 +145,18 @@ class InputBabiesInfoViewModel @Inject constructor(
 
                 else -> {}
             }
-        } else if(chatItem is ChatItem.UserChatWithBabyInfoItem){
+        } else if (chatItem is ChatItem.UserChatWithBabyInfoItem) {
             when (chatItem.userChatType) {
                 UserChatType.BABY_NAME -> {
                     modifyingBabyInfo(position)
-                    setEvent(InputBabiesInfoEvent.InputText)
                     setUiState(InputBabiesInfoUiState.ModifyName(chatItem.babyInfo, position))
                 }
 
                 UserChatType.BABY_BIRTH -> {
                     modifyingBabyInfo(position)
-                    setEvent(InputBabiesInfoEvent.InputBirthDay)
                     setUiState(InputBabiesInfoUiState.ModifyBirthday(chatItem.babyInfo, position))
                 }
+
                 else -> {}
             }
         }
@@ -177,7 +171,6 @@ class InputBabiesInfoViewModel @Inject constructor(
                 chatItem
             }
         }
-        setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
         setUiState(InputBabiesInfoUiState.ModifyHaveInviteCode(position))
     }
 
@@ -224,15 +217,31 @@ class InputBabiesInfoViewModel @Inject constructor(
                 chatItem
             }
         }
-        if(newBabyInfo.birthday == null) {
+        if (newBabyInfo.birthday == null) {
             setUiState(InputBabiesInfoUiState.InputBabyBirthDay(newBabyInfo))
-            setEvent(InputBabiesInfoEvent.InputBirthDay)
         } else {
-            setUiState(InputBabiesInfoUiState.CheckMoreBaby)
-            setEvent(InputBabiesInfoEvent.InputEnd)
+            setUiState(_lastUiState.value)
         }
     }
 
+
+    fun inputMoreBaby(check: Boolean) {
+        val message = if (check) R.string.answer_yes else R.string.answer_no
+        addChat(
+            ChatItem.UserChatItem(
+                getStringResource(message),
+                UserChatType.INPUT_TEXT,
+                canModify = false,
+                isModifying = false
+            )
+        )
+        if (check) {
+            addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_more_baby)))
+            createNewBaby()
+        } else {
+            setUiState(InputBabiesInfoUiState.InputRelation)
+        }
+    }
 
     fun inputInviteCode() {
 
@@ -252,7 +261,7 @@ class InputBabiesInfoViewModel @Inject constructor(
         return resources.getString(resourceId)
     }
 
-    private fun setEvent(event: InputBabiesInfoEvent) {
+    fun setEvent(event: InputBabiesInfoEvent) {
         viewModelScope.launch {
             _eventFlow.emit(event)
         }

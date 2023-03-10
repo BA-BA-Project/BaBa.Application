@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import kids.baba.mobile.databinding.FragmentCheckHaveInviteCodeBinding
+import kids.baba.mobile.databinding.FragmentSelectYesOrNoBinding
+import kids.baba.mobile.presentation.state.InputBabiesInfoUiState
 import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
 
 
-class CheckHaveInviteCodeFragment : Fragment() {
-    private var _binding: FragmentCheckHaveInviteCodeBinding? = null
+class SelectYesOrNoFragment : Fragment() {
+    private var _binding: FragmentSelectYesOrNoBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
@@ -30,19 +31,30 @@ class CheckHaveInviteCodeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCheckHaveInviteCodeBinding.inflate(inflater, container, false)
+        _binding = FragmentSelectYesOrNoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnAnswerYes.setOnClickListener {
-            viewModel.setHaveInviteCode(true)
-        }
+        val uiState = viewModel.uiState.value
+        if(uiState== InputBabiesInfoUiState.CheckInviteCode){
+            binding.btnAnswerYes.setOnClickListener {
+                viewModel.setHaveInviteCode(true)
+            }
 
-        binding.btnAnswerNo.setOnClickListener {
-            viewModel.setHaveInviteCode(false)
+            binding.btnAnswerNo.setOnClickListener {
+                viewModel.setHaveInviteCode(false)
+            }
+        } else if( uiState == InputBabiesInfoUiState.CheckMoreBaby){
+            binding.btnAnswerYes.setOnClickListener {
+                viewModel.inputMoreBaby(true)
+            }
+
+            binding.btnAnswerNo.setOnClickListener {
+                viewModel.inputMoreBaby(false)
+            }
         }
     }
 
