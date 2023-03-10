@@ -12,6 +12,5 @@ class MainApplication: Application() {
         super.onCreate()
         EncryptedPrefs.initSharedPreferences(applicationContext)
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
-        println("test")
     }
 }
