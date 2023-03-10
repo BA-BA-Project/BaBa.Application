@@ -1,13 +1,17 @@
 package kids.baba.mobile.presentation.state
 
+import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.Baby
+
 sealed class GrowthAlbumState {
 
     object UnInitialized : GrowthAlbumState()
 
     object Loading : GrowthAlbumState()
 
-    //성공시 아이들의 데이터를 불러올 수 있도록 처리
-    object Success : GrowthAlbumState()
+    data class SuccessAlbum(val data: List<Album>) : GrowthAlbumState()
 
-    object Error :  GrowthAlbumState()
+    data class SuccessBaby(val data: List<Baby>) : GrowthAlbumState()
+
+    data class Error(val t: Throwable) : GrowthAlbumState()
 }

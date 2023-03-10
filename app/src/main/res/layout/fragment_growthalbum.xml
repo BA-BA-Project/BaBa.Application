@@ -37,9 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:layout_marginBottom="20dp"
-            android:text="123"
             android:textColor="@color/black"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/myCalendar"
             app:layout_constraintStart_toStartOf="parent" />
@@ -61,7 +60,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_show_date"
             android:backgroundTint="@color/grey"
-            android:text="날짜별 보기"
+            android:text="@string/view_by_date"
             app:layout_constraintBottom_toTopOf="@+id/myCalendar"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -134,9 +133,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Today"
                     android:textColor="@color/orange"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -146,9 +144,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="30dp"
-                    android:text="윤호의 오늘 기록"
+                    android:text="@string/album_card_title"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -157,8 +155,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:text="기록하기를 눌러 사진을 남겨 봐요"
-                    android:textSize="10dp"
+                    android:text="@string/album_card_record_image"
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,15 +22,22 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _growthAlbumState = MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
     val growthAlbumState = _growthAlbumState.asStateFlow()
 
-    fun loadAlbum(id: Int) = viewModelScope.async {
+    fun loadAlbum(id: Int) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        _growthAlbumState.value = GrowthAlbumState.Success
-        getOneAlbumUseCase.getOneAlbum(id)
+        getOneAlbumUseCase.getOneAlbum(id).catch {
+            _growthAlbumState.value = GrowthAlbumState.Error(it)
+        }.collect{
+            _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
+        }
     }
 
-    fun loadBaby() = viewModelScope.async {
+    fun loadBaby() = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        _growthAlbumState.value = GrowthAlbumState.Success
-        getOneBabyUseCase.getOneBaby()
+        getOneBabyUseCase.getOneBaby().catch {
+            _growthAlbumState.value = GrowthAlbumState.Error(it)
+        }.collect{
+            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
+            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
+        }
     }
 }

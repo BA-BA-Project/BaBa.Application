@@ -176,30 +176,45 @@ class GrowthAlbumFragment : Fragment() {
             viewModel.growthAlbumState.collect { state ->
                 when (state) {
                     is GrowthAlbumState.UnInitialized -> initialize()
+                    is GrowthAlbumState.Loading -> loading()
+                    is GrowthAlbumState.SuccessAlbum -> setAlbumData(state)
+                    is GrowthAlbumState.SuccessBaby -> setBabyData(state)
+                    is GrowthAlbumState.Error -> catchError(state)
                     else -> {}
                 }
             }
         }
     }
 
+    private fun catchError(state: GrowthAlbumState.Error) {
+        Log.e("error","${state.t.message}")
+    }
+
+    private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
+        state.data.forEach {
+            Log.e("baby","$it")
+        }
+    }
+
+    private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
+        state.data.forEach {
+            Log.e("album","$it")
+        }
+    }
+
+
+    private fun loading() {
+        Log.e("loading","loading")
+    }
+
     private suspend fun initialize() {
         Log.e("state", "initialize")
-        viewModel.loadAlbum(1).await().catch {
-            Log.e("error", "${it.message}")
-        }.collect { album ->
-            Log.e("album", "${album.album}")
-        }
-        viewModel.loadBaby().await().catch {
-            Log.e("error", "${it.message}")
-        }.collect { baby ->
-            Log.e("baby", "${baby.myBaby}")
-        }
         initializeAlbumHolder()
-
         repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
-
+        viewModel.loadAlbum(1)
+        viewModel.loadBaby()
     }
 
     private fun initializeAlbumHolder() {
@@ -243,5 +258,10 @@ class GrowthAlbumFragment : Fragment() {
     ): View {
         _binding = FragmentGrowthalbumBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
