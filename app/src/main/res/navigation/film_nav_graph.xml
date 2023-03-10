@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/film_nav_graph"
+    app:startDestination="@id/cameraFragment">
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="kids.baba.mobile.presentation.view.film.CameraFragment"
+        android:label="CameraFragment"
+        tools:layout="@layout/fragment_camera">
+
+        <action
+            android:id="@+id/action_cameraFragment_to_galleryFragment"
+            app:destination="@+id/galleryFragment" />
+
+        <action
+            android:id="@+id/action_cameraFragment_to_writeTitleFragment"
+            app:destination="@+id/writeTitleFragment"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="kids.baba.mobile.presentation.view.film.GalleryFragment"
+        android:label="GalleryFragment"
+        tools:layout="@layout/fragment_gallery">
+
+        <action
+            android:id="@+id/action_galleryFragment_to_cropFragment"
+            app:destination="@+id/cropFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cropFragment"
+        android:name="kids.baba.mobile.presentation.view.film.CropFragment"
+        android:label="CropFragment"
+        tools:layout="@layout/fragment_crop">
+
+        <action
+            android:id="@+id/action_cropFragment_to_writeTitleFragment"
+            app:destination="@+id/writeTitleFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/writeTitleFragment"
+        android:name="kids.baba.mobile.presentation.view.film.WriteTitleFragment"
+        android:label="WriteTitleFragment"
+        tools:layout="@layout/fragment_write_title"
+        >
+
+<!--        여기서 완료 누르면 원래 MainActivity 로-->
+
+    </fragment>
+
+
+</navigation>

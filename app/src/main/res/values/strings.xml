@@ -68,7 +68,7 @@ features available.]]>
     <string name="take_photo">Take Photo</string>
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
-    
+
     <string name="android_permission_camera_title">카메라 권한이 필요합니다.</string>
     <string name="android_permission_camera_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 카메라를 사용하여 아이의 오늘을 기록해보세요 </string>
     <string name="android_permission_camera_denied_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 설정 - 애플리케이션 정보 에서 권한을 동의하시겠습니까?</string>

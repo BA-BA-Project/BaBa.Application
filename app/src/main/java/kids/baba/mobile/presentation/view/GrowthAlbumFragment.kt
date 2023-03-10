@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGrowthAlbumBinding
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
-import kids.baba.mobile.presentation.view.film.CameraActivity
+import kids.baba.mobile.presentation.view.film.FilmActivity
 
 //@AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -19,7 +19,6 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    // connect is the callback function on permission granted
     // connect 는 permission 허용의 콜백 함수
     // noPermission 은 permission 거부 시 콜백
     private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
@@ -31,8 +30,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun connect() {
-        // Whatever call to connect using bluetooth, once here the permission is granted
-        // 블루투스와 연결된 무엇이든지 호출하면,
+        // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
         Log.d("GrowthAlbumFragment", "connect()")
         startCameraActivity()
     }
@@ -56,8 +54,12 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun startCameraActivity() {
-        val intent = Intent(requireContext(), CameraActivity::class.java)
+//        val intent = Intent(requireContext(), CameraActivity::class.java)
+//        requireContext().startActivity(intent)
+
+        val intent = Intent(requireContext(), FilmActivity::class.java)
         requireContext().startActivity(intent)
+
     }
 
 
