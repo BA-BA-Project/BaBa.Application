@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kids.baba.mobile.data.datasource.album.AlbumRemoteDataSource
+import kids.baba.mobile.data.datasource.album.AlbumRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSource
 import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSource
@@ -17,4 +19,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMemberRemoteDataSource(memberRemoteDataSourceImpl: MemberRemoteDataSourceImpl): MemberRemoteDataSource
+
+    @Binds
+    abstract fun bindAlbumRemoteDataSource(albumRemoteDataSourceImpl: AlbumRemoteDataSourceImpl): AlbumRemoteDataSource
 }
