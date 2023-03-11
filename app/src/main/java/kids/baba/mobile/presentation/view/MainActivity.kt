@@ -29,6 +29,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.CONTAINER)
+        if (fragment is GrowthAlbumFragment && fragment.onBackPressed()) {
+            return
+        }
+        super.onBackPressed()
+    }
+
+
     private fun showFragment(fragment: Fragment): Boolean {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.CONTAINER, fragment)

@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
@@ -22,6 +24,8 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemCalendarBinding
 import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.Baby
+import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
@@ -37,9 +41,10 @@ class GrowthAlbumFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
     private val adapter = AlbumAdapter()
-
+    private val babyAdapter = BabyAdapter()
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+    private var isChange = false
 
     private lateinit var singleRowCalendar: SingleRowCalendar
     private val mySelectionManager = object : CalendarSelectionManager {
@@ -187,34 +192,53 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun catchError(state: GrowthAlbumState.Error) {
-        Log.e("error","${state.t.message}")
+        Log.e("error", "${state.t.message}")
     }
 
     private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
         state.data.forEach {
-            Log.e("baby","$it")
+            Log.e("baby", "$it")
         }
     }
 
     private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
         state.data.forEach {
-            Log.e("album","$it")
+            Log.e("album", "$it")
         }
     }
 
 
     private fun loading() {
-        Log.e("loading","loading")
+        Log.e("loading", "loading")
     }
 
     private suspend fun initialize() {
         Log.e("state", "initialize")
         initializeAlbumHolder()
+        binding.babyList.adapter = babyAdapter
+        binding.babyList.layoutManager = LinearLayoutManager(requireContext())
         repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
+        repeat(5){
+            babyAdapter.setItem(Baby("$it","$it","$it"))
+        }
         viewModel.loadAlbum(1)
         viewModel.loadBaby()
+        viewModel.motionLayoutTransition.observe(viewLifecycleOwner) {
+            isChange = if (!isChange) {
+                binding.growthAlbumView.transitionToEnd()
+                true
+            } else {
+                binding.growthAlbumView.transitionToStart()
+                false
+            }
+        }
+    }
+
+    fun onBackPressed(): Boolean {
+        viewModel.motionLayoutTransition.value = Unit
+        return true
     }
 
     private fun initializeAlbumHolder() {
