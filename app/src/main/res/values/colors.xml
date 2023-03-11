@@ -13,12 +13,4 @@
     <color name="text_2">#FF71767C</color>
     <color name="text_3">#FFB4B4B4</color>
     <color name="background">#FFEDEDED</color>
-    <color name="orange">#FFC107</color>
-
-    <color name="grey">#7a7a7a</color>
-    <color name="lightGrey">#aaaaaa</color>
-    <color name="veryLightGrey">#f0f0f0</color>
-    <color name="purple">#7d64e6</color>
-    <color name="yellow">#ffee00</color>
-    <color name="pink">#E96491</color>
 </resources>

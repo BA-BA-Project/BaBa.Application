@@ -6,20 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".presentation.view.MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/BOTTOM_MENU"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/kakaoLoginTestBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="카카오 로그인 테스트"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu" />
-
-    <FrameLayout
-        android:id="@+id/CONTAINER"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/BOTTOM_MENU"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
