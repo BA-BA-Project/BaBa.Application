@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCreateProfileBinding
@@ -19,6 +20,7 @@ import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
+import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 
 @AndroidEntryPoint
 class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
@@ -28,6 +30,10 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private lateinit var signUpChatAdapter: SignUpChatAdapter
+
+    private lateinit var activityViewModel : IntroViewModel
+
+    private val args: CreateProfileFragmentArgs by navArgs()
 
     val viewModel: CreateProfileViewModel by viewModels()
 
@@ -138,9 +144,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                     }
 
                     is CreateProfileEvent.MoveToInputChildInfo -> {
-                        val action = CreateProfileFragmentDirections
-                            .actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile)
-                        findNavController().navigate(action)
+                        activityViewModel.isNeedToBabiesInfo(args.signToken, event.userProfile)
                     }
                 }
             }

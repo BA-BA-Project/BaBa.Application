@@ -24,8 +24,8 @@ class LoginUseCase @Inject constructor(
         }.collect { token ->
             Log.i(tag, "서버에서 JWT토큰 발급 완료")
             setJWTToken(token)
+            memberRepository.getMe(token.accessToken).first()
         }
-        memberRepository.getMe(socialToken).first()
     }
 
     suspend fun kakaoLogin() = runCatching {

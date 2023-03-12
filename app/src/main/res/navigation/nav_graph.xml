@@ -54,5 +54,8 @@
         <argument
             android:name="userProfile"
             app:argType="kids.baba.mobile.presentation.model.UserProfile" />
+        <argument
+            android:name="signToken"
+            app:argType="string" />
     </fragment>
 </navigation>

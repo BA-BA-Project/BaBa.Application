@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.SignUpRequest
+import kids.baba.mobile.domain.usecase.SignUpUseCase
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
 import kids.baba.mobile.presentation.model.BabyInfo
 import kids.baba.mobile.presentation.model.ChatItem
@@ -23,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class InputBabiesInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val resources: Resources
+    private val resources: Resources,
+    private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
@@ -44,7 +47,7 @@ class InputBabiesInfoViewModel @Inject constructor(
     private val _babiesList = MutableStateFlow<List<BabyInfo>>(emptyList())
     private val babiesList = _babiesList.asStateFlow()
 
-    private var relation: String? = null
+    private var relation = ""
 
     private var inputMoreBaby = true
 
@@ -258,12 +261,21 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun inputInviteCode() {
 
     }
+    fun signUp() = runCatching{
+        viewModelScope.launch {
+            if(userProfile != null ){
+                signUpUseCase.signUp(
+                    "",
+                    SignUpRequest(
+                        userProfile.name,
+                        userProfile.iconName,
+                        relation,
+                        babiesList.value
+                    )
+                )
+            }
 
-    fun signUp(){
-        val userName = userProfile?.name
-        val userIcon = userProfile?.iconName
-        val relationName = relation
-        val babies = babiesList.value
+        }
     }
 
 

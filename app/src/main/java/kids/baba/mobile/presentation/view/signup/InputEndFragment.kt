@@ -7,17 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import kids.baba.mobile.databinding.FragmentInputBabyInfoEndBinding
-import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
-import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
+import kids.baba.mobile.R
+import kids.baba.mobile.databinding.FragmentInputEndBinding
+import kids.baba.mobile.presentation.event.CreateProfileEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 class InputEndFragment : Fragment() {
 
-    private var _binding: FragmentInputBabyInfoEndBinding? = null
+    private var _binding: FragmentInputEndBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: InputBabiesInfoViewModel by viewModels(
+    val viewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while (parent is NavHostFragment) {
@@ -31,14 +33,23 @@ class InputEndFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentInputBabyInfoEndBinding.inflate(inflater, container, false)
+        _binding = FragmentInputEndBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnInputBabyInfoEnd.setOnClickListener {
-            viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
+        repeatOnStarted {
+            viewModel.userProfile.collect { userProfile ->
+                if (userProfile != null) {
+                    binding.btnInputEnd.apply {
+                        text = context.getString(R.string.create_profile_complete)
+                        setOnClickListener {
+                            viewModel.setEvent(CreateProfileEvent.MoveToInputChildInfo(userProfile))
+                        }
+                    }
+                }
+            }
         }
     }
 
