@@ -1,37 +1,23 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.content.Context
-import androidx.camera.view.PreviewView
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.repository.CustomCameraRepository
-import kotlinx.coroutines.flow.internal.NopCollector.emit
-import kotlinx.coroutines.launch
+import kids.baba.mobile.domain.model.MediaData
+import java.io.File
 import javax.inject.Inject
 
-@HiltViewModel
-class CameraViewModel @Inject constructor(
-    private val customCameraRepository: CustomCameraRepository
-): ViewModel() {
+//@HiltViewModel
+class CameraViewModel : ViewModel() {
 
-    fun showCameraPreview(
-        previewView: PreviewView,
-        lifecycleOwner: LifecycleOwner
-    ) {
-        viewModelScope.launch {
-            customCameraRepository.showCameraPreview(
-                previewView, lifecycleOwner
-            )
-        }
-    }
-
-    fun captureAndSave(context: Context) {
-        viewModelScope.launch {
-            customCameraRepository.captureAndSaveImage(context)
-
-        }
+    internal fun savePhoto(path: String): MediaData {
+        val file = File(path)
+        return MediaData(
+            mediaName = file.name,
+            mediaType = "IMAGE",
+            mediaSize = file.length(),
+            mediaPath = path
+        )
     }
 
 }

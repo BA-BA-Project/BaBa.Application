@@ -20,6 +20,8 @@
             app:destination="@+id/writeTitleFragment"
             />
 
+
+
     </fragment>
 
     <fragment
@@ -52,11 +54,17 @@
         tools:layout="@layout/fragment_write_title"
         >
 
-<!--        여기서 완료 누르면 원래 MainActivity 로-->
+
 
         <action
             android:id="@+id/action_writeTitleFragment_to_cropFragment"
             app:destination="@id/cropFragment" />
+
+
+        <argument
+            android:name="media_data"
+            app:argType="kids.baba.mobile.domain.model.MediaData" />
+
     </fragment>
 
 

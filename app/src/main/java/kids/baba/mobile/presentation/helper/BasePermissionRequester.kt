@@ -33,10 +33,7 @@ abstract class BasePermissionRequester(
 
     fun checkPermissions(context: Context) {
         val allGranted = permissions.all { p ->
-            PermissionChecker.checkSelfPermission(
-                context,
-                p
-            ) == PermissionChecker.PERMISSION_GRANTED
+            PermissionChecker.checkSelfPermission(context, p) == PermissionChecker.PERMISSION_GRANTED
         }
 
         val shouldDisplayExplanation = permissions.any { p -> fragment.shouldShowRequestPermissionRationale(p) }

@@ -54,9 +54,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun startCameraActivity() {
-//        val intent = Intent(requireContext(), CameraActivity::class.java)
-//        requireContext().startActivity(intent)
-
         val intent = Intent(requireContext(), FilmActivity::class.java)
         requireContext().startActivity(intent)
 
