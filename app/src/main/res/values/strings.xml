@@ -38,6 +38,7 @@
     <string name="create_profile_complete">프로필 생성 완료</string>
     <string name="input_children_info">아이 정보 기입</string>
     <string name="check_have_invite_code">초대코드를 받으셨나요?</string>
+    <string name="babies_info_by_invite_code">%s의 %s이시군요!</string>
     <string name="answer_yes">응, 맞아</string>
     <string name="answer_no">아니</string>
     <string name="need_to_baby_info">추억을 기록하기 전 아이의 정보가 필요해요!</string>

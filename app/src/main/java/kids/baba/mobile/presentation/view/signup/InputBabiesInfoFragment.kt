@@ -99,10 +99,6 @@ class InputBabiesInfoFragment : Fragment() {
                         viewModel.setEvent(InputBabiesInfoEvent.InputText)
                     }
 
-                    is InputBabiesInfoUiState.InputEnd -> {
-                        viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
-                    }
-
                     is InputBabiesInfoUiState.InputRelation -> {
                         viewModel.setEvent(InputBabiesInfoEvent.InputRelation)
                     }
@@ -120,6 +116,10 @@ class InputBabiesInfoFragment : Fragment() {
                     }
 
                     is InputBabiesInfoUiState.GetBabiesInfoByInviteCode -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
+                    }
+
+                    is InputBabiesInfoUiState.InputEndBabiesInfo -> {
                         viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
                     }
                     else -> Unit

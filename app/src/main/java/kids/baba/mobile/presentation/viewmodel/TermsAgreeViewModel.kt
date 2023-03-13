@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -59,6 +60,7 @@ class TermsAgreeViewModel @Inject constructor(
             getTermsListUseCase(socialToken).onSuccess { termsList ->
                 _termsList.value = termsList.map { it.toPresentation() }
             }.onFailure {
+                Log.e("termsError",it.message!!)
                 _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
             }
         }

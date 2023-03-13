@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentInputBabyInfoEndBinding
+import kids.baba.mobile.presentation.state.InputBabiesInfoUiState
 import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
-import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 
 class InputBabyInfoEndFragment : Fragment() {
 
@@ -28,8 +27,6 @@ class InputBabyInfoEndFragment : Fragment() {
         }
     )
 
-    private val activityViewModel: IntroViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,8 +38,17 @@ class InputBabyInfoEndFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnInputBabyInfoEnd.setOnClickListener {
+
+            when(viewModel.uiState.value) {
+                is InputBabiesInfoUiState.GetBabiesInfoByInviteCode -> {
+                    viewModel.signUpWithInviteCode()
+                }
+                is InputBabiesInfoUiState.InputEndBabiesInfo -> {
+                    viewModel.signUpWithBabiesInfo()
+                }
+                else -> Unit
+            }
             viewModel.signUpWithBabiesInfo()
-            activityViewModel.isSignUpSuccess()
         }
 
     }

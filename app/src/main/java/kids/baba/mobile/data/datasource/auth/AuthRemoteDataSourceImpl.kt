@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.auth
 
+import android.util.Log
 import kids.baba.mobile.core.error.BadRequest
 import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.data.api.AuthApi
@@ -32,6 +33,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val api: AuthApi) :
     override suspend fun getTerms(socialToken: String): List<TermsData> {
         val resp = api.getTerms(socialToken)
 
+        Log.d("termsLog",resp.code().toString())
         when (resp.code()) {
             200 -> {
                 return resp.body() ?: throw Throwable("data is null")

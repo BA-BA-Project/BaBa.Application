@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
+import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.SignUpUseCase
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
 import kids.baba.mobile.presentation.model.BabyInfo
@@ -28,6 +29,7 @@ class InputBabiesInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val resources: Resources,
     private val signUpUseCase: SignUpUseCase,
+    private val getBabiesInfoByInviteCodeUseCase: GetBabiesInfoByInviteCodeUseCase
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
@@ -288,7 +290,17 @@ class InputBabiesInfoViewModel @Inject constructor(
                 isModifying = false
             )
         )
-        setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+        viewModelScope.launch {
+            getBabiesInfoByInviteCodeUseCase(signToken,inviteCode).onSuccess {
+                val babies = it.babies.joinToString(",")
+                val relationName = it.relationName
+                addChat(ChatItem.BabaFirstChatItem(
+                    String.format(getStringResource(R.string.babies_info_by_invite_code),babies,relationName)
+                ))
+                endInputBabiesInfo()
+            }
+
+        }
     }
 
     fun signUpWithBabiesInfo() {
@@ -312,7 +324,7 @@ class InputBabiesInfoViewModel @Inject constructor(
         }
     }
 
-    fun signUPWithInviteCode() {
+    fun signUpWithInviteCode() {
         if (userProfile != null) {
             viewModelScope.launch {
                 signUpUseCase.signUpWithInviteCode(

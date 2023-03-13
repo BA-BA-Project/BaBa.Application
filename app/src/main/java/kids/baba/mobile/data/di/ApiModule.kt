@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.data.ApiHelper
 import kids.baba.mobile.data.api.AuthApi
+import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.data.api.MemberApi
 import javax.inject.Singleton
 
@@ -19,4 +20,8 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideMemberApi() = ApiHelper.create(MemberApi::class.java)
+
+    @Singleton
+    @Provides
+    fun babyApi() = ApiHelper.create(BabyApi::class.java)
 }
