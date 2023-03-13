@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import kids.baba.mobile.BR
 import kids.baba.mobile.databinding.FragmentCameraBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import java.io.File
@@ -34,9 +35,9 @@ class CameraFragment : Fragment(), CameraNavigator {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-//    private val mDisplayManager by lazy {
-//        requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-//    }
+    private val mDisplayManager by lazy {
+        requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    }
 //    private val mViewModel: CameraViewModel by lazy {
 //        ViewModelProvider(this).get(CameraViewModel::class.java)
 //    }
@@ -57,22 +58,26 @@ class CameraFragment : Fragment(), CameraNavigator {
     private var mFlashMode: Int = ImageCapture.FLASH_MODE_OFF
 
 
-//    @SuppressLint("RestrictedApi")
-//    private val mDisplayListener = object : DisplayManager.DisplayListener {
-//        override fun onDisplayAdded(displayId: Int) = Unit
-//        override fun onDisplayRemoved(displayId: Int) = Unit
-//        override fun onDisplayChanged(displayId: Int) {
-//            if (displayId == mDisplayId) {
-//                val viewFinder = binding.viewFinder
-//                mImageAnalyzer?.targetRotation = viewFinder.display.rotation
-//                mImageCapture?.targetRotation = viewFinder.display.rotation
-//            }
-//        }
-//    }
+    @SuppressLint("RestrictedApi")
+    private val mDisplayListener = object : DisplayManager.DisplayListener {
+        override fun onDisplayAdded(displayId: Int) = Unit
+        override fun onDisplayRemoved(displayId: Int) = Unit
+        override fun onDisplayChanged(displayId: Int) {
+            if (displayId == mDisplayId) {
+                val viewFinder = binding.viewFinder
+                mImageAnalyzer?.targetRotation = viewFinder.display.rotation
+                mImageCapture?.targetRotation = viewFinder.display.rotation
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentCameraBinding.inflate(inflater, container, false)
+        _binding = FragmentCameraBinding.inflate(inflater, container, false).apply {
+            setVariable(BR.callback, this@CameraFragment)
+        }.also {
+            it.lifecycleOwner = this
+        }
 
         return binding.root
 
@@ -87,7 +92,7 @@ class CameraFragment : Fragment(), CameraNavigator {
         mCameraExecutor = ContextCompat.getMainExecutor(requireActivity())
 
         mImageAnalyzerExecutor = Executors.newSingleThreadExecutor()
-//        mDisplayManager.registerDisplayListener(mDisplayListener, null)
+        mDisplayManager.registerDisplayListener(mDisplayListener, null)
 
         val viewFinder = binding.viewFinder
         viewFinder.post {
@@ -107,7 +112,7 @@ class CameraFragment : Fragment(), CameraNavigator {
     }
 
     private fun takePhoto() {
-        val imageCapture = mImageCapture?: return
+        val imageCapture = mImageCapture ?: return
 
         // Create timestamped output file to hold the image
         val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US)
@@ -183,8 +188,8 @@ class CameraFragment : Fragment(), CameraNavigator {
     private fun buildUi() {
 //        if (!hasFlashMode())
 //            flashToggle.visibility = View.INVISIBLE
-//        if (!hasFrontCamera())
-//            rotateCamera.visibility = View.INVISIBLE
+        if (!hasFrontCamera())
+            binding.toggleScreenBtn.visibility = View.INVISIBLE
     }
 
 

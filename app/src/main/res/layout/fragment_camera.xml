@@ -81,19 +81,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_goneMarginBottom="100dp" />
 
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/toggle_screen_btn"
-            android:contentDescription="카메라 화면 전환"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="20dp"
             android:background="@drawable/format_round_corner_gray"
+            android:contentDescription="카메라 화면 전환"
+            android:onClick="@{(view) -> callback.toggleCamera()}"
             android:src="@drawable/ic_toggle_screen"
             app:layout_constraintBottom_toBottomOf="@+id/image_capture_button"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{(view) -> callback.toggleCamera()}"
-            app:layout_constraintTop_toTopOf="@+id/image_capture_button" />
-
+            app:layout_constraintTop_toTopOf="@+id/image_capture_button"
+            app:layout_constraintVertical_bias="0.454" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_centerline"

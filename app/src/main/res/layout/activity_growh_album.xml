@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_growth_album"
-    tools:context=".presentation.view.GrowthAlbumActivity">
+>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcv_growth_album"
