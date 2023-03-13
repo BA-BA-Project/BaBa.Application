@@ -23,18 +23,22 @@
             app:destination="@id/termsAgreeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signUpFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        android:id="@+id/createProfileFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.CreateProfileFragment"
+        android:label="fragment_create_profile"
+        tools:layout="@layout/fragment_create_profile" >
+        <argument
+            android:name="signToken"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/termsAgreeFragment"
         android:name="kids.baba.mobile.presentation.view.TermsAgreeFragment"
         android:label="TermsAgreeFragment"
         tools:layout="@layout/fragment_terms_agree">
         <action
-            android:id="@+id/action_termsAgreeFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            android:id="@+id/action_termsAgreeFragment_to_createProfileFragment"
+            app:destination="@id/createProfileFragment" />
         <argument
             android:name="socialToken"
             app:argType="string" />

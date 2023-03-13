@@ -21,6 +21,7 @@
     <string name="sitn_up_greeting1">반가워요☺</string>
     <string name="sitn_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
     <string name="please_input_name">바바에서 사용할 이름을 입력해주세요.\n[마이]에서 변경 가능해요."</string>
+    <string name="please_select_profile_icon">프로필을 선택해봐요.\n[마이]에서 변경 가능해요.</string>
     <string name="hello_blank_fragment">Heselect_camerallo blank fragment</string>
     <string name="baba_greeting_1">안녕😄</string>
     <string name="baba_greeting_2">반가워, 바바!</string>
@@ -34,6 +35,10 @@
     <string name="essential">[필수]</string>
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
+    <string name="create_profile_complete">프로필 생성 완료</string>
+    <string name="view_by_date">날짜별 보기</string>
+    <string name="album_card_record_image">기록하기를 눌러 사진을 남겨 봐요</string>
+    <string name="album_card_title">{아기}의 오늘 기록</string>
 
     <string name="select_how_to_film">어떻게 사진을 등록할지 선택하세요</string>
 
