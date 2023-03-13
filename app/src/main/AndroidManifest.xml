@@ -29,14 +29,7 @@
             android:exported="false" />
 
 
-        <activity
-            android:name=".presentation.view.GrowthAlbumActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
 
             <!-- android:exported="true"> -->
@@ -66,7 +59,13 @@
         </activity>
         <activity
             android:name=".presentation.view.MainActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
         <!-- FileProvider used to share photos with other apps -->
         <provider
