@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.signup
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,7 +120,6 @@ class InputBabiesInfoFragment : Fragment() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 childNavController.popBackStack()
-                Log.d("eventPrint", "$event")
                 when (event) {
                     is InputBabiesInfoEvent.InputEnd -> {
                         childNavController.navigate(R.id.action_global_inputBabyInfoEndFragment)

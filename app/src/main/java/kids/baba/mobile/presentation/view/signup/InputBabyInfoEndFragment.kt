@@ -41,7 +41,7 @@ class InputBabyInfoEndFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnInputBabyInfoEnd.setOnClickListener {
-            viewModel.signUp()
+            viewModel.signUpWithBabiesInfo()
             activityViewModel.isSignUpSuccess()
         }
 

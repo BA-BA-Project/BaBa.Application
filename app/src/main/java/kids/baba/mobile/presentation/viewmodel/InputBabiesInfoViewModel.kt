@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.SignUpRequest
+import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
+import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.usecase.SignUpUseCase
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
 import kids.baba.mobile.presentation.model.BabyInfo
@@ -26,10 +27,11 @@ import javax.inject.Inject
 class InputBabiesInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val resources: Resources,
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
+    private val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
     private val _uiState: MutableStateFlow<InputBabiesInfoUiState> =
         MutableStateFlow(InputBabiesInfoUiState.Loading)
@@ -259,14 +261,13 @@ class InputBabiesInfoViewModel @Inject constructor(
     }
 
     fun inputInviteCode() {
-
     }
-    fun signUp() = runCatching{
+    fun signUpWithBabiesInfo() = runCatching{
         viewModelScope.launch {
             if(userProfile != null ){
-                signUpUseCase.signUp(
-                    "",
-                    SignUpRequest(
+                signUpUseCase.signUpWithBabiesInfo(
+                    signToken,
+                    SignUpRequestWithBabiesInfo(
                         userProfile.name,
                         userProfile.iconName,
                         relation,
@@ -274,7 +275,20 @@ class InputBabiesInfoViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
 
+    fun signUPWithInviteCode() = runCatching {
+        viewModelScope.launch {
+            if (userProfile != null) {
+                signUpUseCase.signUpWithInviteCode(
+                    signToken, SignUpRequestWithInviteCode(
+                        "inviteCode",
+                        userProfile.name,
+                        userProfile.iconName
+                    )
+                )
+            }
         }
     }
 
@@ -301,6 +315,7 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     companion object {
         const val KEY_USER_PROFILE = "userProfile"
+        const val KEY_SIGN_TOKEN = "signToken"
     }
 
 }

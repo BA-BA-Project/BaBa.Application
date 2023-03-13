@@ -1,7 +1,8 @@
 package kids.baba.mobile.data.datasource.member
 
 import kids.baba.mobile.data.api.MemberApi
-import kids.baba.mobile.domain.model.SignUpRequest
+import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
+import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -18,11 +19,25 @@ class MemberRemoteDataSourceImpl @Inject constructor(private val memberApi: Memb
         }
     }
 
-    override suspend fun signUp(signToken: String, signUpRequest: SignUpRequest) = flow {
-        val resp = memberApi.signUp(signToken, signUpRequest)
+    override suspend fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo) = flow {
+        val resp = memberApi.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
 
-        resp.headers()
         when (resp.code()) {
+            201 -> {
+                val data = resp.body() ?: throw Throwable("data is null")
+                emit(data)
+            }
+            else -> throw Throwable("회원가입 에러")
+        }
+    }
+
+    override suspend fun signUpWithInviteCode(
+        signToken: String,
+        signUpRequestWithInviteCode: SignUpRequestWithInviteCode
+    ) = flow {
+        val resp = memberApi.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
+
+        when(resp.code()){
             201 -> {
                 val data = resp.body() ?: throw Throwable("data is null")
                 emit(data)

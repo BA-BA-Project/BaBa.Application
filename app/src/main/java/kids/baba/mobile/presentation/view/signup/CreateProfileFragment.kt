@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -31,14 +32,13 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
     private lateinit var signUpChatAdapter: SignUpChatAdapter
 
-    private lateinit var activityViewModel : IntroViewModel
+    private val activityViewModel : IntroViewModel by activityViewModels()
 
     private val args: CreateProfileFragmentArgs by navArgs()
 
     val viewModel: CreateProfileViewModel by viewModels()
 
     private lateinit var childNavController: NavController
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
