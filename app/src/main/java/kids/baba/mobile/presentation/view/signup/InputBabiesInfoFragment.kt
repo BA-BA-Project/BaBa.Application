@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputBabiesInfoBinding
@@ -18,6 +20,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.state.InputBabiesInfoUiState
 import kids.baba.mobile.presentation.viewmodel.InputBabiesInfoViewModel
+import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 
 @AndroidEntryPoint
 class InputBabiesInfoFragment : Fragment() {
@@ -27,6 +30,7 @@ class InputBabiesInfoFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: InputBabiesInfoViewModel by viewModels()
+    private val activityViewModel: IntroViewModel by activityViewModels()
 
     private lateinit var childNavController: NavController
 
@@ -69,6 +73,12 @@ class InputBabiesInfoFragment : Fragment() {
         repeatOnStarted {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
+                    is InputBabiesInfoUiState.SignUpSuccess -> {
+                        activityViewModel.isSignUpSuccess(uiState.member)
+                    }
+                    is InputBabiesInfoUiState.SignUpFailed -> {
+                        showSnackBar(uiState.throwable.message?: getString(R.string.baba_sign_up_failed))
+                    }
                     is InputBabiesInfoUiState.CheckInviteCode -> {
                         viewModel.setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
                     }
@@ -97,9 +107,6 @@ class InputBabiesInfoFragment : Fragment() {
                         viewModel.setEvent(InputBabiesInfoEvent.InputRelation)
                     }
 
-                    is InputBabiesInfoUiState.Loading -> {
-                    }
-
                     is InputBabiesInfoUiState.ModifyBirthday -> {
                         viewModel.setEvent(InputBabiesInfoEvent.InputBirthDay)
                     }
@@ -111,6 +118,11 @@ class InputBabiesInfoFragment : Fragment() {
                     is InputBabiesInfoUiState.ModifyName -> {
                         viewModel.setEvent(InputBabiesInfoEvent.InputText)
                     }
+
+                    is InputBabiesInfoUiState.GetBabiesInfoByInviteCode -> {
+                        viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
+                    }
+                    else -> Unit
                 }
             }
         }
@@ -179,6 +191,9 @@ class InputBabiesInfoFragment : Fragment() {
                 }
             }
         }
+    }
+    private fun showSnackBar(text: String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

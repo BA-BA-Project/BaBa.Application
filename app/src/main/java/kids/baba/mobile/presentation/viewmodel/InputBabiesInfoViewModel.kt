@@ -51,6 +51,8 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     private var relation = ""
 
+    private var inviteCode = ""
+
     private var inputMoreBaby = true
 
     private val _haveInviteCode: MutableStateFlow<Boolean?> = MutableStateFlow(null)
@@ -257,14 +259,41 @@ class InputBabiesInfoViewModel @Inject constructor(
                 isModifying = false
             )
         )
-        setUiState(InputBabiesInfoUiState.InputEnd)
+        endInputBabiesInfo()
+    }
+
+    private fun endInputBabiesInfo() {
+        addChat(ChatItem.BabaFirstChatItem(
+            getStringResource(R.string.input_end_babies_info)
+        ))
+        setEvent(InputBabiesInfoEvent.InputEnd)
     }
 
     fun inputInviteCode() {
+        addChat(
+            ChatItem.BabaFirstChatItem(
+                getStringResource(R.string.please_input_invite_code)
+            )
+        )
+        setUiState(InputBabiesInfoUiState.InputInviteCode)
     }
-    fun signUpWithBabiesInfo() = runCatching{
-        viewModelScope.launch {
-            if(userProfile != null ){
+
+    fun setInviteCode(inviteCode: String) {
+        this.inviteCode = inviteCode
+        addChat(
+            ChatItem.UserChatItem(
+                inviteCode,
+                UserChatType.INPUT_TEXT,
+                canModify = false,
+                isModifying = false
+            )
+        )
+        setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+    }
+
+    fun signUpWithBabiesInfo() {
+        if (userProfile != null) {
+            viewModelScope.launch {
                 signUpUseCase.signUpWithBabiesInfo(
                     signToken,
                     SignUpRequestWithBabiesInfo(
@@ -273,21 +302,30 @@ class InputBabiesInfoViewModel @Inject constructor(
                         relation,
                         babiesList.value
                     )
-                )
+                ).onSuccess {
+                    setUiState(InputBabiesInfoUiState.SignUpSuccess(it))
+                }.onFailure {
+                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                }
+
             }
         }
     }
 
-    fun signUPWithInviteCode() = runCatching {
-        viewModelScope.launch {
-            if (userProfile != null) {
+    fun signUPWithInviteCode() {
+        if (userProfile != null) {
+            viewModelScope.launch {
                 signUpUseCase.signUpWithInviteCode(
                     signToken, SignUpRequestWithInviteCode(
                         "inviteCode",
                         userProfile.name,
                         userProfile.iconName
                     )
-                )
+                ).onSuccess {
+                    setUiState(InputBabiesInfoUiState.SignUpSuccess(it))
+                }.onFailure {
+                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                }
             }
         }
     }

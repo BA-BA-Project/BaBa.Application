@@ -77,6 +77,10 @@ class TextInputBabyInfoFragment : Fragment() {
                     is InputBabiesInfoUiState.InputRelation -> {
                         inputBabiesInfoViewModel.setRelation(etTextInput.text.toString())
                     }
+
+                    is InputBabiesInfoUiState.InputInviteCode -> {
+                        inputBabiesInfoViewModel.setInviteCode(etTextInput.text.toString())
+                    }
                     else -> {
 
                     }

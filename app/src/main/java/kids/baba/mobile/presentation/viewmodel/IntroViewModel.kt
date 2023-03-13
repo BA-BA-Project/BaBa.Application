@@ -66,7 +66,7 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(){
+    fun isSignUpSuccess(member: MemberModel){
 
     }
 }
