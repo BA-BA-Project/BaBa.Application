@@ -15,6 +15,7 @@
     <string name="kakao_login_canceled">카카오 로그인이 취소되었습니다.</string>
     <string name="baba_login_failed">로그인에 실패했습니다. 다시 한번 확인해 주세요</string>
     <string name="baba_sign_up_failed">회원가입에 실패했습니다.</string>
+    <string name="baba_network_failed">네트워크 연결을 확인해주세요</string>
     <string name="baba_name">바바</string>
     <string name="create_profile">프로필 생성</string>
     <string name="modify">수정</string>

@@ -44,13 +44,14 @@
         android:id="@+id/rv_input_babies_info_chat"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingBottom="5dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/fcv_input_children_info"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintTop_toBottomOf="@+id/ab_input_children_info"
-        tools:listitem="@layout/item_baba_send_with_profile" />
+        tools:listitem="@layout/item_baba_send_with_profile"
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcv_input_children_info"

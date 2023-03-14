@@ -6,9 +6,9 @@ import kids.baba.mobile.domain.model.TokenResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRemoteDataSource {
-    suspend fun login(socialToken: String): Flow<TokenResponse>
+    fun login(socialToken: String): Flow<TokenResponse>
 
-    suspend fun getTerms(socialToken: String): List<TermsData>
+    fun getTerms(socialToken: String): Flow<List<TermsData>>
 
-    suspend fun getSignToken(signTokenRequest: SignTokenRequest): String
+    fun getSignToken(signTokenRequest: SignTokenRequest): Flow<String>
 }

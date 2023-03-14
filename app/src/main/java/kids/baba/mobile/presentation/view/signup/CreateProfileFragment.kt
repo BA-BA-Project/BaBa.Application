@@ -118,6 +118,9 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         repeatOnStarted {
             viewModel.chatList.collect {
                 signUpChatAdapter.submitList(it)
+                binding.rvCreateProfile.post {
+                    binding.rvCreateProfile.smoothScrollToPosition(it.size - 1)
+                }
             }
         }
     }

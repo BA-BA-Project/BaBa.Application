@@ -42,10 +42,10 @@ class RelationSelectFragment : Fragment() {
             btnRelationMom.setOnClickListener {
                 viewModel.setRelation(btnRelationMom.text.toString())
             }
-            btnRelationMom.setOnClickListener {
+            btnRelationDad.setOnClickListener {
                 viewModel.setRelation(btnRelationDad.text.toString())
             }
-            btnRelationMom.setOnClickListener {
+            btnRelationOther.setOnClickListener {
                 viewModel.setEvent(InputBabiesInfoEvent.InputText)
             }
         }

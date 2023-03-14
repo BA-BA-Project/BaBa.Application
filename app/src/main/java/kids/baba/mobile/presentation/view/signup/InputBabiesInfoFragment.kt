@@ -76,9 +76,13 @@ class InputBabiesInfoFragment : Fragment() {
                     is InputBabiesInfoUiState.SignUpSuccess -> {
                         activityViewModel.isSignUpSuccess(uiState.member)
                     }
+
                     is InputBabiesInfoUiState.SignUpFailed -> {
-                        showSnackBar(uiState.throwable.message?: getString(R.string.baba_sign_up_failed))
+                        showSnackBar(
+                            uiState.throwable.message ?: getString(R.string.baba_sign_up_failed)
+                        )
                     }
+
                     is InputBabiesInfoUiState.CheckInviteCode -> {
                         viewModel.setEvent(InputBabiesInfoEvent.SelectHaveInviteCode)
                     }
@@ -122,6 +126,7 @@ class InputBabiesInfoFragment : Fragment() {
                     is InputBabiesInfoUiState.InputEndBabiesInfo -> {
                         viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
                     }
+
                     else -> Unit
                 }
             }
@@ -186,12 +191,15 @@ class InputBabiesInfoFragment : Fragment() {
         repeatOnStarted {
             viewModel.chatList.collect {
                 adapter.submitList(it)
-                binding.rvInputBabiesInfoChat.post {
-                    binding.rvInputBabiesInfoChat.scrollToPosition(it.size - 1)
+                binding.rvInputBabiesInfoChat.apply {
+                    post{
+                        smoothScrollToPosition(it.size - 1)
+                    }
                 }
             }
         }
     }
+
     private fun showSnackBar(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
