@@ -72,7 +72,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     }
 
     private fun collectUiState() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.signUpUiState.collect { uiState ->
                 when (uiState) {
                     is CreateProfileUiState.SelectGreeting -> {
@@ -115,7 +115,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                 }
             }
         }
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.chatList.collect {
                 signUpChatAdapter.submitList(it)
                 binding.rvCreateProfile.post {
@@ -126,7 +126,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 childNavController.popBackStack()
                 when (event) {

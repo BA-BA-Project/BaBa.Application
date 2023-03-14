@@ -56,7 +56,7 @@ class InputBabiesInfoFragment : Fragment() {
     }
 
     private fun collectHaveInviteCode() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.haveInviteCode.collect { haveInviteCode ->
                 if (haveInviteCode != null) {
                     if (haveInviteCode) {
@@ -70,7 +70,7 @@ class InputBabiesInfoFragment : Fragment() {
     }
 
     private fun collectUiState() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is InputBabiesInfoUiState.SignUpSuccess -> {
@@ -134,7 +134,7 @@ class InputBabiesInfoFragment : Fragment() {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 childNavController.popBackStack()
                 when (event) {
@@ -181,14 +181,13 @@ class InputBabiesInfoFragment : Fragment() {
             }
 
             override fun onIconSelectedListener(profileIcon: ProfileIcon, idx: Int, position: Int) {
-                TODO("Not yet implemented")
             }
 
         })
         binding.rvInputBabiesInfoChat.adapter = adapter
         binding.rvInputBabiesInfoChat.itemAnimator = null
 
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.chatList.collect {
                 adapter.submitList(it)
                 binding.rvInputBabiesInfoChat.apply {

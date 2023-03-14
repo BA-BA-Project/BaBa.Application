@@ -39,7 +39,7 @@ class InputEndFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.userProfile.collect { userProfile ->
                 if (userProfile != null) {
                     binding.btnInputEnd.apply {
