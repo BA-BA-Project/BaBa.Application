@@ -25,6 +25,7 @@ class GrowthAlbumViewModel @Inject constructor(
     val growthAlbumState = _growthAlbumState.asStateFlow()
     private val _motionLayoutTransition = MutableLiveData<Unit>()
     val motionLayoutTransition = _motionLayoutTransition
+    val pickDate = MutableLiveData<Unit>()
     fun loadAlbum(id: Int) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
         getOneAlbumUseCase.getOneAlbum(id).catch {
@@ -46,5 +47,9 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun changeBaby() {
         _motionLayoutTransition.value = Unit
+    }
+
+    fun pickDate(){
+        pickDate.value = Unit
     }
 }

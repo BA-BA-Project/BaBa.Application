@@ -10,11 +10,22 @@
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/growth_album_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_growthalbum_xml_growth_album_view_scene">
+        android:layout_height="match_parent">
+
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:translationZ="10dp"
+            android:visibility="gone"
+            android:onClick="@{() -> viewmodel.pickDate()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageView7"
@@ -67,6 +78,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_show_date"
             android:backgroundTint="@color/grey"
+            android:onClick="@{() -> viewmodel.pickDate()}"
             android:text="@string/view_by_date"
             app:layout_constraintBottom_toTopOf="@+id/myCalendar"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -179,9 +191,9 @@
             android:layout_width="0dp"
             android:layout_height="500dp"
             android:background="@drawable/white_card_view"
+            android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
-            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -229,5 +241,5 @@
             android:elevation="8dp"
             android:focusable="false" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

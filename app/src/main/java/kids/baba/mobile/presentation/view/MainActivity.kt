@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.adapters.AdapterViewBindingAdapter.setOnItemSelectedListener
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R

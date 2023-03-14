@@ -1,14 +1,18 @@
 package kids.baba.mobile.presentation.view
 
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.view.children
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +49,7 @@ class GrowthAlbumFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     private var isChange = false
-
+    private var isPick = false
     private lateinit var singleRowCalendar: SingleRowCalendar
     private val mySelectionManager = object : CalendarSelectionManager {
         override fun canBeItemSelected(position: Int, date: Date): Boolean {
@@ -130,14 +134,6 @@ class GrowthAlbumFragment : Fragment() {
             setDates(getFutureDatesOfCurrentMonth())
             init()
         }
-
-//        binding.btnRight.setOnClickListener {
-//            singleRowCalendar.setDates(getDatesOfNextMonth())
-//        }
-//
-//        binding.btnLeft.setOnClickListener {
-//            singleRowCalendar.setDates(getDatesOfPreviousMonth())
-//        }
     }
 
     private fun getDatesOfNextMonth(): List<Date> {
@@ -220,24 +216,45 @@ class GrowthAlbumFragment : Fragment() {
         repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
-        repeat(5){
-            babyAdapter.setItem(Baby("$it","$it","$it"))
+        repeat(5) {
+            babyAdapter.setItem(Baby("$it", "$it", "$it"))
         }
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels
+
+        binding.babySelectView.maxHeight = 0
+        binding.shadow.alpha = 0f
         viewModel.loadAlbum(1)
         viewModel.loadBaby()
-        viewModel.motionLayoutTransition.observe(viewLifecycleOwner) {
-            isChange = if (!isChange) {
-                binding.growthAlbumView.transitionToEnd()
+        viewModel.pickDate.observe(viewLifecycleOwner) {
+            isPick = if (!isPick) {
+                binding.datePicker.isGone = false
+                binding.shadow.alpha = 0.3f
                 true
             } else {
-                binding.growthAlbumView.transitionToStart()
+                binding.datePicker.isGone = true
+                binding.shadow.alpha = 0f
                 false
             }
         }
+        viewModel.motionLayoutTransition.observe(viewLifecycleOwner) {
+            isChange = if (!isChange) {
+                binding.babySelectView.maxHeight = width * 3 / 2
+                binding.shadow.alpha = 0.3f
+                true
+            } else {
+                binding.babySelectView.maxHeight = 0
+                binding.shadow.alpha = 0f
+                false
+            }
+        }
+
     }
 
     fun onBackPressed(): Boolean {
-        viewModel.motionLayoutTransition.value = Unit
+        if(isChange) viewModel.motionLayoutTransition.value = Unit
+        if(isPick) viewModel.pickDate.value = Unit
         return true
     }
 
