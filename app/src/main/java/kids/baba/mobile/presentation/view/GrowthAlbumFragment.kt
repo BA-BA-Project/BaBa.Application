@@ -1,6 +1,8 @@
 package kids.baba.mobile.presentation.view
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -44,6 +46,7 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
+    lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
     private val calendar = Calendar.getInstance()
@@ -229,11 +232,10 @@ class GrowthAlbumFragment : Fragment() {
         viewModel.loadBaby()
         viewModel.pickDate.observe(viewLifecycleOwner) {
             isPick = if (!isPick) {
-                binding.datePicker.isGone = false
+                datePicker.show()
                 binding.shadow.alpha = 0.3f
                 true
             } else {
-                binding.datePicker.isGone = true
                 binding.shadow.alpha = 0f
                 false
             }
@@ -253,8 +255,8 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     fun onBackPressed(): Boolean {
-        if(isChange) viewModel.motionLayoutTransition.value = Unit
-        if(isPick) viewModel.pickDate.value = Unit
+        if (isChange) viewModel.motionLayoutTransition.value = Unit
+        if (isPick) viewModel.pickDate.value = Unit
         return true
     }
 
@@ -290,6 +292,14 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun initView() {
         binding.viewmodel = viewModel
+        datePicker =
+            MyDatePickerDialog(requireContext(), listener = { view, year, month, dayOfMonth ->
+                val year1 = datePicker.datePicker.year
+                val month1 = datePicker.datePicker.month
+                val day1 = datePicker.datePicker.dayOfMonth
+                Toast.makeText(requireContext(), "$year1 $month1, $day1", Toast.LENGTH_SHORT)
+                    .show()
+            }, 2023, 3, 12)
     }
 
     override fun onCreateView(
@@ -304,5 +314,31 @@ class GrowthAlbumFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+}
+
+class MyDatePickerDialog(
+    context: Context, private val listener: DatePickerDialog.OnDateSetListener,
+    year: Int, month: Int, dayOfMonth: Int
+) : DatePickerDialog(context, listener, year, month, dayOfMonth) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val positiveButton = getButton(DialogInterface.BUTTON_POSITIVE)
+        positiveButton?.setOnClickListener {
+            listener.onDateSet(datePicker, year, month, dayOfMonth)
+            dismiss()
+        }
+
+        val negativeButton = getButton(DialogInterface.BUTTON_NEGATIVE)
+        negativeButton?.setOnClickListener {
+            dismiss()
+        }
     }
 }
