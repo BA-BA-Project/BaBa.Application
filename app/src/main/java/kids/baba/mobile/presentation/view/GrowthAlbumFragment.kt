@@ -243,9 +243,11 @@ class GrowthAlbumFragment : Fragment() {
         viewModel.motionLayoutTransition.observe(viewLifecycleOwner) {
             isChange = if (!isChange) {
                 binding.babySelectView.maxHeight = width * 3 / 2
+                binding.babySelectView.isGone = false
                 binding.shadow.alpha = 0.3f
                 true
             } else {
+                binding.babySelectView.isGone = true
                 binding.babySelectView.maxHeight = 0
                 binding.shadow.alpha = 0f
                 false
@@ -297,9 +299,12 @@ class GrowthAlbumFragment : Fragment() {
                 val year1 = datePicker.datePicker.year
                 val month1 = datePicker.datePicker.month
                 val day1 = datePicker.datePicker.dayOfMonth
+                binding.shadow.alpha = 0f
                 Toast.makeText(requireContext(), "$year1 $month1, $day1", Toast.LENGTH_SHORT)
                     .show()
-            }, 2023, 3, 12)
+            }, 2023, 3, 12){
+                binding.shadow.alpha = 0f
+            }
     }
 
     override fun onCreateView(
@@ -319,7 +324,7 @@ class GrowthAlbumFragment : Fragment() {
 
 class MyDatePickerDialog(
     context: Context, private val listener: DatePickerDialog.OnDateSetListener,
-    year: Int, month: Int, dayOfMonth: Int
+    year: Int, month: Int, dayOfMonth: Int,private val listener2: () -> Unit
 ) : DatePickerDialog(context, listener, year, month, dayOfMonth) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -338,6 +343,7 @@ class MyDatePickerDialog(
 
         val negativeButton = getButton(DialogInterface.BUTTON_NEGATIVE)
         negativeButton?.setOnClickListener {
+            listener2()
             dismiss()
         }
     }
