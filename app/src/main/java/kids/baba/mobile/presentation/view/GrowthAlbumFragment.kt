@@ -34,6 +34,7 @@ import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
+import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.flow.catch
 import java.lang.Math.abs
@@ -319,32 +320,5 @@ class GrowthAlbumFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-}
-
-class MyDatePickerDialog(
-    context: Context, private val listener: DatePickerDialog.OnDateSetListener,
-    year: Int, month: Int, dayOfMonth: Int,private val listener2: () -> Unit
-) : DatePickerDialog(context, listener, year, month, dayOfMonth) {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val positiveButton = getButton(DialogInterface.BUTTON_POSITIVE)
-        positiveButton?.setOnClickListener {
-            listener.onDateSet(datePicker, year, month, dayOfMonth)
-            dismiss()
-        }
-
-        val negativeButton = getButton(DialogInterface.BUTTON_NEGATIVE)
-        negativeButton?.setOnClickListener {
-            listener2()
-            dismiss()
-        }
     }
 }
