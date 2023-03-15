@@ -1,6 +1,7 @@
 package kids.baba.mobile.data.api
 
 import kids.baba.mobile.domain.model.BabiesInfoResponse
+import kids.baba.mobile.domain.model.BabyResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -14,4 +15,8 @@ interface BabyApi {
         @Query("inviteCode")
         inviteCode: String
     ): Response<BabiesInfoResponse>
+
+    //아기 리스트 가져오기
+    @GET("api/baby")
+    suspend fun getBaby(): BabyResponse
 }

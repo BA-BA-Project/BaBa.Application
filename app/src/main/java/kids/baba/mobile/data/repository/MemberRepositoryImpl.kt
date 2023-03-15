@@ -10,7 +10,6 @@ class MemberRepositoryImpl @Inject constructor(private val memberRemoteDataSourc
     MemberRepository {
     override fun getMe(accessToken: String) = memberRemoteDataSource.getMe(accessToken)
 
-
     override fun signUpWithBabiesInfo(
         signToken: String,
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo

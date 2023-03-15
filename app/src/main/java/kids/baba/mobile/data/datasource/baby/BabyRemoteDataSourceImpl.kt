@@ -2,6 +2,7 @@ package kids.baba.mobile.data.datasource.baby
 
 import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.domain.model.BabiesInfoResponse
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class BabyRemoteDataSourceImpl @Inject constructor(
@@ -17,5 +18,9 @@ class BabyRemoteDataSourceImpl @Inject constructor(
 
             else -> throw Throwable("초대 코드 정보 확인 에러")
         }
+    }
+
+    override suspend fun getBaby() = flow {
+        emit(babyApi.getBaby())
     }
 }

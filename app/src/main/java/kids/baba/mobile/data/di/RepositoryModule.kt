@@ -6,14 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.data.repository.*
 import kids.baba.mobile.domain.repository.*
-import kids.baba.mobile.data.repository.AuthRepositoryImpl
-import kids.baba.mobile.data.repository.BabyRepositoryImpl
-import kids.baba.mobile.data.repository.KakaoLoginImpl
-import kids.baba.mobile.data.repository.MemberRepositoryImpl
-import kids.baba.mobile.domain.repository.AuthRepository
-import kids.baba.mobile.domain.repository.BabyRepository
-import kids.baba.mobile.domain.repository.KakaoLogin
-import kids.baba.mobile.domain.repository.MemberRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
