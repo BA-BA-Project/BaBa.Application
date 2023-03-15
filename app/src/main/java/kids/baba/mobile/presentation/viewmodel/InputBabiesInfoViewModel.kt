@@ -329,7 +329,7 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 signUpUseCase.signUpWithInviteCode(
                     signToken, SignUpRequestWithInviteCode(
-                        "inviteCode",
+                        inviteCode,
                         userProfile.name,
                         userProfile.iconName
                     )

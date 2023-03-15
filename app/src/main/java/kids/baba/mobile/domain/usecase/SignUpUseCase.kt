@@ -18,7 +18,7 @@ class SignUpUseCase @Inject constructor(
         memberRepository.getMe(token.accessToken).first()
     }
 
-    suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode) = kotlin.runCatching {
+    suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode) = runCatching {
         val token = memberRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode).first()
         setJWTToken(token)
         memberRepository.getMe(token.accessToken).first()

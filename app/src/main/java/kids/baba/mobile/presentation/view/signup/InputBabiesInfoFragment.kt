@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view.signup
 
+import android.accounts.NetworkErrorException
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,9 +79,12 @@ class InputBabiesInfoFragment : Fragment() {
                     }
 
                     is InputBabiesInfoUiState.SignUpFailed -> {
-                        showSnackBar(
-                            uiState.throwable.message ?: getString(R.string.baba_sign_up_failed)
-                        )
+                        if (it is NetworkErrorException) {
+                            showSnackBar(getString(R.string.baba_network_failed))
+                        } else {
+                            showSnackBar(getString(R.string.baba_sign_up_failed))
+                        }
+                        viewModel.setEvent(InputBabiesInfoEvent.InputEnd)
                     }
 
                     is InputBabiesInfoUiState.CheckInviteCode -> {
@@ -191,7 +195,7 @@ class InputBabiesInfoFragment : Fragment() {
             viewModel.chatList.collect {
                 adapter.submitList(it)
                 binding.rvInputBabiesInfoChat.apply {
-                    post{
+                    post {
                         smoothScrollToPosition(it.size - 1)
                     }
                 }
