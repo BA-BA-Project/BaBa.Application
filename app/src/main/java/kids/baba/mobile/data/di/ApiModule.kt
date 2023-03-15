@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.data.ApiHelper
+import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.data.api.MemberApi
@@ -24,4 +25,8 @@ object ApiModule {
     @Singleton
     @Provides
     fun babyApi() = ApiHelper.create(BabyApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideAlbumApi() = ApiHelper.create(AlbumApi::class.java)
 }

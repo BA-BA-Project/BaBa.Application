@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kids.baba.mobile.data.repository.*
+import kids.baba.mobile.domain.repository.*
 import kids.baba.mobile.data.repository.AuthRepositoryImpl
 import kids.baba.mobile.data.repository.BabyRepositoryImpl
 import kids.baba.mobile.data.repository.KakaoLoginImpl
@@ -26,5 +28,9 @@ abstract class RepositoryModule {
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
 
     @Binds
+    abstract fun bindAlbumRepository(albumRepositoryImpl: AlbumRepositoryImpl): AlbumRepository
+
+    @Binds
     abstract fun bindBabyRepository(babyRepositoryImpl: BabyRepositoryImpl): BabyRepository
+
 }
