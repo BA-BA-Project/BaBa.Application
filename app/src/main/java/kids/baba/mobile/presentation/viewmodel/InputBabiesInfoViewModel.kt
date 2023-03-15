@@ -64,6 +64,12 @@ class InputBabiesInfoViewModel @Inject constructor(
         checkInviteCode()
     }
 
+    private fun initData(){
+        relation = ""
+        inviteCode = ""
+        inputMoreBaby = true
+        _babiesList.value = emptyList()
+    }
 
     private fun checkInviteCode() {
         addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.check_have_invite_code)))
@@ -178,6 +184,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                 chatItem
             }
         }
+        initData()
         setUiState(InputBabiesInfoUiState.ModifyHaveInviteCode(position))
     }
 
@@ -246,10 +253,10 @@ class InputBabiesInfoViewModel @Inject constructor(
             addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_more_baby)))
             createNewBaby()
         } else {
+            addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_relation)))
             setUiState(InputBabiesInfoUiState.InputRelation)
         }
     }
-
 
     fun setRelation(relation: String) {
         this.relation = relation
@@ -268,7 +275,7 @@ class InputBabiesInfoViewModel @Inject constructor(
         addChat(ChatItem.BabaFirstChatItem(
             getStringResource(R.string.input_end_babies_info)
         ))
-        setEvent(InputBabiesInfoEvent.InputEnd)
+        setUiState(InputBabiesInfoUiState.InputEndBabiesInfo)
     }
 
     fun inputInviteCode() {

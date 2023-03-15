@@ -59,6 +59,7 @@
     <string name="relation_other">직접 입력</string>
     <string name="input_baby_birthday">아이의 생일 혹은 출산 예정일이  언제인가요? 📆</string>
     <string name="input_more_baby">또 기록하고 싶은 아이가 있나요?</string>
+    <string name="input_relation">아이와 어떤 관계이신가요?</string>
     <string name="please_input_invite_code">초대코드를 보내주세요</string>
     <string name="input_end_babies_info">좋아요!\n아래 버튼을 눌러 시작해봐요!</string>
 </resources>
