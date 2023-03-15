@@ -54,8 +54,6 @@
         tools:layout="@layout/fragment_write_title"
         >
 
-
-
         <action
             android:id="@+id/action_writeTitleFragment_to_cropFragment"
             app:destination="@id/cropFragment" />

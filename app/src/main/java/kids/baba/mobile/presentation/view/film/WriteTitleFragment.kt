@@ -1,17 +1,22 @@
 package kids.baba.mobile.presentation.view.film
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.BR
 import kids.baba.mobile.databinding.FragmentWriteTitleBinding
 import kids.baba.mobile.presentation.adapter.setImage
 import kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel
 
+@AndroidEntryPoint
 class WriteTitleFragment : Fragment(), WriteTitleNavigator {
 
     private val TAG = "WriteTitleFragment"
@@ -30,7 +35,6 @@ class WriteTitleFragment : Fragment(), WriteTitleNavigator {
         Log.e(TAG, args.mediaData.toString())
         viewModel.setArgument(args.mediaData)
 
-
     }
 
 
@@ -38,18 +42,16 @@ class WriteTitleFragment : Fragment(), WriteTitleNavigator {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentWriteTitleBinding.inflate(inflater, container, false)
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.writeTitleImg.setImage(viewModel.currentTakenMedia.value!!.mediaPath)
-//        <!--            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"-->
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
     }
 

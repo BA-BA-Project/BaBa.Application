@@ -14,10 +14,16 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.BR
 import kids.baba.mobile.databinding.FragmentCameraBinding
+import kids.baba.mobile.domain.model.SavedImg
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.concurrent.ExecutorService
@@ -25,7 +31,7 @@ import java.util.concurrent.Executors
 import java.util.Locale
 import java.util.concurrent.Executor
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class CameraFragment : Fragment(), CameraNavigator {
 
     private val TAG = "CameraFragment"
@@ -38,9 +44,6 @@ class CameraFragment : Fragment(), CameraNavigator {
     private val mDisplayManager by lazy {
         requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
-//    private val mViewModel: CameraViewModel by lazy {
-//        ViewModelProvider(this).get(CameraViewModel::class.java)
-//    }
 
     val viewModel: CameraViewModel by viewModels()
 
@@ -73,11 +76,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentCameraBinding.inflate(inflater, container, false).apply {
-            setVariable(BR.callback, this@CameraFragment)
-        }.also {
-            it.lifecycleOwner = this
-        }
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
         return binding.root
 
@@ -86,11 +85,13 @@ class CameraFragment : Fragment(), CameraNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         addListeners()
+
         mOutputDirectory = FilmActivity.getOutputDirectory(requireContext())
-
         mCameraExecutor = ContextCompat.getMainExecutor(requireActivity())
-
         mImageAnalyzerExecutor = Executors.newSingleThreadExecutor()
         mDisplayManager.registerDisplayListener(mDisplayListener, null)
 
@@ -119,12 +120,10 @@ class CameraFragment : Fragment(), CameraNavigator {
             .format(System.currentTimeMillis()) + ".jpg"
         val photoFile = File(mOutputDirectory, fileName)
 
-
         val metadata = ImageCapture.Metadata().apply {
             // Mirror image when using the front camera
             isReversedHorizontal = mLensFacing == CameraSelector.LENS_FACING_FRONT
         }
-
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
@@ -149,6 +148,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 //                    requireActivity().showToast(msg)
                     Log.d(TAG, msg)
                     val data = viewModel.savePhoto(savedUri.toString())
+
                     Log.e(TAG, data.toString())
                     Navigation.findNavController(requireActivity(), kids.baba.mobile.R.id.fcv_film)
                         .navigate(

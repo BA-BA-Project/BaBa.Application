@@ -7,10 +7,12 @@ import kids.baba.mobile.domain.model.MediaData
 import java.io.File
 import javax.inject.Inject
 
-//@HiltViewModel
-class CameraViewModel : ViewModel() {
+@HiltViewModel
+class CameraViewModel @Inject constructor() : ViewModel() {
 
-    internal fun savePhoto(path: String): MediaData {
+//    private val _imageUri: MutableLive
+
+    fun savePhoto(path: String): MediaData {
         val file = File(path)
         return MediaData(
             mediaName = file.name,
