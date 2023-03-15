@@ -89,7 +89,7 @@
             android:layout_marginStart="20dp"
             android:background="@drawable/format_round_corner_gray"
             android:contentDescription="카메라 화면 전환"
-            android:onClick="@{(view) -> callback.toggleCamera()}"
+            android:onClick="@{() -> callback.toggleCamera()}"
             android:src="@drawable/ic_toggle_screen"
             app:layout_constraintBottom_toBottomOf="@+id/image_capture_button"
             app:layout_constraintStart_toStartOf="parent"

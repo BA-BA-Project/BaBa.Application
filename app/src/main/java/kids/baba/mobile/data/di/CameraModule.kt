@@ -1,32 +1,15 @@
 package kids.baba.mobile.data.di
 
+import androidx.appcompat.app.AppCompatActivity
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kids.baba.mobile.core.MainApplication
 
 @Module
 @InstallIn(SingletonComponent::class)
 class CameraModule {
 
 
-
 }
-
-/*
-package kids.baba.mobile.data.di
-
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DataSourceModule {
-    @Binds
-    abstract fun bindAuthRemoteDataSource(authRemoteDataSourceImpl: AuthRemoteDataSourceImpl): AuthRemoteDataSource
-
-    @Binds
-    abstract fun bindMemberRemoteDataSource(memberRemoteDataSourceImpl: MemberRemoteDataSourceImpl): MemberRemoteDataSource
-
-    @Binds
-    abstract fun bindAlbumRemoteDataSource(albumRemoteDataSourceImpl: AlbumRemoteDataSourceImpl): AlbumRemoteDataSource
-}
-
- */

@@ -87,6 +87,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.callback = this
 
         addListeners()
 
@@ -131,6 +132,7 @@ class CameraFragment : Fragment(), CameraNavigator {
                 setMetadata(metadata)
             }.build()
 
+
         // Setup image capture listener which is triggered after photo has been taken
         imageCapture.takePicture(
             outputOptions,
@@ -150,14 +152,18 @@ class CameraFragment : Fragment(), CameraNavigator {
                     val data = viewModel.savePhoto(savedUri.toString())
 
                     Log.e(TAG, data.toString())
-                    Navigation.findNavController(requireActivity(), kids.baba.mobile.R.id.fcv_film)
-                        .navigate(
-                            CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(
-                                data
-                            )
-                        )
+//                    Navigation.findNavController(requireActivity(), kids.baba.mobile.R.id.fcv_film)
+//                        .navigate(
+//                            CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(
+//                                data
+//                            )
+//                        )
+
+
                 }
             })
+
+
 
     }
 
@@ -194,6 +200,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
 
     override fun toggleCamera() {
+        Log.e(TAG, "toggle Camera Clicked")
         mLensFacing = if (CameraSelector.LENS_FACING_FRONT == mLensFacing) {
             CameraSelector.LENS_FACING_BACK
         } else {
