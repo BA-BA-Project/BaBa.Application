@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateProfileViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _createProfileUiState = MutableStateFlow<CreateProfileUiState>(CreateProfileUiState.Loading)
@@ -31,8 +29,6 @@ class CreateProfileViewModel @Inject constructor(
 
     private val _chatList = MutableStateFlow<List<ChatItem>>(listOf())
     val chatList = _chatList.asStateFlow().map { it.toList() }
-
-    val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
     private var userName: String? = null
     private var userIcon: ProfileIcon? = null
@@ -134,7 +130,6 @@ class CreateProfileViewModel @Inject constructor(
     }
 
     companion object {
-        const val KEY_SIGN_TOKEN = "signToken"
 
         private val defaultProfileIconList = listOf(
             ProfileIcon("PROFILE_W_1", R.drawable.profile_w_1, false),

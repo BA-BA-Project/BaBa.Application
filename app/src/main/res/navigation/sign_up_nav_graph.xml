@@ -17,9 +17,9 @@
         tools:layout="@layout/fragment_relation_select" />
     <fragment
         android:id="@+id/textInputFragment"
-        android:name="kids.baba.mobile.presentation.view.signup.TextInputFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.InputUserNameFragment"
         android:label="fragment_text_input"
-        tools:layout="@layout/fragment_text_input" />
+        tools:layout="@layout/fragment_input_user_name" />
     <fragment
         android:id="@+id/inputEndFragment"
         android:name="kids.baba.mobile.presentation.view.signup.InputEndFragment"
@@ -41,8 +41,36 @@
         android:id="@+id/blankFragment"
         android:name="kids.baba.mobile.presentation.view.signup.BlankFragment"
         android:label="BlankFragment"
-        tools:layout="@layout/fragment_blank"/>
+        tools:layout="@layout/fragment_blank" />
     <action
         android:id="@+id/action_global_blankFragment"
         app:destination="@id/blankFragment" />
+    <fragment
+        android:id="@+id/checkHaveInviteCodeFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.SelectYesOrNoFragment"
+        android:label="CheckHaveInviteCodeFragment"
+        tools:layout="@layout/fragment_select_yes_or_no" />
+    <action
+        android:id="@+id/action_global_checkHaveInviteCodeFragment"
+        app:destination="@id/checkHaveInviteCodeFragment" />
+    <fragment
+        android:id="@+id/textInputBabyInfoFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.TextInputBabyInfoFragment"
+        android:label="TextInputBabyInfoFragment"
+        tools:layout="@layout/fragment_text_input_baby_info" />
+    <action
+        android:id="@+id/action_global_textInputBabyInfoFragment"
+        app:destination="@id/textInputBabyInfoFragment" />
+    <fragment
+        android:id="@+id/birthdaySelectFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.BirthdaySelectFragment"
+        android:label="BirthdaySelectFragment"
+        tools:layout="@layout/fragment_birthday_select" />
+    <action
+        android:id="@+id/action_global_birthdaySelectFragment"
+        app:destination="@id/birthdaySelectFragment" />
+    <fragment
+        android:id="@+id/inputBabyInfoEndFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.InputBabyInfoEndFragment"
+        android:label="InputBabyInfoEndFragment" /><action android:id="@+id/action_global_inputBabyInfoEndFragment" app:destination="@id/inputBabyInfoEndFragment"/>
 </navigation>

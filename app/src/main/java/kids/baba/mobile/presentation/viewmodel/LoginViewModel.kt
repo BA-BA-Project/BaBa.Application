@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.core.error.NetworkErrorException
 import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.core.error.kakao.KakaoLoginCanceledException
 import kids.baba.mobile.domain.usecase.LoginUseCase
@@ -40,6 +41,7 @@ class LoginViewModel @Inject constructor(
         loginUseCase.babaLogin(socialToken).onFailure {
             when (it) {
                 is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
+                is NetworkErrorException -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
             }
         }

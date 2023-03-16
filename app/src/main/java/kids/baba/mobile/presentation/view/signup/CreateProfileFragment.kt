@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCreateProfileBinding
@@ -19,6 +21,7 @@ import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
+import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 
 @AndroidEntryPoint
 class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
@@ -29,10 +32,13 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
     private lateinit var signUpChatAdapter: SignUpChatAdapter
 
+    private val activityViewModel : IntroViewModel by activityViewModels()
+
+    private val args: CreateProfileFragmentArgs by navArgs()
+
     val viewModel: CreateProfileViewModel by viewModels()
 
     private lateinit var childNavController: NavController
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +51,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tbSighUp.setNavigationOnClickListener {
+        binding.tbCreateProfile.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
         setNavController()
@@ -56,7 +62,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
 
     private fun setRecyclerView() {
         signUpChatAdapter = SignUpChatAdapter(this)
-        binding.rvSignUpChat.adapter = signUpChatAdapter
+        binding.rvCreateProfile.adapter = signUpChatAdapter
     }
 
     private fun setNavController() {
@@ -66,17 +72,15 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
     }
 
     private fun collectUiState() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.signUpUiState.collect { uiState ->
                 when (uiState) {
                     is CreateProfileUiState.SelectGreeting -> {
                         viewModel.addChat(
-                            ChatItem.BabaFirstChatItem(
-                                getString(R.string.sitn_up_greeting1)
-                            )
+                            ChatItem.BabaFirstChatItem(getString(R.string.sign_up_greeting1))
                         )
                         viewModel.addChat(
-                            ChatItem.BabaChatItem(getString(R.string.sitn_up_greeting2))
+                            ChatItem.BabaChatItem(getString(R.string.sign_up_greeting2))
                         )
                         viewModel.setEvent(CreateProfileEvent.WaitGreeting)
                     }
@@ -111,15 +115,18 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                 }
             }
         }
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.chatList.collect {
                 signUpChatAdapter.submitList(it)
+                binding.rvCreateProfile.post {
+                    binding.rvCreateProfile.smoothScrollToPosition(it.size - 1)
+                }
             }
         }
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 childNavController.popBackStack()
                 when (event) {
@@ -140,8 +147,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                     }
 
                     is CreateProfileEvent.MoveToInputChildInfo -> {
-                        val userInfo = event.userProfile
-                        //아이 정보 기입 화면으로 이동
+                        activityViewModel.isNeedToBabiesInfo(args.signToken, event.userProfile)
                     }
                 }
             }
@@ -160,6 +166,7 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
         super.onDestroyView()
         _binding = null
     }
+
 
 
 }

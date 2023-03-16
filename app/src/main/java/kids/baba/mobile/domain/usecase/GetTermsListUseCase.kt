@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetTermsListUseCase @Inject constructor(
     private val authRepository: AuthRepository
     ){
-    suspend operator fun invoke(socialToken: String) = authRepository.getTerms(socialToken)
+    operator fun invoke(socialToken: String) = authRepository.getTerms(socialToken)
 }

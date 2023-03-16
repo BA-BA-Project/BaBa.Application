@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.accounts.NetworkErrorException
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,12 +10,12 @@ import kids.baba.mobile.domain.usecase.GetSignTokenUseCase
 import kids.baba.mobile.domain.usecase.GetTermsListUseCase
 import kids.baba.mobile.presentation.event.TermsAgreeEvent
 import kids.baba.mobile.presentation.mapper.toDomain
-import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.TermsUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,10 +57,14 @@ class TermsAgreeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getTermsListUseCase(socialToken).onSuccess { termsList ->
-                _termsList.value = termsList.map { it.toPresentation() }
-            }.onFailure {
-                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
+            getTermsListUseCase(socialToken).catch {
+                if (it is NetworkErrorException) {
+                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
+                } else {
+                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
+                }
+            }.collect {
+                _termsList.value = it
             }
         }
     }
@@ -86,16 +91,20 @@ class TermsAgreeViewModel @Inject constructor(
 
     fun getSignToken() {
         viewModelScope.launch {
-            getSignTokenUseCase(
+             getSignTokenUseCase(
                 socialToken = socialToken,
                 termsData = termsList.value.map {
                     it.toDomain()
                 }
-            ).onSuccess {
-                _signToken.value = it
-            }.onFailure {
-                _signToken.value = "testSignToken" //임시로 사용할 signToken api구현이 완료되면 수정하기
+            ).catch {
+                if(it is NetworkErrorException){
+                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
+                } else {
+                    _signToken.emit("testSignToken") //임시로 사용할 signToken api구현이 완료되면 수정하기
 //                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+                }
+               }.collect {
+                 _signToken.emit(it)
             }
         }
     }

@@ -8,9 +8,7 @@ import retrofit2.http.Path
 
 interface AlbumApi {
 
-    //아기 리스트 가져오기
-    @GET("/baby")
-    suspend fun getBaby(): BabyResponse
+
 
     //성장 앨범 메인
     @GET("/album/{babyId}")

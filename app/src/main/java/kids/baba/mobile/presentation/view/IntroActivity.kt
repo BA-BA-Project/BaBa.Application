@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 
 @AndroidEntryPoint
@@ -49,8 +50,13 @@ class IntroActivity : AppCompatActivity() {
                         val action = LoginFragmentDirections.actionLoginFragmentToTermsAgreeFragment(event.socialToken)
                         navController.navigate(action)
                     }
-                    is IntroEvent.MoveToSignUp -> {
+                    is IntroEvent.MoveToCreateUserProfile -> {
                         val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
+                        Log.d("tertmsToCreate", event.signToken)
+                        navController.navigate(action)
+                    }
+                    is IntroEvent.MoveToInputBabiesInfo -> {
+                        val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile, event.signToken)
                         navController.navigate(action)
                     }
                     else -> Unit

@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is LoginEvent.ShowSnackBar -> showSnackBar(event.text)
