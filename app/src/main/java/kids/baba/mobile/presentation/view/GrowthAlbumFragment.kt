@@ -40,6 +40,9 @@ import kotlinx.coroutines.flow.catch
 import java.lang.Math.abs
 import java.util.*
 
+//TODO api 연동
+// 사용한 오픈소스 달력
+// https://github.com/miso01/SingleRowCalendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -47,6 +50,8 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
+    //TODO datepicker 대신 달력 커스터 마이징
+    // 앨범이 있는날짜에 표시해야함
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
@@ -70,6 +75,7 @@ class GrowthAlbumFragment : Fragment() {
             binding.tvDate.text =
                 "${DateUtils.getYear(date)}.${DateUtils.getMonthNumber(date)}"
             binding.tvDay.text = DateUtils.getDayName(date)
+            //TODO 달력 날짜 터치시 해당 날짜의 뷰페이저 아이템으로 이동
             //터치했을때만 처리 binding.viewPager.setCurrentItem(position,true)
             super.whenSelectionChanged(isSelected, position, date)
         }
@@ -135,6 +141,7 @@ class GrowthAlbumFragment : Fragment() {
             calendarViewManager = myCalendarViewManager
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
+            //TODO 캘린더에 날짜 무한으로 넣기
             setDates(getFutureDatesOfCurrentMonth())
             init()
         }
@@ -157,7 +164,6 @@ class GrowthAlbumFragment : Fragment() {
         }
         return getDates(mutableListOf())
     }
-
     private fun getFutureDatesOfCurrentMonth(): List<Date> {
         currentMonth = calendar[Calendar.MONTH]
         return getDates(mutableListOf())
@@ -217,10 +223,12 @@ class GrowthAlbumFragment : Fragment() {
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
+        //TODO api 연동시 앨범에 데이터를 할당해주기 (뷰페이저 앨범 - 달력) 1대1 매칭
         repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
         repeat(5) {
+            //TODO 아이 선택시 해당 아이의 앨범으로 가도록 처리
             babyAdapter.setItem(Baby("$it", "$it", "$it"))
         }
         val displayMetrics = DisplayMetrics()
@@ -286,6 +294,8 @@ class GrowthAlbumFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
+                singleRowCalendar
                 singleRowCalendar.select(position)
                 singleRowCalendar.scrollToPosition(position)
             }
@@ -300,6 +310,7 @@ class GrowthAlbumFragment : Fragment() {
                 val year1 = datePicker.datePicker.year
                 val month1 = datePicker.datePicker.month
                 val day1 = datePicker.datePicker.dayOfMonth
+                //TODO 날짜 선택시 해당 날짜의 뷰페이저로 이동
                 binding.shadow.alpha = 0f
                 Toast.makeText(requireContext(), "$year1 $month1, $day1", Toast.LENGTH_SHORT)
                     .show()
