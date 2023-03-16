@@ -12,7 +12,7 @@ interface MutableEventFlow<T> : EventFlow<T>, FlowCollector<T>
 
 @Suppress("FunctionName")
 fun <T> MutableEventFlow(
-    replay: Int = 3
+    replay: Int = 1
 ): MutableEventFlow<T> = EventFlowImpl(replay)
 
 fun <T> MutableEventFlow<T>.asEventFlow(): EventFlow<T> = ReadOnlyEventFlow(this)

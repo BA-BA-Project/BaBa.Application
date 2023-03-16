@@ -42,6 +42,7 @@ private val TAG = "FilmActivity"
 
     private fun collectEvent() {
         repeatOnStarted {
+            Log.e(TAG, "collectEvent() called. this is in repeatOnStarted block")
             viewModel.eventFlow.collect { event ->
                 Log.e(TAG, event.toString())
                 when (event) {
@@ -49,6 +50,7 @@ private val TAG = "FilmActivity"
                         Log.e(TAG, "Just STart on Camera")
                     }
                     is FilmEvent.MoveToWriteTitle -> {
+                        Log.e(TAG, "Mote To Write Title")
                         val action = CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(event.mediaData)
                         navController.navigate(action)
                     }
@@ -74,12 +76,6 @@ private val TAG = "FilmActivity"
                     mkdirs()
                 }
             }
-
-
-//            val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-//                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() }
-//            }
-
 
             return if (mediaDir != null && mediaDir.exists())
                 mediaDir else appContext.filesDir

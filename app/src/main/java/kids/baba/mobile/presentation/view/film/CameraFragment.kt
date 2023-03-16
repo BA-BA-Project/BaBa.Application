@@ -48,16 +48,16 @@ class CameraFragment : Fragment(), CameraNavigator {
     val viewModel: CameraViewModel by viewModels()
 
 
-    private lateinit var mOutputDirectory: File
-    private lateinit var mCameraExecutor: Executor
-    private lateinit var mImageAnalyzerExecutor: ExecutorService
+//    private lateinit var mOutputDirectory: File
+//    private lateinit var mCameraExecutor: Executor
+//    private lateinit var mImageAnalyzerExecutor: ExecutorService
     private var mPreview: Preview? = null
-    private var mImageAnalyzer: ImageAnalysis? = null
-    private var mImageCapture: ImageCapture? = null
+//    private var mImageAnalyzer: ImageAnalysis? = null
+//    private var mImageCapture: ImageCapture? = null
     private var mCamera: Camera? = null
     private var mCameraProvider: ProcessCameraProvider? = null
     private var mDisplayId: Int = -1
-    private var mLensFacing: Int = CameraSelector.LENS_FACING_BACK
+//    private var mLensFacing: Int = CameraSelector.LENS_FACING_BACK
     private var mFlashMode: Int = ImageCapture.FLASH_MODE_OFF
 
 
@@ -68,15 +68,17 @@ class CameraFragment : Fragment(), CameraNavigator {
         override fun onDisplayChanged(displayId: Int) {
             if (displayId == mDisplayId) {
                 val viewFinder = binding.viewFinder
-                mImageAnalyzer?.targetRotation = viewFinder.display.rotation
-                mImageCapture?.targetRotation = viewFinder.display.rotation
+                viewModel.mImageAnalyzer?.targetRotation = viewFinder.display.rotation
+                viewModel.mImageCapture?.targetRotation = viewFinder.display.rotation
             }
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
+
 
         return binding.root
 
@@ -89,6 +91,17 @@ class CameraFragment : Fragment(), CameraNavigator {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.callback = this
 
+        viewModel.init()
+
+        mDisplayManager.registerDisplayListener(mDisplayListener, null)
+
+        val viewFinder = binding.viewFinder
+        viewFinder.post {
+            mDisplayId = viewFinder.display.displayId
+            setUpCamera()
+        }
+
+        /*
         addListeners()
 
         mOutputDirectory = FilmActivity.getOutputDirectory(requireContext())
@@ -102,9 +115,11 @@ class CameraFragment : Fragment(), CameraNavigator {
             setUpCamera()
         }
 
+         */
+
 
     }
-
+/*
     private fun addListeners() {
 
         val imageCaptureButton = binding.imageCaptureButton
@@ -112,6 +127,10 @@ class CameraFragment : Fragment(), CameraNavigator {
             takePhoto()
         }
     }
+
+ */
+
+    /*
 
     private fun takePhoto() {
         val imageCapture = mImageCapture ?: return
@@ -161,11 +180,12 @@ class CameraFragment : Fragment(), CameraNavigator {
 
 
                 }
+
             })
 
-
-
     }
+
+    */
 
     private fun setUpCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity())
@@ -173,7 +193,7 @@ class CameraFragment : Fragment(), CameraNavigator {
             mCameraProvider = cameraProviderFuture.get()
 
             // 전면, 후면 카메라 선택
-            mLensFacing = when {
+            viewModel.mLensFacing = when {
                 hasBackCamera() -> CameraSelector.LENS_FACING_BACK
                 hasFrontCamera() -> CameraSelector.LENS_FACING_FRONT
                 else -> throw IllegalStateException("Back and front camera are unavailable")
@@ -188,7 +208,7 @@ class CameraFragment : Fragment(), CameraNavigator {
             bindCameraUseCases()
             buildUi()
 
-        }, mCameraExecutor)
+        }, viewModel.mCameraExecutor)
     }
 
     private fun buildUi() {
@@ -201,7 +221,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
     override fun toggleCamera() {
         Log.e(TAG, "toggle Camera Clicked")
-        mLensFacing = if (CameraSelector.LENS_FACING_FRONT == mLensFacing) {
+        viewModel.mLensFacing = if (CameraSelector.LENS_FACING_FRONT == viewModel.mLensFacing) {
             CameraSelector.LENS_FACING_BACK
         } else {
             CameraSelector.LENS_FACING_FRONT
@@ -220,7 +240,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
         // CameraSelector
         val cameraSelector = CameraSelector.Builder().apply {
-            requireLensFacing(mLensFacing)
+            requireLensFacing(viewModel.mLensFacing)
         }.build()
 
         // Preview
@@ -228,15 +248,15 @@ class CameraFragment : Fragment(), CameraNavigator {
         }.build()
 
         // ImageAnalysis
-        mImageAnalyzer = ImageAnalysis.Builder().apply {
+        viewModel.mImageAnalyzer = ImageAnalysis.Builder().apply {
         }.build().also {
-            it.setAnalyzer(mImageAnalyzerExecutor, LuminosityAnalyzer { luma ->
+            it.setAnalyzer(viewModel.mImageAnalyzerExecutor, LuminosityAnalyzer { luma ->
                 Log.d(TAG, "Average luminosity: $luma")
             })
         }
 
         // ImageCapture
-        mImageCapture = ImageCapture.Builder().apply {
+        viewModel.mImageCapture = ImageCapture.Builder().apply {
             setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
 //            setTargetAspectRatio(screenAspectRatio)
 //            setTargetRotation(rotation)
@@ -253,7 +273,7 @@ class CameraFragment : Fragment(), CameraNavigator {
                 this,
                 cameraSelector,
                 mPreview,
-                mImageCapture,
+                viewModel.mImageCapture,
             )
             // Attach the viewfinder's surface provider to preview use case
             mPreview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)

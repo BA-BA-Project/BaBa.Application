@@ -75,6 +75,7 @@
             android:layout_marginBottom="52dp"
             android:background="@drawable/format_round_corner_blue"
             android:scaleType="center"
+            android:onClick="@{() -> viewModel.takePhoto()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
