@@ -11,17 +11,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import kids.baba.mobile.databinding.FragmentTextInputBinding
+import kids.baba.mobile.databinding.FragmentInputUserNameBinding
 import kids.baba.mobile.presentation.model.ChatItem
+import kids.baba.mobile.presentation.model.UserChatType
 import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
-class TextInputFragment : Fragment() {
-    private var _binding: FragmentTextInputBinding? = null
+class InputUserNameFragment : Fragment() {
+    private var _binding: FragmentInputUserNameBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: CreateProfileViewModel by viewModels(
+    private val createProfileViewModel: CreateProfileViewModel by viewModels(
         ownerProducer = {
             var parent = requireParentFragment()
             while (parent is NavHostFragment) {
@@ -35,7 +36,7 @@ class TextInputFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTextInputBinding.inflate(inflater, container, false)
+        _binding = FragmentInputUserNameBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,11 +48,12 @@ class TextInputFragment : Fragment() {
             etTextInput.setOnEditorActionListener(getEditorActionListener(tvSend))
 
             tvSend.setOnClickListener {
-                when (val nowState = viewModel.signUpUiState.value) {
+                when (val nowState = createProfileViewModel.signUpUiState.value) {
                     is CreateProfileUiState.InputName -> {
-                        viewModel.setUserName(
+                        createProfileViewModel.setUserName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),
+                                UserChatType.USER_NAME,
                                 canModify = true,
                                 isModifying = false
                             )
@@ -59,9 +61,10 @@ class TextInputFragment : Fragment() {
                     }
 
                     is CreateProfileUiState.ModifyName -> {
-                        viewModel.modifyName(
+                        createProfileViewModel.modifyName(
                             ChatItem.UserChatItem(
                                 etTextInput.text.toString(),
+                                UserChatType.USER_NAME,
                                 canModify = true,
                                 isModifying = false
                             ),

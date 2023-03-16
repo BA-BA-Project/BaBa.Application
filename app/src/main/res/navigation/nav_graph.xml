@@ -30,6 +30,9 @@
         <argument
             android:name="signToken"
             app:argType="string" />
+        <action
+            android:id="@+id/action_createProfileFragment_to_inputBabiesInfoFragment"
+            app:destination="@id/inputBabiesInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/termsAgreeFragment"
@@ -41,6 +44,18 @@
             app:destination="@id/createProfileFragment" />
         <argument
             android:name="socialToken"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/inputBabiesInfoFragment"
+        android:name="kids.baba.mobile.presentation.view.signup.InputBabiesInfoFragment"
+        android:label="fragment_input_babies_info"
+        tools:layout="@layout/fragment_input_babies_info" >
+        <argument
+            android:name="userProfile"
+            app:argType="kids.baba.mobile.presentation.model.UserProfile" />
+        <argument
+            android:name="signToken"
             app:argType="string" />
     </fragment>
 </navigation>
