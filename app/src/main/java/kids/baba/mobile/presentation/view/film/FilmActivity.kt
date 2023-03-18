@@ -8,9 +8,11 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import java.io.File
 
+@AndroidEntryPoint
 class FilmActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController

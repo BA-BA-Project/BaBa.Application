@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.BR
 import kids.baba.mobile.databinding.FragmentCameraBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
@@ -24,9 +25,10 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.Locale
 import java.util.concurrent.Executor
+import javax.inject.Inject
 
-//@AndroidEntryPoint
-class CameraFragment : Fragment(), CameraNavigator {
+@AndroidEntryPoint
+class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
 
     private val TAG = "CameraFragment"
 
@@ -38,12 +40,8 @@ class CameraFragment : Fragment(), CameraNavigator {
     private val mDisplayManager by lazy {
         requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
-//    private val mViewModel: CameraViewModel by lazy {
-//        ViewModelProvider(this).get(CameraViewModel::class.java)
-//    }
 
     val viewModel: CameraViewModel by viewModels()
-
 
     private lateinit var mOutputDirectory: File
     private lateinit var mCameraExecutor: Executor
@@ -73,11 +71,7 @@ class CameraFragment : Fragment(), CameraNavigator {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentCameraBinding.inflate(inflater, container, false).apply {
-            setVariable(BR.callback, this@CameraFragment)
-        }.also {
-            it.lifecycleOwner = this
-        }
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
         return binding.root
 
@@ -85,6 +79,10 @@ class CameraFragment : Fragment(), CameraNavigator {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.callback = this
 
         addListeners()
         mOutputDirectory = FilmActivity.getOutputDirectory(requireContext())
@@ -101,6 +99,8 @@ class CameraFragment : Fragment(), CameraNavigator {
         }
 
 
+
+
     }
 
     private fun addListeners() {
@@ -109,6 +109,7 @@ class CameraFragment : Fragment(), CameraNavigator {
         imageCaptureButton.setOnClickListener {
             takePhoto()
         }
+
     }
 
     private fun takePhoto() {
@@ -192,6 +193,10 @@ class CameraFragment : Fragment(), CameraNavigator {
             binding.toggleScreenBtn.visibility = View.INVISIBLE
     }
 
+    override fun gotoAlbum() {
+        Log.e(TAG, "go to album")
+//        TODO("Not yet implemented")
+    }
 
     override fun toggleCamera() {
         mLensFacing = if (CameraSelector.LENS_FACING_FRONT == mLensFacing) {
@@ -270,7 +275,9 @@ class CameraFragment : Fragment(), CameraNavigator {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
+
     }
 
 }
