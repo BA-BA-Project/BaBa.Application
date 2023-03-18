@@ -19,12 +19,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
-import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
-import com.michalsvec.singlerowcalendar.utils.DateUtils
+import com.example.calendarnew.DayViewContainer
+import com.example.calendarnew.getWeekPageTitle
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
@@ -38,11 +38,11 @@ import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.flow.catch
 import java.lang.Math.abs
+import java.time.YearMonth
 import java.util.*
 
 //TODO api 연동
 // 사용한 오픈소스 달력
-// https://github.com/miso01/SingleRowCalendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -55,131 +55,32 @@ class GrowthAlbumFragment : Fragment() {
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
-    private val calendar = Calendar.getInstance()
-    private var currentMonth = 0
     private var isChange = false
     private var isPick = false
-    private lateinit var singleRowCalendar: SingleRowCalendar
-    private val mySelectionManager = object : CalendarSelectionManager {
-        override fun canBeItemSelected(position: Int, date: Date): Boolean {
-            val cal = Calendar.getInstance()
-            cal.time = date
-            return when (cal[Calendar.DAY_OF_WEEK]) {
-                else -> true
-            }
-        }
-    }
-    private val myCalendarChangesObserver = object :
-        CalendarChangesObserver {
-        override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-            binding.tvDate.text =
-                "${DateUtils.getYear(date)}.${DateUtils.getMonthNumber(date)}"
-            binding.tvDay.text = DateUtils.getDayName(date)
-            //TODO 달력 날짜 터치시 해당 날짜의 뷰페이저 아이템으로 이동
-            //터치했을때만 처리 binding.viewPager.setCurrentItem(position,true)
-            super.whenSelectionChanged(isSelected, position, date)
-        }
-    }
-    private val myCalendarViewManager = object :
-        CalendarViewManager {
-        override fun setCalendarViewResourceId(
-            position: Int,
-            date: Date,
-            isSelected: Boolean
-        ): Int {
-            val cal = Calendar.getInstance()
-            cal.time = date
-            return if (isSelected)
-                when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.selected_calendar_item
-                    Calendar.WEDNESDAY -> R.layout.selected_calendar_item
-                    Calendar.FRIDAY -> R.layout.selected_calendar_item
-                    else -> R.layout.selected_calendar_item
-                }
-            else
-                when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.item_calendar
-                    Calendar.WEDNESDAY -> R.layout.item_calendar
-                    Calendar.FRIDAY -> R.layout.item_calendar
-                    else -> R.layout.item_calendar
-                }
-        }
-
-        override fun bindDataToCalendarView(
-            holder: SingleRowCalendarAdapter.CalendarViewHolder,
-            date: Date,
-            position: Int,
-            isSelected: Boolean
-        ) {
-            val calendarItem = ItemCalendarBinding.bind(holder.itemView)
-            calendarItem.tvDateCalendarItem.text = DateUtils.getDayNumber(date)
-            calendarItem.tvDayCalendarItem.text = DateUtils.getDay3LettersName(date)
-
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         collectUiState()
-        initCalendar()
+        initializeCalendar()
     }
 
-    private fun initCalendar() {
-        calendar.time = Date()
-        currentMonth = calendar[Calendar.MONTH]
+    private fun initializeCalendar() {
+        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
 
-        // enable white status bar with black icons
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requireActivity().window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            requireActivity().window.statusBarColor = Color.WHITE
+            override fun create(view: View): DayViewContainer = DayViewContainer(view, binding)
+
         }
-
-
-        singleRowCalendar = binding.myCalendar.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            //TODO 캘린더에 날짜 무한으로 넣기
-            setDates(getFutureDatesOfCurrentMonth())
-            init()
+        binding.myCalendar.weekScrollListener = { weekDays ->
+            binding.tvDate.text = getWeekPageTitle(weekDays)
         }
-    }
-
-    private fun getDatesOfNextMonth(): List<Date> {
-        currentMonth++
-        if (currentMonth == 12) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
-            currentMonth = 0 // 0 == january
-        }
-        return getDates(mutableListOf())
-    }
-
-    private fun getDatesOfPreviousMonth(): List<Date> {
-        currentMonth--
-        if (currentMonth == -1) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] - 1)
-            currentMonth = 11 // 11 == december
-        }
-        return getDates(mutableListOf())
-    }
-    private fun getFutureDatesOfCurrentMonth(): List<Date> {
-        currentMonth = calendar[Calendar.MONTH]
-        return getDates(mutableListOf())
-    }
-
-    private fun getDates(list: MutableList<Date>): List<Date> {
-        calendar.set(Calendar.MONTH, currentMonth)
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        list.add(calendar.time)
-        while (currentMonth == calendar[Calendar.MONTH]) {
-            calendar.add(Calendar.DATE, +1)
-            if (calendar[Calendar.MONTH] == currentMonth)
-                list.add(calendar.time)
-        }
-        calendar.add(Calendar.DATE, -1)
-        return list
+        val currentMonth = YearMonth.now()
+        binding.myCalendar.setup(
+            currentMonth.minusMonths(5).atStartOfMonth(),
+            currentMonth.plusMonths(5).atEndOfMonth(),
+            firstDayOfWeekFromLocale(),
+        )
     }
 
     private fun collectUiState() {
@@ -295,9 +196,6 @@ class GrowthAlbumFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
-                singleRowCalendar
-                singleRowCalendar.select(position)
-                singleRowCalendar.scrollToPosition(position)
             }
         })
         binding.viewPager.currentItem
