@@ -7,14 +7,12 @@ import kids.baba.mobile.domain.model.MediaData
 import javax.inject.Inject
 
 @HiltViewModel
-class WriteTitleViewModel @Inject constructor(): ViewModel() {
+class CropViewModel @Inject constructor(): ViewModel() {
 
     val currentTakenMedia = MutableLiveData<MediaData>()
 
     internal fun setArgument(args: Any) {
         currentTakenMedia.value = args as MediaData
     }
-
-
 
 }

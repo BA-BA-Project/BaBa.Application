@@ -19,8 +19,9 @@
             android:id="@+id/action_cameraFragment_to_writeTitleFragment"
             app:destination="@+id/writeTitleFragment"
             />
-
-
+        <action
+            android:id="@+id/action_cameraFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
 
     </fragment>
 
@@ -45,6 +46,12 @@
             android:id="@+id/action_cropFragment_to_writeTitleFragment"
             app:destination="@+id/writeTitleFragment" />
 
+
+        <argument
+            android:name="media_data"
+            app:argType="kids.baba.mobile.domain.model.MediaData" />
+
+
     </fragment>
 
     <fragment
@@ -53,8 +60,6 @@
         android:label="WriteTitleFragment"
         tools:layout="@layout/fragment_write_title"
         >
-
-
 
         <action
             android:id="@+id/action_writeTitleFragment_to_cropFragment"

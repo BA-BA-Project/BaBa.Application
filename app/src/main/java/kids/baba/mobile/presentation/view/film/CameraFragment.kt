@@ -9,16 +9,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.BR
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCameraBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.concurrent.ExecutorService
@@ -40,6 +44,39 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
     private val mDisplayManager by lazy {
         requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
+        if (uri != null) {
+            // 선택된 사진이 있을 경우
+            Log.e(TAG, "choose picture $uri")
+            handlePickerResponse(uri)
+
+
+        } else {
+            // 선택된 사진이 없을 경우
+            Log.e(TAG, "There is no picture chosen ")
+        }
+    }
+
+    private fun handlePickerResponse(savedUri: Uri) {
+
+        lifecycleScope.launch{
+
+            val msg = "Photo capture succeeded: $savedUri"
+            Log.d(TAG, msg)
+            val data = viewModel.savePhoto(savedUri.toString())
+            Log.e(TAG, data.toString())
+            Navigation.findNavController(requireActivity(), R.id.fcv_film)
+                .navigate(
+                    CameraFragmentDirections.actionCameraFragmentToCropFragment(
+                        data
+                    )
+                )
+        }
+
+
+    }
+
 
     val viewModel: CameraViewModel by viewModels()
 
@@ -99,8 +136,6 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         }
 
 
-
-
     }
 
     private fun addListeners() {
@@ -109,6 +144,16 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         imageCaptureButton.setOnClickListener {
             takePhoto()
         }
+        binding.cameraToAlbumBtn.setOnClickListener { goToAlbum() }
+
+    }
+
+    private fun goToAlbum() {
+        Log.e(TAG, "go to album")
+
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
+
 
     }
 
@@ -116,7 +161,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         val imageCapture = mImageCapture ?: return
 
         // Create timestamped output file to hold the image
-        val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US)
+        val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA)
             .format(System.currentTimeMillis()) + ".jpg"
         val photoFile = File(mOutputDirectory, fileName)
 
@@ -134,32 +179,42 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
             }.build()
 
         // Setup image capture listener which is triggered after photo has been taken
+        photoCaptureListener(imageCapture, outputOptions, photoFile)
+
+    }
+
+    private fun photoCaptureListener(
+        imageCapture: ImageCapture,
+        outputOptions: ImageCapture.OutputFileOptions,
+        photoFile: File
+    ) {
         imageCapture.takePicture(
             outputOptions,
             mCameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     val msg = "Photo capture failed: ${exc.message}"
-//                    requireActivity().showToast(msg)
                     Log.e(TAG, msg, exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
-//                    requireActivity().showToast(msg)
-                    Log.d(TAG, msg)
-                    val data = viewModel.savePhoto(savedUri.toString())
-                    Log.e(TAG, data.toString())
-                    Navigation.findNavController(requireActivity(), kids.baba.mobile.R.id.fcv_film)
-                        .navigate(
-                            CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(
-                                data
+
+                    lifecycleScope.launch{
+                        val savedUri = Uri.fromFile(photoFile)
+                        val msg = "Photo capture succeeded: $savedUri"
+                        Log.d(TAG, msg)
+                        val data = viewModel.savePhoto(savedUri.toString())
+                        Log.e(TAG, data.toString())
+                        Navigation.findNavController(requireActivity(), R.id.fcv_film)
+                            .navigate(
+                                CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(
+                                    data
+                                )
                             )
-                        )
+                    }
+
                 }
             })
-
     }
 
     private fun setUpCamera() {
@@ -193,10 +248,6 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
             binding.toggleScreenBtn.visibility = View.INVISIBLE
     }
 
-    override fun gotoAlbum() {
-        Log.e(TAG, "go to album")
-//        TODO("Not yet implemented")
-    }
 
     override fun toggleCamera() {
         mLensFacing = if (CameraSelector.LENS_FACING_FRONT == mLensFacing) {
@@ -277,6 +328,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         super.onDestroyView()
 
         _binding = null
+
 
     }
 

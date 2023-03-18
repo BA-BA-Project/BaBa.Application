@@ -7,7 +7,8 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class CameraViewModel @Inject constructor() : ViewModel() {
+class CameraViewModel @Inject constructor(
+) : ViewModel() {
 
     internal fun savePhoto(path: String): MediaData {
         val file = File(path)
