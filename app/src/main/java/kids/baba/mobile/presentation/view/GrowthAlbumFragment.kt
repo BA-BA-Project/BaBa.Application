@@ -1,19 +1,12 @@
 package kids.baba.mobile.presentation.view
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.Toast
-import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,13 +15,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.calendarnew.DayViewContainer
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
-import kids.baba.mobile.databinding.ItemCalendarBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.adapter.BabyAdapter
@@ -36,10 +29,8 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
-import kotlinx.coroutines.flow.catch
-import java.lang.Math.abs
+import java.time.LocalDate
 import java.time.YearMonth
-import java.util.*
 
 //TODO api 연동
 // 사용한 오픈소스 달력
@@ -50,6 +41,7 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
+
     //TODO datepicker 대신 달력 커스터 마이징
     // 앨범이 있는날짜에 표시해야함
     lateinit var datePicker: DatePickerDialog
@@ -63,6 +55,11 @@ class GrowthAlbumFragment : Fragment() {
         initView()
         collectUiState()
         initializeCalendar()
+
+        //앨범에 있는 아이템의 날짜를 이용해서 해당 앨범의 인덱스를 구해야한다.
+        binding.tvDate.setOnClickListener {
+            binding.viewPager.setCurrentItem(15, false)
+        }
     }
 
     private fun initializeCalendar() {
@@ -81,6 +78,12 @@ class GrowthAlbumFragment : Fragment() {
             currentMonth.plusMonths(5).atEndOfMonth(),
             firstDayOfWeekFromLocale(),
         )
+        //
+        binding.myCalendar.scrollPaged = false
+        binding.myCalendar.scrollToWeek(LocalDate.now())
+        binding.tvDate.setOnClickListener {
+            binding.myCalendar.smoothScrollToDate(LocalDate.now())
+        }
     }
 
     private fun collectUiState() {
@@ -126,7 +129,18 @@ class GrowthAlbumFragment : Fragment() {
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
         //TODO api 연동시 앨범에 데이터를 할당해주기 (뷰페이저 앨범 - 달력) 1대1 매칭
         repeat(31) {
-            adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
+            adapter.setItem(
+                Album(
+                    1,
+                    "손제인",
+                    "엄마",
+                    "2023-01-it",
+                    "빵긋빵긋",
+                    false,
+                    "www.naver.com",
+                    "CARD_STYLE_1"
+                )
+            )
         }
         repeat(5) {
             //TODO 아이 선택시 해당 아이의 앨범으로 가도록 처리
@@ -196,6 +210,7 @@ class GrowthAlbumFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
+                //뷰페이저의 앨범에있는 날짜를 기준으로 달력 선택하도록 한다.
             }
         })
         binding.viewPager.currentItem
@@ -204,15 +219,18 @@ class GrowthAlbumFragment : Fragment() {
     private fun initView() {
         binding.viewmodel = viewModel
         datePicker =
-            MyDatePickerDialog(requireContext(), listener = { view, year, month, dayOfMonth ->
-                val year1 = datePicker.datePicker.year
-                val month1 = datePicker.datePicker.month
-                val day1 = datePicker.datePicker.dayOfMonth
-                //TODO 날짜 선택시 해당 날짜의 뷰페이저로 이동
+            MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
+                val year = datePicker.datePicker.year
+                val month = datePicker.datePicker.month
+                val day = datePicker.datePicker.dayOfMonth
                 binding.shadow.alpha = 0f
-                Toast.makeText(requireContext(), "$year1 $month1, $day1", Toast.LENGTH_SHORT)
-                    .show()
-            }, 2023, 3, 12){
+                binding.myCalendar.smoothScrollToWeek(
+                    WeekDay(
+                        LocalDate.of(year, month + 1, day),
+                        position = WeekDayPosition.InDate
+                    )
+                )
+            }, 2023, 3, 12) {
                 binding.shadow.alpha = 0f
             }
     }
