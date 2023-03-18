@@ -22,7 +22,7 @@ import java.time.format.TextStyle
 import java.util.*
 
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)} ${this.year}"
+    return "${this.year}.${this.month.value}"
 }
 
 fun Month.displayText(short: Boolean = true): String {
@@ -47,19 +47,9 @@ fun Context.findActivity(): Activity {
 
 fun getWeekPageTitle(week: Week): String {
     val firstDate = week.days.first().date
-    val lastDate = week.days.last().date
-    return when {
-        firstDate.yearMonth == lastDate.yearMonth -> {
-            firstDate.yearMonth.displayText()
-        }
-        firstDate.year == lastDate.year -> {
-            "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
-        }
-        else -> {
-            "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
-        }
-    }
+    return firstDate.yearMonth.displayText()
 }
+
 fun View.makeVisible() {
     visibility = View.VISIBLE
 }
