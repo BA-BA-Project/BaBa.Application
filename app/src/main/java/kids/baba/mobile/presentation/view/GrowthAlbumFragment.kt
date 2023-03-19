@@ -1,34 +1,27 @@
 package kids.baba.mobile.presentation.view
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.Toast
-import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
-import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
-import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
-import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
-import com.michalsvec.singlerowcalendar.utils.DateUtils
+import com.example.calendarnew.DayViewContainer
+import com.example.calendarnew.getWeekPageTitle
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
-import kids.baba.mobile.databinding.ItemCalendarBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.adapter.BabyAdapter
@@ -36,13 +29,11 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
-import kotlinx.coroutines.flow.catch
-import java.lang.Math.abs
-import java.util.*
+import java.time.LocalDate
+import java.time.YearMonth
 
 //TODO api 연동
 // 사용한 오픈소스 달력
-// https://github.com/miso01/SingleRowCalendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -50,136 +41,49 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
+
     //TODO datepicker 대신 달력 커스터 마이징
     // 앨범이 있는날짜에 표시해야함
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
-    private val calendar = Calendar.getInstance()
-    private var currentMonth = 0
     private var isChange = false
     private var isPick = false
-    private lateinit var singleRowCalendar: SingleRowCalendar
-    private val mySelectionManager = object : CalendarSelectionManager {
-        override fun canBeItemSelected(position: Int, date: Date): Boolean {
-            val cal = Calendar.getInstance()
-            cal.time = date
-            return when (cal[Calendar.DAY_OF_WEEK]) {
-                else -> true
-            }
-        }
-    }
-    private val myCalendarChangesObserver = object :
-        CalendarChangesObserver {
-        override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-            binding.tvDate.text =
-                "${DateUtils.getYear(date)}.${DateUtils.getMonthNumber(date)}"
-            binding.tvDay.text = DateUtils.getDayName(date)
-            //TODO 달력 날짜 터치시 해당 날짜의 뷰페이저 아이템으로 이동
-            //터치했을때만 처리 binding.viewPager.setCurrentItem(position,true)
-            super.whenSelectionChanged(isSelected, position, date)
-        }
-    }
-    private val myCalendarViewManager = object :
-        CalendarViewManager {
-        override fun setCalendarViewResourceId(
-            position: Int,
-            date: Date,
-            isSelected: Boolean
-        ): Int {
-            val cal = Calendar.getInstance()
-            cal.time = date
-            return if (isSelected)
-                when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.selected_calendar_item
-                    Calendar.WEDNESDAY -> R.layout.selected_calendar_item
-                    Calendar.FRIDAY -> R.layout.selected_calendar_item
-                    else -> R.layout.selected_calendar_item
-                }
-            else
-                when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.MONDAY -> R.layout.item_calendar
-                    Calendar.WEDNESDAY -> R.layout.item_calendar
-                    Calendar.FRIDAY -> R.layout.item_calendar
-                    else -> R.layout.item_calendar
-                }
-        }
-
-        override fun bindDataToCalendarView(
-            holder: SingleRowCalendarAdapter.CalendarViewHolder,
-            date: Date,
-            position: Int,
-            isSelected: Boolean
-        ) {
-            val calendarItem = ItemCalendarBinding.bind(holder.itemView)
-            calendarItem.tvDateCalendarItem.text = DateUtils.getDayNumber(date)
-            calendarItem.tvDayCalendarItem.text = DateUtils.getDay3LettersName(date)
-
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         collectUiState()
-        initCalendar()
-    }
+        initializeCalendar()
 
-    private fun initCalendar() {
-        calendar.time = Date()
-        currentMonth = calendar[Calendar.MONTH]
-
-        // enable white status bar with black icons
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requireActivity().window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            requireActivity().window.statusBarColor = Color.WHITE
-        }
-
-
-        singleRowCalendar = binding.myCalendar.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            //TODO 캘린더에 날짜 무한으로 넣기
-            setDates(getFutureDatesOfCurrentMonth())
-            init()
+        //앨범에 있는 아이템의 날짜를 이용해서 해당 앨범의 인덱스를 구해야한다.
+        binding.tvDate.setOnClickListener {
+            binding.viewPager.setCurrentItem(15, false)
         }
     }
 
-    private fun getDatesOfNextMonth(): List<Date> {
-        currentMonth++
-        if (currentMonth == 12) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] + 1)
-            currentMonth = 0 // 0 == january
-        }
-        return getDates(mutableListOf())
-    }
+    private fun initializeCalendar() {
+        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
 
-    private fun getDatesOfPreviousMonth(): List<Date> {
-        currentMonth--
-        if (currentMonth == -1) {
-            calendar.set(Calendar.YEAR, calendar[Calendar.YEAR] - 1)
-            currentMonth = 11 // 11 == december
-        }
-        return getDates(mutableListOf())
-    }
-    private fun getFutureDatesOfCurrentMonth(): List<Date> {
-        currentMonth = calendar[Calendar.MONTH]
-        return getDates(mutableListOf())
-    }
+            override fun create(view: View): DayViewContainer = DayViewContainer(view, binding)
 
-    private fun getDates(list: MutableList<Date>): List<Date> {
-        calendar.set(Calendar.MONTH, currentMonth)
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        list.add(calendar.time)
-        while (currentMonth == calendar[Calendar.MONTH]) {
-            calendar.add(Calendar.DATE, +1)
-            if (calendar[Calendar.MONTH] == currentMonth)
-                list.add(calendar.time)
         }
-        calendar.add(Calendar.DATE, -1)
-        return list
+        binding.myCalendar.weekScrollListener = { weekDays ->
+            binding.tvDate.text = getWeekPageTitle(weekDays)
+        }
+        val currentMonth = YearMonth.now()
+        binding.myCalendar.setup(
+            currentMonth.minusMonths(5).atStartOfMonth(),
+            currentMonth.plusMonths(5).atEndOfMonth(),
+            firstDayOfWeekFromLocale(),
+        )
+        //
+        binding.myCalendar.scrollPaged = false
+        binding.myCalendar.scrollToWeek(LocalDate.now())
+        binding.tvDate.setOnClickListener {
+            binding.myCalendar.smoothScrollToDate(LocalDate.now())
+        }
     }
 
     private fun collectUiState() {
@@ -225,7 +129,18 @@ class GrowthAlbumFragment : Fragment() {
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
         //TODO api 연동시 앨범에 데이터를 할당해주기 (뷰페이저 앨범 - 달력) 1대1 매칭
         repeat(31) {
-            adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
+            adapter.setItem(
+                Album(
+                    1,
+                    "손제인",
+                    "엄마",
+                    "2023-01-it",
+                    "빵긋빵긋",
+                    false,
+                    "www.naver.com",
+                    "CARD_STYLE_1"
+                )
+            )
         }
         repeat(5) {
             //TODO 아이 선택시 해당 아이의 앨범으로 가도록 처리
@@ -295,9 +210,7 @@ class GrowthAlbumFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
-                singleRowCalendar
-                singleRowCalendar.select(position)
-                singleRowCalendar.scrollToPosition(position)
+                //뷰페이저의 앨범에있는 날짜를 기준으로 달력 선택하도록 한다.
             }
         })
         binding.viewPager.currentItem
@@ -306,15 +219,18 @@ class GrowthAlbumFragment : Fragment() {
     private fun initView() {
         binding.viewmodel = viewModel
         datePicker =
-            MyDatePickerDialog(requireContext(), listener = { view, year, month, dayOfMonth ->
-                val year1 = datePicker.datePicker.year
-                val month1 = datePicker.datePicker.month
-                val day1 = datePicker.datePicker.dayOfMonth
-                //TODO 날짜 선택시 해당 날짜의 뷰페이저로 이동
+            MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
+                val year = datePicker.datePicker.year
+                val month = datePicker.datePicker.month
+                val day = datePicker.datePicker.dayOfMonth
                 binding.shadow.alpha = 0f
-                Toast.makeText(requireContext(), "$year1 $month1, $day1", Toast.LENGTH_SHORT)
-                    .show()
-            }, 2023, 3, 12){
+                binding.myCalendar.smoothScrollToWeek(
+                    WeekDay(
+                        LocalDate.of(year, month + 1, day),
+                        position = WeekDayPosition.InDate
+                    )
+                )
+            }, 2023, 3, 12) {
                 binding.shadow.alpha = 0f
             }
     }

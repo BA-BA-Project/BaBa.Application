@@ -72,11 +72,12 @@
             app:layout_constraintTop_toTopOf="@+id/tvDate" />
 
 
-        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+        <com.kizitonwose.calendar.view.WeekCalendarView
             android:id="@+id/myCalendar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
+            app:cv_dayViewResource="@layout/item_day"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    tools:background="@color/baba_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <TextView
+            android:id="@+id/exSevenDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:text="Mon" />
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:id="@+id/exSevenDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="24" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/exSevenSelectedView"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_gravity="bottom"
+        android:background="@color/baba_main" />
+
+</FrameLayout>
+
+
