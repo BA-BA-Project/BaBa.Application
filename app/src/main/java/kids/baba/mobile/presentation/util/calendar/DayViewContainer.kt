@@ -1,6 +1,7 @@
 package com.example.calendarnew
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -9,6 +10,7 @@ import com.kizitonwose.calendar.view.ViewContainer
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
+import kids.baba.mobile.presentation.util.calendar.DayListener
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -18,12 +20,18 @@ class DayViewContainer(view: View, binding: FragmentGrowthalbumBinding) : ViewCo
     private var selectedDate = LocalDate.now()
 
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")
+    private var listener: DayListener? = null
+
+    fun setOnSelectedDateChangeListener(listener: DayListener) {
+        this.listener = listener
+    }
 
     init {
         view.setOnClickListener {
             if (selectedDate != day.date) {
                 val oldDate = selectedDate
                 selectedDate = day.date
+                listener?.selectDay(selectedDate)
                 binding.myCalendar.notifyDateChanged(day.date)
                 oldDate?.let { binding.myCalendar.notifyDateChanged(it) }
             }

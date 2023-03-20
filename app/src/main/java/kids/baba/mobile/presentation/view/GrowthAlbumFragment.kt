@@ -28,6 +28,7 @@ import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
+import kids.baba.mobile.presentation.util.calendar.DayListener
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -41,15 +42,18 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
+    val indexMap = hashMapOf<LocalDate, Int>()
+    val dayMap = hashMapOf<Int, LocalDate>()
 
     //TODO datepicker 대신 달력 커스터 마이징
-    // 앨범이 있는날짜에 표시해야함
+    //앨범이 있는날짜에 표시해야함
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
     private var isChange = false
     private var isPick = false
-
+    private lateinit var dayViewContainer: DayViewContainer
+    private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
@@ -66,7 +70,19 @@ class GrowthAlbumFragment : Fragment() {
         binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
             override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
 
-            override fun create(view: View): DayViewContainer = DayViewContainer(view, binding)
+            override fun create(view: View): DayViewContainer {
+                dayViewContainer = DayViewContainer(view, binding)
+                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
+                    override fun selectDay(date: LocalDate) {
+                        Log.e("day", "${date.year} ${date.month.value} ${date.dayOfMonth}")
+                        currentDay = date
+                        indexMap[currentDay]?.let {
+                            binding.viewPager.setCurrentItem(it, true)
+                        }
+                    }
+                })
+                return dayViewContainer
+            }
 
         }
         binding.myCalendar.weekScrollListener = { weekDays ->
@@ -84,6 +100,7 @@ class GrowthAlbumFragment : Fragment() {
         binding.tvDate.setOnClickListener {
             binding.myCalendar.smoothScrollToDate(LocalDate.now())
         }
+
     }
 
     private fun collectUiState() {
@@ -134,14 +151,20 @@ class GrowthAlbumFragment : Fragment() {
                     1,
                     "손제인",
                     "엄마",
-                    "2023-01-it",
+                    "${currentDay.year}-${currentDay.month.value}-${currentDay.dayOfMonth}",
                     "빵긋빵긋",
                     false,
                     "www.naver.com",
                     "CARD_STYLE_1"
                 )
             )
+            //indexMap[album.date] = it + 1
+            indexMap[currentDay] = it + 1
+            dayMap[it + 1] = currentDay
+            currentDay = currentDay.plusDays(1)
+            Log.e("day", "${currentDay.dayOfMonth} ${it + 1}")
         }
+        currentDay = LocalDate.now()
         repeat(5) {
             //TODO 아이 선택시 해당 아이의 앨범으로 가도록 처리
             babyAdapter.setItem(Baby("$it", "$it", "$it"))
@@ -211,6 +234,10 @@ class GrowthAlbumFragment : Fragment() {
                 super.onPageSelected(position)
                 //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
                 //뷰페이저의 앨범에있는 날짜를 기준으로 달력 선택하도록 한다.
+                dayMap[position]?.let {
+                    binding.myCalendar.smoothScrollToDate(it)
+                }
+                Log.e("day", "${currentDay.dayOfMonth}")
             }
         })
         binding.viewPager.currentItem

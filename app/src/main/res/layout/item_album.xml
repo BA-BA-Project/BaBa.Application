@@ -12,6 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/dateVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,8 +38,8 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/white"
             android:src="@drawable/blue_heart"
+            app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
