@@ -14,6 +14,7 @@ class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) 
     class AlbumViewHolder(private val binding: ItemAlbumBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
+            binding.dateVal.text = item.date
         }
     }
 
