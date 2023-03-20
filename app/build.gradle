@@ -132,6 +132,17 @@ dependencies {
     implementation "androidx.camera:camera-extensions:${camerax_version}"
 
 
+    // crop
+
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
+
+
+//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
+//    implementation 'com.mayank:simplecropview:1.0.0'
+
+
+
 }
 
 kapt {

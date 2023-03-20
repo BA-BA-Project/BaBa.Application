@@ -24,7 +24,6 @@ class FilmActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_film)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 
         setNavController()

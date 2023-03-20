@@ -1,10 +1,13 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -106,6 +109,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
@@ -151,8 +155,8 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
     private fun goToAlbum() {
         Log.e(TAG, "go to album")
 
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
 
     }
@@ -164,6 +168,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA)
             .format(System.currentTimeMillis()) + ".jpg"
         val photoFile = File(mOutputDirectory, fileName)
+
 
 
         val metadata = ImageCapture.Metadata().apply {

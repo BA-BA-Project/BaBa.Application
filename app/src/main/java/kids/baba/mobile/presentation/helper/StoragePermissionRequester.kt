@@ -6,17 +6,18 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import kids.baba.mobile.R
 
-class CameraPermissionRequester(
+class StoragePermissionRequester(
     fragment: Fragment,
     onGranted: () -> Unit,
     onDismissed: () -> Unit,
 ) : BasePermissionRequester(fragment, onGranted, onDismissed) {
     override val permissions: Array<String>
         get() = arrayOf(
-            Manifest.permission.CAMERA,
-//            Manifest.permission.RECORD_AUDIO,
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//            Manifest.permission.CAMERA,
+//            Manifest.permission.RECORD_AUDIO
+//            ,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
     override val titleResId: Int
