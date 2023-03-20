@@ -20,6 +20,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.TermsUiModel
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 import kids.baba.mobile.presentation.viewmodel.TermsAgreeViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
@@ -53,7 +54,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect{event ->
                 when(event) {
                     is TermsAgreeEvent.ShowSnackBar -> showSnackBar(event.text)
@@ -66,13 +67,13 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         termsAdapter = TermsAdapter(this)
         binding.rvTerms.adapter = termsAdapter
 
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.termsList.collect{
                 termsAdapter.submitList(it)
             }
         }
 
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.isAllChecked.collect{
                 binding.cbAllAgree.isChecked = it
             }
@@ -83,15 +84,20 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         binding.btnSignUpStart.setOnClickListener {
             if(viewModel.isAllChecked.value){
                 viewModel.getSignToken()
-                val signToken = viewModel.signToken.value
-                if(signToken.isNotEmpty()){
-                    activityViewModel.isSignUpStart(signToken)
+                viewLifecycleOwner.repeatOnStarted {
+                    viewModel.signToken.collectLatest{
+                        if(it.isNotEmpty()){
+                            activityViewModel.isSignUpStart(it)
+                        }
+                    }
                 }
             } else {
                 showSnackBar(R.string.required_terms_acceptance)
             }
         }
     }
+
+
     private fun showSnackBar(@StringRes text: Int) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }

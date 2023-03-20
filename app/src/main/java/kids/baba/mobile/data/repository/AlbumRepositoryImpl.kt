@@ -1,7 +1,6 @@
 package kids.baba.mobile.data.repository
 
 import kids.baba.mobile.data.datasource.album.AlbumRemoteDataSource
-import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.AlbumResponse
 import kids.baba.mobile.domain.repository.AlbumRepository
 import kotlinx.coroutines.flow.Flow

@@ -14,12 +14,14 @@
     <string name="baba_terms_agree_failed">이용약관 동의 과정에서 문제가 발생했습니다.</string>
     <string name="kakao_login_canceled">카카오 로그인이 취소되었습니다.</string>
     <string name="baba_login_failed">로그인에 실패했습니다. 다시 한번 확인해 주세요</string>
+    <string name="baba_sign_up_failed">회원가입에 실패했습니다.</string>
+    <string name="baba_network_failed">네트워크 연결을 확인해주세요</string>
     <string name="baba_name">바바</string>
     <string name="create_profile">프로필 생성</string>
     <string name="modify">수정</string>
     <string name="modifying">수정 중</string>
-    <string name="sitn_up_greeting1">반가워요☺</string>
-    <string name="sitn_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
+    <string name="sign_up_greeting1">반가워요☺</string>
+    <string name="sign_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
     <string name="please_input_name">바바에서 사용할 이름을 입력해주세요.\n[마이]에서 변경 가능해요."</string>
     <string name="please_select_profile_icon">프로필을 선택해봐요.\n[마이]에서 변경 가능해요.</string>
     <string name="hello_blank_fragment">Heselect_camerallo blank fragment</string>
@@ -81,4 +83,29 @@ features available.]]>
     <string name="view_by_date">날짜별 보기</string>
     <string name="album_card_record_image">기록하기를 눌러 사진을 남겨 봐요</string>
     <string name="album_card_title">{아기}의 오늘 기록</string>
+    <string name="input_children_info">아이 정보 기입</string>
+    <string name="check_have_invite_code">초대코드를 받으셨나요?</string>
+    <string name="babies_info_by_invite_code">%s의 %s이시군요!</string>
+    <string name="answer_yes">응, 맞아</string>
+    <string name="answer_no">아니</string>
+    <string name="need_to_baby_info">추억을 기록하기 전 아이의 정보가 필요해요!</string>
+    <string name="what_is_the_name_of_baby">기록할 아이의 이름이 무엇인가요?</string>
+
+    <string name="monday"> 월</string>
+    <string name="tuesday"> 화</string>
+    <string name="wednesday"> 수</string>
+    <string name="thursday"> 목</string>
+    <string name="friday"> 금</string>
+    <string name="saturday"> 토</string>
+    <string name="sunday"> 일</string>
+    <string name="baby_info_error">아이의 정보가 잘못 입력되었습니다. 다시 한번 입력해 주세요</string>
+    <string name="input_more_baby_info">또 기록하고 싶은 아이가 있나요?</string>
+    <string name="relation_mom">엄마</string>
+    <string name="relation_dad">아빠</string>
+    <string name="relation_other">직접 입력</string>
+    <string name="input_baby_birthday">아이의 생일 혹은 출산 예정일이  언제인가요? 📆</string>
+    <string name="input_more_baby">또 기록하고 싶은 아이가 있나요?</string>
+    <string name="input_relation">아이와 어떤 관계이신가요?</string>
+    <string name="please_input_invite_code">초대코드를 보내주세요</string>
+    <string name="input_end_babies_info">좋아요!\n아래 버튼을 눌러 시작해봐요!</string>
 </resources>
