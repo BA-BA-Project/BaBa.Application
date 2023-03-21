@@ -21,22 +21,79 @@
         android:layout_height="match_parent"
         tools:context=".presentation.view.film.WriteTitleFragment">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/ab_write_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toTopOf="@id/ab_write_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_write_title"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                app:buttonGravity="center_vertical"
+                app:navigationIcon="@drawable/ic_back_black_round"
+                app:title="@{viewModel.currentTakenMedia.mediaPath}"
+                app:titleTextColor="@color/black"
+                tools:title="21.09.30(촬영당일날짜)"
+                android:textSize="16sp"
+                app:titleCentered="true">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/complete_btn"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/format_round_corner_black"
+                    android:text="@string/complete"
+                    android:textColor="@color/inactive_text"
+                    android:shadowColor="@color/inactive_shadow"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/write_title_img"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="W, 1:1"
-
-
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="fitXY"
+            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ab_write_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/write_title_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:hint="@string/type_title"
+            android:textColorHint="@color/hint_text"
+            android:textColor="@color/white"
+            android:inputType="text"
+            android:background="@color/transparent"
 
-
-
-         />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+<!--    android:focusedByDefault="true"-->

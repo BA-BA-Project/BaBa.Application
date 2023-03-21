@@ -27,6 +27,10 @@ import kids.baba.mobile.databinding.FragmentCameraBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.attribute.BasicFileAttributes
 import java.text.SimpleDateFormat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -165,10 +169,11 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         val imageCapture = mImageCapture ?: return
 
         // Create timestamped output file to hold the image
-        val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA)
+        val fileName = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
             .format(System.currentTimeMillis()) + ".jpg"
-        val photoFile = File(mOutputDirectory, fileName)
+        val dateInfo = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
 
+        val photoFile = File(mOutputDirectory, fileName)
 
 
         val metadata = ImageCapture.Metadata().apply {
@@ -220,6 +225,11 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
 
                 }
             })
+
+
+
+
+
     }
 
     private fun setUpCamera() {

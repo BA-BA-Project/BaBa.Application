@@ -23,18 +23,13 @@ class FilmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_film)
-
-
-
         setNavController()
     }
-
     private fun setNavController() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fcv_film) as NavHostFragment
         navController = navHostFragment.navController
     }
-
 
     companion object {
         fun getOutputDirectory(context: Context): File {
@@ -45,21 +40,12 @@ class FilmActivity : AppCompatActivity() {
                     mkdirs()
                 }
             }
-
-
-//            val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-//                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() }
-//            }
-
-
             return if (mediaDir != null && mediaDir.exists())
                 mediaDir else appContext.filesDir
         }
 
         fun open(activity: Activity) {
-            activity.startActivity(Intent(activity, FilmActivity::class.java)).also {
-                activity.finish()
-            }
+            activity.startActivity(Intent(activity, FilmActivity::class.java))
         }
     }
 

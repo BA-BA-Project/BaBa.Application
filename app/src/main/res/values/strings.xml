@@ -78,6 +78,11 @@ features available.]]>
     <string name="android_permission_denied_title">Permission Denied</string>
     <string name="open_setting">Open Setting</string>
     <string name="cancel">Cancel</string>
+    <string name="crop_image">사진 자르기</string>
+    <string name="complete">완료</string>
+
+    <string name="type_title">제목을 입력하세요</string>
+
 
     <string name="create_profile_complete">프로필 생성 완료</string>
     <string name="view_by_date">날짜별 보기</string>
@@ -108,4 +113,6 @@ features available.]]>
     <string name="input_relation">아이와 어떤 관계이신가요?</string>
     <string name="please_input_invite_code">초대코드를 보내주세요</string>
     <string name="input_end_babies_info">좋아요!\n아래 버튼을 눌러 시작해봐요!</string>
+
+
 </resources>

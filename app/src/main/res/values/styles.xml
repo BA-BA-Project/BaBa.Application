@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BABA.TextStyle" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/notosanskr</item>
@@ -51,5 +51,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
+
 
 </resources>

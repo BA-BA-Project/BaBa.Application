@@ -7,5 +7,6 @@ data class MediaData (
     val mediaType: String = "",
     val mediaSize: Long = 0,
     val mediaPath: String = "",
-    val mediaDuration: Long = 0
+    val mediaDuration: Long = 0,
+    val mediaDate: String = ""
 ): Serializable
