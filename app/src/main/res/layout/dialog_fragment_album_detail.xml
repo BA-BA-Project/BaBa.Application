@@ -1,268 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="28dp"
-        android:layout_marginVertical="55dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
+    </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black">
 
-            <TextView
-                android:id="@+id/tv_album_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="18dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/BABA.TextStyle"
-                android:textColor="@color/baba_sub_2"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/btn_album_config"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="21-09-28" />
-
-            <ImageButton
-                android:id="@+id/btn_album_config"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_meatballs_menu"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_album_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_album_date"
-                app:layout_constraintTop_toTopOf="@+id/tv_album_date" />
-
-            <TextView
-                android:id="@+id/tv_album_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textAppearance="@style/BABA.TextStyle"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/tv_album_writer"
-                app:layout_constraintStart_toStartOf="@+id/tv_album_date"
-                app:layout_constraintTop_toBottomOf="@+id/tv_album_date"
-                tools:text="양육자가 작성한 제목" />
-
-            <TextView
-                android:id="@+id/tv_album_writer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/BABA.TextStyle"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
-                app:layout_constraintEnd_toStartOf="@id/tv_album_relation"
-                app:layout_constraintStart_toEndOf="@id/tv_album_title"
-                app:layout_constraintTop_toTopOf="@id/tv_album_title"
-                tools:text="손제인" />
-
-            <TextView
-                android:id="@+id/tv_album_relation"
-                style="@style/BABA.TextStyle.Relation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/bg_album_relation"
-                android:textAppearance="@style/BABA.TextStyle"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_album_title"
-                app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
-                app:layout_constraintStart_toEndOf="@id/tv_album_writer"
-                app:layout_constraintTop_toTopOf="@id/tv_album_title"
-                tools:text="엄마" />
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_baby_Photo"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                app:cardCornerRadius="15dp"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/tv_album_title"
-                app:layout_constraintTop_toBottomOf="@+id/tv_album_title">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    tools:src="@mipmap/ic_launcher" />
-
-            </androidx.cardview.widget.CardView>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
-                android:layout_marginBottom="21dp"
-                android:background="@drawable/bg_like"
-                android:button="@null"
-                android:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
-                app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
-
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginVertical="55dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_like_users"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                app:layout_constraintStart_toStartOf="@+id/tv_album_date"
-                app:layout_constraintTop_toBottomOf="@id/cv_baby_Photo">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/civ_like_user_3"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="36dp"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dp"
-                    app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                    app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                    app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                    tools:civ_circle_background_color="@color/baba_main"
-                    tools:src="@drawable/profile_w_5" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/civ_like_user_2"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="18dp"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dp"
-                    app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                    app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                    app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                    tools:civ_circle_background_color="@color/baba_main"
-                    tools:src="@drawable/profile_w_5" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/civ_like_user_1"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <TextView
+                    android:id="@+id/tv_album_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="18dp"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textColor="@color/baba_sub_2"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:text="21-09-28" />
+
+                <ImageButton
+                    android:id="@+id/btn_album_config"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_meatballs_menu"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_album_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_album_date"
+                    app:layout_constraintTop_toTopOf="@+id/tv_album_date" />
+
+                <TextView
+                    android:id="@+id/tv_album_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/tv_album_writer"
+                    app:layout_constraintStart_toStartOf="@+id/tv_album_date"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_album_date"
+                    tools:text="양육자가 작성한 제목" />
+
+                <TextView
+                    android:id="@+id/tv_album_writer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
+                    app:layout_constraintEnd_toStartOf="@id/tv_album_relation"
+                    app:layout_constraintStart_toEndOf="@id/tv_album_title"
+                    app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                    tools:text="손제인" />
+
+                <TextView
+                    android:id="@+id/tv_album_relation"
+                    style="@style/BABA.TextStyle.Relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/bg_album_relation"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_album_title"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
+                    app:layout_constraintStart_toEndOf="@id/tv_album_writer"
+                    app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                    tools:text="엄마" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_baby_Photo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@+id/tv_album_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_album_title">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        tools:src="@mipmap/ic_launcher" />
+
+                </androidx.cardview.widget.CardView>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="21dp"
+                    android:background="@drawable/bg_like"
+                    android:button="@null"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
+                    app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_like_users"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_album_date"
+                    app:layout_constraintTop_toBottomOf="@id/cv_baby_Photo">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/civ_like_user_3"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="36dp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
+                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
+                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
+                        tools:civ_circle_background_color="@color/baba_main"
+                        tools:src="@drawable/profile_w_5" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/civ_like_user_2"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="18dp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
+                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
+                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
+                        tools:civ_circle_background_color="@color/baba_main"
+                        tools:src="@drawable/profile_w_5" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/civ_like_user_1"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:civ_circle_background_color="@color/baba_main"
+                        tools:src="@drawable/profile_w_5" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tv_like_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textColor="@color/text_2"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_like_users"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
+                    app:layout_constraintStart_toEndOf="@id/cl_like_users"
+                    app:layout_constraintTop_toTopOf="@id/cl_like_users"
+                    tools:text="좋아요 3개" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/dv_comment_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    app:layout_constraintEnd_toEndOf="@id/tv_like_count"
+                    app:layout_constraintStart_toStartOf="@id/cl_like_users"
+                    app:layout_constraintTop_toBottomOf="@id/tv_like_count" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_album_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@+id/dv_comment_end"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
+                    app:layout_constraintStart_toStartOf="@id/cl_like_users"
+                    app:layout_constraintTop_toBottomOf="@id/dv_comment_start"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_album_comment" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/dv_comment_end"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toTopOf="@id/civ_my_icon"
+                    app:layout_constraintEnd_toEndOf="@id/rv_album_comment"
+                    app:layout_constraintStart_toStartOf="@id/rv_album_comment" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civ_my_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_album_date"
                     tools:civ_circle_background_color="@color/baba_main"
                     tools:src="@drawable/profile_w_5" />
+
+                <EditText
+                    android:id="@+id/et_my_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_baba_edit_text"
+                    android:hint="@string/add_comment"
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:textColorHint="@color/text_3"
+                    app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
+                    app:layout_constraintEnd_toStartOf="@id/tv_send"
+                    app:layout_constraintStart_toEndOf="@id/civ_my_icon"
+                    app:layout_constraintTop_toTopOf="@id/civ_my_icon" />
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/send"
+                    android:textAppearance="@style/BABA.TextStyle.Button"
+                    android:textColor="@color/text_3"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_my_comment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toEndOf="@+id/et_my_comment"
+                    app:layout_constraintTop_toTopOf="@+id/et_my_comment" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_like_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/BABA.TextStyle"
-                android:textColor="@color/text_2"
-                app:layout_constraintBottom_toBottomOf="@id/cl_like_users"
-                app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
-                app:layout_constraintStart_toEndOf="@id/cl_like_users"
-                app:layout_constraintTop_toTopOf="@id/cl_like_users"
-                tools:text="좋아요 3개" />
 
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/dv_comment_start"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                app:layout_constraintEnd_toEndOf="@id/tv_like_count"
-                app:layout_constraintStart_toStartOf="@id/cl_like_users"
-                app:layout_constraintTop_toBottomOf="@id/tv_like_count" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_album_comment"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/dv_comment_end"
-                app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
-                app:layout_constraintStart_toStartOf="@id/cl_like_users"
-                app:layout_constraintTop_toBottomOf="@id/dv_comment_start"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_album_comment" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/dv_comment_end"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toTopOf="@id/civ_my_icon"
-                app:layout_constraintEnd_toEndOf="@id/rv_album_comment"
-                app:layout_constraintStart_toStartOf="@id/rv_album_comment" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_my_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_album_date"
-                tools:civ_circle_background_color="@color/baba_main"
-                tools:src="@drawable/profile_w_5" />
-
-            <EditText
-                android:id="@+id/et_my_comment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:background="@drawable/bg_baba_edit_text"
-                android:hint="@string/add_comment"
-                android:maxLines="1"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="5dp"
-                android:textColorHint="@color/text_3"
-                app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
-                app:layout_constraintEnd_toStartOf="@id/tv_send"
-                app:layout_constraintStart_toEndOf="@id/civ_my_icon"
-                app:layout_constraintTop_toTopOf="@id/civ_my_icon" />
-
-            <TextView
-                android:id="@+id/tv_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingHorizontal="10dp"
-                android:text="@string/send"
-                android:textAppearance="@style/BABA.TextStyle.Button"
-                android:textColor="@color/text_3"
-                app:layout_constraintBottom_toBottomOf="@+id/et_my_comment"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/et_my_comment"
-                app:layout_constraintTop_toTopOf="@+id/et_my_comment" />
+        </androidx.cardview.widget.CardView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
