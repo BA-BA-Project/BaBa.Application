@@ -84,6 +84,10 @@ class GrowthAlbumFragment : Fragment() {
         binding.tvDate.setOnClickListener {
             binding.myCalendar.smoothScrollToDate(LocalDate.now())
         }
+        binding.tvAlbumTitle.setOnClickListener {
+            val albumDetailDialog = AlbumDetailDialog()
+            albumDetailDialog.show(parentFragmentManager,"AlbumDetail")
+        }
     }
 
     private fun collectUiState() {

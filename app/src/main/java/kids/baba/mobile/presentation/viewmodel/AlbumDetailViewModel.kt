@@ -4,25 +4,34 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
+import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
 )  : ViewModel(){
-    private val _albumDetailUiState:MutableStateFlow<AlbumDetailUiState> = MutableStateFlow(AlbumDetailUiState.Loading)
-    val albumDetailUiState = _albumDetailUiState.asStateFlow()
 
+    val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
+    val album = MutableStateFlow<AlbumUiModel?>(null)
     init {
         getAlbumDetail()
     }
 
     private fun getAlbumDetail(){
+        val tempAlbum = AlbumUiModel(
+            contentId = 111,
+            name = "박재희",
+            relation = "엄마",
+            date = "21-09-28",
+            title = "앨범 테스트",
+            like = false,
+            photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
+            cardStyle = "test"
+        )
         val tempAlbumDetail = AlbumDetailUiModel(
             likeCount = 3,
             likeUsers = listOf(
@@ -56,6 +65,7 @@ class AlbumDetailViewModel @Inject constructor(
                 )
             )
         )
-        _albumDetailUiState.value = AlbumDetailUiState.Success(tempAlbumDetail)
+        albumDetail.value = tempAlbumDetail
+        album.value = tempAlbum
     }
 }

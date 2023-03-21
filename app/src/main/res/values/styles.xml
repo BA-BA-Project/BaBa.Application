@@ -59,4 +59,10 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="BABA.AlbumDialogStyle" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
