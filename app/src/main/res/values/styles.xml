@@ -30,6 +30,13 @@
         <item name="android:textColor">@color/text_0</item>
     </style>
 
+    <style name="BABA.TextStyle.Relation" parent="BABA.TextStyle">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingHorizontal">5dp</item>
+        <item name="android:paddingVertical">3dp</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="BABA.ChatAnswerBtnStyle" parent="Widget.AppCompat.Button">
         <item name="android:textAppearance">@style/BABA.TextStyle.Button</item>
         <item name="android:minWidth">0dp</item>
