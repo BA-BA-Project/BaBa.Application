@@ -122,7 +122,11 @@ dependencies {
 
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-}
+
+    //Glide
+    def glideVersion = "4.15.0"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"}
 
 kapt {
     correctErrorTypes true
