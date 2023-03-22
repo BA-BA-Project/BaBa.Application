@@ -134,13 +134,10 @@ dependencies {
 
 
     // crop
-
     implementation("com.vanniktech:android-image-cropper:4.5.0")
 
-
-//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
-
-//    implementation 'com.mayank:simplecropview:1.0.0'
+    // Exifinterface
+    implementation "androidx.exifinterface:exifinterface:1.3.6"
 
 
 

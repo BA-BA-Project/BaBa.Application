@@ -13,11 +13,11 @@ class StoragePermissionRequester(
 ) : BasePermissionRequester(fragment, onGranted, onDismissed) {
     override val permissions: Array<String>
         get() = arrayOf(
-//            Manifest.permission.CAMERA,
+            Manifest.permission.CAMERA,
 //            Manifest.permission.RECORD_AUDIO
 //            ,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//            Manifest.permission.READ_EXTERNAL_STORAGE,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
     override val titleResId: Int

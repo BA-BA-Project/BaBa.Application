@@ -9,12 +9,14 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.canhub.cropper.CropImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCropBinding
 import kids.baba.mobile.domain.model.MediaData
+import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import kids.baba.mobile.presentation.viewmodel.CropViewModel
 
 
@@ -31,7 +33,7 @@ class CropFragment : Fragment() {
 
     private val args: CropFragmentArgs by navArgs()
 
-    val viewModel: CropViewModel by viewModels()
+    val viewModel: CameraViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,11 @@ class CropFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.tbCrop.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.viewModel = viewModel
         val cropImageView = binding.cropImageView
 
@@ -65,10 +72,8 @@ class CropFragment : Fragment() {
 
             val data = MediaData(
                 mediaName = "cropped",
-                mediaType = "IMAGE",
-                mediaSize = result.sampleSize.toLong(),
                 mediaPath = result.uriContent.toString(),
-                mediaDuration = 1
+                mediaDate = args.mediaData.mediaDate
             )
 
             Navigation.findNavController(requireActivity(), R.id.fcv_film)
@@ -84,10 +89,7 @@ class CropFragment : Fragment() {
             cropImageView.croppedImageAsync()
 
         }
-
     }
-
-
 
     private fun setCropFrame(cropImageView: CropImageView) {
         cropImageView.apply {

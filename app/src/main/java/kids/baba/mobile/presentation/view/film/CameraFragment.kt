@@ -1,9 +1,9 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.hardware.display.DisplayManager
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -25,17 +26,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCameraBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.Locale
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,31 +50,32 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
+    val viewModel: CameraViewModel by viewModels()
+
     private val mDisplayManager by lazy {
         requireActivity().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
 
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             // 선택된 사진이 있을 경우
             Log.e(TAG, "choose picture $uri")
+
             handlePickerResponse(uri)
-
-
         } else {
             // 선택된 사진이 없을 경우
             Log.e(TAG, "There is no picture chosen ")
         }
     }
 
+
     private fun handlePickerResponse(savedUri: Uri) {
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
 
-            val msg = "Photo capture succeeded: $savedUri"
-            Log.d(TAG, msg)
-            val data = viewModel.savePhoto(savedUri.toString())
+            val data = viewModel.pickerSavePhoto(savedUri)
             Log.e(TAG, data.toString())
+
             Navigation.findNavController(requireActivity(), R.id.fcv_film)
                 .navigate(
                     CameraFragmentDirections.actionCameraFragmentToCropFragment(
@@ -81,11 +84,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
                 )
         }
 
-
     }
-
-
-    val viewModel: CameraViewModel by viewModels()
 
     private lateinit var mOutputDirectory: File
     private lateinit var mCameraExecutor: Executor
@@ -138,6 +137,11 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         mDisplayManager.registerDisplayListener(mDisplayListener, null)
 
         val viewFinder = binding.viewFinder
+
+        binding.tbCamera.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
+
         viewFinder.post {
             mDisplayId = viewFinder.display.displayId
             setUpCamera()
@@ -159,9 +163,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
     private fun goToAlbum() {
         Log.e(TAG, "go to album")
 
-
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-
 
     }
 
@@ -169,18 +171,17 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
         val imageCapture = mImageCapture ?: return
 
         // Create timestamped output file to hold the image
-        val fileName = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
             .format(System.currentTimeMillis()) + ".jpg"
-        val dateInfo = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
+
+        val dateInfo = SimpleDateFormat("yy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
 
         val photoFile = File(mOutputDirectory, fileName)
-
 
         val metadata = ImageCapture.Metadata().apply {
             // Mirror image when using the front camera
             isReversedHorizontal = mLensFacing == CameraSelector.LENS_FACING_FRONT
         }
-
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
@@ -189,14 +190,15 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
             }.build()
 
         // Setup image capture listener which is triggered after photo has been taken
-        photoCaptureListener(imageCapture, outputOptions, photoFile)
+        photoCaptureListener(imageCapture, outputOptions, photoFile, dateInfo)
 
     }
 
     private fun photoCaptureListener(
         imageCapture: ImageCapture,
         outputOptions: ImageCapture.OutputFileOptions,
-        photoFile: File
+        photoFile: File,
+        dateInfo: String
     ) {
         imageCapture.takePicture(
             outputOptions,
@@ -209,11 +211,11 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
 
-                    lifecycleScope.launch{
+                    lifecycleScope.launch {
                         val savedUri = Uri.fromFile(photoFile)
                         val msg = "Photo capture succeeded: $savedUri"
                         Log.d(TAG, msg)
-                        val data = viewModel.savePhoto(savedUri.toString())
+                        val data = viewModel.savePhoto(savedUri.toString(), dateInfo)
                         Log.e(TAG, data.toString())
                         Navigation.findNavController(requireActivity(), R.id.fcv_film)
                             .navigate(
@@ -225,9 +227,6 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
 
                 }
             })
-
-
-
 
 
     }
@@ -319,6 +318,7 @@ class CameraFragment @Inject constructor() : Fragment(), CameraNavigator {
                 mPreview,
                 mImageCapture,
             )
+
             // Attach the viewfinder's surface provider to preview use case
             mPreview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
         } catch (exc: Exception) {

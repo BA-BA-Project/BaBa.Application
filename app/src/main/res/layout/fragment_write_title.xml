@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel" />
+            type="kids.baba.mobile.presentation.viewmodel.CameraViewModel" />
 
         <variable
             name="callback"
@@ -20,6 +20,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.view.film.WriteTitleFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/write_title_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/ab_write_title"
@@ -38,8 +50,8 @@
                 android:layout_height="90dp"
                 app:buttonGravity="center_vertical"
                 app:navigationIcon="@drawable/ic_back_black_round"
-                app:title="@{viewModel.currentTakenMedia.mediaPath}"
-                app:titleTextColor="@color/black"
+                app:title="@{viewModel.currentTakenMedia.mediaDate}"
+                app:titleTextColor="@color/white"
                 tools:title="21.09.30(촬영당일날짜)"
                 android:textSize="16sp"
                 app:titleCentered="true">
@@ -62,38 +74,43 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/write_title_img"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ab_write_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/write_title_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:hint="@string/type_title"
+            android:textAlignment="center"
+            android:maxLength="10"
+            android:maxLines="1"
             android:textColorHint="@color/hint_text"
             android:textColor="@color/white"
             android:inputType="text"
-            android:background="@color/transparent"
-
+            android:background="@null"
+            android:textStyle="bold"
             />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/write_title_guide_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/write_title_guide"
+            android:textColor="@color/hint_text"
+            app:layout_constraintStart_toStartOf="@+id/write_title_et"
+            app:layout_constraintEnd_toEndOf="@id/write_title_et"
+            app:layout_constraintTop_toBottomOf="@+id/write_title_et"
+            android:textSize="12sp"
+            android:layout_marginTop="12dp"
+            />
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
-<!--    android:focusedByDefault="true"-->
