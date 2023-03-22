@@ -16,7 +16,7 @@ interface MemberApi {
 
     @POST("/api/members/baby")
     suspend fun signUpWithBabiesInfo(
-        @Header("signToken")
+        @Header("Authorization")
         signToken: String,
         @Body
         signupRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
@@ -24,7 +24,7 @@ interface MemberApi {
 
     @POST("/api/members/baby/invite-code")
     suspend fun signUpWithInviteCode(
-        @Header("signToken")
+        @Header("Authorization")
         signToken: String,
         @Body
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
