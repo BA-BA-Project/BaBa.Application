@@ -2,6 +2,7 @@ package kids.baba.mobile.data.api
 
 import kids.baba.mobile.domain.model.LoginRequest
 import kids.baba.mobile.domain.model.SignTokenRequest
+import kids.baba.mobile.domain.model.SignTokenResponse
 import kids.baba.mobile.domain.model.TermsResponse
 import kids.baba.mobile.domain.model.TokenRefreshRequest
 import kids.baba.mobile.domain.model.TokenResponse
@@ -20,6 +21,6 @@ interface AuthApi {
     suspend fun getTerms(@Body socialToken: String): Response<TermsResponse>
 
     @POST("api/auth/login/terms")
-    suspend fun getSignToken(@Body signTokenRequest: SignTokenRequest): Response<String>
+    suspend fun getSignToken(@Body signTokenRequest: SignTokenRequest): Response<SignTokenResponse>
 
 }

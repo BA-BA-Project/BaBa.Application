@@ -28,28 +28,14 @@ class TermsAgreeViewModel @Inject constructor(
     private val _isAllChecked = MutableStateFlow(false)
     val isAllChecked = _isAllChecked.asStateFlow()
 
+
     private val _signToken = MutableStateFlow("")
     val signToken = _signToken.asStateFlow()
 
     private val socialToken = savedStateHandle[KEY_SOCIAL_TOKEN] ?: ""
 
-    private val tempTermsList =
-        listOf(
-            TermsUiModel(
-                true,
-                "이용약관 동의",
-                false,
-                "https://sites.google.com/view/baba-agree/%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80?authuser=4"
-            ),
-            TermsUiModel(
-                true,
-                "개인정보 수집 및 이용 동의",
-                false,
-                "https://sites.google.com/view/baba-agree/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8?authuser=4"
-            )
-        )
 
-    private val _termsList = MutableStateFlow(tempTermsList)
+    private val _termsList : MutableStateFlow<List<TermsUiModel>> = MutableStateFlow(emptyList())
     val termsList = _termsList.asStateFlow()
 
     private val _eventFlow = MutableEventFlow<TermsAgreeEvent>()
@@ -89,22 +75,24 @@ class TermsAgreeViewModel @Inject constructor(
         _termsList.value = _termsList.value.map { it.copy(selected = _isAllChecked.value) }
     }
 
+
+    fun checkEssentialAllChecked() = _termsList.value.filter { it.required }.all { it.selected }
+
     fun getSignToken() {
         viewModelScope.launch {
-             getSignTokenUseCase(
+            getSignTokenUseCase(
                 socialToken = socialToken,
                 termsData = termsList.value.map {
                     it.toDomain()
                 }
             ).catch {
-                if(it is NetworkErrorException){
+                if (it is NetworkErrorException) {
                     _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
                 } else {
-                    _signToken.emit("testSignToken") //임시로 사용할 signToken api구현이 완료되면 수정하기
-//                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
                 }
-               }.collect {
-                 _signToken.emit(it)
+            }.collect {
+                _signToken.emit(it)
             }
         }
     }
