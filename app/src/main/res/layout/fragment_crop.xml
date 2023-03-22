@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="kids.baba.mobile.presentation.viewmodel.CameraViewModel" />
+            type="kids.baba.mobile.presentation.viewmodel.CropViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

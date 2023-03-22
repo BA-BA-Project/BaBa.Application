@@ -5,15 +5,11 @@
 
     <data>
 
-        <import type="android.view.View" />
 
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.CameraViewModel" />
 
-        <variable
-            name="callback"
-            type="kids.baba.mobile.presentation.view.film.CameraNavigator" />
 
 
     </data>
@@ -44,7 +40,7 @@
                     android:id="@+id/camera_to_albumBtn"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/ic_album_gray_round"
                     android:stateListAnimator="@null" />
@@ -78,6 +74,7 @@
             android:background="@color/transparent"
             android:contentDescription="사진 촬영, WriteTitleFrag 로 이동"
             android:scaleType="center"
+            android:onClick="@{_ -> viewModel.takePhoto()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -92,7 +89,6 @@
             android:layout_marginStart="20dp"
             android:background="@color/transparent"
             android:contentDescription="카메라 화면 전환"
-            android:onClick="@{() -> callback.toggleCamera()}"
             android:src="@drawable/ic_toggle_camera"
             app:layout_constraintBottom_toBottomOf="@+id/image_capture_button"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,3 +105,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+<!--    android:onClick="@{() -> callback.toggleCamera()}"-->
+<!--<import type="android.view.View" />-->

@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentWriteTitleBinding
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
+import kids.baba.mobile.presentation.viewmodel.CropViewModel
+import kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel
 
 
 @AndroidEntryPoint
@@ -29,7 +31,7 @@ class WriteTitleFragment : Fragment(), WriteTitleNavigator {
 
     private val args: WriteTitleFragmentArgs by navArgs()
 
-    val viewModel: CameraViewModel by viewModels()
+    val viewModel: WriteTitleViewModel by viewModels()
 
     private lateinit var imm: InputMethodManager
 

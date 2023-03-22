@@ -33,7 +33,7 @@ class CropFragment : Fragment() {
 
     private val args: CropFragmentArgs by navArgs()
 
-    val viewModel: CameraViewModel by viewModels()
+    val viewModel: CropViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
