@@ -44,7 +44,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val api: AuthApi) :
                 when (resp.code()) {
                     200 -> {
                         val data = resp.body() ?: throw Throwable("data is null")
-                        emit(data)
+                        emit(data.terms)
                     }
 
                     400 -> {
