@@ -38,6 +38,13 @@ class AlbumDetailDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
+        setCloseBtn()
+    }
+
+    private fun setCloseBtn() {
+        binding.btnDialogClose.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun setBinding(){
