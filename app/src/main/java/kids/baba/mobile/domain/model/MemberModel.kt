@@ -5,5 +5,4 @@ data class MemberModel(
     val introduction: String,
     val iconName: String,
     val iconColor: String,
-    val email: String
 )

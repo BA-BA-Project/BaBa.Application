@@ -12,7 +12,7 @@ import retrofit2.http.POST
 
 interface MemberApi {
     @GET("members")
-    suspend fun getMe(@Header("accessToken") accessToken: String): Response<MemberModel>
+    suspend fun getMe(@Header("Authorization") accessToken: String): Response<MemberModel>
 
     @POST("members/baby")
     suspend fun signUpWithBabiesInfo(
