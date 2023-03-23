@@ -11,10 +11,10 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface MemberApi {
-    @GET("/api/members")
+    @GET("members")
     suspend fun getMe(@Header("accessToken") accessToken: String): Response<MemberModel>
 
-    @POST("/api/members/baby")
+    @POST("members/baby")
     suspend fun signUpWithBabiesInfo(
         @Header("Authorization")
         signToken: String,
@@ -22,7 +22,7 @@ interface MemberApi {
         signupRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
     ): Response<TokenResponse>
 
-    @POST("/api/members/baby/invite-code")
+    @POST("members/baby/invite-code")
     suspend fun signUpWithInviteCode(
         @Header("Authorization")
         signToken: String,

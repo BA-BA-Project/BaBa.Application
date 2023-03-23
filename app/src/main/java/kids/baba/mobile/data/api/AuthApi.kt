@@ -11,16 +11,16 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthApi {
-    @POST("/api/auth/login")
+    @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<TokenResponse>
 
-    @POST("api/auth/refresh")
+    @POST("auth/refresh")
     fun tokenRefresh(@Body tokenRefreshRequest: TokenRefreshRequest): Response<TokenResponse>
 
-    @POST("api/auth/terms")
+    @POST("auth/terms")
     suspend fun getTerms(@Body socialToken: String): Response<TermsResponse>
 
-    @POST("api/auth/login/terms")
+    @POST("auth/login/terms")
     suspend fun getSignToken(@Body signTokenRequest: SignTokenRequest): Response<SignTokenResponse>
 
 }
