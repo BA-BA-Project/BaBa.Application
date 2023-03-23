@@ -112,7 +112,7 @@ class InputBabiesInfoViewModel @Inject constructor(
     }
 
     private fun checkBabyInfo(babyInfo: BabyInfo): Boolean {
-        val name = babyInfo.name
+        val name = babyInfo.babyName
         val birthday = babyInfo.birthday
 
         return if (name.isNullOrEmpty().not() && birthday != null) {
