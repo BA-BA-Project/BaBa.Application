@@ -57,14 +57,11 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     private var inputMoreBaby = true
 
-    private val _haveInviteCode: MutableStateFlow<Boolean?> = MutableStateFlow(null)
-    val haveInviteCode = _haveInviteCode.asStateFlow()
-
     init {
         checkInviteCode()
     }
 
-    private fun initData(){
+    private fun initData() {
         relation = ""
         inviteCode = ""
         inputMoreBaby = true
@@ -76,7 +73,7 @@ class InputBabiesInfoViewModel @Inject constructor(
         setUiState(InputBabiesInfoUiState.CheckInviteCode)
     }
 
-    fun inputBabiesInfo() {
+    private fun inputBabiesInfo() {
         inputMoreBaby = true
 
         addChat(
@@ -89,11 +86,15 @@ class InputBabiesInfoViewModel @Inject constructor(
 
     private fun createNewBaby() {
         val babyInfo = BabyInfo()
+        val message = getStringResource(R.string.what_is_the_name_of_baby)
         addChat(
-            ChatItem.BabaFirstChatItem(
-                getStringResource(R.string.what_is_the_name_of_baby)
-            )
+            if (_babiesList.value.isEmpty()) {
+                ChatItem.BabaChatItem(message)
+            } else {
+                ChatItem.BabaFirstChatItem(message)
+            }
         )
+
         setUiState(InputBabiesInfoUiState.InputBabyName(babyInfo))
     }
 
@@ -129,7 +130,12 @@ class InputBabiesInfoViewModel @Inject constructor(
 
 
     fun setHaveInviteCode(haveInviteCode: Boolean) {
-        val answerRes = if (haveInviteCode) R.string.answer_yes else R.string.answer_no
+
+        val answerRes = if (haveInviteCode) {
+            R.string.answer_yes
+        } else {
+            R.string.answer_no
+        }
 
         val chatItem = ChatItem.UserChatItem(
             getStringResource(answerRes),
@@ -144,7 +150,12 @@ class InputBabiesInfoViewModel @Inject constructor(
         } else {
             addChat(chatItem)
         }
-        _haveInviteCode.value = haveInviteCode
+
+        if (haveInviteCode) {
+            inputInviteCode()
+        } else {
+            inputBabiesInfo()
+        }
     }
 
     fun modifyUserChat(position: Int) {
@@ -250,7 +261,6 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         if (check) {
-            addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_more_baby)))
             createNewBaby()
         } else {
             addChat(ChatItem.BabaFirstChatItem(getStringResource(R.string.input_relation)))
@@ -272,13 +282,15 @@ class InputBabiesInfoViewModel @Inject constructor(
     }
 
     private fun endInputBabiesInfo() {
-        addChat(ChatItem.BabaFirstChatItem(
-            getStringResource(R.string.input_end_babies_info)
-        ))
+        addChat(
+            ChatItem.BabaFirstChatItem(
+                getStringResource(R.string.input_end_babies_info)
+            )
+        )
         setUiState(InputBabiesInfoUiState.InputEndBabiesInfo)
     }
 
-    fun inputInviteCode() {
+    private fun inputInviteCode() {
         addChat(
             ChatItem.BabaFirstChatItem(
                 getStringResource(R.string.please_input_invite_code)
@@ -298,12 +310,18 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            getBabiesInfoByInviteCodeUseCase(signToken,inviteCode).onSuccess {
+            getBabiesInfoByInviteCodeUseCase(signToken, inviteCode).onSuccess {
                 val babies = it.babies.joinToString(",")
                 val relationName = it.relationName
-                addChat(ChatItem.BabaFirstChatItem(
-                    String.format(getStringResource(R.string.babies_info_by_invite_code),babies,relationName)
-                ))
+                addChat(
+                    ChatItem.BabaFirstChatItem(
+                        String.format(
+                            getStringResource(R.string.babies_info_by_invite_code),
+                            babies,
+                            relationName
+                        )
+                    )
+                )
                 endInputBabiesInfo()
             }
 

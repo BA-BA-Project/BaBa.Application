@@ -53,21 +53,6 @@ class InputBabiesInfoFragment : Fragment() {
         setNavController()
         collectUiState()
         collectEvent()
-        collectHaveInviteCode()
-    }
-
-    private fun collectHaveInviteCode() {
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.haveInviteCode.collect { haveInviteCode ->
-                if (haveInviteCode != null) {
-                    if (haveInviteCode) {
-                        viewModel.inputInviteCode()
-                    } else {
-                        viewModel.inputBabiesInfo()
-                    }
-                }
-            }
-        }
     }
 
     private fun collectUiState() {

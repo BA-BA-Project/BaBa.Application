@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateProfileViewModel @Inject constructor(
+    private val resources: Resources
 ) : ViewModel() {
 
     private val _createProfileUiState = MutableStateFlow<CreateProfileUiState>(CreateProfileUiState.Loading)
@@ -38,6 +40,12 @@ class CreateProfileViewModel @Inject constructor(
     val userProfile = _userProfile.asStateFlow()
 
     init {
+        addChat(
+            ChatItem.BabaFirstChatItem(getStringResource(R.string.sign_up_greeting1))
+        )
+        addChat(
+            ChatItem.BabaChatItem(getStringResource(R.string.sign_up_greeting2))
+        )
         _createProfileUiState.value = CreateProfileUiState.SelectGreeting
     }
 
@@ -55,6 +63,11 @@ class CreateProfileViewModel @Inject constructor(
         _createProfileUiState.value = uiState
     }
 
+    fun setGreeting(chatItem: ChatItem.UserChatItem){
+        addChat(chatItem)
+        setUiState(CreateProfileUiState.Loading)
+        checkProfile()
+    }
     fun setUserName(chatItem: ChatItem.UserChatItem) {
         addChat(chatItem)
         userName = chatItem.message
@@ -89,10 +102,17 @@ class CreateProfileViewModel @Inject constructor(
         val icon = userIcon
 
         if (name.isNullOrEmpty()) {
+            addChat(
+                ChatItem.BabaFirstChatItem(getStringResource(R.string.please_input_name))
+            )
             setUiState(CreateProfileUiState.InputName)
         } else if (icon == null) {
             if(isAlreadyAskIcon.not()){
                 isAlreadyAskIcon = true
+                addChat(
+                    ChatItem.BabaFirstChatItem(getStringResource(R.string.please_select_profile_icon))
+                )
+                addChat(ChatItem.BabaChatSelectListItem(defaultProfileIconList))
                 setUiState(CreateProfileUiState.SelectProfileIcon)
             }
         } else {
@@ -124,9 +144,8 @@ class CreateProfileViewModel @Inject constructor(
         setUiState(CreateProfileUiState.Loading)
         checkProfile()
     }
-
-    fun addProfileList() {
-        addChat(ChatItem.BabaChatSelectListItem(defaultProfileIconList))
+    private fun getStringResource(resourceId: Int): String {
+        return resources.getString(resourceId)
     }
 
     companion object {
