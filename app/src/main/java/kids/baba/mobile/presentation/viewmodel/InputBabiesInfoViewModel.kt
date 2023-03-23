@@ -342,7 +342,8 @@ class InputBabiesInfoViewModel @Inject constructor(
                 ).onSuccess {
                     setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                 }.onFailure {
-                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
+//                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
                 }
 
             }
