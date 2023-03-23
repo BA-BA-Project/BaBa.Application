@@ -17,7 +17,6 @@ import javax.inject.Inject
 class PhotoCaptureUseCase @Inject constructor(
     private val cameraExecutor: Executor
 ) {
-
     private val TAG = "PhotoCaptureUseCase"
 
     suspend fun getMe(
@@ -33,12 +32,8 @@ class PhotoCaptureUseCase @Inject constructor(
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
 
                     val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
-                    Log.d(TAG, msg)
                     val data = savePhoto(savedUri.toString(), dateInfo)
-                    Log.e(TAG, data.toString())
                     trySendBlocking(data)
-                    Log.e(TAG, "trySendBlocking  called")
 
                 }
 
@@ -46,12 +41,9 @@ class PhotoCaptureUseCase @Inject constructor(
                     val msg = "Photo capture failed: ${exception.message}"
                     Log.e(TAG, msg)
                 }
-
             }
-
         )
         awaitClose()
-
     }
 
     private fun savePhoto(path: String, dateInfo: String): MediaData {

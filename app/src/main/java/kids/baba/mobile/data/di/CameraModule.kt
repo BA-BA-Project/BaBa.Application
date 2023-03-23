@@ -2,12 +2,8 @@ package kids.baba.mobile.data.di
 
 import android.content.Context
 import android.os.Environment
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraProvider
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import dagger.Module
 import dagger.Provides
@@ -16,11 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.R
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
@@ -45,11 +37,6 @@ object CameraModule {
         return ContextCompat.getMainExecutor(context)
     }
 
-    @Provides
-    @Singleton
-    fun provideImageAnalyzerExecutor(): ExecutorService {
-        return Executors.newSingleThreadExecutor()
-    }
 
     @Provides
     @Singleton
@@ -65,20 +52,26 @@ object CameraModule {
             setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
         }.build()
     }
-
-
-
-
-
 }
 
 /*
-/*
-
- */
+// 추후에 얼굴 인식 등의 요구사항이 생긴다면 추가해야하는 ImageAnalyzer
+    @Provides
+    @Singleton
+    fun provideImageAnalyzerExecutor(): ExecutorService {
+        return Executors.newSingleThreadExecutor()
+    }
 
     @Provides
-    fun provideResources(@ApplicationContext context: Context): Resources {
-        return context.resources
+    @Singleton
+    fun provideImageAnalyzer(): ImageAnalysis {
+        return ImageAnalysis.Builder().apply {  }.build().also {
+            it.setAnalyzer(provideImageAnalyzerExecutor(),LuminosityAnalyzer{luma ->
+                //
+            })
+        }
     }
+
+}
+
  */

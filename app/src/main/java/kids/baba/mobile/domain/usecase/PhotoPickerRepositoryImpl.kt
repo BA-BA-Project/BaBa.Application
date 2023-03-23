@@ -33,7 +33,7 @@ class PhotoPickerRepositoryImpl @Inject constructor(
                 getStringResource(R.string.can_not_find_date)
             }
 
-            Log.e(TAG, "Dated : $date") // Display dateString. You can do/use it your own way
+            Log.d(TAG, "Dated : $date") // Display dateString. You can do/use it your own way
             val mediaData = MediaData(
                 mediaName = imageFile.name,
                 mediaPath = uri.toString(),
@@ -55,10 +55,8 @@ class PhotoPickerRepositoryImpl @Inject constructor(
         } else {
             cursor.moveToFirst()
             val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            val dateModified = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN)
-            Log.e(TAG, "date Modified in the getRealPathFromUri function: $dateModified")
             result = cursor.getString(idx)
-            Log.e(TAG, "result in getRealPathFromUri: $result")
+            Log.d(TAG, "result in getRealPathFromUri: $result")
             cursor.close()
         }
         return result

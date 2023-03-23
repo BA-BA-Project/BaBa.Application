@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.binding
 
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -13,3 +14,7 @@ fun setIcon(imageView: ImageView, @DrawableRes res: Int) {
 }
 
 
+@BindingAdapter("visibility")
+fun View.setVisibility(show: Boolean) {
+    visibility = if (show) View.VISIBLE else View.GONE
+}

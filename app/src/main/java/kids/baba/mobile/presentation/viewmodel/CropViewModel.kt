@@ -45,7 +45,7 @@ class CropViewModel @Inject constructor(
     fun cropImage(cropImageView: CropImageView) = callbackFlow {
         viewModelScope.launch {
             cropImageView.setOnCropImageCompleteListener { _, result ->
-                Log.e(
+                Log.d(
                     TAG, "CropResult - original uri : ${result.originalUri}" +
                             "cropped content: ${result.uriContent}"
                 )
@@ -56,7 +56,7 @@ class CropViewModel @Inject constructor(
                         mediaDate = it.mediaDate
                     )
                 }!!
-                Log.e(TAG, "currentTakenMedia: $currentTakenMedia")
+                Log.d(TAG, "currentTakenMedia: $currentTakenMedia")
                 trySendBlocking(currentTakenMedia)
             }
             cropImageView.croppedImageAsync()

@@ -44,7 +44,6 @@ class WriteTitleViewModel @Inject constructor(
     }
 
 
-
     private fun textChangedListener(editable: EditText, button: Button) {
         editable.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {

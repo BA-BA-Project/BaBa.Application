@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view.film
+package kids.baba.mobile.presentation.extension
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy

@@ -95,8 +95,8 @@ class CameraFragment @Inject constructor() : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect{event->
                 when (event) {
-                    is GetPictureEvent.getFromCamera -> activityViewModel.isMoveToWriteTitleFromCamera(event.mediaData)
-                    is GetPictureEvent.getFromGallery -> activityViewModel.isMoveToCrop(event.mediaData)
+                    is GetPictureEvent.GetFromCamera -> activityViewModel.isMoveToWriteTitleFromCamera(event.mediaData)
+                    is GetPictureEvent.GetFromGallery -> activityViewModel.isMoveToCrop(event.mediaData)
                 }
             }
         }

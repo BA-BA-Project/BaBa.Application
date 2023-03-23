@@ -48,6 +48,8 @@ class FilmActivity : AppCompatActivity() {
             viewModel.filmEventFlow.collect { event ->
                 Log.d(TAG, event.toString())
                 when (event) {
+                    is FilmEvent.StartOnCamera -> {Log.d(TAG, "START ON CAMERA")}
+
                     is FilmEvent.MoveToCrop -> {
                         Log.e(TAG, "MOVE TO CROP")
                         val action = CameraFragmentDirections.actionCameraFragmentToCropFragment(event.mediaData)
@@ -66,9 +68,6 @@ class FilmActivity : AppCompatActivity() {
 
                     is FilmEvent.MoveToSelectCard -> {
                         Log.e(TAG, "MOVE TO SELECT CARD")
-                    }
-                    else -> {
-                        Log.e(TAG, "START ON CAMERA")
                     }
                 }
 
