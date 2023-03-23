@@ -340,7 +340,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                         babiesList.value
                     )
                 ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(it))
+                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                 }.onFailure {
                     setUiState(InputBabiesInfoUiState.SignUpFailed(it))
                 }
@@ -359,7 +359,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                         userProfile.iconName
                     )
                 ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(it))
+                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                 }.onFailure {
                     setUiState(InputBabiesInfoUiState.SignUpFailed(it))
                 }

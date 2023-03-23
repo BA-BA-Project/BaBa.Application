@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,7 +66,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(member: MemberModel){
-        Log.d("LoginSuccess", "$member")
+    fun isSignUpSuccess(name: String){
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToSignUpSuccess(name))
+        }
     }
 }

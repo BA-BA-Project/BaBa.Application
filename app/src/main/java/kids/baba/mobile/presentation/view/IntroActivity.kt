@@ -58,6 +58,10 @@ class IntroActivity : AppCompatActivity() {
                         val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile, event.signToken)
                         navController.navigate(action)
                     }
+
+                    is IntroEvent.MoveToSignUpSuccess -> {
+                        //
+                    }
                     else -> Unit
                 }
             }
