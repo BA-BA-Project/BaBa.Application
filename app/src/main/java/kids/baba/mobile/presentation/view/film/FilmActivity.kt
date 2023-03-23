@@ -23,7 +23,7 @@ import java.io.File
 @AndroidEntryPoint
 class FilmActivity : AppCompatActivity() {
 
-    private val viewModel: CameraViewModel by viewModels()
+    private val viewModel: FilmViewModel by viewModels()
 
     private lateinit var navController: NavController
 
@@ -45,7 +45,7 @@ class FilmActivity : AppCompatActivity() {
 
     private fun collectEvent() {
         repeatOnStarted {
-            viewModel.eventFlow.collect { event ->
+            viewModel.filmEventFlow.collect { event ->
                 Log.d(TAG, event.toString())
                 when (event) {
                     is FilmEvent.MoveToCrop -> {
@@ -53,11 +53,17 @@ class FilmActivity : AppCompatActivity() {
                         val action = CameraFragmentDirections.actionCameraFragmentToCropFragment(event.mediaData)
                         navController.navigate(action)
                     }
-                    is FilmEvent.MoveToWriteTitle -> {
-                        Log.e(TAG, "MOVE TO WRITE TITLE")
+                    is FilmEvent.MoveToWriteTitleFromCamera -> {
+                        Log.e(TAG, "MOVE TO WRITE TITLE FROM CAMERA")
                         val action = CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(event.mediaData)
                         navController.navigate(action)
                     }
+                    is FilmEvent.MoveToWriteTitleFromCrop -> {
+                        Log.e(TAG, "MOVE TO WRITE TITLE FROM CROP")
+                        val action = CropFragmentDirections.actionCropFragmentToWriteTitleFragment(event.mediaData)
+                        navController.navigate(action)
+                    }
+
                     is FilmEvent.MoveToSelectCard -> {
                         Log.e(TAG, "MOVE TO SELECT CARD")
                     }

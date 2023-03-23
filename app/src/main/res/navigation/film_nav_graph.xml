@@ -12,10 +12,6 @@
         tools:layout="@layout/fragment_camera">
 
         <action
-            android:id="@+id/action_cameraFragment_to_galleryFragment"
-            app:destination="@+id/galleryFragment" />
-
-        <action
             android:id="@+id/action_cameraFragment_to_writeTitleFragment"
             app:destination="@+id/writeTitleFragment"
             />
@@ -23,17 +19,6 @@
             android:id="@+id/action_cameraFragment_to_cropFragment"
             app:destination="@id/cropFragment" />
 
-    </fragment>
-
-    <fragment
-        android:id="@+id/galleryFragment"
-        android:name="kids.baba.mobile.presentation.view.film.GalleryFragment"
-        android:label="GalleryFragment"
-        tools:layout="@layout/fragment_gallery">
-
-        <action
-            android:id="@+id/action_galleryFragment_to_cropFragment"
-            app:destination="@+id/cropFragment" />
     </fragment>
 
     <fragment
@@ -48,7 +33,7 @@
 
 
         <argument
-            android:name="media_data"
+            android:name="mediaData"
             app:argType="kids.baba.mobile.domain.model.MediaData" />
 
 
@@ -61,13 +46,9 @@
         tools:layout="@layout/fragment_write_title"
         >
 
-        <action
-            android:id="@+id/action_writeTitleFragment_to_cropFragment"
-            app:destination="@id/cropFragment" />
-
 
         <argument
-            android:name="media_data"
+            android:name="mediaData"
             app:argType="kids.baba.mobile.domain.model.MediaData" />
 
     </fragment>

@@ -9,11 +9,6 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel" />
 
-        <variable
-            name="callback"
-            type="kids.baba.mobile.presentation.view.film.WriteTitleNavigator" />
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            app:imageSrc="@{viewModel.currentTakenMedia.mediaPath}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +44,6 @@
                 android:layout_height="90dp"
                 app:buttonGravity="center_vertical"
                 app:navigationIcon="@drawable/ic_back_black_round"
-                app:title="@{viewModel.currentTakenMedia.mediaDate}"
                 app:titleTextColor="@color/white"
                 tools:title="21.09.30(촬영당일날짜)"
                 android:textSize="16sp"
@@ -67,6 +60,7 @@
                     android:textColor="@color/inactive_text"
                     android:shadowColor="@color/inactive_shadow"
                     android:textSize="16sp"
+
                     android:textStyle="bold" />
 
 
@@ -74,7 +68,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <EditText
             android:id="@+id/write_title_et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,3 +108,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
+<!--    app:title="@{viewModel.currentTakenMedia.mediaDate}"-->

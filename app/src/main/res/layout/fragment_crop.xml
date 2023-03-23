@@ -9,6 +9,7 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.CropViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,10 +21,10 @@
             android:id="@+id/ab_crop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/ab_crop"
-            android:theme="@style/Baba.Translucent.AppBar"
             android:background="@color/status_bar_scrim"
+            android:theme="@style/Baba.Translucent.AppBar"
             app:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@id/ab_crop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -35,8 +36,8 @@
                 app:buttonGravity="center_vertical"
                 app:navigationIcon="@drawable/ic_back_black_round"
                 app:title="@string/crop_image"
-                app:titleTextColor="@color/white"
-                app:titleCentered="true">
+                app:titleCentered="true"
+                app:titleTextColor="@color/white">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/complete_btn"
@@ -60,12 +61,15 @@
             android:id="@+id/cropImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ab_crop"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintVertical_bias="1.0">
 
         </com.canhub.cropper.CropImageView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+

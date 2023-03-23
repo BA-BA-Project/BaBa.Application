@@ -1,46 +1,25 @@
 package kids.baba.mobile.presentation.view.film
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.hardware.display.DisplayManager
-import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCameraBinding
+import kids.baba.mobile.presentation.event.GetPictureEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
-import kotlinx.coroutines.Dispatchers
+import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.attribute.BasicFileAttributes
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,12 +28,11 @@ class CameraFragment @Inject constructor() : Fragment() {
     private val TAG = "CameraFragment"
 
     private var _binding: FragmentCameraBinding? = null
-
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: CameraViewModel by activityViewModels()
-
+    val viewModel: CameraViewModel by viewModels()
+    private val activityViewModel: FilmViewModel by activityViewModels()
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
@@ -80,7 +58,6 @@ class CameraFragment @Inject constructor() : Fragment() {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,6 +72,7 @@ class CameraFragment @Inject constructor() : Fragment() {
         }
 
         addListener(viewFinder)
+        collectEvent()
 
 
     }
@@ -110,10 +88,18 @@ class CameraFragment @Inject constructor() : Fragment() {
 
     ////////////////
     private fun goToAlbum() {
-        Log.e(TAG, "go to album")
-
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
 
+    private fun collectEvent(){
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{event->
+                when (event) {
+                    is GetPictureEvent.getFromCamera -> activityViewModel.isMoveToWriteTitleFromCamera(event.mediaData)
+                    is GetPictureEvent.getFromGallery -> activityViewModel.isMoveToCrop(event.mediaData)
+                }
+            }
+        }
     }
 
 

@@ -18,15 +18,22 @@ class FilmViewModel @Inject constructor(): ViewModel(){
     private val _filmEventFlow = MutableEventFlow<FilmEvent>()
     val filmEventFlow = _filmEventFlow.asEventFlow()
 
+
     fun isMoveToCrop(mediaData: MediaData){
         viewModelScope.launch {
             _filmEventFlow.emit(FilmEvent.MoveToCrop(mediaData))
         }
     }
 
-    fun isMoveToWriteTitle(mediaData: MediaData) {
+    fun isMoveToWriteTitleFromCrop(mediaData: MediaData) {
         viewModelScope.launch {
-            _filmEventFlow.emit(FilmEvent.MoveToWriteTitle(mediaData))
+            _filmEventFlow.emit(FilmEvent.MoveToWriteTitleFromCrop(mediaData))
+        }
+    }
+
+    fun isMoveToWriteTitleFromCamera(mediaData: MediaData) {
+        viewModelScope.launch {
+            _filmEventFlow.emit(FilmEvent.MoveToWriteTitleFromCamera(mediaData))
         }
     }
 

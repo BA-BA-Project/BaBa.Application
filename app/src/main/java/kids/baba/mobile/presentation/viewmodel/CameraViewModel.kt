@@ -20,9 +20,12 @@ import kids.baba.mobile.domain.repository.PhotoPickerRepository
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.PhotoCaptureUseCase
 import kids.baba.mobile.presentation.event.FilmEvent
+import kids.baba.mobile.presentation.event.GetPictureEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.film.LuminosityAnalyzer
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -42,30 +45,22 @@ class CameraViewModel @Inject constructor(
     private val imageAnalyzerExecutor: ExecutorService,
     private val preview: Preview,
     private val imageCapture: ImageCapture,
-    private val resources: Resources,
     application: Application,
 ) : BaseViewModel(application) {
 
+    private val TAG = "CameraViewModel"
 
     private var mLensFacing: Int = CameraSelector.LENS_FACING_BACK
     private var mCameraProvider: ProcessCameraProvider? = null
     private var mImageAnalyzer: ImageAnalysis? = null
     private var mCamera: Camera? = null
 
-
-    private val _eventFlow = MutableEventFlow<FilmEvent>()
+    private val _eventFlow = MutableEventFlow<GetPictureEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
 
-//    val currentTakenMedia = MutableLiveData<MediaData>()
-//
-//    internal fun setArgument(args: Any) {
-//        currentTakenMedia.value = args as MediaData
-//    }
-
     fun takePhoto() {
         viewModelScope.launch {
-
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 .format(System.currentTimeMillis()) + "jpg"
             val dateInfo = SimpleDateFormat("yy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
@@ -84,7 +79,7 @@ class CameraViewModel @Inject constructor(
                 Log.e(TAG, it.message.toString())
                 throw it
             }.collect {
-                _eventFlow.emit(FilmEvent.MoveToWriteTitle(it))
+                _eventFlow.emit(GetPictureEvent.getFromCamera(it))
                 Log.e("CameraViewModel", "collect called $it")
 
             }
@@ -105,7 +100,6 @@ class CameraViewModel @Inject constructor(
             }
 
             bindCameraUseCases(previewView, lifecycleOwner)
-
 
         }, cameraExecutor)
     }
@@ -154,32 +148,21 @@ class CameraViewModel @Inject constructor(
         return mCameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
     }
 
-    private val TAG = "CameraViewModel"
-
-//    internal fun savePhoto(path: String, dateInfo: String): MediaData {
-//        val file = File(path)
-//
-//        return MediaData(
-//            mediaName = file.name,
-//            mediaPath = path,
-//            mediaDate = dateInfo
-//        )
-//    }
 
 
-    internal fun pickerSavePhoto(uri: Uri)/*: MediaData*/ {
+
+    internal fun pickerSavePhoto(uri: Uri) {
 
         viewModelScope.launch {
             photoPickerRepository.getPhoto(uri).catch {
                 Log.e(TAG, it.message.toString())
                 throw it
             }.collect{
-                _eventFlow.emit(FilmEvent.MoveToCrop(it))
+                _eventFlow.emit(GetPictureEvent.getFromGallery(it))
             }
         }
 
     }
-
 
 
 }
