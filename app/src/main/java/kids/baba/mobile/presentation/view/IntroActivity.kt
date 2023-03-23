@@ -52,7 +52,6 @@ class IntroActivity : AppCompatActivity() {
                     }
                     is IntroEvent.MoveToCreateUserProfile -> {
                         val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
-                        Log.d("tertmsToCreate", event.signToken)
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {

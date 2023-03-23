@@ -49,7 +49,7 @@ class CreateProfileViewModel @Inject constructor(
         _createProfileUiState.value = CreateProfileUiState.SelectGreeting
     }
 
-    fun addChat(chatItem: ChatItem) {
+    private fun addChat(chatItem: ChatItem) {
         _chatList.value += chatItem
     }
 

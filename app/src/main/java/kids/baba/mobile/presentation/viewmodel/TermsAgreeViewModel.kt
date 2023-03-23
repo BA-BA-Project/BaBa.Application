@@ -35,11 +35,27 @@ class TermsAgreeViewModel @Inject constructor(
     private val socialToken = savedStateHandle[KEY_SOCIAL_TOKEN] ?: ""
 
 
-    private val _termsList : MutableStateFlow<List<TermsUiModel>> = MutableStateFlow(emptyList())
+    private val _termsList: MutableStateFlow<List<TermsUiModel>> = MutableStateFlow(emptyList())
     val termsList = _termsList.asStateFlow()
 
     private val _eventFlow = MutableEventFlow<TermsAgreeEvent>()
     val eventFlow = _eventFlow.asEventFlow()
+
+    private val tempTermsList =
+        listOf(
+            TermsUiModel(
+                true,
+                "이용약관 동의",
+                false,
+                "https://sites.google.com/view/baba-agree/%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80?authuser=4"
+            ),
+            TermsUiModel(
+                true,
+                "개인정보 수집 및 이용 동의",
+                false,
+                "https://sites.google.com/view/baba-agree/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8?authuser=4"
+            )
+        )
 
     init {
         viewModelScope.launch {
@@ -47,7 +63,8 @@ class TermsAgreeViewModel @Inject constructor(
                 if (it is NetworkErrorException) {
                     _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
                 } else {
-                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
+                    _termsList.value = tempTermsList
+//                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
                 }
             }.collect {
                 _termsList.value = it
@@ -89,7 +106,8 @@ class TermsAgreeViewModel @Inject constructor(
                 if (it is NetworkErrorException) {
                     _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
                 } else {
-                _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+                    _signToken.emit("testSignToken")
+//                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
                 }
             }.collect {
                 _signToken.emit(it)

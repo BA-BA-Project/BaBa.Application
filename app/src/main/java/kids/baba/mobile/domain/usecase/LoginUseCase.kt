@@ -7,7 +7,6 @@ import kids.baba.mobile.domain.model.TokenResponse
 import kids.baba.mobile.domain.repository.AuthRepository
 import kids.baba.mobile.domain.repository.KakaoLogin
 import kids.baba.mobile.domain.repository.MemberRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
@@ -20,8 +19,8 @@ class LoginUseCase @Inject constructor(
     suspend fun babaLogin(socialToken: String) = runCatching {
         authRepository.login(socialToken).collect { token ->
             Log.i(tag, "서버에서 JWT토큰 발급 완료")
-            setJWTToken(token)
-            memberRepository.getMe(token.accessToken).first()
+//            setJWTToken(token)
+//            memberRepository.getMe(token.accessToken).first()
         }
     }
 

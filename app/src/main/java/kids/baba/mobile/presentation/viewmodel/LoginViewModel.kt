@@ -45,5 +45,8 @@ class LoginViewModel @Inject constructor(
                 else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
             }
         }
+            .onSuccess {
+                _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
+            }
     }
 }
