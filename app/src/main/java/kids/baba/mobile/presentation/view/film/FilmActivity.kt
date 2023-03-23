@@ -50,6 +50,8 @@ class FilmActivity : AppCompatActivity() {
                 when (event) {
                     is FilmEvent.MoveToCrop -> {
                         Log.e(TAG, "MOVE TO CROP")
+                        val action = CameraFragmentDirections.actionCameraFragmentToCropFragment(event.mediaData)
+                        navController.navigate(action)
                     }
                     is FilmEvent.MoveToWriteTitle -> {
                         Log.e(TAG, "MOVE TO WRITE TITLE")
@@ -70,18 +72,6 @@ class FilmActivity : AppCompatActivity() {
 
 
     companion object {
-        fun getOutputDirectory(context: Context): File {
-            val appContext = context.applicationContext
-
-            val mediaDir = context.getExternalFilesDirs(Environment.DIRECTORY_PICTURES).firstOrNull()?.let {
-                File(it, appContext.resources.getString(R.string.app_name)).apply {
-                    mkdirs()
-                }
-            }
-            return if (mediaDir != null && mediaDir.exists())
-                mediaDir else appContext.filesDir
-        }
-
         fun open(activity: Activity) {
             activity.startActivity(Intent(activity, FilmActivity::class.java))
         }

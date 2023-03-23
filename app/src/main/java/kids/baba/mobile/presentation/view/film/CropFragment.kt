@@ -85,9 +85,7 @@ class CropFragment : Fragment() {
         }
 
         completeBtn.setOnClickListener{
-
             cropImageView.croppedImageAsync()
-
         }
     }
 

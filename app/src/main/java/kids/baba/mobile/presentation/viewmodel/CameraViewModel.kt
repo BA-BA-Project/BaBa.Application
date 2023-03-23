@@ -16,6 +16,7 @@ import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MediaData
+import kids.baba.mobile.domain.repository.PhotoPickerRepository
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.PhotoCaptureUseCase
 import kids.baba.mobile.presentation.event.FilmEvent
@@ -35,6 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val photoCaptureUseCase: PhotoCaptureUseCase,
+    private val photoPickerRepository: PhotoPickerRepository,
     private val outputDirectory: File,
     private val cameraExecutor: Executor,
     private val imageAnalyzerExecutor: ExecutorService,
@@ -66,9 +68,7 @@ class CameraViewModel @Inject constructor(
 
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 .format(System.currentTimeMillis()) + "jpg"
-
             val dateInfo = SimpleDateFormat("yy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
-
             val photoFile = File(outputDirectory, fileName)
 
             val metadata = ImageCapture.Metadata().apply {
@@ -89,41 +89,8 @@ class CameraViewModel @Inject constructor(
 
             }
         }
-
-//        photoCaptureListener(imageCapture, outputOptions, photoFile, dateInfo)
-
     }
 
-//    private fun photoCaptureListener(
-//        imageCapture: ImageCapture,
-//        outputOptions: ImageCapture.OutputFileOptions,
-//        photoFile: File,
-//        dateInfo: String
-//    ) {
-//        imageCapture.takePicture(
-//            outputOptions,
-//            cameraExecutor,
-//            object : ImageCapture.OnImageSavedCallback {
-//                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-//                    viewModelScope.launch {
-//                        val savedUri = Uri.fromFile(photoFile)
-//                        val msg = "Photo capture succeeded: $savedUri"
-//                        Log.d(TAG, msg)
-//                        val data = savePhoto(savedUri.toString(), dateInfo)
-//                        Log.e(TAG, data.toString())
-//                        // Navigation
-//
-//                    }
-//                }
-//
-//                override fun onError(exception: ImageCaptureException) {
-//                    val msg = "Photo capture failed: ${exception.message}"
-//                    Log.e(TAG, msg)
-//                }
-//
-//            }
-//        )
-//    }
 
     fun setUpCamera(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -155,9 +122,7 @@ class CameraViewModel @Inject constructor(
                 Log.d(TAG, "Average luminosity: $luma")
             })
         }
-
         cameraProvider.unbindAll()
-
         try {
             mCamera = cameraProvider.bindToLifecycle(
                 lifecycleOwner,
@@ -191,63 +156,31 @@ class CameraViewModel @Inject constructor(
 
     private val TAG = "CameraViewModel"
 
-    internal fun savePhoto(path: String, dateInfo: String): MediaData {
-        val file = File(path)
+//    internal fun savePhoto(path: String, dateInfo: String): MediaData {
+//        val file = File(path)
+//
+//        return MediaData(
+//            mediaName = file.name,
+//            mediaPath = path,
+//            mediaDate = dateInfo
+//        )
+//    }
 
-        return MediaData(
-            mediaName = file.name,
-            mediaPath = path,
-            mediaDate = dateInfo
-        )
-    }
 
+    internal fun pickerSavePhoto(uri: Uri)/*: MediaData*/ {
 
-    internal fun pickerSavePhoto(uri: Uri): MediaData {
-        val imageFile = File(getRealPathFromUri(uri))
-        val intf: androidx.exifinterface.media.ExifInterface?
-        val date: String
-        try {
-            intf = androidx.exifinterface.media.ExifInterface(imageFile)
-            val dateString = intf.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED)
-            if (dateString != null) {
-                date = "${dateString.substring(2, 4)}.${dateString.substring(5, 7)}.${dateString.substring(8, 10)}"
-            } else {
-                date = getStringResource(R.string.can_not_find_date)
+        viewModelScope.launch {
+            photoPickerRepository.getPhoto(uri).catch {
+                Log.e(TAG, it.message.toString())
+                throw it
+            }.collect{
+                _eventFlow.emit(FilmEvent.MoveToCrop(it))
             }
-
-            Log.e(TAG, "Dated : $date") // Display dateString. You can do/use it your own way
-
-            return MediaData(
-                mediaName = imageFile.name,
-                mediaPath = uri.toString(),
-                mediaDate = date
-            )
-
-        } catch (e: Exception) {
-            throw e
         }
+
     }
 
-    private fun getRealPathFromUri(contentUri: Uri): String {
-        val cursor = context.contentResolver.query(contentUri, null, null, null, null)
-        val result: String
-        if (cursor == null) {
-            result = contentUri.path.toString()
-        } else {
-            cursor.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            val dateModified = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN)
-            Log.e(TAG, "date Modified in the getRealPathFromUri function: $dateModified")
-            result = cursor.getString(idx)
-            Log.e(TAG, "result in getRealPathFromUri: $result")
-            cursor.close()
-        }
-        return result
-    }
 
-    private fun getStringResource(resourceId: Int): String {
-        return resources.getString(resourceId)
-    }
 
 }
 

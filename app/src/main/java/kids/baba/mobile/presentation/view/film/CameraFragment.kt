@@ -70,20 +70,9 @@ class CameraFragment @Inject constructor() : Fragment() {
 
 
     private fun handlePickerResponse(savedUri: Uri) {
-
         lifecycleScope.launch {
-
-            val data = viewModel.pickerSavePhoto(savedUri)
-            Log.e(TAG, data.toString())
-
-            Navigation.findNavController(requireActivity(), R.id.fcv_film)
-                .navigate(
-                    CameraFragmentDirections.actionCameraFragmentToCropFragment(
-                        data
-                    )
-                )
+            viewModel.pickerSavePhoto(savedUri)
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -99,7 +88,6 @@ class CameraFragment @Inject constructor() : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-//        binding.callback = this
 
         val viewFinder = binding.viewFinder
         viewFinder.post {
@@ -134,7 +122,6 @@ class CameraFragment @Inject constructor() : Fragment() {
 
         _binding = null
     }
-
 
 
 }

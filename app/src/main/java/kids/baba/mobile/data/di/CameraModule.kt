@@ -16,6 +16,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.R
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -65,18 +67,15 @@ object CameraModule {
     }
 
 
+
+
+
 }
 
 /*
 /*
 
-    private val cameraExecutor: Executor,
-    private val imageAnalyzerExecutorService: ExecutorService,
-    private val preview: Preview? = null,
-    private val imageCapture: ImageCapture? = null,
-    private val mCameraProvider: ProcessCameraProvider,
-
-
+ */
 
     @Provides
     fun provideResources(@ApplicationContext context: Context): Resources {
