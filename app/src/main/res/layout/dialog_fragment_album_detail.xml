@@ -9,6 +9,7 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
+        <import type="java.util.List" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,10 +122,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_album_title">
 
                     <ImageView
-                        app:imageFromUrl="@{viewModel.album.photo}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
+                        app:imageFromUrl="@{viewModel.album.photo}"
                         tools:src="@mipmap/ic_launcher" />
 
                 </androidx.cardview.widget.CardView>
@@ -155,8 +156,10 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_marginStart="36dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(2).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(2).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
                         app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
                         app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
@@ -168,8 +171,10 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_marginStart="18dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(1).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(1).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
                         app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
                         app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
@@ -180,8 +185,10 @@
                         android:id="@+id/civ_like_user_1"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(0).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(0).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.R
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentUiModel
@@ -36,9 +35,9 @@ class AlbumDetailViewModel @Inject constructor(
         val tempAlbumDetail = AlbumDetailUiModel(
             likeCount = 3,
             likeUsers = listOf(
-                UserIconUiModel(R.drawable.profile_g_1, "#FFA500"),
-                UserIconUiModel(R.drawable.profile_g_2, "#BACEE0"),
-                UserIconUiModel(R.drawable.profile_g_3, "#629755")
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
             ),
             commentCount = 2,
             comments = listOf(
