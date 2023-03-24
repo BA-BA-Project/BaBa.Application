@@ -147,10 +147,24 @@ class GrowthAlbumFragment : Fragment() {
 
     fun getDummyData(): List<Album> {
         val dummyResponse = mutableListOf<Album>()
-        repeat(20) {
+        repeat(365) {
+            currentDay = currentDay.plusDays(1)
             val album = Album(
                 1,
                 "손제인",
+                "엄마",
+                currentDay.toString(),
+                "빵긋빵긋",
+                false,
+                "www.naver.com",
+                "CARD_STYLE_1"
+            )
+            dummyResponse.add(album)
+        }
+        repeat(50) {
+            val album = Album(
+                1,
+                "할당@!#$!@$@!%",
                 "엄마",
                 generateRandomDate(),
                 "빵긋빵긋",
@@ -160,27 +174,34 @@ class GrowthAlbumFragment : Fragment() {
             )
             dummyResponse.add(album)
         }
-        return dummyResponse.sortedBy { LocalDate.parse(it.date) }
+        return dummyResponse
+            .groupBy { it.date }  // 중복된 날짜별로 그룹핑
+            .mapValues { (_, albums) ->
+                when (albums.size) {
+                    1 -> albums[0]  // 중복 없음
+                    else -> albums.find { it.name.contains("할당") } ?: albums[0]  // 이름에 "할당"이 포함된 앨범이 있는 경우, 해당 앨범 선택
+                }
+            }
+            .values
+            .toList()
+            .sortedBy { LocalDate.parse(it.date) }
     }
+
 
     private suspend fun initialize() {
         Log.e("state", "initialize")
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
-        //TODO api 연동시 앨범에 데이터를 할당해주기 (뷰페이저 앨범 - 달력) 1대1 매칭
         getDummyData().forEachIndexed { index, album ->
             adapter.setItem(album)
-            //indexMap[album.date] = it + 1
             val localDate = parseLocalDate(album.date)
             dateToString[localDate] = album.date
             stringToInt[album.date] = index
             intToDate[index] = localDate
-            val currentDay = intToDate[index]
         }
         currentDay = LocalDate.now()
         repeat(5) {
-            //TODO 아이 선택시 해당 아이의 앨범으로 가도록 처리
             babyAdapter.setItem(Baby("$it", "$it", "$it"))
         }
         val displayMetrics = DisplayMetrics()
@@ -219,7 +240,7 @@ class GrowthAlbumFragment : Fragment() {
 
     fun generateRandomDate(): String {
         val currentDate = LocalDate.now()
-        val randomDays = (0..30).random()
+        val randomDays = (0..100).random()
         val randomDate = currentDate.plusDays(randomDays.toLong())
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE
         return randomDate.format(formatter)
@@ -267,6 +288,21 @@ class GrowthAlbumFragment : Fragment() {
             }
         })
         binding.viewPager.currentItem
+    }
+    fun getDatesInTwoYears(): List<String> {
+        val currentDate = LocalDate.now()
+        val twoYearsAgo = currentDate.minusYears(1)
+        val twoYearsLater = currentDate.plusYears(1)
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        val datesInRange = mutableListOf<String>()
+        var date = twoYearsAgo
+        while (!date.isAfter(twoYearsLater)) {
+            datesInRange.add(date.format(formatter))
+            date = date.plusDays(1)
+        }
+        return datesInRange
     }
 
     private fun initView() {
