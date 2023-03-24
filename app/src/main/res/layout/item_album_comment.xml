@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_user_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_comment_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        tools:civ_circle_background_color="@color/baba_main"
+        tools:src="@drawable/profile_w_5" />
+
+    <TextView
+        android:id="@+id/tv_comment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/BABA.TextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/civ_user_icon"
+        app:layout_constraintEnd_toStartOf="@id/tv_comment_relation"
+        app:layout_constraintStart_toEndOf="@id/civ_user_icon"
+        app:layout_constraintTop_toTopOf="@id/civ_user_icon"
+        tools:text="박재희" />
+
+    <TextView
+        android:id="@+id/tv_comment_relation"
+        style="@style/BABA.TextStyle.Relation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_album_relation"
+        android:textAppearance="@style/BABA.TextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/civ_user_icon"
+        app:layout_constraintStart_toEndOf="@id/tv_comment_name"
+        app:layout_constraintTop_toTopOf="@id/civ_user_icon"
+        tools:text="친구" />
+
+    <TextView
+        android:id="@+id/tv_comment_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/BABA.TextStyle"
+        android:textColor="@color/text_3"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_user_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@+id/tv_comment_relation"
+        app:layout_constraintTop_toTopOf="@+id/civ_user_icon"
+        tools:text="09-28 15:37" />
+
+    <TextView
+        android:id="@+id/tv_comment_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/BABA.TextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_comment_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment_name"
+        tools:text="제인아, 앙쥬 너무 귀엽다 ㅋㅋ" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
