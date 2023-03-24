@@ -27,7 +27,7 @@ class CropViewModel @Inject constructor(
 
     private val TAG = "CropViewModel"
 
-    private val currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
+    private var currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
 
     fun setCropFrame(cropImageView: CropImageView) {
         cropImageView.apply {
@@ -44,22 +44,25 @@ class CropViewModel @Inject constructor(
 
     fun cropImage(cropImageView: CropImageView) = callbackFlow {
         viewModelScope.launch {
-            cropImageView.setOnCropImageCompleteListener { _, result ->
-                Log.d(
-                    TAG, "CropResult - original uri : ${result.originalUri}" +
-                            "cropped content: ${result.uriContent}"
-                )
-                currentTakenMedia?.let {
-                    MediaData(
-                        mediaName = "Cropped ${it.mediaName}",
-                        mediaPath = result.uriContent.toString(),
-                        mediaDate = it.mediaDate
+            if (currentTakenMedia != null) {
+                cropImageView.setOnCropImageCompleteListener { _, result ->
+                    Log.d(
+                        TAG, "CropResult - original uri : ${result.originalUri}" +
+                                "  cropped content: ${result.uriContent}"
                     )
-                }!!
-                Log.d(TAG, "currentTakenMedia: $currentTakenMedia")
-                trySendBlocking(currentTakenMedia)
+                    currentTakenMedia =
+                        MediaData(
+                            mediaName = "Cropped ",/*${it.mediaName}*/
+                            mediaPath = result.uriContent.toString(),
+                            mediaDate = currentTakenMedia!!.mediaDate
+                        )
+
+                    Log.d(TAG, "currentTakenMedia: $currentTakenMedia!!")
+                    trySendBlocking(currentTakenMedia!!)
+                }
+                cropImageView.croppedImageAsync()
             }
-            cropImageView.croppedImageAsync()
+
         }
         awaitClose()
     }

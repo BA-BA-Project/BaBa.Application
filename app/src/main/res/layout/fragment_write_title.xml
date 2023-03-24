@@ -108,4 +108,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
-<!--    app:title="@{viewModel.currentTakenMedia.mediaDate}"-->
