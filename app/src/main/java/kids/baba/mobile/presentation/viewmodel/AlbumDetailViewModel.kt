@@ -7,6 +7,7 @@ import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
+import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -46,8 +47,8 @@ class AlbumDetailViewModel @Inject constructor(
                     memberId = "111",
                     name = "이호성",
                     relation = "친구",
-                    iconName = R.drawable.profile_m_5,
-                    iconColor = "FFA500",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_1,
+                    iconColor = "#629755",
                     tag = "",
                     comment = "댓글 테스트",
                     createdAt = LocalDateTime.now()
@@ -57,7 +58,7 @@ class AlbumDetailViewModel @Inject constructor(
                     memberId = "222",
                     name = "박재희",
                     relation = "엄마",
-                    iconName = R.drawable.profile_w_1,
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
                     iconColor = "FFA500",
                     tag = "",
                     comment = "댓글 테스트2",
