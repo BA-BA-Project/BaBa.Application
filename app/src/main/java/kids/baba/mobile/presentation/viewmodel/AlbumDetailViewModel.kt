@@ -59,8 +59,8 @@ class AlbumDetailViewModel @Inject constructor(
                     name = "박재희",
                     relation = "엄마",
                     profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "FFA500",
-                    tag = "",
+                    iconColor = "#FFA500",
+                    tag = "이호성",
                     comment = "댓글 테스트2",
                     createdAt = LocalDateTime.now()
                 )

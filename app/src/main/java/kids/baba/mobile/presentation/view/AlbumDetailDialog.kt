@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
+import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 
 @AndroidEntryPoint
@@ -19,6 +21,8 @@ class AlbumDetailDialog : DialogFragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private val viewModel : AlbumDetailViewModel by viewModels()
+
+    private lateinit var commentAdapter: AlbumDetailCommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +43,19 @@ class AlbumDetailDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
         setCloseBtn()
+        setCommentRecyclerView()
+    }
+
+    private fun setCommentRecyclerView() {
+        commentAdapter = AlbumDetailCommentAdapter()
+        binding.rvAlbumComment.adapter = commentAdapter
+
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.albumDetail.collect{
+                commentAdapter.submitList(it?.comments)
+            }
+        }
+
     }
 
     private fun setCloseBtn() {

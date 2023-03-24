@@ -5,7 +5,7 @@ import kids.baba.mobile.R
 
 enum class UserProfileIconUiModel(
     @DrawableRes
-    iconRes: Int
+    val iconRes: Int
 ) {
     PROFILE_W_1(R.drawable.profile_w_1),
     PROFILE_W_2(R.drawable.profile_w_2),
