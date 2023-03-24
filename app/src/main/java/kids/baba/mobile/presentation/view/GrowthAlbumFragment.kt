@@ -151,7 +151,7 @@ class GrowthAlbumFragment : Fragment() {
             currentDay = currentDay.plusDays(1)
             val album = Album(
                 1,
-                "손제인",
+                "Empty",
                 "엄마",
                 currentDay.toString(),
                 "빵긋빵긋",
@@ -164,7 +164,7 @@ class GrowthAlbumFragment : Fragment() {
         repeat(50) {
             val album = Album(
                 1,
-                "할당@!#$!@$@!%",
+                "할당",
                 "엄마",
                 generateRandomDate(),
                 "빵긋빵긋",
