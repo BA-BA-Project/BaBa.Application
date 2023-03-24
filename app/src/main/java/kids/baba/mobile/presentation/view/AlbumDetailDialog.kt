@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
@@ -25,8 +27,12 @@ class AlbumDetailDialog : DialogFragment() {
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
 
-    private var imageWidth: Int = 0
-    private var imageHeight: Int = 0
+    private val imageWidth by lazy {
+        binding.cvBabyPhoto.width
+    }
+    private val imageHeight by lazy {
+        binding.cvBabyPhoto.height
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +55,34 @@ class AlbumDetailDialog : DialogFragment() {
         setCloseBtn()
         setCommentRecyclerView()
         setImgScaleAnim()
+        setBabyPhoto()
     }
 
-    private fun getImgSize() {
-        imageWidth = binding.cvBabyPhoto.width
-        imageHeight = binding.cvBabyPhoto.height
-    }
 
     private fun setCommentRecyclerView() {
         commentAdapter = AlbumDetailCommentAdapter()
-        binding.rvAlbumComment.adapter = commentAdapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAlbumComment.apply {
+            adapter = commentAdapter
+            this.layoutManager = layoutManager
+            var isReachedTop = true
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0 || (isReachedTop.not() && dy < 0)) {
+                        viewModel.setExpended(false)
+                    }
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (isReachedTop && canScrollVertically(-1).not() && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        viewModel.setExpended(true)
+                    }
+                    isReachedTop = canScrollVertically(-1).not()
+                }
+            })
+        }
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.albumDetail.collect {
@@ -74,8 +98,8 @@ class AlbumDetailDialog : DialogFragment() {
         scaleUpAnim.addUpdateListener { animation ->
             val layoutParams = binding.cvBabyPhoto.layoutParams
             val value = animation.animatedValue as Float
-            binding.cvBabyPhoto.layoutParams.width = (imageWidth * value).toInt()
-            binding.cvBabyPhoto.layoutParams.height = (imageHeight * value).toInt()
+            binding.cvBabyPhoto.layoutParams.width = (imageWidth * value / 4).toInt()
+            binding.cvBabyPhoto.layoutParams.height = (imageHeight * value / 4).toInt()
             binding.cvBabyPhoto.layoutParams = layoutParams
         }
         scaleUpAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
@@ -93,13 +117,14 @@ class AlbumDetailDialog : DialogFragment() {
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.isPhotoExpended.collect {
-                getImgSize()
-                if (it) {
-                    scaleUpAnim.start()
-                    binding.cbAlbumLike.visibility = View.VISIBLE
-                } else {
-                    scaleDownAnim.start()
-                    binding.cbAlbumLike.visibility = View.GONE
+                if (it != null) {
+                    if (it) {
+                        scaleUpAnim.start()
+                        binding.cbAlbumLike.visibility = View.VISIBLE
+                    } else {
+                        scaleDownAnim.start()
+                        binding.cbAlbumLike.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -109,8 +134,11 @@ class AlbumDetailDialog : DialogFragment() {
         binding.btnDialogClose.setOnClickListener {
             dismiss()
         }
-        binding.tvAlbumDate.setOnClickListener {
-            viewModel.setExpended()
+    }
+
+    private fun setBabyPhoto() {
+        binding.cvBabyPhoto.setOnClickListener {
+            viewModel.setExpended(true)
         }
     }
 

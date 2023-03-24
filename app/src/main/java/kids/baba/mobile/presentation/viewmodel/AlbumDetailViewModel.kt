@@ -14,18 +14,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
-)  : ViewModel(){
+) : ViewModel() {
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
     val album = MutableStateFlow<AlbumUiModel?>(null)
 
-    private val _isPhotoExpended = MutableStateFlow(true)
+    private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isPhotoExpended = _isPhotoExpended.asStateFlow()
     init {
         getAlbumDetail()
     }
 
-    private fun getAlbumDetail(){
+    private fun getAlbumDetail() {
         val tempAlbum = AlbumUiModel(
             contentId = 111,
             name = "박재희",
@@ -66,14 +66,105 @@ class AlbumDetailViewModel @Inject constructor(
                     tag = "이호성",
                     comment = "댓글 테스트2",
                     createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 3,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 4,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 6,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 7,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 8,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 9,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 10,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
+                ),
+                CommentUiModel(
+                    commentId = 11,
+                    memberId = "222",
+                    name = "박재희",
+                    relation = "엄마",
+                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
+                    iconColor = "#FFA500",
+                    tag = "이호성",
+                    comment = "댓글 테스트2",
+                    createdAt = LocalDateTime.now()
                 )
+
             )
         )
         albumDetail.value = tempAlbumDetail
         album.value = tempAlbum
     }
 
-    fun setExpended(){
-        _isPhotoExpended.value = _isPhotoExpended.value.not()
+    fun setExpended(expended: Boolean) {
+        if (expended != _isPhotoExpended.value) {
+            _isPhotoExpended.value = expended
+        }
     }
 }

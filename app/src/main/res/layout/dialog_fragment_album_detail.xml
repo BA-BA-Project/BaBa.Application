@@ -227,7 +227,6 @@
                     android:id="@+id/rv_album_comment"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@id/dv_comment_end"
                     app:layout_constraintEnd_toEndOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="@id/cl_like_users"
