@@ -8,6 +8,7 @@ import kids.baba.mobile.presentation.model.CommentUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -17,6 +18,9 @@ class AlbumDetailViewModel @Inject constructor(
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
     val album = MutableStateFlow<AlbumUiModel?>(null)
+
+    private val _isPhotoExpended = MutableStateFlow(true)
+    val isPhotoExpended = _isPhotoExpended.asStateFlow()
     init {
         getAlbumDetail()
     }
@@ -67,5 +71,9 @@ class AlbumDetailViewModel @Inject constructor(
         )
         albumDetail.value = tempAlbumDetail
         album.value = tempAlbum
+    }
+
+    fun setExpended(){
+        _isPhotoExpended.value = _isPhotoExpended.value.not()
     }
 }

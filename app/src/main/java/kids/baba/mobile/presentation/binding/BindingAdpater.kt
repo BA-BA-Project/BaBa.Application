@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.binding
 
 import android.graphics.Color
 import android.widget.ImageView
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -16,9 +15,7 @@ fun setIcon(imageView: ImageView, @DrawableRes res: Int) {
 
 @BindingAdapter("backGroundColor")
 fun setBackGroundColor(circleImageView: CircleImageView, colorString: String) {
-    @ColorInt
-    val a = Color.parseColor(colorString)
-    circleImageView.circleBackgroundColor = a
+    circleImageView.circleBackgroundColor = Color.parseColor(colorString)
 }
 
 @BindingAdapter("imageFromUrl")
