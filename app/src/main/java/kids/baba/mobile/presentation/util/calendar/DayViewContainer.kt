@@ -28,13 +28,11 @@ class DayViewContainer(view: View, binding: FragmentGrowthalbumBinding) : ViewCo
 
     init {
         view.setOnClickListener {
-            if (selectedDate != day.date) {
-                val oldDate = selectedDate
-                selectedDate = day.date
-                listener?.selectDay(selectedDate)
-                binding.myCalendar.notifyDateChanged(day.date)
-                oldDate?.let { binding.myCalendar.notifyDateChanged(it) }
-            }
+            val oldDate = selectedDate
+            selectedDate = day.date
+            listener?.selectDay(selectedDate)
+            binding.myCalendar.notifyDateChanged(day.date)
+            oldDate?.let { binding.myCalendar.notifyDateChanged(it) }
         }
     }
 
@@ -48,7 +46,7 @@ class DayViewContainer(view: View, binding: FragmentGrowthalbumBinding) : ViewCo
         } else {
             R.color.teal_700
         }
-        bind.exSevenDateText.setTextColor(view.context.getColorCompat(colorRes))
-        bind.exSevenSelectedView.isVisible = day.date == selectedDate
+//        bind.exSevenDateText.setTextColor(view.context.getColorCompat(colorRes))
+        bind.exSevenSelectedView.isVisible = false
     }
 }

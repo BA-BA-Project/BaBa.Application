@@ -32,6 +32,7 @@ import kids.baba.mobile.presentation.util.calendar.DayListener
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 //TODO api 연동
 // 사용한 오픈소스 달력
@@ -42,8 +43,9 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
-    val indexMap = hashMapOf<LocalDate, Int>()
-    val dayMap = hashMapOf<Int, LocalDate>()
+    val dateToString = hashMapOf<LocalDate, String>()
+    val stringToInt = hashMapOf<String, Int>()
+    val intToDate = hashMapOf<Int,LocalDate>()
 
     //TODO datepicker 대신 달력 커스터 마이징
     //앨범이 있는날짜에 표시해야함
@@ -76,8 +78,8 @@ class GrowthAlbumFragment : Fragment() {
                     override fun selectDay(date: LocalDate) {
                         Log.e("day", "${date.year} ${date.month.value} ${date.dayOfMonth}")
                         currentDay = date
-                        indexMap[currentDay]?.let {
-                            binding.viewPager.setCurrentItem(it, true)
+                        dateToString[currentDay]?.let {
+                            binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
                         }
                     }
                 })
@@ -90,8 +92,8 @@ class GrowthAlbumFragment : Fragment() {
         }
         val currentMonth = YearMonth.now()
         binding.myCalendar.setup(
-            currentMonth.minusMonths(5).atStartOfMonth(),
-            currentMonth.plusMonths(5).atEndOfMonth(),
+            currentMonth.minusMonths(600).atStartOfMonth(),
+            currentMonth.plusMonths(600).atEndOfMonth(),
             firstDayOfWeekFromLocale(),
         )
         //
@@ -139,30 +141,38 @@ class GrowthAlbumFragment : Fragment() {
         Log.e("loading", "loading")
     }
 
+    fun getDummyData(): List<Album> {
+        val dummyResponse = mutableListOf<Album>()
+        repeat(20) {
+            val album = Album(
+                1,
+                "손제인",
+                "엄마",
+                generateRandomDate(),
+                "빵긋빵긋",
+                false,
+                "www.naver.com",
+                "CARD_STYLE_1"
+            )
+            dummyResponse.add(album)
+        }
+        return dummyResponse.sortedBy { LocalDate.parse(it.date) }
+    }
+
     private suspend fun initialize() {
         Log.e("state", "initialize")
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
         //TODO api 연동시 앨범에 데이터를 할당해주기 (뷰페이저 앨범 - 달력) 1대1 매칭
-        repeat(31) {
-            adapter.setItem(
-                Album(
-                    1,
-                    "손제인",
-                    "엄마",
-                    "${currentDay.year}-${currentDay.month.value}-${currentDay.dayOfMonth}",
-                    "빵긋빵긋",
-                    false,
-                    "www.naver.com",
-                    "CARD_STYLE_1"
-                )
-            )
+        getDummyData().forEachIndexed { index, album ->
+            adapter.setItem(album)
             //indexMap[album.date] = it + 1
-            indexMap[currentDay] = it + 1
-            dayMap[it + 1] = currentDay
-            currentDay = currentDay.plusDays(1)
-            Log.e("day", "${currentDay.dayOfMonth} ${it + 1}")
+            val localDate = parseLocalDate(album.date)
+            dateToString[localDate] = album.date
+            stringToInt[album.date] = index
+            intToDate[index] = localDate
+            val currentDay = intToDate[index]
         }
         currentDay = LocalDate.now()
         repeat(5) {
@@ -203,6 +213,18 @@ class GrowthAlbumFragment : Fragment() {
 
     }
 
+    fun generateRandomDate(): String {
+        val currentDate = LocalDate.now()
+        val randomDays = (0..30).random()
+        val randomDate = currentDate.plusDays(randomDays.toLong())
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+        return randomDate.format(formatter)
+    }
+    fun parseLocalDate(dateString: String): LocalDate {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+        return LocalDate.parse(dateString, formatter)
+    }
+
     fun onBackPressed(): Boolean {
         if (isChange) viewModel.motionLayoutTransition.value = Unit
         if (isPick) viewModel.pickDate.value = Unit
@@ -234,7 +256,7 @@ class GrowthAlbumFragment : Fragment() {
                 super.onPageSelected(position)
                 //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
                 //뷰페이저의 앨범에있는 날짜를 기준으로 달력 선택하도록 한다.
-                dayMap[position]?.let {
+                intToDate[position]?.let {
                     binding.myCalendar.smoothScrollToDate(it)
                 }
                 Log.e("day", "${currentDay.dayOfMonth}")
@@ -257,6 +279,9 @@ class GrowthAlbumFragment : Fragment() {
                         position = WeekDayPosition.InDate
                     )
                 )
+                dateToString[LocalDate.of(year, month + 1, day)]?.let {
+                    binding.viewPager.currentItem = stringToInt[it]!!
+                }
             }, 2023, 3, 12) {
                 binding.shadow.alpha = 0f
             }
