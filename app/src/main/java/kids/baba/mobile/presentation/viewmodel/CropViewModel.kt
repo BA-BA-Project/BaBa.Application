@@ -35,7 +35,7 @@ class CropViewModel @Inject constructor(
             setFixedAspectRatio(true)
             guidelines = CropImageView.Guidelines.ON
             cropShape = CropImageView.CropShape.RECTANGLE
-            scaleType= CropImageView.ScaleType.FIT_CENTER
+            scaleType = CropImageView.ScaleType.FIT_CENTER
             isAutoZoomEnabled = false
             isShowProgressBar = true
         }
@@ -67,7 +67,7 @@ class CropViewModel @Inject constructor(
         awaitClose()
     }
 
-    companion object{
+    companion object {
         const val MEDIA_DATA = "mediaData"
     }
 

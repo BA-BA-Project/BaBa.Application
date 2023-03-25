@@ -53,7 +53,7 @@ class CameraFragment @Inject constructor() : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
@@ -74,15 +74,14 @@ class CameraFragment @Inject constructor() : Fragment() {
         addListener(viewFinder)
         collectEvent()
 
-
     }
 
     private fun addListener(viewFinder: PreviewView) {
         binding.tbCamera.setNavigationOnClickListener {
             requireActivity().finish()
         }
-        binding.cameraToAlbumBtn.setOnClickListener { goToAlbum() }
-        binding.toggleScreenBtn.setOnClickListener { viewModel.toggleCamera(viewFinder, viewLifecycleOwner) }
+        binding.btnAlbum.setOnClickListener { goToAlbum() }
+        binding.btnToggle.setOnClickListener { viewModel.toggleCamera(viewFinder, viewLifecycleOwner) }
     }
 
 
@@ -91,9 +90,9 @@ class CameraFragment @Inject constructor() : Fragment() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    private fun collectEvent(){
+    private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event->
+            viewModel.eventFlow.collect { event ->
                 when (event) {
                     is GetPictureEvent.GetFromCamera -> activityViewModel.isMoveToWriteTitleFromCamera(event.mediaData)
                     is GetPictureEvent.GetFromGallery -> activityViewModel.isMoveToCrop(event.mediaData)

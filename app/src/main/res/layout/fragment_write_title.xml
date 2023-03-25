@@ -17,22 +17,21 @@
         tools:context=".presentation.view.film.WriteTitleFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/write_title_img"
+            android:id="@+id/iv_write_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/ab_write_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
             android:background="@color/transparent"
+            app:elevation="0dp"
             app:layout_constraintBottom_toTopOf="@id/ab_write_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,25 +41,24 @@
                 android:id="@+id/tb_write_title"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:textSize="16sp"
                 app:buttonGravity="center_vertical"
                 app:navigationIcon="@drawable/ic_back_black_round"
-                app:titleTextColor="@color/white"
-                tools:title="21.09.30(촬영당일날짜)"
-                android:textSize="16sp"
-                app:titleCentered="true">
+                app:titleCentered="true"
+                app:titleTextColor="@color/white">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/complete_btn"
+                    android:id="@+id/btn_crop_complete"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/format_round_corner_black"
+                    android:contentDescription="@string/btn_write_title_complete"
+                    android:shadowColor="@color/inactive_shadow"
                     android:text="@string/complete"
                     android:textColor="@color/inactive_text"
-                    android:shadowColor="@color/inactive_shadow"
                     android:textSize="16sp"
-
                     android:textStyle="bold" />
 
 
@@ -69,40 +67,37 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <EditText
-            android:id="@+id/write_title_et"
+            android:id="@+id/et_write_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@null"
             android:hint="@string/type_title"
-            android:textAlignment="center"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:maxLength="10"
             android:maxLines="1"
-            android:textColorHint="@color/hint_text"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:inputType="text"
-            android:background="@null"
+            android:textColorHint="@color/hint_text"
+            android:textCursorDrawable="@color/baba_main"
+            android:textSize="30sp"
             android:textStyle="bold"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/write_title_guide_tv"
+            android:id="@+id/tv_write_title_guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="@string/write_title_guide"
             android:textColor="@color/hint_text"
-            app:layout_constraintStart_toStartOf="@+id/write_title_et"
-            app:layout_constraintEnd_toEndOf="@id/write_title_et"
-            app:layout_constraintTop_toBottomOf="@+id/write_title_et"
             android:textSize="12sp"
-            android:layout_marginTop="12dp"
-            />
-
-
-
+            app:layout_constraintEnd_toEndOf="@id/et_write_title"
+            app:layout_constraintStart_toStartOf="@+id/et_write_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_write_title" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

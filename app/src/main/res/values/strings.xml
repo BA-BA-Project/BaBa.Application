@@ -24,7 +24,6 @@
     <string name="sign_up_greeting2">나와 아이, 가족의 성장을 기록하는 바바에 오신 걸 환영해요!</string>
     <string name="please_input_name">바바에서 사용할 이름을 입력해주세요.\n[마이]에서 변경 가능해요."</string>
     <string name="please_select_profile_icon">프로필을 선택해봐요.\n[마이]에서 변경 가능해요.</string>
-    <string name="hello_blank_fragment">Heselect_camerallo blank fragment</string>
     <string name="baba_greeting_1">안녕😄</string>
     <string name="baba_greeting_2">반가워, 바바!</string>
     <string name="send">전송</string>
@@ -38,39 +37,12 @@
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
 
-    <string name="select_how_to_film">어떻게 사진을 등록할지 선택하세요</string>
 
-    <string-array name="how_to_film">
-        <item>카메라</item>
-        <item>갤러리</item>
-    </string-array>
 
     <!--    카메라-->
-    <string name="show_camera">Show camera preview</string>
-    <string name="camera_unavailable"><b>Camera could not be opened.</b>\nThis occurs when the camera is not available (for example it is already in use) or if the system has denied access (for example when camera access has been disabled).</string>
-    <string name="intro">This sample shows a basic implementation for requesting permissions at runtime.\nClick the button below to request the Camera permission and open a full-screen camera preview.</string>
-    <string name="open_camera_preview">Open Camera Preview</string>
-    <string name="intro_message"><![CDATA[
-This sample shows a basic implementation for requesting permissions at runtime. Click the button to
-request the Camera permission and open a full-screen camera preview.
-
-Note: The "RuntimePermissions" sample provides a more complete overview over the runtime permission
-features available.]]>
-    </string>
-    <string name="camera_access_required">Camera access is required to display the camera preview.</string>
-    <string name="ok">OK</string>
-    <string name="camera_permission_not_available">Permission is not available. Requesting camera permission.</string>
-    <string name="camera_permission_available">Camera permission is available. Starting preview.</string>
-    <string name="camera_permission_granted">Camera permission was granted. Starting preview.</string>
-    <string name="camera_permission_denied">Camera permission request was denied.</string>
-
-    <string name="rationale_title">We need permission to use your camera</string>
-    <string name="rationale_desc">This app relies on read access to your contacts. We require access to this permission to find your contacts in our database and suggest people you may know. We will not store any contact info in our data base if they are not a part of our platform. For further info read our privacy policy.</string>
 
     <string name="app_name">BaBa</string>
     <string name="take_photo">Take Photo</string>
-    <string name="start_capture">Start Capture</string>
-    <string name="stop_capture">Stop Capture</string>
 
     <string name="android_permission_camera_title">카메라 권한이 필요합니다.</string>
     <string name="android_permission_camera_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 카메라를 사용하여 아이의 오늘을 기록해보세요 </string>
@@ -80,6 +52,12 @@ features available.]]>
     <string name="cancel">Cancel</string>
     <string name="crop_image">사진 자르기</string>
     <string name="complete">완료</string>
+
+    <string name="btn_capture">사진 촬영, 사진 제목 작성 창으로 이동</string>
+    <string name="btn_toggle">카메라 화면 전환</string>
+    <string name="btn_album"> 앨범으로 이동</string>
+    <string name="btn_crop_complete"> Crop 완료, 사진 제목 작성 창으로 이동</string>
+    <string name="btn_write_title_complete"> 사진 제목 작성 완료, 카드 선택 창으로 이동</string>
 
 
     <string name="can_not_find_date">날짜를 불러올 수 없습니다.</string>

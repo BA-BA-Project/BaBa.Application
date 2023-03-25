@@ -113,7 +113,7 @@ class GrowthAlbumFragment : Fragment() {
         // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
         Log.d("GrowthAlbumFragment", "connect()")
 
-        FilmActivity.open(requireActivity())
+        FilmActivity.startActivity(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

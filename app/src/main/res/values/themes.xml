@@ -1,4 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <bool name="use_light_system_bars">true</bool>
+
     <!-- Base application theme. -->
     <style name="Theme.Baba" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->

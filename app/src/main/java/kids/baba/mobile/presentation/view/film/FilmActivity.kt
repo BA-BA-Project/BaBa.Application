@@ -1,12 +1,9 @@
 package kids.baba.mobile.presentation.view.film
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -15,10 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.presentation.event.FilmEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
-import kotlinx.coroutines.flow.collect
-import java.io.File
 
 @AndroidEntryPoint
 class FilmActivity : AppCompatActivity() {
@@ -48,7 +42,9 @@ class FilmActivity : AppCompatActivity() {
             viewModel.filmEventFlow.collect { event ->
                 Log.d(TAG, event.toString())
                 when (event) {
-                    is FilmEvent.StartOnCamera -> {Log.d(TAG, "START ON CAMERA")}
+                    is FilmEvent.StartOnCamera -> {
+                        Log.d(TAG, "START ON CAMERA")
+                    }
 
                     is FilmEvent.MoveToCrop -> {
                         Log.e(TAG, "MOVE TO CROP")
@@ -77,8 +73,9 @@ class FilmActivity : AppCompatActivity() {
 
 
     companion object {
-        fun open(activity: Activity) {
-            activity.startActivity(Intent(activity, FilmActivity::class.java))
+        fun startActivity(context: Context) {
+            val intent = Intent(context, FilmActivity::class.java)
+            context.startActivity(intent)
         }
     }
 

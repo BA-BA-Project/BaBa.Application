@@ -29,7 +29,7 @@ class WriteTitleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentWriteTitleBinding.inflate(inflater, container, false)
 
@@ -39,13 +39,13 @@ class WriteTitleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        val completeBtn = binding.completeBtn
-        val writeTitleEt = binding.writeTitleEt
+        val completeBtn = binding.btnCropComplete
+        val writeTitleEt = binding.etWriteTitle
 
         binding.tbWriteTitle.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-        viewModel.setPreviewImg(binding.writeTitleImg)
+        viewModel.setPreviewImg(binding.ivWriteTitle)
         viewModel.setTitle(binding.tbWriteTitle)
 
         viewModel.onTextChanged(writeTitleEt, completeBtn)

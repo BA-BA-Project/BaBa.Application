@@ -6,9 +6,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.net.toUri
-import androidx.databinding.Bindable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.google.android.material.appbar.MaterialToolbar

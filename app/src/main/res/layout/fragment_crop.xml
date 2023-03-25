@@ -40,12 +40,13 @@
                 app:titleTextColor="@color/white">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/complete_btn"
+                    android:id="@+id/btn_crop_complete"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/format_round_corner_black"
+                    android:contentDescription="@string/btn_crop_complete"
                     android:text="@string/complete"
                     android:textColor="@color/baba_main"
                     android:textSize="16sp"
@@ -58,7 +59,7 @@
 
 
         <com.canhub.cropper.CropImageView
-            android:id="@+id/cropImageView"
+            android:id="@+id/iv_crop_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"

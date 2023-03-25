@@ -6,25 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.canhub.cropper.CropImageView
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCropBinding
-import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import kids.baba.mobile.presentation.viewmodel.CropViewModel
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
-import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
@@ -42,7 +34,7 @@ class CropFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCropBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,11 +42,11 @@ class CropFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.viewModel = viewModel
-        val cropImageView = binding.cropImageView
+        val cropImageView = binding.ivCropImage
 
         initView(cropImageView)
 
-        addListener(binding.completeBtn, cropImageView)
+        addListener(binding.btnCropComplete, cropImageView)
     }
 
     private fun initView(cropImageView: CropImageView) {

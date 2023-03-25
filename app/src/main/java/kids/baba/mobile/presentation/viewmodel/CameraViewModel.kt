@@ -1,14 +1,16 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.repository.PhotoPickerRepository
 import kids.baba.mobile.domain.usecase.PhotoCaptureUseCase
 import kids.baba.mobile.presentation.event.GetPictureEvent
@@ -34,8 +36,8 @@ class CameraViewModel @Inject constructor(
     private val imageAnalyzer: ImageAnalysis,*/
     private val preview: Preview,
     private val imageCapture: ImageCapture,
-    application: Application,
-) : BaseViewModel(application) {
+    @ApplicationContext private val context: Context
+) : ViewModel() {
 
     private val TAG = "CameraViewModel"
 
