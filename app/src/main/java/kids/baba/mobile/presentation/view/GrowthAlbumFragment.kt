@@ -37,7 +37,13 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-//TODO api 연동
+//TODO 앨범 있는 날짜 횡달력에 표시
+//TODO 횡달력에서 선택한 날짜 표시
+//TODO 횡달력에서 선택한 날짜 중앙정렬 자연스럽게 하기(되긴하는데 삐걱임)
+//TODO datePicker 대신 달력 커스터 마이징
+//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨)
+//TODO viewPager - yyyy-mm dateview 연동 자연스럽게 하기(약간 싱크가 안맞음)
+
 // 사용한 오픈소스 달력
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -49,9 +55,8 @@ class GrowthAlbumFragment : Fragment() {
     val dateToString = hashMapOf<LocalDate, String>()
     val stringToInt = hashMapOf<String, Int>()
     val intToDate = hashMapOf<Int, LocalDate>()
-    private var width : Int = 0
+    private var width: Int = 0
 
-    //TODO datepicker 대신 달력 커스터 마이징
     //앨범이 있는날짜에 표시해야함
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
@@ -62,13 +67,8 @@ class GrowthAlbumFragment : Fragment() {
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         collectUiState()
         initializeCalendar()
-
-        binding.tvDate.setOnClickListener {
-            binding.viewPager.setCurrentItem(15, false)
-        }
     }
 
     private fun initializeCalendar() {
@@ -105,9 +105,6 @@ class GrowthAlbumFragment : Fragment() {
         //
         binding.myCalendar.scrollPaged = false
         binding.myCalendar.scrollToWeek(LocalDate.now())
-        binding.tvDate.setOnClickListener {
-            binding.myCalendar.smoothScrollToDate(LocalDate.now())
-        }
         binding.tvAlbumTitle.setOnClickListener {
             val albumDetailDialog = AlbumDetailDialog()
             albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
@@ -181,12 +178,12 @@ class GrowthAlbumFragment : Fragment() {
             dummyResponse.add(album)
         }
         return dummyResponse
-            .groupBy { it.date }  // 중복된 날짜별로 그룹핑
+            .groupBy { it.date }
             .mapValues { (_, albums) ->
                 when (albums.size) {
-                    1 -> albums[0]  // 중복 없음
+                    1 -> albums[0]
                     else -> albums.find { it.name.contains("할당") }
-                        ?: albums[0]  // 이름에 "할당"이 포함된 앨범이 있는 경우, 해당 앨범 선택
+                        ?: albums[0]
                 }
             }
             .values
@@ -196,6 +193,25 @@ class GrowthAlbumFragment : Fragment() {
 
 
     private fun initialize() {
+        binding.viewmodel = viewModel
+        datePicker =
+            MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
+                val year = datePicker.datePicker.year
+                val month = datePicker.datePicker.month
+                val day = datePicker.datePicker.dayOfMonth
+                binding.shadow.alpha = 0f
+                binding.myCalendar.smoothScrollToWeek(
+                    WeekDay(
+                        LocalDate.of(year, month + 1, day),
+                        position = WeekDayPosition.InDate
+                    )
+                )
+                dateToString[LocalDate.of(year, month + 1, day)]?.let {
+                    binding.viewPager.currentItem = stringToInt[it]!!
+                }
+            }, 2023, 3, 12) {
+                binding.shadow.alpha = 0f
+            }
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
@@ -251,6 +267,7 @@ class GrowthAlbumFragment : Fragment() {
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE
         return randomDate.format(formatter)
     }
+
     fun parseLocalDate(dateString: String): LocalDate {
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE
         return LocalDate.parse(dateString, formatter)
@@ -289,34 +306,13 @@ class GrowthAlbumFragment : Fragment() {
                     lifecycleScope.launch {
                         binding.myCalendar.smoothScrollToDate(it)
                         delay(200)
-                        binding.myCalendar.scrollBy(-width/2 + 72, 0)
+                        binding.myCalendar.scrollBy(-width / 2 + 72, 0)
                     }
                 }
             }
         })
     }
 
-    private fun initView() {
-        binding.viewmodel = viewModel
-        datePicker =
-            MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
-                val year = datePicker.datePicker.year
-                val month = datePicker.datePicker.month
-                val day = datePicker.datePicker.dayOfMonth
-                binding.shadow.alpha = 0f
-                binding.myCalendar.smoothScrollToWeek(
-                    WeekDay(
-                        LocalDate.of(year, month + 1, day),
-                        position = WeekDayPosition.InDate
-                    )
-                )
-                dateToString[LocalDate.of(year, month + 1, day)]?.let {
-                    binding.viewPager.currentItem = stringToInt[it]!!
-                }
-            }, 2023, 3, 12) {
-                binding.shadow.alpha = 0f
-            }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
