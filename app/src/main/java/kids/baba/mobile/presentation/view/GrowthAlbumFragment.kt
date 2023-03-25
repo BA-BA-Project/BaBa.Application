@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.calendarnew.DayViewContainer
@@ -30,6 +31,8 @@ import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.util.calendar.DayListener
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -45,7 +48,8 @@ class GrowthAlbumFragment : Fragment() {
     val viewModel: GrowthAlbumViewModel by viewModels()
     val dateToString = hashMapOf<LocalDate, String>()
     val stringToInt = hashMapOf<String, Int>()
-    val intToDate = hashMapOf<Int,LocalDate>()
+    val intToDate = hashMapOf<Int, LocalDate>()
+    private var width : Int = 0
 
     //TODO datepicker 대신 달력 커스터 마이징
     //앨범이 있는날짜에 표시해야함
@@ -62,7 +66,6 @@ class GrowthAlbumFragment : Fragment() {
         collectUiState()
         initializeCalendar()
 
-        //앨범에 있는 아이템의 날짜를 이용해서 해당 앨범의 인덱스를 구해야한다.
         binding.tvDate.setOnClickListener {
             binding.viewPager.setCurrentItem(15, false)
         }
@@ -76,11 +79,14 @@ class GrowthAlbumFragment : Fragment() {
                 dayViewContainer = DayViewContainer(view, binding)
                 dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
                     override fun selectDay(date: LocalDate) {
-                        Log.e("day", "${date.year} ${date.month.value} ${date.dayOfMonth}")
                         currentDay = date
                         dateToString[currentDay]?.let {
                             binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
                         }
+                    }
+
+                    override fun releaseDay(date: LocalDate) {
+
                     }
                 })
                 return dayViewContainer
@@ -104,7 +110,7 @@ class GrowthAlbumFragment : Fragment() {
         }
         binding.tvAlbumTitle.setOnClickListener {
             val albumDetailDialog = AlbumDetailDialog()
-            albumDetailDialog.show(parentFragmentManager,"AlbumDetail")
+            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
         }
 
     }
@@ -179,7 +185,8 @@ class GrowthAlbumFragment : Fragment() {
             .mapValues { (_, albums) ->
                 when (albums.size) {
                     1 -> albums[0]  // 중복 없음
-                    else -> albums.find { it.name.contains("할당") } ?: albums[0]  // 이름에 "할당"이 포함된 앨범이 있는 경우, 해당 앨범 선택
+                    else -> albums.find { it.name.contains("할당") }
+                        ?: albums[0]  // 이름에 "할당"이 포함된 앨범이 있는 경우, 해당 앨범 선택
                 }
             }
             .values
@@ -188,8 +195,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
 
-    private suspend fun initialize() {
-        Log.e("state", "initialize")
+    private fun initialize() {
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
@@ -206,7 +212,7 @@ class GrowthAlbumFragment : Fragment() {
         }
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val width = displayMetrics.widthPixels
+        width = displayMetrics.widthPixels
 
         binding.babySelectView.maxHeight = 0
         binding.shadow.alpha = 0f
@@ -279,30 +285,15 @@ class GrowthAlbumFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                //TODO 뷰페이저 넘길때 날짜가 중앙으로 가도록 수정
-                //뷰페이저의 앨범에있는 날짜를 기준으로 달력 선택하도록 한다.
                 intToDate[position]?.let {
-                    binding.myCalendar.smoothScrollToDate(it)
+                    lifecycleScope.launch {
+                        binding.myCalendar.smoothScrollToDate(it)
+                        delay(200)
+                        binding.myCalendar.scrollBy(-width/2 + 72, 0)
+                    }
                 }
-                Log.e("day", "${currentDay.dayOfMonth}")
             }
         })
-        binding.viewPager.currentItem
-    }
-    fun getDatesInTwoYears(): List<String> {
-        val currentDate = LocalDate.now()
-        val twoYearsAgo = currentDate.minusYears(1)
-        val twoYearsLater = currentDate.plusYears(1)
-
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-        val datesInRange = mutableListOf<String>()
-        var date = twoYearsAgo
-        while (!date.isAfter(twoYearsLater)) {
-            datesInRange.add(date.format(formatter))
-            date = date.plusDays(1)
-        }
-        return datesInRange
     }
 
     private fun initView() {
