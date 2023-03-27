@@ -1,8 +1,6 @@
 package kids.baba.mobile.presentation.helper
 
 import android.Manifest
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import kids.baba.mobile.R
 

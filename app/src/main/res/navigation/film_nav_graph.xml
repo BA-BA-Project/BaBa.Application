@@ -13,8 +13,7 @@
 
         <action
             android:id="@+id/action_cameraFragment_to_writeTitleFragment"
-            app:destination="@+id/writeTitleFragment"
-            />
+            app:destination="@+id/writeTitleFragment" />
         <action
             android:id="@+id/action_cameraFragment_to_cropFragment"
             app:destination="@id/cropFragment" />
@@ -43,8 +42,7 @@
         android:id="@+id/writeTitleFragment"
         android:name="kids.baba.mobile.presentation.view.film.WriteTitleFragment"
         android:label="WriteTitleFragment"
-        tools:layout="@layout/fragment_write_title"
-        >
+        tools:layout="@layout/fragment_write_title">
 
 
         <argument
