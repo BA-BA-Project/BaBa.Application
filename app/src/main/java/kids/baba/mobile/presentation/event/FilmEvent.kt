@@ -10,4 +10,5 @@ sealed class FilmEvent {
     data class MoveToWriteTitleFromCrop(val mediaData: MediaData): FilmEvent()
     data class MoveToSelectCard(val mediaData: MediaData): FilmEvent()
 
+
 }

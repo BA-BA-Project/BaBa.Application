@@ -63,7 +63,10 @@ class FilmActivity : AppCompatActivity() {
                     }
 
                     is FilmEvent.MoveToSelectCard -> {
-                        Log.e(TAG, "MOVE TO SELECT CARD")
+                        Log.e(TAG, "MOVE TO Select Card")
+                        val action =
+                            WriteTitleFragmentDirections.actionWriteTitleFragmentToSelectCardFragment(event.mediaData)
+                        navController.navigate(action)
                     }
                 }
 

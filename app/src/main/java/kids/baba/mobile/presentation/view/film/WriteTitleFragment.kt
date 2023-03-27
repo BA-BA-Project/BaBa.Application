@@ -2,14 +2,22 @@ package kids.baba.mobile.presentation.view.film
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentWriteTitleBinding
+import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
@@ -23,6 +31,7 @@ class WriteTitleFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: WriteTitleViewModel by viewModels()
+    private val activityViewModel: FilmViewModel by activityViewModels()
 
     private lateinit var imm: InputMethodManager
 
@@ -39,6 +48,7 @@ class WriteTitleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+
         val completeBtn = binding.btnCropComplete
         val writeTitleEt = binding.etWriteTitle
 
@@ -47,13 +57,30 @@ class WriteTitleFragment : Fragment() {
         }
         viewModel.setPreviewImg(binding.ivWriteTitle)
         viewModel.setTitle(binding.tbWriteTitle)
-
         viewModel.onTextChanged(writeTitleEt, completeBtn)
-        imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        setSoftKeyboard(writeTitleEt)
+
+        addListener()
+    }
+
+    private fun addListener() {
+        binding.btnCropComplete.setOnClickListener {
+            viewLifecycleOwner.repeatOnStarted {
+                viewModel.complete().catch {
+                    Log.e(TAG, it.toString())
+                    throw it
+                }.collect {
+                    activityViewModel.isMoveToSelectCard(it)
+                }
+            }
+        }
+    }
+
+    private fun setSoftKeyboard(writeTitleEt: EditText) {
+        imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(writeTitleEt, InputMethodManager.SHOW_IMPLICIT)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
     }
 
 

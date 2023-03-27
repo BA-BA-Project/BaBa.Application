@@ -59,7 +59,8 @@
                     android:text="@string/complete"
                     android:textColor="@color/inactive_text"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:textColor="@color/white" />
 
 
             </com.google.android.material.appbar.MaterialToolbar>
@@ -102,4 +103,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+<!--    android:onClick="@{_ -> viewModel.complete}"-->
+
 
