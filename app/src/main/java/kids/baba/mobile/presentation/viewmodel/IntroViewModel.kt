@@ -38,7 +38,7 @@ class IntroViewModel @Inject constructor(
                     }
                 }
                 .collect {
-                    _eventFlow.emit(IntroEvent.MoveToMain(it))
+                    _eventFlow.emit(IntroEvent.MoveToMain)
                 }
         }
     }
@@ -49,9 +49,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isLoginSuccess(member: MemberModel) {
+    fun isLoginSuccess() {
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain(member))
+            _eventFlow.emit(IntroEvent.MoveToMain)
         }
     }
 
