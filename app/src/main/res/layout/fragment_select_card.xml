@@ -22,7 +22,8 @@
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/tb_camera"
@@ -53,35 +54,121 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/fl_baby_frame"
-            android:layout_width="match_parent"
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_baby_frame"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:cardCornerRadius="16dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="48dp"
+            android:layout_marginHorizontal="28dp"
+            app:layout_constraintBottom_toTopOf="@+id/rv_select_cards"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ab_select_card"
-            app:layout_constraintBottom_toTopOf="@+id/rv_frames"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="30dp"
+            app:strokeColor="@color/baba_main"
+            app:strokeWidth="1dp">
 
-            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_baby_frame_today"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="18dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/today"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textColor="@color/baba_sub_2"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tv_baby_frame_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@{viewModel.album.title}"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/tv_baby_frame_writer"
+                    app:layout_constraintStart_toStartOf="@+id/tv_baby_frame_today"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_frame_today"
+                    tools:text="양육자가 작성한 제목" />
+
+                <TextView
+                    android:id="@+id/tv_baby_frame_writer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@{viewModel.album.name}"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_baby_frame_title"
+                    app:layout_constraintEnd_toStartOf="@id/tv_baby_frame_relation"
+                    app:layout_constraintStart_toEndOf="@id/tv_baby_frame_title"
+                    app:layout_constraintTop_toTopOf="@id/tv_baby_frame_title"
+                    tools:text="손제인" />
+
+                <TextView
+                    android:id="@+id/tv_baby_frame_relation"
+                    style="@style/BABA.TextStyle.Relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_album_relation"
+                    android:text="@{viewModel.album.relation}"
+                    android:textAppearance="@style/BABA.TextStyle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_baby_frame_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_baby_frame_writer"
+                    app:layout_constraintTop_toTopOf="@id/tv_baby_frame_title"
+                    tools:text="엄마" />
+
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="19dp"
+                    android:scaleType="fitXY"
+                    app:imageFromUrl="@{viewModel.album.photo}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_frame_title"
+                    tools:src="@mipmap/ic_launcher" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_frames"
+            android:id="@+id/rv_select_cards"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_baby_frame"
             android:layout_marginBottom="50dp"
-            >
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
 
         </androidx.recyclerview.widget.RecyclerView>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

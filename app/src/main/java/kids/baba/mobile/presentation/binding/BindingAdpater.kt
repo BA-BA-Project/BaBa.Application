@@ -11,6 +11,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import kids.baba.mobile.R
 
 
@@ -28,6 +29,13 @@ fun View.setVisibility(show: Boolean) {
 @BindingAdapter("app:tint")
 fun ImageView.setImageTint(@ColorInt color: Int) {
     setColorFilter(color)
+}
+
+@BindingAdapter("imageFromUrl")
+fun setImageFromUrl(imageView: ImageView, url: String){
+    Glide.with(imageView.context)
+        .load(url)
+        .into(imageView)
 }
 
 @BindingAdapter("activeColor")
