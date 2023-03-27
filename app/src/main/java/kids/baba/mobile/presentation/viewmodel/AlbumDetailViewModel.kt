@@ -1,19 +1,30 @@
 package kids.baba.mobile.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
+import kids.baba.mobile.core.error.TokenEmptyException
+import kids.baba.mobile.domain.usecase.GetMemberUseCase
+import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
+    getMemberUseCase: GetMemberUseCase
 ) : ViewModel() {
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
@@ -21,6 +32,19 @@ class AlbumDetailViewModel @Inject constructor(
 
     private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isPhotoExpended = _isPhotoExpended.asStateFlow()
+
+    private val _eventFlow = MutableEventFlow<AlbumDetailEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
+
+    val member = getMemberUseCase.getMe().catch {
+        if(it is TokenEmptyException){
+            _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_token_empty_error))
+        } else {
+            _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_unknown_error))
+        }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+
     init {
         getAlbumDetail()
     }
@@ -167,4 +191,5 @@ class AlbumDetailViewModel @Inject constructor(
             _isPhotoExpended.value = expended
         }
     }
+
 }

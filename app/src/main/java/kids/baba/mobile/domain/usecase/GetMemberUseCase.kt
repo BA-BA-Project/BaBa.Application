@@ -6,6 +6,10 @@ import kids.baba.mobile.core.error.MemberNotFoundException
 import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.repository.MemberRepository
+import kids.baba.mobile.presentation.mapper.toPresentation
+import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.UserIconUiModel
+import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -14,8 +18,8 @@ import javax.inject.Inject
 class GetMemberUseCase @Inject constructor(private val memberRepository: MemberRepository) {
     private val tag = "GetMemberUseCase"
 
-    suspend fun getMe() = flow {
-        emit(EncryptedPrefs.getMember(PrefsKey.MEMBER_KEY))
+    fun getMe() = flow {
+        emit(EncryptedPrefs.getMember(PrefsKey.MEMBER_KEY).toPresentation())
     }.catch {
         if(it is MemberNotFoundException) {
             val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
@@ -27,9 +31,15 @@ class GetMemberUseCase @Inject constructor(private val memberRepository: MemberR
             }
             val member = memberRepository.getMe(accessToken).first()
             EncryptedPrefs.putMember(PrefsKey.MEMBER_KEY, member)
-            emit(member)
+            emit(member.toPresentation())
         } else {
-            throw it
+            val tempMember = MemberUiModel(
+                "이호성",
+                "안녕하세요",
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1,"#ff1234"),
+            )
+            emit(tempMember)
+//            throw it
         }
     }
 }

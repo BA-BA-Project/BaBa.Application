@@ -60,7 +60,7 @@ class IntroActivity : AppCompatActivity() {
                         navController.navigate(action)
                     }
                     is IntroEvent.IntroError -> {
-                        Snackbar.make(binding.root, R.string.baba_intro_error,Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, R.string.baba_unknown_error,Snackbar.LENGTH_SHORT).show()
                     }
                     else -> Unit
                 }

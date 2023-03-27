@@ -248,6 +248,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginBottom="20dp"
+                    app:backGroundColor="@{viewModel.member.userIconUiModel.iconColor}"
+                    app:iconRes="@{viewModel.member.userIconUiModel.userProfileIconUiModel.iconRes}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_album_date"
                     tools:civ_circle_background_color="@color/baba_main"
