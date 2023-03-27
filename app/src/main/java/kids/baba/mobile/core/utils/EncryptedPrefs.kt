@@ -10,7 +10,7 @@ object EncryptedPrefs {
 
     fun initSharedPreferences(context: Context) {
         synchronized(this) {
-            val sharedPrefsFile = "BaBaPrefs"
+            val sharedPrefsFile = "BaBaPrefs2"
             val masterKey = MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
