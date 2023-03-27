@@ -10,4 +10,6 @@ sealed class IntroEvent {
     data class MoveToCreateUserProfile(val signToken: String) : IntroEvent()
     data class MoveToInputBabiesInfo(val signToken: String, val userProfile: UserProfile) : IntroEvent()
     data class MoveToMain(val member: MemberModel) : IntroEvent()
+
+    object IntroError: IntroEvent()
 }

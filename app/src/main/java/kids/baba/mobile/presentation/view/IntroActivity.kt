@@ -1,14 +1,15 @@
 package kids.baba.mobile.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
@@ -17,15 +18,16 @@ import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 @AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityIntroBinding
     private val viewModel: IntroViewModel by viewModels()
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_intro)
+        binding = ActivityIntroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setNavController()
         collectEvent()
     }
@@ -39,7 +41,6 @@ class IntroActivity : AppCompatActivity() {
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
-                Log.d("eventFlow",event.toString())
                 when (event) {
                     is IntroEvent.MoveToMain -> {
                         MainActivity.startActivity(this)
@@ -52,12 +53,14 @@ class IntroActivity : AppCompatActivity() {
                     }
                     is IntroEvent.MoveToCreateUserProfile -> {
                         val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
-                        Log.d("tertmsToCreate", event.signToken)
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {
                         val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile, event.signToken)
                         navController.navigate(action)
+                    }
+                    is IntroEvent.IntroError -> {
+                        Snackbar.make(binding.root, R.string.baba_intro_error,Snackbar.LENGTH_SHORT).show()
                     }
                     else -> Unit
                 }
