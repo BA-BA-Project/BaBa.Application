@@ -26,7 +26,7 @@
             app:layout_constraintVertical_chainStyle="spread">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/tb_camera"
+                android:id="@+id/tb_select_card"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:shadowColor="@color/black"
@@ -37,7 +37,7 @@
                 app:titleCentered="true">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_album"
+                    android:id="@+id/btn_save_card"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_gravity="end"
@@ -59,11 +59,11 @@
             android:id="@+id/cv_baby_frame"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:cardCornerRadius="16dp"
-            app:cardUseCompatPadding="true"
+            android:layout_marginHorizontal="28dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="48dp"
-            android:layout_marginHorizontal="28dp"
+            app:cardCornerRadius="16dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toTopOf="@+id/rv_select_cards"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,6 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@{viewModel.album.title}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -140,12 +139,13 @@
 
 
                 <ImageView
+                    android:id="@+id/iv_baby_frame_baby"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="19dp"
+                    android:contentDescription="@string/iv_final_post"
                     android:scaleType="fitXY"
-                    app:imageFromUrl="@{viewModel.album.photo}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -160,16 +160,36 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_select_cards"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="50dp"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:itemCount="5"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_cards_style">
 
         </androidx.recyclerview.widget.RecyclerView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/rv_album_comment"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toTopOf="@id/dv_comment_end"-->
+    <!--app:layout_constraintEnd_toEndOf="@id/btn_album_config"-->
+    <!--app:layout_constraintStart_toStartOf="@id/cl_like_users"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/dv_comment_start"-->
+    <!--tools:itemCount="3"-->
+    <!--tools:listitem="@layout/item_album_comment" />-->
+
+<!--baby title-->
+<!--    android:text="@{viewModel.album.title}"-->
+
+<!--baby img-->
+<!--    app:imageFromUrl="@{viewModel.album.photo}"-->

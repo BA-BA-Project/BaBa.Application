@@ -58,6 +58,7 @@
     <string name="btn_crop_complete"> Crop 완료, 사진 제목 작성 창으로 이동</string>
     <string name="btn_write_title_complete"> 사진 제목 작성 완료, 카드 선택 창으로 이동</string>
 
+    <string name="iv_final_post">마지막 아기 사진</string>
 
     <string name="can_not_find_date">날짜를 불러올 수 없습니다.</string>
     <string name="type_title">제목을 입력하세요</string>
@@ -66,7 +67,6 @@
     <string name="save">저장</string>
     <string name="select_frame">프레임 선택</string>
     <string name="today">Today</string>
-
 
 
     <string name="create_profile_complete">프로필 생성 완료</string>

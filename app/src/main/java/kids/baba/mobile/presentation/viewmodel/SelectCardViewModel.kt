@@ -1,8 +1,12 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -12,10 +16,27 @@ class SelectCardViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ): ViewModel(){
 
+    private var currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
+
+
     val album = MutableStateFlow<AlbumUiModel?>(null)
     init {
         getAlbumDetail()
     }
+
+    fun setPreviewImg(imageView: ImageView) {
+        if (currentTakenMedia != null) {
+            imageView.setImageURI(currentTakenMedia!!.mediaPath.toUri())
+        }
+    }
+
+    fun setTitle(title: TextView) {
+        if (currentTakenMedia != null) {
+            title.text = currentTakenMedia!!.mediaName
+        }
+    }
+
+
 
     private fun getAlbumDetail(){
         val tempAlbum = AlbumUiModel(
@@ -30,6 +51,10 @@ class SelectCardViewModel @Inject constructor(
         )
 
         album.value = tempAlbum
+    }
+
+    companion object {
+        const val MEDIA_DATA = "mediaData"
     }
 
 }
