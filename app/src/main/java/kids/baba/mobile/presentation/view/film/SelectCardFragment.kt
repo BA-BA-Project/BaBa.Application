@@ -8,11 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.Orientation
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,10 +49,16 @@ class SelectCardFragment @Inject constructor(
         }
 
         cardAdapter = CardStyleAdapter()
-        val layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
         binding.rvSelectCards.apply {
             adapter = cardAdapter
             this.layoutManager = layoutManager
+        }
+
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.cardState.collect{
+                cardAdapter.submitList(it?.cardStyles)
+            }
         }
 
 

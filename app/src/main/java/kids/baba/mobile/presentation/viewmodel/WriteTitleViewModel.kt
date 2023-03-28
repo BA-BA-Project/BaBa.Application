@@ -38,10 +38,6 @@ class WriteTitleViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<FilmEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-//    private val _uiState: MutableStateFlow<InputBabiesInfoUiState> =
-//        MutableStateFlow(InputBabiesInfoUiState.Loading)
-//    val uiState = _uiState.asStateFlow()
-
     private val _title: MutableStateFlow<String> = MutableStateFlow("")
     val title = _title.asStateFlow()
 
@@ -72,9 +68,6 @@ class WriteTitleViewModel @Inject constructor(
                 if (editable.text.isEmpty()) {
                     button.isEnabled = false
                     button.setTextColor(resources.getColor(R.color.inactive_text, null))
-
-                    _title.value = s.toString()
-
                 } else {
                     button.isEnabled = true
                     button.setTextColor(resources.getColor(R.color.baba_main, null))
