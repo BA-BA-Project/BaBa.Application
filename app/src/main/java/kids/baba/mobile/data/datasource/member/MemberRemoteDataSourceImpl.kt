@@ -15,6 +15,7 @@ class MemberRemoteDataSourceImpl @Inject constructor(private val memberApi: Memb
             .onSuccess { resp ->
                 if (resp.isSuccessful) {
                     val data = resp.body() ?: throw Throwable("서버로부터 받은 사용자 정보가 null임")
+
                     emit(data)
                 } else {
                     throw Throwable("사용자 정보를 받아올 수 없음.")

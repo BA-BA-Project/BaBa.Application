@@ -9,6 +9,7 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
+        <import type="java.util.List" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,15 +122,16 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_album_title">
 
                     <ImageView
-                        app:imageFromUrl="@{viewModel.album.photo}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
+                        app:imageFromUrl="@{viewModel.album.photo}"
                         tools:src="@mipmap/ic_launcher" />
 
                 </androidx.cardview.widget.CardView>
 
                 <CheckBox
+                    android:id="@+id/cb_album_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
@@ -155,8 +157,10 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_marginStart="36dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(2).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(2).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
                         app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
                         app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
@@ -168,8 +172,10 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_marginStart="18dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(1).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(1).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
                         app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
                         app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
@@ -180,8 +186,10 @@
                         android:id="@+id/civ_like_user_1"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
+                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(0).iconColor}"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="2dp"
+                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(0).userProfileIconUiModel.iconRes}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -219,7 +227,6 @@
                     android:id="@+id/rv_album_comment"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@id/dv_comment_end"
                     app:layout_constraintEnd_toEndOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="@id/cl_like_users"
@@ -241,6 +248,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginBottom="20dp"
+                    app:backGroundColor="@{viewModel.member.userIconUiModel.iconColor}"
+                    app:iconRes="@{viewModel.member.userIconUiModel.userProfileIconUiModel.iconRes}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_album_date"
                     tools:civ_circle_background_color="@color/baba_main"
