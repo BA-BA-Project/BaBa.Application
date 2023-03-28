@@ -30,7 +30,7 @@ class IntroViewModel @Inject constructor(
             getMemberUseCase.getMe().catch {
                 _eventFlow.emit(IntroEvent.StartOnBoarding)
             }.collect {
-                _eventFlow.emit(IntroEvent.MoveToMain(it.name))
+                _eventFlow.emit(IntroEvent.MoveToMain)
             }
         }
     }
@@ -62,7 +62,7 @@ class IntroViewModel @Inject constructor(
 
     fun isSignUpSuccess(name: String){
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain(name))
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
         }
     }
 }

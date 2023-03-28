@@ -40,6 +40,10 @@ class IntroActivity : AppCompatActivity() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is IntroEvent.MoveToMain -> {
+                        MainActivity.startActivity(this)
+                        finish()
+                    }
+                    is IntroEvent.MoveToWelcome -> {
                         WelcomeActivity.startActivity(this, event.name)
                         finish()
                     }
