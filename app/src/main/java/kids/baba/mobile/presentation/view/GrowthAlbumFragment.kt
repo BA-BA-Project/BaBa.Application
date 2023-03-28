@@ -56,13 +56,10 @@ class GrowthAlbumFragment : Fragment() {
     val stringToInt = hashMapOf<String, Int>()
     val intToDate = hashMapOf<Int, LocalDate>()
     private var width: Int = 0
-
-    //앨범이 있는날짜에 표시해야함
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
-    private var isChange = false
-    private var isPick = false
     private lateinit var dayViewContainer: DayViewContainer
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,11 +117,21 @@ class GrowthAlbumFragment : Fragment() {
                     is GrowthAlbumState.Loading -> loading()
                     is GrowthAlbumState.SuccessAlbum -> setAlbumData(state)
                     is GrowthAlbumState.SuccessBaby -> setBabyData(state)
+                    is GrowthAlbumState.PickDate -> pickDate()
+                    is GrowthAlbumState.ChangeBaby -> changeBaby()
                     is GrowthAlbumState.Error -> catchError(state)
                     else -> {}
                 }
             }
         }
+    }
+
+    fun changeBaby() {
+        Log.e("changeBaby","")
+        binding.babySelectView.maxHeight = width * 3 / 2
+        binding.babySelectView.isGone = false
+        binding.shadow.alpha = 0.3f
+        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
     }
 
     private fun catchError(state: GrowthAlbumState.Error) {
@@ -191,6 +198,11 @@ class GrowthAlbumFragment : Fragment() {
             .sortedBy { LocalDate.parse(it.date) }
     }
 
+    fun pickDate() {
+        datePicker.show()
+        binding.shadow.alpha = 0.3f
+        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
+    }
 
     private fun initialize() {
         binding.viewmodel = viewModel
@@ -234,29 +246,6 @@ class GrowthAlbumFragment : Fragment() {
         binding.shadow.alpha = 0f
         viewModel.loadAlbum(1)
         viewModel.loadBaby()
-        viewModel.pickDate.observe(viewLifecycleOwner) {
-            isPick = if (!isPick) {
-                datePicker.show()
-                binding.shadow.alpha = 0.3f
-                true
-            } else {
-                binding.shadow.alpha = 0f
-                false
-            }
-        }
-        viewModel.motionLayoutTransition.observe(viewLifecycleOwner) {
-            isChange = if (!isChange) {
-                binding.babySelectView.maxHeight = width * 3 / 2
-                binding.babySelectView.isGone = false
-                binding.shadow.alpha = 0.3f
-                true
-            } else {
-                binding.babySelectView.isGone = true
-                binding.babySelectView.maxHeight = 0
-                binding.shadow.alpha = 0f
-                false
-            }
-        }
 
     }
 
@@ -269,13 +258,13 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     fun parseLocalDate(dateString: String): LocalDate {
-        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
         return LocalDate.parse(dateString, formatter)
     }
 
-    fun onBackPressed(): Boolean {
-        if (isChange) viewModel.motionLayoutTransition.value = Unit
-        if (isPick) viewModel.pickDate.value = Unit
+    fun onKeyDown(): Boolean {
+        binding.babySelectView.isGone = true
+        binding.babySelectView.maxHeight = 0
+        binding.shadow.alpha = 0f
         return true
     }
 
