@@ -43,7 +43,7 @@ class IntroActivity : AppCompatActivity() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is IntroEvent.MoveToMain -> {
-                        MainActivity.startActivity(this)
+                        WelcomeActivity.startActivity(this, event.name)
                         finish()
                     }
                     is IntroEvent.MoveToLogin -> navController.navigate(R.id.action_onBoardingFragment_to_loginFragment3)

@@ -70,4 +70,6 @@
     <string name="add_comment">[아이이름]에게 댓글달기</string>
     <string name="album_like_count">좋아요 %d개</string>
     <string name="album_comment_tag">\@%s</string>
+    <string name="user_info_collect_complete">정보 수집 완료!</string>
+    <string name="welcome_baba">어서와요, %s님</string>
 </resources>
