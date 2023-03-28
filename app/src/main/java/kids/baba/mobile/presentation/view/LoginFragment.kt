@@ -47,6 +47,7 @@ class LoginFragment : Fragment() {
                 when (event) {
                     is LoginEvent.ShowSnackBar -> showSnackBar(event.text)
                     is LoginEvent.MoveToAgree -> activityViewModel.isNeedToAgree(event.socialToken)
+                    is LoginEvent.MoveToWelcome -> activityViewModel.isLoginSuccess(event.name)
                 }
             }
         }

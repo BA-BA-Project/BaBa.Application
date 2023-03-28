@@ -41,6 +41,11 @@ class IntroViewModel @Inject constructor(
         }
     }
 
+    fun isLoginSuccess(name: String){
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
+        }
+    }
 
     fun isSignUpStart(signToken: String) {
         viewModelScope.launch {
