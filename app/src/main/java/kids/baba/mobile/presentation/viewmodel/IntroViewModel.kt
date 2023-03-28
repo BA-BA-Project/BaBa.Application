@@ -3,7 +3,6 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.model.MemberModel
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
@@ -31,7 +30,7 @@ class IntroViewModel @Inject constructor(
             getMemberUseCase.getMe().catch {
                 _eventFlow.emit(IntroEvent.StartOnBoarding)
             }.collect {
-                _eventFlow.emit(IntroEvent.MoveToMain(it))
+                _eventFlow.emit(IntroEvent.MoveToMain(it.name))
             }
         }
     }
@@ -42,11 +41,6 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isLoginSuccess(member: MemberModel) {
-        viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain(member))
-        }
-    }
 
     fun isSignUpStart(signToken: String) {
         viewModelScope.launch {
@@ -66,7 +60,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(member: MemberModel){
-
+    fun isSignUpSuccess(name: String){
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToMain(name))
+        }
     }
 }

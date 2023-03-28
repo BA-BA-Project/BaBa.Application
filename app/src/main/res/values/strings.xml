@@ -65,4 +65,6 @@
     <string name="input_relation">아이와 어떤 관계이신가요?</string>
     <string name="please_input_invite_code">초대코드를 보내주세요</string>
     <string name="input_end_babies_info">좋아요!\n아래 버튼을 눌러 시작해봐요!</string>
+    <string name="user_info_collect_complete">정보 수집 완료!</string>
+    <string name="welcome_baba">어서와요, %s님</string>
 </resources>

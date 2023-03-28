@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import kids.baba.mobile.databinding.FragmentGreetingSelectBinding
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.UserChatType
-import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
 
 
@@ -41,23 +40,21 @@ class GreetingSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnGreeting1.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(
+            viewModel.setGreeting(ChatItem.UserChatItem(
                 binding.btnGreeting1.text.toString(),
                 UserChatType.GREETING,
                 canModify = false,
                 isModifying = false
             ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
         }
 
         binding.btnGreeting2.setOnClickListener {
-            viewModel.addChat(ChatItem.UserChatItem(
+            viewModel.setGreeting(ChatItem.UserChatItem(
                 binding.btnGreeting2.text.toString(),
                 UserChatType.GREETING,
                 canModify = false,
                 isModifying = false
             ))
-            viewModel.setUiState(CreateProfileUiState.InputName)
         }
     }
 

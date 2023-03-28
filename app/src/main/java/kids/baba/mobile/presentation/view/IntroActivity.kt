@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -39,10 +38,9 @@ class IntroActivity : AppCompatActivity() {
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
-                Log.d("eventFlow",event.toString())
                 when (event) {
                     is IntroEvent.MoveToMain -> {
-                        MainActivity.startActivity(this)
+                        WelcomeActivity.startActivity(this, event.name)
                         finish()
                     }
                     is IntroEvent.MoveToLogin -> navController.navigate(R.id.action_onBoardingFragment_to_loginFragment3)
@@ -52,7 +50,6 @@ class IntroActivity : AppCompatActivity() {
                     }
                     is IntroEvent.MoveToCreateUserProfile -> {
                         val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
-                        Log.d("tertmsToCreate", event.signToken)
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {

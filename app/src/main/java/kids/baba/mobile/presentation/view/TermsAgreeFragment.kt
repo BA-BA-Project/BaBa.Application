@@ -82,7 +82,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
 
     private fun setNextBtn() {
         binding.btnSignUpStart.setOnClickListener {
-            if(viewModel.isAllChecked.value){
+            if(viewModel.checkEssentialAllChecked()){
                 viewModel.getSignToken()
                 viewLifecycleOwner.repeatOnStarted {
                     viewModel.signToken.collectLatest{

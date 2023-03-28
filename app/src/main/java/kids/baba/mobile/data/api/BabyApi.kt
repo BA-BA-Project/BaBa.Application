@@ -8,7 +8,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface BabyApi {
-    @GET("api/baby/invite-code")
+    @GET("baby/invite-code")
     fun getBabiesInfoByInviteCode(
         @Header("signToken")
         signToken: String,
@@ -17,6 +17,6 @@ interface BabyApi {
     ): Response<BabiesInfoResponse>
 
     //아기 리스트 가져오기
-    @GET("api/baby")
+    @GET("baby")
     suspend fun getBaby(): BabyResponse
 }
