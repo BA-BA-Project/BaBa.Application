@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.core.error.TokenEmptyException
-import kids.baba.mobile.domain.model.MemberModel
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
@@ -73,7 +72,7 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(member: MemberModel) {
+    fun isSignUpSuccess() {
 
     }
 }
