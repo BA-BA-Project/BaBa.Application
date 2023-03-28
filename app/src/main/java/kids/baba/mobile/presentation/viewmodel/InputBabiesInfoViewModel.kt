@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.StringJoiner
 import javax.inject.Inject
 
 @HiltViewModel
@@ -278,10 +279,6 @@ class InputBabiesInfoViewModel @Inject constructor(
                 isModifying = false
             )
         )
-        endInputBabiesInfo()
-    }
-
-    private fun endInputBabiesInfo() {
         addChat(
             ChatItem.BabaFirstChatItem(
                 getStringResource(R.string.input_end_babies_info)
@@ -310,8 +307,12 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            getBabiesInfoByInviteCodeUseCase(signToken, inviteCode).onSuccess {
-                val babies = it.babies.joinToString(",")
+            getBabiesInfoByInviteCodeUseCase(inviteCode).onSuccess {
+                val sj = StringJoiner(", ")
+                it.babies.forEach { baby ->
+                    sj.add(baby.babyName)
+                }
+                val babies = sj.toString()
                 val relationName = it.relationName
                 addChat(
                     ChatItem.BabaFirstChatItem(
@@ -322,7 +323,12 @@ class InputBabiesInfoViewModel @Inject constructor(
                         )
                     )
                 )
-                endInputBabiesInfo()
+                addChat(
+                    ChatItem.BabaFirstChatItem(
+                        getStringResource(R.string.input_end_babies_info)
+                    )
+                )
+                setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
             }
 
         }
