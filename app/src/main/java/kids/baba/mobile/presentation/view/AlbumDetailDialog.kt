@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -103,7 +105,9 @@ class AlbumDetailDialog : DialogFragment() {
             binding.cvBabyPhoto.layoutParams = layoutParams
         }
         scaleUpAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
-
+        scaleUpAnim.doOnEnd {
+            binding.cbAlbumLike.visibility = View.VISIBLE
+        }
         val scaleDownAnim = ValueAnimator.ofFloat(1f, 0.25f)
         scaleDownAnim.addUpdateListener { animation ->
             val layoutParams = binding.cvBabyPhoto.layoutParams
@@ -113,17 +117,17 @@ class AlbumDetailDialog : DialogFragment() {
             binding.cvBabyPhoto.layoutParams = layoutParams
         }
         scaleDownAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
-
+        scaleDownAnim.doOnStart {
+            binding.cbAlbumLike.visibility = View.GONE
+        }
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.isPhotoExpended.collect {
                 if (it != null) {
                     if (it) {
                         scaleUpAnim.start()
-                        binding.cbAlbumLike.visibility = View.VISIBLE
                     } else {
                         scaleDownAnim.start()
-                        binding.cbAlbumLike.visibility = View.GONE
                     }
                 }
             }
