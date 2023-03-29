@@ -18,5 +18,5 @@ interface BabyApi {
 
     //아기 리스트 가져오기
     @GET("baby")
-    suspend fun getBaby(): BabyResponse
+    suspend fun getBaby(@Header("Authorization") token: String): Response<BabyResponse>
 }

@@ -4,8 +4,8 @@ import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface AlbumRemoteDataSource {
-    suspend fun getAlbum(id: Int): Flow<AlbumResponse>
+    suspend fun getAlbum(id: String, year: Int, month: Int, token: String): Flow<AlbumResponse>
 
 
-    suspend fun postArticle(id: Int, article: Article)
+    suspend fun postArticle(id: String, article: Article)
 }

@@ -1,22 +1,29 @@
 package kids.baba.mobile.data.api
 
 import kids.baba.mobile.domain.model.*
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AlbumApi {
 
 
-
     //성장 앨범 메인
     @GET("/album/{babyId}")
-    suspend fun getAlbum(@Path("babyId") id: Int): AlbumResponse
+    suspend fun getAlbum(
+        @Header("Authorization") token: String,
+        @Path("babyId") id: String,
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<AlbumResponse>
 
     //성장 앨범 추가
     @POST("/album/{babyId}")
-    suspend fun addArticle(@Path("babyId") id: Int, @Body article: Article) : Article
+    suspend fun addArticle(@Path("babyId") id: String, @Body article: Article)
 
     //성장 앨범 좋아요
 

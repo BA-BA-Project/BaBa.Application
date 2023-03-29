@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetOneBabyUseCase @Inject constructor(private val repository: BabyRepository) {
-    suspend fun getOneBaby() = flow {
-        repository.getBaby().collect {
+    suspend fun getOneBaby(token: String) = flow {
+        repository.getBaby(token).collect {
             emit(it)
         }
     }

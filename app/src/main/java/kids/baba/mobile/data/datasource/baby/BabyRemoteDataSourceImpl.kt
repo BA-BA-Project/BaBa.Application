@@ -2,6 +2,8 @@ package kids.baba.mobile.data.datasource.baby
 
 import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.domain.model.BabiesInfoResponse
+import kids.baba.mobile.domain.model.BabyResponse
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -20,7 +22,10 @@ class BabyRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBaby() = flow {
-        emit(babyApi.getBaby())
+    override suspend fun getBaby(token: String): Flow<BabyResponse> = flow {
+        val response = babyApi.getBaby(token)
+        response.body()?.let {
+            emit(it)
+        }
     }
 }
