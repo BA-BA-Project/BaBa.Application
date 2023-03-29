@@ -53,60 +53,52 @@ class SelectCardViewModel @Inject constructor(
     }
 
 
-
     private fun getCards() {
+
         val cardStyle = CardStyles(
+
             cardStyles = listOf(
-                CardStyleUiModel(CardStyleIconUiModel.CARD_BASIC_1, resources.getString(R.string.card_basic_1), "true"),
-                CardStyleUiModel(CardStyleIconUiModel.CARD_SKY_1, resources.getString(R.string.card_sky_1), "false"),
+                CardStyleUiModel(CardStyleIconUiModel.CARD_BASIC_1, resources.getString(R.string.card_basic_1)),
+                CardStyleUiModel(CardStyleIconUiModel.CARD_SKY_1, resources.getString(R.string.card_sky_1)),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_CLOUD_1,
-                    resources.getString(R.string.card_cloud_1),
-                    "false"
+                    resources.getString(R.string.card_cloud_1)
                 ),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_CLOUD_2,
-                    resources.getString(R.string.card_cloud_2),
-                    "false"
+                    resources.getString(R.string.card_cloud_2)
                 ),
-                CardStyleUiModel(CardStyleIconUiModel.CARD_TOY_1, resources.getString(R.string.card_toy_1), "false"),
+                CardStyleUiModel(CardStyleIconUiModel.CARD_TOY_1, resources.getString(R.string.card_toy_1)),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_CANDY_1,
-                    resources.getString(R.string.card_candy_1),
-                    "false"
+                    resources.getString(R.string.card_candy_1)
                 ),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_SNOWFLOWER_1,
-                    resources.getString(R.string.card_snowflower_1),
-                    "false"
+                    resources.getString(R.string.card_snowflower_1)
                 ),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_SNOWFLOWER_2,
-                    resources.getString(R.string.card_snowflower_2),
-                    "false"
+                    resources.getString(R.string.card_snowflower_2)
                 ),
-                CardStyleUiModel(CardStyleIconUiModel.CARD_LINE_1, resources.getString(R.string.card_line_1), "false"),
+                CardStyleUiModel(CardStyleIconUiModel.CARD_LINE_1, resources.getString(R.string.card_line_1)),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_SPRING_1,
-                    resources.getString(R.string.card_spring_1),
-                    "false"
+                    resources.getString(R.string.card_spring_1)
                 ),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_CHECK_1,
-                    resources.getString(R.string.card_check_1),
-                    "false"
+                    resources.getString(R.string.card_check_1)
                 ),
                 CardStyleUiModel(
                     CardStyleIconUiModel.CARD_CHECK_2,
-                    resources.getString(R.string.card_check_2),
-                    "false"
+                    resources.getString(R.string.card_check_2)
                 ),
             ),
             selected = 0
         )
         cardState.value = cardStyle
     }
-
 
 
     companion object {

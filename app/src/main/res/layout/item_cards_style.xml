@@ -24,12 +24,11 @@
             android:id="@+id/cv_item_card"
             android:layout_width="72.8dp"
             android:layout_height="96.2dp"
-            app:cardCornerRadius="10dp"
             android:layout_marginHorizontal="10dp"
+            app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/">
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <ImageView
@@ -41,7 +40,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/card_candy_1" />
+                tools:src="@drawable/card_candy_1"
+                android:contentDescription="@string/iv_item_card" />
 
         </androidx.cardview.widget.CardView>
 
@@ -49,15 +49,14 @@
             android:id="@+id/tv_item_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/cv_item_card"
-            app:layout_constraintStart_toStartOf="@+id/cv_item_card"
-            app:layout_constraintEnd_toEndOf="@+id/cv_item_card"
             android:layout_marginTop="8dp"
             android:text="@{card.cardStyleName}"
-            tools:text="캔디"
-            />
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="@+id/cv_item_card"
+            app:layout_constraintStart_toStartOf="@+id/cv_item_card"
+            app:layout_constraintTop_toBottomOf="@+id/cv_item_card"
+            tools:text="캔디" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
