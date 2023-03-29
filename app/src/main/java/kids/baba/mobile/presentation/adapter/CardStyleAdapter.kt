@@ -5,28 +5,45 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ItemCardsStyleBinding
 import kids.baba.mobile.presentation.model.CardStyleUiModel
 
-class CardStyleAdapter : ListAdapter<CardStyleUiModel, CardStyleAdapter.CardViewHolder>(diffUtil) {
+class CardStyleAdapter(private val listener: OnItemClickListener) :
+    ListAdapter<CardStyleUiModel, CardStyleAdapter.CardViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        return CardViewHolder(parent)
+        val binding = ItemCardsStyleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CardViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        return holder.bind(getItem(position))
+        val currentItem = getItem(position)
+        holder.bind(currentItem)
     }
 
 
-    class CardViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_cards_style, parent, false)
+    inner class CardViewHolder(private val binding: ItemCardsStyleBinding) : RecyclerView.ViewHolder(
+        binding.root
     ) {
-        private val binding = ItemCardsStyleBinding.bind(itemView)
+        init {
+//            val initPosition = 0
+//            if (initPosition != RecyclerView.NO_POSITION) {
+//                val card = getItem(initPosition)
+//                listener.initItem(card, initPosition)
+//            }
+
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val card = getItem(position)
+                    listener.onItemClick(card, position)
+                }
+            }
+        }
 
         fun bind(card: CardStyleUiModel) {
             binding.card = card
+
         }
 
     }
@@ -38,9 +55,13 @@ class CardStyleAdapter : ListAdapter<CardStyleUiModel, CardStyleAdapter.CardView
                 oldItem.cardStyleName == newItem.cardStyleName
 
             override fun areContentsTheSame(oldItem: CardStyleUiModel, newItem: CardStyleUiModel): Boolean =
-                oldItem.hashCode() == newItem.hashCode()
-
+//                oldItem.hashCode() == newItem.hashCode()
+                oldItem == newItem
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(card: CardStyleUiModel, position: Int)
     }
 
 

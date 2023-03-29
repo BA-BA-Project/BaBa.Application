@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,23 +10,23 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SelectCardFragment @Inject constructor(
 
-) : Fragment() {
+) : Fragment(), CardStyleAdapter.OnItemClickListener {
+
+    private val TAG = "SelectCardFragment"
 
     private var _binding: FragmentSelectCardBinding? = null
     private val binding
-
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: SelectCardViewModel by viewModels()
@@ -48,19 +49,20 @@ class SelectCardFragment @Inject constructor(
             findNavController().navigateUp()
         }
 
-        cardAdapter = CardStyleAdapter()
+        cardAdapter = CardStyleAdapter(this)
         val layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
         binding.rvSelectCards.apply {
             adapter = cardAdapter
             this.layoutManager = layoutManager
         }
 
+
+
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.cardState.collect{
+            viewModel.cardState.collect {
                 cardAdapter.submitList(it?.cardStyles)
             }
         }
-
 
 
     }
@@ -69,5 +71,12 @@ class SelectCardFragment @Inject constructor(
         super.onDestroy()
         _binding = null
     }
+
+    override fun onItemClick(card: CardStyleUiModel, position: Int) {
+        Log.e(TAG, "card : $card, position: $position")
+        viewModel.onCardSelected(card, position)
+    }
+
+
 
 }

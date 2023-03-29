@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.model
 
 data class CardStyles(
-    val cardStyles: List<CardStyleUiModel>
+    val cardStyles: List<CardStyleUiModel>,
+    var selected: Int
 )

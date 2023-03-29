@@ -55,7 +55,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cv_baby_frame"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -67,24 +67,22 @@
             app:layout_constraintBottom_toTopOf="@+id/rv_select_cards"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ab_select_card"
-
-
-            >
+            app:layout_constraintTop_toBottomOf="@+id/ab_select_card">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                tools:background="@drawable/card_candy_1"
-                android:background="@drawable/card_basic_1"
+                android:id="@+id/cl_baby_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:cardBackground="@{viewModel.cardState.cardStyles.get(3).cardStyleIcon.iconRes}"
+                tools:background="@drawable/card_candy_1">
 
                 <TextView
-                    android:background="@color/transparent"
                     android:id="@+id/tv_baby_frame_today"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
+                    android:background="@color/transparent"
                     android:includeFontPadding="false"
                     android:text="@string/today"
                     android:textAppearance="@style/BABA.TextStyle"
@@ -114,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{viewModel.album.name}"
+                    android:text="손제인"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_baby_frame_title"
@@ -131,7 +129,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_album_relation"
-                    android:text="@{viewModel.album.relation}"
+                    android:text="엄마"
                     android:textAppearance="@style/BABA.TextStyle"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_baby_frame_title"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -154,16 +152,14 @@
                         android:id="@+id/iv_baby_frame_baby"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
                         android:contentDescription="@string/iv_final_post"
                         android:scaleType="fitXY"
-
-                        tools:src="@mipmap/ic_launcher" />
+                        tools:src="@drawable/ic_baba_logo" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -176,10 +172,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_baby_frame"
-            tools:orientation="horizontal"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_cards_style">
+            tools:listitem="@layout/item_cards_style"
+            tools:orientation="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -188,9 +184,14 @@
 </layout>
 
 
-
     <!--baby title-->
     <!--    android:text="@{viewModel.album.title}"-->
 
     <!--baby img-->
     <!--    app:imageFromUrl="@{viewModel.album.photo}"-->
+
+    <!--    writer-->
+    <!--    android:text="@{viewModel.album.name}"-->
+
+    <!--    relation-->
+    <!--    android:text="@{viewModel.album.relation}"-->

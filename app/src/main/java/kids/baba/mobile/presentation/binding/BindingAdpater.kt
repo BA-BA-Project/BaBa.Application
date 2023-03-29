@@ -32,7 +32,7 @@ fun ImageView.setImageTint(@ColorInt color: Int) {
 }
 
 @BindingAdapter("imageFromUrl")
-fun setImageFromUrl(imageView: ImageView, url: String){
+fun setImageFromUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
         .into(imageView)
@@ -46,4 +46,9 @@ fun setActiveColor(view: AppCompatButton, @ColorInt color: Int) {
 @BindingAdapter("titleTextWatcher")
 fun titleTextWatcher(view: EditText, textWatcher: TextWatcher) {
     view.addTextChangedListener(textWatcher)
+}
+
+@BindingAdapter("cardBackground")
+fun setBackGround(view: View, @DrawableRes res: Int) {
+    view.setBackgroundResource(res)
 }
