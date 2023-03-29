@@ -13,16 +13,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.calendarnew.DayViewContainer
+import com.example.calendarnew.displayText
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
+import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.adapter.BabyAdapter
@@ -60,7 +62,6 @@ class GrowthAlbumFragment : Fragment() {
     lateinit var datePicker: DatePickerDialog
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
-    private lateinit var dayViewContainer: DayViewContainer
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,17 +70,47 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun initializeCalendar() {
-        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
-            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
 
+        var selectedDate = LocalDate.now()
+        class DayViewContainer(view: View) : ViewContainer(view) {
+            val bind = ItemDayBinding.bind(view)
+            lateinit var day: WeekDay
+
+            private val dateFormatter = DateTimeFormatter.ofPattern("dd")
+            private var listener: DayListener? = null
+
+            fun setOnSelectedDateChangeListener(listener: DayListener) {
+                this.listener = listener
+            }
+
+            init {
+                view.setOnClickListener {
+                    if(selectedDate != day.date){
+                        val oldDate = selectedDate
+                        selectedDate = day.date
+                        listener?.selectDay(oldDate)
+                    }
+                }
+            }
+
+            fun bind(day: WeekDay) {
+                this.day = day
+                bind.tvDate.text = dateFormatter.format(day.date)
+                bind.tvWeekday.text = day.date.dayOfWeek.displayText()
+                bind.selected = selectedDate == day.date
+            }
+        }
+
+        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
             override fun create(view: View): DayViewContainer {
-                dayViewContainer = DayViewContainer(view, binding)
+                val dayViewContainer = DayViewContainer(view)
                 dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
                     override fun selectDay(date: LocalDate) {
-                        currentDay = date
-                        dateToString[currentDay]?.let {
-                            binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
+                        dateToString[selectedDate]?.let {
+                            binding.vpBabyPhoto.setCurrentItem(stringToInt[it]!!, true)
                         }
+                        binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
+                        binding.wcvAlbumCalendar.notifyDateChanged(date)
                     }
 
                     override fun releaseDay(date: LocalDate) {
@@ -88,20 +119,19 @@ class GrowthAlbumFragment : Fragment() {
                 })
                 return dayViewContainer
             }
-
+            override fun bind(container: DayViewContainer, data: WeekDay) =container.bind(data)
         }
-        binding.myCalendar.weekScrollListener = { weekDays ->
+        binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
             binding.tvDate.text = getWeekPageTitle(weekDays)
         }
         val currentMonth = YearMonth.now()
-        binding.myCalendar.setup(
+        binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(600).atStartOfMonth(),
             currentMonth.plusMonths(600).atEndOfMonth(),
             firstDayOfWeekFromLocale(),
         )
-        //
-        binding.myCalendar.scrollPaged = false
-        binding.myCalendar.scrollToWeek(LocalDate.now())
+        binding.wcvAlbumCalendar.scrollPaged = false
+        binding.wcvAlbumCalendar.scrollToWeek(LocalDate.now())
         binding.tvAlbumTitle.setOnClickListener {
             val albumDetailDialog = AlbumDetailDialog()
             albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
@@ -120,7 +150,7 @@ class GrowthAlbumFragment : Fragment() {
                     is GrowthAlbumState.PickDate -> pickDate()
                     is GrowthAlbumState.ChangeBaby -> changeBaby()
                     is GrowthAlbumState.Error -> catchError(state)
-                    else -> {}
+
                 }
             }
         }
@@ -130,7 +160,6 @@ class GrowthAlbumFragment : Fragment() {
         Log.e("changeBaby","")
         binding.babySelectView.maxHeight = width * 3 / 2
         binding.babySelectView.isGone = false
-        binding.shadow.alpha = 0.3f
         viewModel.growthAlbumState.value = GrowthAlbumState.Loading
     }
 
@@ -200,7 +229,6 @@ class GrowthAlbumFragment : Fragment() {
 
     fun pickDate() {
         datePicker.show()
-        binding.shadow.alpha = 0.3f
         viewModel.growthAlbumState.value = GrowthAlbumState.Loading
     }
 
@@ -211,18 +239,17 @@ class GrowthAlbumFragment : Fragment() {
                 val year = datePicker.datePicker.year
                 val month = datePicker.datePicker.month
                 val day = datePicker.datePicker.dayOfMonth
-                binding.shadow.alpha = 0f
-                binding.myCalendar.smoothScrollToWeek(
+                binding.wcvAlbumCalendar.smoothScrollToWeek(
                     WeekDay(
                         LocalDate.of(year, month + 1, day),
                         position = WeekDayPosition.InDate
                     )
                 )
                 dateToString[LocalDate.of(year, month + 1, day)]?.let {
-                    binding.viewPager.currentItem = stringToInt[it]!!
+                    binding.vpBabyPhoto.currentItem = stringToInt[it]!!
                 }
-            }, 2023, 3, 12) {
-                binding.shadow.alpha = 0f
+            }, 2023, 3, 12){
+
             }
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
@@ -243,7 +270,6 @@ class GrowthAlbumFragment : Fragment() {
         width = displayMetrics.widthPixels
 
         binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
         viewModel.loadAlbum(1)
         viewModel.loadBaby()
 
@@ -264,13 +290,12 @@ class GrowthAlbumFragment : Fragment() {
     fun onKeyDown(): Boolean {
         binding.babySelectView.isGone = true
         binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
         return true
     }
 
     private fun initializeAlbumHolder() {
-        binding.viewPager.adapter = adapter
-        binding.viewPager.offscreenPageLimit = 1
+        binding.vpBabyPhoto.adapter = adapter
+        binding.vpBabyPhoto.offscreenPageLimit = 1
 
         val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
         val currentItemHorizontalMarginPx =
@@ -281,21 +306,21 @@ class GrowthAlbumFragment : Fragment() {
             page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
         }
 
-        binding.viewPager.setPageTransformer(pageTransformer)
+        binding.vpBabyPhoto.setPageTransformer(pageTransformer)
 
         val itemDecoration = HorizontalMarginItemDecoration(
             requireContext(),
             R.dimen.viewpager_current_item_horizontal_margin
         )
-        binding.viewPager.addItemDecoration(itemDecoration)
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 intToDate[position]?.let {
                     lifecycleScope.launch {
-                        binding.myCalendar.smoothScrollToDate(it)
+                        binding.wcvAlbumCalendar.smoothScrollToDate(it)
                         delay(200)
-                        binding.myCalendar.scrollBy(-width / 2 + 72, 0)
+                        binding.wcvAlbumCalendar.scrollBy(-width / 2 + 72, 0)
                     }
                 }
             }

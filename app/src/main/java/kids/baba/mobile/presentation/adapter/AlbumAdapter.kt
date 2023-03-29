@@ -15,7 +15,6 @@ class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) 
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
             binding.dateVal.text = item.date
-            binding.check.text = item.name
         }
     }
 
