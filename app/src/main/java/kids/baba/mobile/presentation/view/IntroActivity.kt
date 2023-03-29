@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,6 +13,7 @@ import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
@@ -24,9 +26,19 @@ class IntroActivity : AppCompatActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+        checkLogin()
         setContentView(R.layout.activity_intro)
         setNavController()
         collectEvent()
+    }
+
+    private fun checkLogin(){
+        lifecycleScope.launch{
+            if(viewModel.checkLogin()){
+                MainActivity.startActivity(this@IntroActivity)
+                finish()
+            }
+        }
     }
 
     private fun setNavController() {
@@ -39,10 +51,6 @@ class IntroActivity : AppCompatActivity() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is IntroEvent.MoveToMain -> {
-                        MainActivity.startActivity(this)
-                        finish()
-                    }
                     is IntroEvent.MoveToWelcome -> {
                         WelcomeActivity.startActivity(this, event.name)
                         finish()
@@ -60,7 +68,6 @@ class IntroActivity : AppCompatActivity() {
                         val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile, event.signToken)
                         navController.navigate(action)
                     }
-                    else -> Unit
                 }
             }
         }
