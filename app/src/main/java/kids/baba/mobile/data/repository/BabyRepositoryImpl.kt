@@ -10,7 +10,7 @@ class BabyRepositoryImpl @Inject constructor(
     private val babyRemoteDataSource: BabyRemoteDataSource
     ) :
     BabyRepository {
-    override suspend fun getBaby(token: String): Flow<BabyResponse> = babyRemoteDataSource.getBaby(token)
+    override suspend fun getBaby(): Flow<BabyResponse> = babyRemoteDataSource.getBaby()
 
     override suspend fun getBabiesInfo(
         signToken: String,

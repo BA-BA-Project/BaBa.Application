@@ -215,8 +215,8 @@ class GrowthAlbumFragment : Fragment() {
         repeat(31) {
             adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
         }
-        viewModel.loadAlbum("3dd1b4cb-681c-4be0-829e-392f1c399181",2023,1,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJLQUtBTzI2OTQ0NzEwMjciLCJpYXQiOjE2ODAwODg2OTMsImV4cCI6MTY4MDA5MjI5M30.wajC5lu1rUJVGFibvutqjqlElmoGqRZ3vQslvDAEUL4")
-        viewModel.loadBaby("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJLQUtBTzI2OTQ0NzEwMjciLCJpYXQiOjE2ODAwODg2OTMsImV4cCI6MTY4MDA5MjI5M30.wajC5lu1rUJVGFibvutqjqlElmoGqRZ3vQslvDAEUL4")
+        viewModel.loadAlbum("3dd1b4cb-681c-4be0-829e-392f1c399181",2023,1)
+        viewModel.loadBaby()
     }
 
     private fun initializeAlbumHolder() {

@@ -1,5 +1,7 @@
 package kids.baba.mobile.data.api
 
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,7 +17,7 @@ interface AlbumApi {
     //성장 앨범 메인
     @GET("/album/{babyId}")
     suspend fun getAlbum(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Query("year") year: Int,
         @Query("month") month: Int

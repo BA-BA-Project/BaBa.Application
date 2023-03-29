@@ -1,5 +1,7 @@
 package kids.baba.mobile.data.api
 
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.BabiesInfoResponse
 import kids.baba.mobile.domain.model.BabyResponse
 import retrofit2.Response
@@ -18,5 +20,5 @@ interface BabyApi {
 
     //아기 리스트 가져오기
     @GET("baby")
-    suspend fun getBaby(@Header("Authorization") token: String): Response<BabyResponse>
+    suspend fun getBaby(@Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)): Response<BabyResponse>
 }

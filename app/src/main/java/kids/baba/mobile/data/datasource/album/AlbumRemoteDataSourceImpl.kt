@@ -16,12 +16,9 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         year: Int,
         month: Int,
-        token: String
     ): Flow<AlbumResponse> = flow {
-        val response = api.getAlbum(token, id, year, month)
-        Log.e("album","${response.code()}")
+        val response = api.getAlbum(id = id, year = year, month = month)
         response.body()?.let {
-            Log.e("album","$it")
             emit(it)
         }
     }
