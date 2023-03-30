@@ -24,9 +24,8 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun postArticle(id: String, article: Article): Flow<Boolean> = flow {
-        val response = api.addArticle(article = article, id = id)
-        emit(response.isSuccessful)
+    override suspend fun postArticle(id: String, article: Article) {
+        api.addArticle(article = article, id = id)
     }
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {

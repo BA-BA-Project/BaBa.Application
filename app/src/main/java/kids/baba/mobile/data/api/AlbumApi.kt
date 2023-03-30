@@ -29,7 +29,7 @@ interface AlbumApi {
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Body article: Article
-    ):Response<Unit>
+    )
 
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),

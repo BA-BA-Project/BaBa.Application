@@ -49,18 +49,16 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun postArticle(id: String, article: Article) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        postOneArticleUseCase.post(id, article).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
-            _growthAlbumState.value = GrowthAlbumState.Post(it)
-        }
+        postOneArticleUseCase.post(id, article)
+        _growthAlbumState.value = GrowthAlbumState.Post
+
     }
 
-    fun like(id: String, contentId:String) = viewModelScope.launch {
+    fun like(id: String, contentId: String) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        likeAlbumUseCase.like(id,contentId).catch {
+        likeAlbumUseCase.like(id, contentId).catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
+        }.collect {
             _growthAlbumState.value = GrowthAlbumState.Like(it.isLiked)
         }
     }
