@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.Article
-import kids.baba.mobile.domain.model.Comment
+import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.usecase.*
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,8 @@ class GrowthAlbumViewModel @Inject constructor(
     private val getOneBabyUseCase: GetOneBabyUseCase,
     private val postOneArticleUseCase: PostOneArticleUseCase,
     private val likeAlbumUseCase: LikeAlbumUseCase,
-    private val addCommentUseCase: AddCommentUseCase
+    private val addCommentUseCase: AddCommentUseCase,
+    private val getCommentsUseCase: GetCommentsUseCase
 ) : ViewModel() {
     private val _growthAlbumState =
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
@@ -62,9 +64,19 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun addComment(id: String, contentId: String, comment: Comment) = viewModelScope.launch {
+    fun addComment(id: String, contentId: String, commentInput: CommentInput) =
+        viewModelScope.launch {
+            _growthAlbumState.value = GrowthAlbumState.Loading
+            addCommentUseCase.add(id, contentId, commentInput)
+            _growthAlbumState.value = GrowthAlbumState.AddComment
+        }
+
+    fun getComments(contentId: String) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        addCommentUseCase.add(id, contentId, comment)
-        _growthAlbumState.value = GrowthAlbumState.AddCommnet
+        getCommentsUseCase.get(contentId).catch {
+            _growthAlbumState.value = GrowthAlbumState.Error(it)
+        }.collect{
+            _growthAlbumState.value = GrowthAlbumState.LoadComments(it.comments)
+        }
     }
 }

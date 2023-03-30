@@ -1,13 +1,9 @@
 package kids.baba.mobile.data.repository
 
 import kids.baba.mobile.data.datasource.album.AlbumRemoteDataSource
-import kids.baba.mobile.domain.model.AlbumResponse
-import kids.baba.mobile.domain.model.Article
-import kids.baba.mobile.domain.model.Comment
-import kids.baba.mobile.domain.model.LikeResponse
+import kids.baba.mobile.domain.model.*
 import kids.baba.mobile.domain.repository.AlbumRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemoteDataSource) :
@@ -25,7 +21,11 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> =
         dataSource.likeAlbum(id, contentId)
 
-    override suspend fun addComment(id: String, contentId: String, comment: Comment) {
-        dataSource.addComment(id, contentId, comment)
+    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {
+        dataSource.addComment(id, contentId, commentInput)
     }
+
+    override suspend fun getComment(contentId: String): Flow<CommentResponse> =
+        dataSource.getComment(contentId)
+
 }

@@ -29,6 +29,7 @@ import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.flow.catch
 import java.lang.Math.abs
+import java.time.LocalDate
 import java.util.*
 
 @AndroidEntryPoint
@@ -216,7 +217,7 @@ class GrowthAlbumFragment : Fragment() {
         Log.e("state", "initialize")
         initializeAlbumHolder()
         repeat(31) {
-            adapter.setItem(Album(it + 1, "", "", "", "", false, "", ""))
+            adapter.setItem(Album(it + 1, "", "", LocalDate.now(), "", false, "", ""))
         }
         viewModel.loadAlbum("3dd1b4cb-681c-4be0-829e-392f1c399181",2023,1)
         viewModel.loadBaby()
