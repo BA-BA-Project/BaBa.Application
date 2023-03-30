@@ -25,21 +25,6 @@ class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(dif
             binding.photo = item.photo
         }
     }
-
-//    class DayViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-//        LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
-//    ) {
-//        private val binding = ItemDayBinding.bind(itemView)
-//
-//        fun bind(item: AlbumUiModel){
-//            val date = item.date
-//
-//
-//        }
-//
-//    }
-
-
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<AlbumUiModel>() {
             override fun areItemsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel) =

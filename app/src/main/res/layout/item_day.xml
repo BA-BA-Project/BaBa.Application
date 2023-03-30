@@ -7,6 +7,12 @@
         <variable
             name="selected"
             type="Boolean" />
+        <variable
+            name="formatter"
+            type="java.time.format.DateTimeFormatter" />
+        <variable
+            name="date"
+            type="java.time.LocalDate" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +46,8 @@
             android:fontFamily="sans-serif-black"
             android:textColor="@{selected ? @color/yellow : @color/black}"
             android:textSize="14sp"
+            app:date="@{date}"
+            app:formatter="@{formatter}"
             android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/tv_weekday"
             app:layout_constraintBottom_toBottomOf="parent"

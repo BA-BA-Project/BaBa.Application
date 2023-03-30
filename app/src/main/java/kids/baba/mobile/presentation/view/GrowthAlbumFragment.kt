@@ -37,7 +37,7 @@ class GrowthAlbumFragment : Fragment() {
 //    private var width: Int = 0
 //    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 //    lateinit var datePicker: DatePickerDialog
-    private val albumAdapter = AlbumAdapter()
+    private lateinit var albumAdapter : AlbumAdapter
 
     //    private val babyAdapter = BabyAdapter()
     private var currentDay = LocalDate.now()
@@ -309,6 +309,7 @@ class GrowthAlbumFragment : Fragment() {
 
     //
     private fun initializeAlbumHolder() {
+        albumAdapter = AlbumAdapter()
         binding.vpBabyPhoto.adapter = albumAdapter
         viewLifecycleOwner.repeatOnStarted {
             viewModel.growthAlbumList.collect {

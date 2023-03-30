@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -33,4 +34,18 @@ fun setImageFromUrl(imageView: ImageView, url: String) {
 @BindingAdapter("date", "formatter")
 fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter){
     textView.text = date.format(formatter)
+}
+
+@BindingAdapter("date")
+fun setDayOfWeek(textView: TextView, date: LocalDate){
+    val dayOfWeek = when(date.dayOfWeek){
+        DayOfWeek.SUNDAY -> R.string.sunday
+        DayOfWeek.MONDAY -> R.string.monday
+        DayOfWeek.TUESDAY -> R.string.tuesday
+        DayOfWeek.WEDNESDAY -> R.string.wednesday
+        DayOfWeek.THURSDAY -> R.string.thursday
+        DayOfWeek.FRIDAY -> R.string.friday
+        else -> R.string.saturday
+    }
+    textView.text = textView.context.getText(dayOfWeek)
 }
