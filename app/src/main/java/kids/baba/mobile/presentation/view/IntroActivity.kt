@@ -26,12 +26,11 @@ class IntroActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
-        checkLogin()
-        setContentView(R.layout.activity_intro)
+        installSplashScreen()
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkLogin()
         setNavController()
         collectEvent()
     }
