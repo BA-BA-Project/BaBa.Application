@@ -30,21 +30,29 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _growthAlbumList = MutableStateFlow<List<AlbumUiModel>>(emptyList())
     val growthAlbumList = _growthAlbumList.asStateFlow()
 
+    private val _growthAlbumHash = MutableStateFlow<HashMap<LocalDate, AlbumUiModel>>(HashMap())
+    private val growthAlbumHash = _growthAlbumHash.asStateFlow()
+
     private val _selectedAlbum = MutableStateFlow<AlbumUiModel?>(null)
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
     private val tempDate = LocalDate.now()
     private val tempAlbumList = List(30) { idx ->
-        AlbumUiModel(
-            contentId = idx,
-            name = "이호성$idx",
-            relation = "아빠$idx",
-            date = tempDate.plusDays(idx.toLong()),
-            title = "제목$idx",
-            like = idx % 2 == 0,
-            photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
-            cardStyle = "TEST"
-        )
+        if (idx % 3 == 0) {
+            null
+        } else {
+            AlbumUiModel(
+                contentId = idx,
+                name = "이호성$idx",
+                relation = "아빠$idx",
+                date = tempDate.plusDays(idx.toLong()),
+                title = "제목$idx",
+                like = idx % 2 == 0,
+                photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
+                cardStyle = "TEST"
+            )
+        }
+
     }
 
     init {
@@ -52,8 +60,13 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     private fun loadAlbum() = viewModelScope.launch {
-        _growthAlbumList.value = tempAlbumList
+        val newHashMap = HashMap<LocalDate,AlbumUiModel>()
+        tempAlbumList.filterNotNull().forEach {
+            newHashMap[it.date] = it
+        }
+        _growthAlbumHash.value = newHashMap
         _selectedAlbum.value = growthAlbumList.value[0]
+
 //        getOneAlbumUseCase.getOneAlbum(id).catch {
 //            _growthAlbumState.value = GrowthAlbumState.Error(it)
 //        }.collect {
@@ -63,6 +76,10 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun selectAlbum(index: Int) {
         _selectedAlbum.value = growthAlbumList.value[index]
+    }
+
+    fun selectDate(date: LocalDate) {
+        _currentDate.value = date
     }
 
     fun loadBaby() = viewModelScope.launch {

@@ -1,18 +1,28 @@
 package kids.baba.mobile.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.example.calendarnew.getWeekPageTitle
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.ViewContainer
+import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
+import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 //TODO 앨범 있는 날짜 횡달력에 표시
@@ -31,16 +41,17 @@ class GrowthAlbumFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
 
+
     //    val dateToString = hashMapOf<LocalDate, String>()
 //    val stringToInt = hashMapOf<String, Int>()
 //    val intToDate = hashMapOf<Int, LocalDate>()
 //    private var width: Int = 0
 //    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 //    lateinit var datePicker: DatePickerDialog
-    private lateinit var albumAdapter : AlbumAdapter
+    private lateinit var albumAdapter: AlbumAdapter
 
     //    private val babyAdapter = BabyAdapter()
-    private var currentDay = LocalDate.now()
+    private var currentDate = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -57,25 +68,62 @@ class GrowthAlbumFragment : Fragment() {
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
-    private fun setCalendar(){
-//        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
-//            override fun create(view: View): DayViewContainer {
-//                val dayViewContainer = DayViewContainer(view)
-//                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
-//                    override fun selectDay(date: LocalDate) {
-//                        binding.wcvAlbumCalendar.notifyDateChanged(currentDay)
-//                        binding.wcvAlbumCalendar.notifyDateChanged(date)
-//                    }
-//
-//                    override fun releaseDay(date: LocalDate) {
-//
-//                    }
-//                })
-//                return dayViewContainer
-//            }
-//
-//            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
-//        }
+    private fun setCalendar() {
+        val today = LocalDate.now()
+
+        class DayViewContainer(view: View) : ViewContainer(view) {
+            val bind = ItemDayBinding.bind(view)
+            lateinit var day: WeekDay
+            val formatter = DateTimeFormatter.ofPattern("dd")
+
+            init {
+                view.setOnClickListener {
+                    if (currentDate != day.date) {
+                        binding.wcvAlbumCalendar.notifyDateChanged(currentDate)
+                        Log.d("clickDate", day.date.toString())
+                        viewModel.selectDate(day.date)
+                        binding.wcvAlbumCalendar.notifyDateChanged(day.date)
+                        binding.wcvAlbumCalendar.smoothScrollToDate(day.date.plusDays(-3))
+                    }
+                }
+            }
+
+            fun bind(day: WeekDay) {
+                this.day = day
+                bind.date = day.date
+                bind.selected = currentDate == day.date
+                bind.formatter = formatter
+
+                view.isClickable = day.date.isAfter(today).not()
+                if (view.isClickable) {
+                    val textColor0 = requireContext().getColor(R.color.text_0)
+                    bind.tvDate.setTextColor(textColor0)
+                    bind.tvWeekday.setTextColor(textColor0)
+                } else {
+                    val textColor3 = requireContext().getColor(R.color.text_3)
+                    bind.tvDate.setTextColor(textColor3)
+                    bind.tvWeekday.setTextColor(textColor3)
+                }
+            }
+        }
+
+        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+            override fun create(view: View): DayViewContainer = DayViewContainer(view)
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+        }
+
+        binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
+            binding.tvDate.text = getWeekPageTitle(weekDays)
+        }
+
+        val currentMonth = YearMonth.now()
+        binding.wcvAlbumCalendar.setup(
+            currentMonth.minusMonths(24).atStartOfMonth(),
+            currentMonth.plusMonths(0).atEndOfMonth(),
+            firstDayOfWeekFromLocale()
+        )
+        binding.wcvAlbumCalendar.scrollPaged = false
+        binding.wcvAlbumCalendar.scrollToDate(LocalDate.now())
     }
 
 
@@ -166,7 +214,7 @@ class GrowthAlbumFragment : Fragment() {
     private fun collectCurrentDate() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.currentDate.collect {
-                this.currentDay = it
+                this.currentDate = it
             }
         }
     }
