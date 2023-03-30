@@ -47,7 +47,29 @@ class GrowthAlbumFragment : Fragment() {
         initializeAlbumHolder()
         collectUiState()
         collectCurrentDate()
+        setCalendar()
 //        initializeCalendar()
+    }
+
+    private fun setCalendar(){
+//        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+//            override fun create(view: View): DayViewContainer {
+//                val dayViewContainer = DayViewContainer(view)
+//                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
+//                    override fun selectDay(date: LocalDate) {
+//                        binding.wcvAlbumCalendar.notifyDateChanged(currentDay)
+//                        binding.wcvAlbumCalendar.notifyDateChanged(date)
+//                    }
+//
+//                    override fun releaseDay(date: LocalDate) {
+//
+//                    }
+//                })
+//                return dayViewContainer
+//            }
+//
+//            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+//        }
     }
 
 

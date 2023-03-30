@@ -11,7 +11,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@{selected ? @drawable/bg_selected_day : null}"
+        android:layout_marginHorizontal="4dp"
+        tools:background="@drawable/bg_selected_day"
+        >
 
         <TextView
             android:id="@+id/tv_weekday"
@@ -21,11 +25,13 @@
             android:textAppearance="@style/BABA.TextStyle"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_date"
-            tools:text="Mon" />
+            tools:text="월" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -34,6 +40,7 @@
             android:fontFamily="sans-serif-black"
             android:textColor="@{selected ? @color/yellow : @color/black}"
             android:textSize="14sp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/tv_weekday"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

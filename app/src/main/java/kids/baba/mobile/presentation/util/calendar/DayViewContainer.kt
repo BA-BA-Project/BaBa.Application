@@ -1,18 +1,15 @@
-//package com.example.calendarnew
+//package kids.baba.mobile.presentation.util.calendar
 //
-//import android.util.Log
 //import android.view.View
+//import com.example.calendarnew.displayText
 //import com.kizitonwose.calendar.core.WeekDay
 //import com.kizitonwose.calendar.view.ViewContainer
-//import kids.baba.mobile.R
-//import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 //import kids.baba.mobile.databinding.ItemDayBinding
-//import kids.baba.mobile.presentation.util.calendar.DayListener
 //import java.time.LocalDate
 //import java.time.format.DateTimeFormatter
 //
 //class DayViewContainer(view: View, private var selectedDate: LocalDate) : ViewContainer(view) {
-//    val bind = ItemDayBinding.bind(view)
+//    private val bind = ItemDayBinding.bind(view)
 //    lateinit var day: WeekDay
 //
 //    private val dateFormatter = DateTimeFormatter.ofPattern("dd")
@@ -24,10 +21,10 @@
 //
 //    init {
 //        view.setOnClickListener {
-//            if(selectedDate != day.date){
+//            if (selectedDate != day.date) {
 //                val oldDate = selectedDate
 //                selectedDate = day.date
-//                listener?.selectDay(oldDate, selectedDate)
+//                listener?.selectDay(oldDate)
 //            }
 //        }
 //    }
