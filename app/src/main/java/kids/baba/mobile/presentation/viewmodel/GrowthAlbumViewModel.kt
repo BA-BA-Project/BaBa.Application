@@ -33,12 +33,13 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _selectedAlbum = MutableStateFlow<AlbumUiModel?>(null)
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
+    private val tempDate = LocalDate.now()
     private val tempAlbumList = List(30) { idx ->
         AlbumUiModel(
             contentId = idx,
             name = "이호성$idx",
             relation = "아빠$idx",
-            date = "날짜$idx",
+            date = tempDate.plusDays(idx.toLong()),
             title = "제목$idx",
             like = idx % 2 == 0,
             photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
@@ -52,6 +53,7 @@ class GrowthAlbumViewModel @Inject constructor(
 
     private fun loadAlbum() = viewModelScope.launch {
         _growthAlbumList.value = tempAlbumList
+        _selectedAlbum.value = growthAlbumList.value[0]
 //        getOneAlbumUseCase.getOneAlbum(id).catch {
 //            _growthAlbumState.value = GrowthAlbumState.Error(it)
 //        }.collect {

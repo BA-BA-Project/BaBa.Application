@@ -17,6 +17,7 @@ import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class AlbumDetailDialog : DialogFragment() {
@@ -149,6 +150,7 @@ class AlbumDetailDialog : DialogFragment() {
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     override fun onDestroyView() {

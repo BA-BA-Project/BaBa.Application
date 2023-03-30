@@ -9,6 +9,14 @@ import kids.baba.mobile.databinding.ItemAlbumBinding
 import kids.baba.mobile.presentation.model.AlbumUiModel
 
 class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
+        val view = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AlbumViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
     class AlbumViewHolder(private val binding: ItemAlbumBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -18,14 +26,19 @@ class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(dif
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
-        val view = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AlbumViewHolder(view)
-    }
+//    class DayViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+//        LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
+//    ) {
+//        private val binding = ItemDayBinding.bind(itemView)
+//
+//        fun bind(item: AlbumUiModel){
+//            val date = item.date
+//
+//
+//        }
+//
+//    }
 
-    override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<AlbumUiModel>() {

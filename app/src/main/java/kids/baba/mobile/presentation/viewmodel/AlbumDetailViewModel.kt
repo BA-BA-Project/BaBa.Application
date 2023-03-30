@@ -18,6 +18,7 @@ import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -62,7 +63,7 @@ class AlbumDetailViewModel @Inject constructor(
             contentId = 111,
             name = "박재희",
             relation = "엄마",
-            date = "21-09-28",
+            date = LocalDate.now(),
             title = "앨범 테스트",
             like = false,
             photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",

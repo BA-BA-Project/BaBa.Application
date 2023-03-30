@@ -13,6 +13,7 @@ import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 //TODO 앨범 있는 날짜 횡달력에 표시
 //TODO 횡달력에서 선택한 날짜 표시
@@ -36,19 +37,24 @@ class GrowthAlbumFragment : Fragment() {
 //    private var width: Int = 0
 //    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 //    lateinit var datePicker: DatePickerDialog
-    private val adapter = AlbumAdapter()
+    private val albumAdapter = AlbumAdapter()
 
     //    private val babyAdapter = BabyAdapter()
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        setBinding()
         initializeAlbumHolder()
         collectUiState()
         collectCurrentDate()
         setCalendar()
 //        initializeCalendar()
+    }
+
+    private fun setBinding() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = viewModel
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     private fun setCalendar(){
@@ -303,10 +309,10 @@ class GrowthAlbumFragment : Fragment() {
 
     //
     private fun initializeAlbumHolder() {
-        binding.vpBabyPhoto.adapter = adapter
+        binding.vpBabyPhoto.adapter = albumAdapter
         viewLifecycleOwner.repeatOnStarted {
             viewModel.growthAlbumList.collect {
-                adapter.submitList(it)
+                albumAdapter.submitList(it)
             }
         }
 //        binding.vpBabyPhoto.offscreenPageLimit = 1

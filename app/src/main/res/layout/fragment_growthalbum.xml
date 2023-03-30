@@ -8,6 +8,10 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
+
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -118,7 +122,8 @@
                 android:layout_marginTop="18dp"
                 android:elevation="2dp"
                 android:includeFontPadding="false"
-                android:text="@{viewmodel.selectedAlbum.date}"
+                app:date="@{viewmodel.selectedAlbum.date}"
+                app:formatter="@{dateTimeFormatter}"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textColor="@color/baba_sub_2"
                 android:textSize="14sp"

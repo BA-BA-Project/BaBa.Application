@@ -9,6 +9,10 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
+
         <import type="java.util.List" />
     </data>
 
@@ -41,7 +45,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:includeFontPadding="false"
-                    android:text="@{viewModel.album.date}"
+                    app:date="@{viewModel.album.date}"
+                    app:formatter="@{dateTimeFormatter}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/baba_sub_2"
                     android:textSize="14sp"
