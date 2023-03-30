@@ -1,8 +1,6 @@
 package kids.baba.mobile.presentation.binding
 
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter

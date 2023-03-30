@@ -6,11 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.GetOneAlbumUseCase
 import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
 import kids.baba.mobile.presentation.state.GrowthAlbumState
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +24,7 @@ class GrowthAlbumViewModel @Inject constructor(
         _growthAlbumState.value = GrowthAlbumState.Loading
         getOneAlbumUseCase.getOneAlbum(id).catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
+        }.collect {
             _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
         }
     }
@@ -35,7 +33,7 @@ class GrowthAlbumViewModel @Inject constructor(
         _growthAlbumState.value = GrowthAlbumState.Loading
         getOneBabyUseCase.getOneBaby().catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
+        }.collect {
             _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
             _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
         }
