@@ -65,13 +65,15 @@ class GrowthAlbumFragment : Fragment() {
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         collectUiState()
+        collectCurrentDate()
         initializeCalendar()
     }
 
-    private fun initializeCalendar() {
 
-        var selectedDate = LocalDate.now()
+    private fun initializeCalendar() {
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = ItemDayBinding.bind(view)
             lateinit var day: WeekDay
@@ -85,9 +87,9 @@ class GrowthAlbumFragment : Fragment() {
 
             init {
                 view.setOnClickListener {
-                    if(selectedDate != day.date){
-                        val oldDate = selectedDate
-                        selectedDate = day.date
+                    if (currentDay != day.date) {
+                        val oldDate = currentDay
+                        currentDay = day.date
                         listener?.selectDay(oldDate)
                     }
                 }
@@ -97,7 +99,7 @@ class GrowthAlbumFragment : Fragment() {
                 this.day = day
                 bind.tvDate.text = dateFormatter.format(day.date)
                 bind.tvWeekday.text = day.date.dayOfWeek.displayText()
-                bind.selected = selectedDate == day.date
+                bind.selected = currentDay == day.date
             }
         }
 
@@ -106,10 +108,10 @@ class GrowthAlbumFragment : Fragment() {
                 val dayViewContainer = DayViewContainer(view)
                 dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
                     override fun selectDay(date: LocalDate) {
-                        dateToString[selectedDate]?.let {
+                        dateToString[currentDay]?.let {
                             binding.vpBabyPhoto.setCurrentItem(stringToInt[it]!!, true)
                         }
-                        binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
+                        binding.wcvAlbumCalendar.notifyDateChanged(currentDay)
                         binding.wcvAlbumCalendar.notifyDateChanged(date)
                     }
 
@@ -119,7 +121,8 @@ class GrowthAlbumFragment : Fragment() {
                 })
                 return dayViewContainer
             }
-            override fun bind(container: DayViewContainer, data: WeekDay) =container.bind(data)
+
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
         }
         binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
             binding.tvDate.text = getWeekPageTitle(weekDays)
@@ -156,8 +159,16 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
+    private fun collectCurrentDate() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.currentDate.collect {
+                currentDay = it
+            }
+        }
+    }
+
     fun changeBaby() {
-        Log.e("changeBaby","")
+        Log.e("changeBaby", "")
         binding.babySelectView.maxHeight = width * 3 / 2
         binding.babySelectView.isGone = false
         viewModel.growthAlbumState.value = GrowthAlbumState.Loading
@@ -233,7 +244,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun initialize() {
-        binding.viewmodel = viewModel
         datePicker =
             MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
                 val year = datePicker.datePicker.year
@@ -248,7 +258,7 @@ class GrowthAlbumFragment : Fragment() {
                 dateToString[LocalDate.of(year, month + 1, day)]?.let {
                     binding.vpBabyPhoto.currentItem = stringToInt[it]!!
                 }
-            }, 2023, 3, 12){
+            }, 2023, 3, 12) {
 
             }
         initializeAlbumHolder()
@@ -313,7 +323,8 @@ class GrowthAlbumFragment : Fragment() {
             R.dimen.viewpager_current_item_horizontal_margin
         )
         binding.vpBabyPhoto.addItemDecoration(itemDecoration)
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 intToDate[position]?.let {

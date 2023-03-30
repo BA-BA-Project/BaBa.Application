@@ -1,18 +1,16 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.GetOneAlbumUseCase
 import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
 import kids.baba.mobile.presentation.state.GrowthAlbumState
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +22,9 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _growthAlbumState =
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
     val growthAlbumState = _growthAlbumState
+
+    private val _currentDate = MutableStateFlow<LocalDate>(LocalDate.now())
+    val currentDate = _currentDate.asStateFlow()
 
     fun loadAlbum(id: Int) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
