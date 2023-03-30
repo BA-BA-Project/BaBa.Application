@@ -4,6 +4,7 @@ import android.util.Log
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.domain.model.AlbumResponse
 import kids.baba.mobile.domain.model.Article
+import kids.baba.mobile.domain.model.LikeResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -23,7 +24,15 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun postArticle(id: String, article: Article) {
-        api.addArticle(id, article)
+    override suspend fun postArticle(id: String, article: Article): Flow<Boolean> = flow {
+        val response = api.addArticle(article = article, id = id)
+        emit(response.isSuccessful)
+    }
+
+    override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {
+        val response = api.likeAlbum(id = id, contentId = contentId)
+        response.body()?.let {
+            emit(it)
+        }
     }
 }

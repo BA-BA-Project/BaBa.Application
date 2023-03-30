@@ -25,7 +25,17 @@ interface AlbumApi {
 
     //성장 앨범 추가
     @POST("/album/{babyId}")
-    suspend fun addArticle(@Path("babyId") id: String, @Body article: Article)
+    suspend fun addArticle(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") id: String,
+        @Body article: Article
+    ):Response<Unit>
+
+    suspend fun likeAlbum(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") id: String,
+        @Path("contentId") contentId: String
+    ): Response<LikeResponse>
 
     //성장 앨범 좋아요
 

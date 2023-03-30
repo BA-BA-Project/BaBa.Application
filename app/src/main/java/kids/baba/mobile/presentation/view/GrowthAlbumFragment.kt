@@ -19,6 +19,8 @@ import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemCalendarBinding
 import kids.baba.mobile.domain.model.Album
@@ -102,6 +104,7 @@ class GrowthAlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
         collectUiState()
         initCalendar()
     }
