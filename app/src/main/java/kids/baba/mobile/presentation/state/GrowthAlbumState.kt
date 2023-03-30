@@ -14,6 +14,8 @@ sealed class GrowthAlbumState {
     data class SuccessBaby(val data: List<Baby>) : GrowthAlbumState()
 
     object Post : GrowthAlbumState()
+
+    object AddCommnet : GrowthAlbumState()
     data class Like(val data: Boolean) : GrowthAlbumState()
 
     data class Error(val t: Throwable) : GrowthAlbumState()

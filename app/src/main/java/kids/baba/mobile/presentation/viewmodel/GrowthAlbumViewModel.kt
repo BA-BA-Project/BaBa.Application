@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.Article
-import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
-import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
-import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
-import kids.baba.mobile.domain.usecase.PostOneArticleUseCase
+import kids.baba.mobile.domain.model.Comment
+import kids.baba.mobile.domain.usecase.*
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +19,8 @@ class GrowthAlbumViewModel @Inject constructor(
     private val getAlbumsFromBabyIdUseCase: GetAlbumsFromBabyIdUseCase,
     private val getOneBabyUseCase: GetOneBabyUseCase,
     private val postOneArticleUseCase: PostOneArticleUseCase,
-    private val likeAlbumUseCase: LikeAlbumUseCase
+    private val likeAlbumUseCase: LikeAlbumUseCase,
+    private val addCommentUseCase: AddCommentUseCase
 ) : ViewModel() {
     private val _growthAlbumState =
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
@@ -61,5 +60,11 @@ class GrowthAlbumViewModel @Inject constructor(
         }.collect {
             _growthAlbumState.value = GrowthAlbumState.Like(it.isLiked)
         }
+    }
+
+    fun addComment(id: String, contentId: String, comment: Comment) = viewModelScope.launch {
+        _growthAlbumState.value = GrowthAlbumState.Loading
+        addCommentUseCase.add(id, contentId, comment)
+        _growthAlbumState.value = GrowthAlbumState.AddCommnet
     }
 }

@@ -1,9 +1,6 @@
 package kids.baba.mobile.domain.repository
 
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.AlbumResponse
-import kids.baba.mobile.domain.model.Article
-import kids.baba.mobile.domain.model.LikeResponse
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface AlbumRepository {
@@ -12,4 +9,6 @@ interface AlbumRepository {
     suspend fun addArticle(id: String, article: Article)
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
+
+    suspend fun addComment(id: String,contentId: String,comment: Comment)
 }

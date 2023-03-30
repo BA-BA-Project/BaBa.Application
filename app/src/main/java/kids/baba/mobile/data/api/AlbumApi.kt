@@ -31,11 +31,20 @@ interface AlbumApi {
         @Body article: Article
     )
 
+    @POST("/album/{babyId}/{contentId}/like")
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Path("contentId") contentId: String
     ): Response<LikeResponse>
+
+    @POST("/album/{babyId}/{contentId}/comment")
+    suspend fun addComment(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") id: String,
+        @Path("contentId") contentId: String,
+        @Body comment: Comment
+    )
 
     //성장 앨범 좋아요
 

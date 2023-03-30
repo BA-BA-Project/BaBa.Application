@@ -4,6 +4,7 @@ import android.util.Log
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.domain.model.AlbumResponse
 import kids.baba.mobile.domain.model.Article
+import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.LikeResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -33,5 +34,9 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         response.body()?.let {
             emit(it)
         }
+    }
+
+    override suspend fun addComment(id: String, contentId: String,comment: Comment) {
+        api.addComment(id = id, contentId = contentId, comment = comment)
     }
 }

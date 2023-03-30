@@ -8,4 +8,6 @@ interface AlbumRemoteDataSource {
     suspend fun postArticle(id: String, article: Article)
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
+
+    suspend fun addComment(id: String, contentId: String,comment: Comment)
 }
