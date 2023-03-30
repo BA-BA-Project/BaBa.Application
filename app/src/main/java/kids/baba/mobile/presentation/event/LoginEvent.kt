@@ -5,4 +5,5 @@ import androidx.annotation.StringRes
 sealed class LoginEvent {
     data class ShowSnackBar(@StringRes val text: Int) : LoginEvent()
     data class MoveToAgree(val socialToken: String) : LoginEvent()
+    data class MoveToWelcome(val name: String): LoginEvent()
 }

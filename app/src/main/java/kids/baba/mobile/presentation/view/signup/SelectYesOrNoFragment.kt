@@ -39,7 +39,7 @@ class SelectYesOrNoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val uiState = viewModel.uiState.value
-        if(uiState== InputBabiesInfoUiState.CheckInviteCode){
+        if(uiState is InputBabiesInfoUiState.CheckInviteCode || uiState is InputBabiesInfoUiState.ModifyHaveInviteCode){
             binding.btnAnswerYes.setOnClickListener {
                 viewModel.setHaveInviteCode(true)
             }
@@ -47,7 +47,7 @@ class SelectYesOrNoFragment : Fragment() {
             binding.btnAnswerNo.setOnClickListener {
                 viewModel.setHaveInviteCode(false)
             }
-        } else if( uiState == InputBabiesInfoUiState.CheckMoreBaby){
+        } else if( uiState is InputBabiesInfoUiState.CheckMoreBaby){
             binding.btnAnswerYes.setOnClickListener {
                 viewModel.inputMoreBaby(true)
             }

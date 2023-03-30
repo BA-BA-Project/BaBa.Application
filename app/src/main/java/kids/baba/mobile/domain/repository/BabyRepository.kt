@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BabyRepository {
     suspend fun getBaby() : Flow<BabyResponse>
-    suspend fun getBabiesInfo(signToken: String, inviteCode: String): Result<BabiesInfoResponse>
+    suspend fun getBabiesInfo(inviteCode: String): Flow<BabiesInfoResponse>
 }
