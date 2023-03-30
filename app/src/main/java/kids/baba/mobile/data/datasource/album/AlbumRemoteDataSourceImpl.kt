@@ -42,4 +42,11 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             emit(it)
         }
     }
+
+    override suspend fun getLikeDetail(contentId: String): Flow<LikeDetailResponse> = flow {
+        val response = api.getLikeDetail(contentId = contentId)
+        response.body()?.let {
+            emit(it)
+        }
+    }
 }

@@ -28,4 +28,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
     override suspend fun getComment(contentId: String): Flow<CommentResponse> =
         dataSource.getComment(contentId)
 
+    override suspend fun getLikeDetail(contentId: String): Flow<LikeDetailResponse> =
+        dataSource.getLikeDetail(contentId)
+
 }

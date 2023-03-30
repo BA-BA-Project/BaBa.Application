@@ -49,8 +49,14 @@ interface AlbumApi {
     @GET("/album/{contentId}/comments")
     suspend fun getComments(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("contentId") contentId: String,
+        @Path("contentId") contentId: String
     ): Response<CommentResponse>
+
+    @GET("/album/{contentId}/likes")
+    suspend fun getLikeDetail(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("contentId") contentId: String
+    ): Response<LikeDetailResponse>
 
     //성장 앨범 좋아요
 

@@ -22,7 +22,8 @@ class GrowthAlbumViewModel @Inject constructor(
     private val postOneArticleUseCase: PostOneArticleUseCase,
     private val likeAlbumUseCase: LikeAlbumUseCase,
     private val addCommentUseCase: AddCommentUseCase,
-    private val getCommentsUseCase: GetCommentsUseCase
+    private val getCommentsUseCase: GetCommentsUseCase,
+    private val getLikeDetailUseCase: GetLikeDetailUseCase
 ) : ViewModel() {
     private val _growthAlbumState =
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
@@ -77,6 +78,15 @@ class GrowthAlbumViewModel @Inject constructor(
             _growthAlbumState.value = GrowthAlbumState.Error(it)
         }.collect{
             _growthAlbumState.value = GrowthAlbumState.LoadComments(it.comments)
+        }
+    }
+
+    fun getLikeDetail(contentId: String) = viewModelScope.launch {
+        _growthAlbumState.value = GrowthAlbumState.Loading
+        getLikeDetailUseCase.get(contentId).catch {
+            _growthAlbumState.value = GrowthAlbumState.Error(it)
+        }.collect{
+            _growthAlbumState.value = GrowthAlbumState.GetLikeDetail(it)
         }
     }
 }
