@@ -23,6 +23,8 @@ class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(dif
         fun bind(item: AlbumUiModel) {
             binding.like = item.like
             binding.photo = item.photo
+            //Todo test용 날짜지우기
+            binding.date = item.date.toString()
         }
     }
     companion object {

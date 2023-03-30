@@ -1,13 +1,12 @@
 package kids.baba.mobile.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -15,7 +14,6 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
@@ -80,7 +78,6 @@ class GrowthAlbumFragment : Fragment() {
                 view.setOnClickListener {
                     if (currentDate != day.date) {
                         binding.wcvAlbumCalendar.notifyDateChanged(currentDate)
-                        Log.d("clickDate", day.date.toString())
                         viewModel.selectDate(day.date)
                         binding.wcvAlbumCalendar.notifyDateChanged(day.date)
                         binding.wcvAlbumCalendar.smoothScrollToDate(day.date.plusDays(-3))
@@ -94,16 +91,18 @@ class GrowthAlbumFragment : Fragment() {
                 bind.selected = currentDate == day.date
                 bind.formatter = formatter
 
-                view.isClickable = day.date.isAfter(today).not()
-                if (view.isClickable) {
-                    val textColor0 = requireContext().getColor(R.color.text_0)
-                    bind.tvDate.setTextColor(textColor0)
-                    bind.tvWeekday.setTextColor(textColor0)
-                } else {
-                    val textColor3 = requireContext().getColor(R.color.text_3)
-                    bind.tvDate.setTextColor(textColor3)
-                    bind.tvWeekday.setTextColor(textColor3)
-                }
+
+                //TODO 나중에 주석 풀기
+//                view.isClickable = day.date.isAfter(today).not()
+//                if (view.isClickable) {
+//                    val textColor0 = requireContext().getColor(R.color.text_0)
+//                    bind.tvDate.setTextColor(textColor0)
+//                    bind.tvWeekday.setTextColor(textColor0)
+//                } else {
+//                    val textColor3 = requireContext().getColor(R.color.text_3)
+//                    bind.tvDate.setTextColor(textColor3)
+//                    bind.tvWeekday.setTextColor(textColor3)
+//                }
             }
         }
 
@@ -119,7 +118,8 @@ class GrowthAlbumFragment : Fragment() {
         val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
-            currentMonth.plusMonths(0).atEndOfMonth(),
+            currentMonth.plusMonths(24).atEndOfMonth(),
+            //TODO 0으로 수정하기
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
@@ -215,6 +215,9 @@ class GrowthAlbumFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.currentDate.collect {
                 this.currentDate = it
+                binding.vpBabyPhoto.doOnPreDraw {
+                    binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex(currentDate)
+                }
             }
         }
     }
@@ -364,6 +367,7 @@ class GrowthAlbumFragment : Fragment() {
                 albumAdapter.submitList(it)
             }
         }
+
 //        binding.vpBabyPhoto.offscreenPageLimit = 1
 //
 //        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
@@ -382,10 +386,11 @@ class GrowthAlbumFragment : Fragment() {
 //            R.dimen.viewpager_current_item_horizontal_margin
 //        )
 //        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
+//        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+//            ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                viewModel.selectAlbum(position)
 //                intToDate[position]?.let {
 //                    lifecycleScope.launch {
 //                        binding.wcvAlbumCalendar.apply {
@@ -399,9 +404,9 @@ class GrowthAlbumFragment : Fragment() {
 //                        }
 //                    }
 //                }
-                viewModel.selectAlbum(position)
-            }
-        })
+//                viewModel.selectAlbum(position)
+//            }
+//        })
     }
 
 

@@ -32,13 +32,17 @@ fun setImageFromUrl(imageView: ImageView, url: String) {
 }
 
 @BindingAdapter("date", "formatter")
-fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter){
-    textView.text = date.format(formatter)
+fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter) {
+    textView.text = if (date == LocalDate.now()) {
+        textView.context.getText(R.string.today)
+    } else {
+        date.format(formatter)
+    }
 }
 
 @BindingAdapter("date")
-fun setDayOfWeek(textView: TextView, date: LocalDate){
-    val dayOfWeek = when(date.dayOfWeek){
+fun setDayOfWeek(textView: TextView, date: LocalDate) {
+    val dayOfWeek = when (date.dayOfWeek) {
         DayOfWeek.SUNDAY -> R.string.sunday
         DayOfWeek.MONDAY -> R.string.monday
         DayOfWeek.TUESDAY -> R.string.tuesday
