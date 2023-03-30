@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemAlbumBinding
-import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.presentation.model.AlbumUiModel
 
-class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) {
-    val list = mutableListOf<Album>()
+class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
 
     class AlbumViewHolder(private val binding: ItemAlbumBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Album) {
-            binding.dateVal.text = item.date
+        fun bind(item: AlbumUiModel) {
+            binding.like = item.like
+            binding.photo = item.photo
         }
     }
 
@@ -23,23 +23,16 @@ class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) 
         return AlbumViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
-        holder.bind(list[position])
-    }
-
-    fun setItem(item: Album) {
-        list.add(item)
-        notifyDataSetChanged()
+        holder.bind(getItem(position))
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Album>() {
-            override fun areItemsTheSame(oldItem: Album, newItem: Album) =
+        val diffUtil = object : DiffUtil.ItemCallback<AlbumUiModel>() {
+            override fun areItemsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel) =
                 oldItem.contentId == newItem.contentId
 
-            override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean =
+            override fun areContentsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel): Boolean =
                 oldItem.hashCode() == newItem.hashCode()
         }
     }

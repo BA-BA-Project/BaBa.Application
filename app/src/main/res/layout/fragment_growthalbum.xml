@@ -69,14 +69,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            app:cv_daySize="seventhWidth"
             app:cv_dayViewResource="@layout/item_day"
             app:cv_orientation="horizontal"
-            tools:listitem="@layout/item_day"
-            tools:itemCount="1"
-            app:cv_daySize="seventhWidth"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+            app:layout_constraintTop_toBottomOf="@id/tv_date"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_day" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,10 +92,10 @@
                 android:id="@+id/cv_baby_album"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="3:4"
                 android:layout_marginHorizontal="48dp"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -106,8 +106,9 @@
                 android:id="@+id/vp_baby_photo"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:translationZ="8dp"
                 android:clipToPadding="false"
+                android:layout_marginVertical="20dp"
+                android:translationZ="8dp"
                 app:layout_constraintBottom_toTopOf="@id/tv_add_comment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +122,7 @@
                 android:layout_marginTop="18dp"
                 android:elevation="2dp"
                 android:includeFontPadding="false"
-                android:text="today"
+                android:text="@{viewmodel.selectedAlbum.date}"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textColor="@color/baba_sub_2"
                 android:textSize="14sp"
@@ -149,13 +150,14 @@
                 android:layout_height="wrap_content"
                 android:elevation="1dp"
                 android:includeFontPadding="false"
-                android:text="손제인"
+                android:text="@{viewmodel.selectedAlbum.name}"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
                 app:layout_constraintEnd_toStartOf="@id/tv_album_relation"
                 app:layout_constraintStart_toEndOf="@id/tv_album_title"
-                app:layout_constraintTop_toTopOf="@id/tv_album_title" />
+                app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                tools:text="손제인" />
 
             <TextView
                 android:id="@+id/tv_album_relation"
@@ -165,12 +167,13 @@
                 android:layout_marginStart="4dp"
                 android:background="@drawable/bg_album_relation"
                 android:elevation="1dp"
-                android:text="엄마"
+                android:text="@{viewmodel.selectedAlbum.relation}"
                 android:textAppearance="@style/BABA.TextStyle"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
                 app:layout_constraintEnd_toEndOf="@id/btn_album_config"
                 app:layout_constraintStart_toEndOf="@id/tv_album_writer"
-                app:layout_constraintTop_toTopOf="@id/tv_album_title" />
+                app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                tools:text="엄마" />
 
             <TextView
                 android:id="@+id/tv_album_title"
@@ -181,28 +184,29 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="@string/album_card_title"
+                android:text="@{viewmodel.selectedAlbum.title}"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textColor="@color/text_0"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/tv_album_writer"
                 app:layout_constraintStart_toStartOf="@id/tv_album_date"
-                app:layout_constraintTop_toBottomOf="@id/tv_album_date" />
+                app:layout_constraintTop_toBottomOf="@id/tv_album_date"
+                tools:text="@string/album_card_title" />
 
             <TextView
                 android:id="@+id/tv_add_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:elevation="1dp"
                 android:includeFontPadding="false"
                 android:text="@string/album_card_record_image"
+                android:layout_marginBottom="20dp"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/cv_baby_album"
-                app:layout_constraintEnd_toEndOf="@id/cv_baby_album"
-                app:layout_constraintStart_toStartOf="@id/cv_baby_album" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
+                app:layout_constraintStart_toStartOf="@+id/tv_album_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

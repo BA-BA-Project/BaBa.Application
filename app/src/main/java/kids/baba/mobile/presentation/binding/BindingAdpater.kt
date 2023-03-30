@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
+import kids.baba.mobile.R
 
 
 @BindingAdapter("iconRes")
@@ -22,5 +23,6 @@ fun setBackGroundColor(circleImageView: CircleImageView, colorString: String) {
 fun setImageFromUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
+        .placeholder(R.drawable.album_default)
         .into(imageView)
 }

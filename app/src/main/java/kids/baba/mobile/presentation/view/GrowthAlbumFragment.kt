@@ -1,31 +1,18 @@
 package kids.baba.mobile.presentation.view
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.kizitonwose.calendar.core.WeekDay
-import com.kizitonwose.calendar.core.WeekDayPosition
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
+import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.GrowthAlbumState
-import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
-import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 //TODO 앨범 있는 날짜 횡달력에 표시
 //TODO 횡달력에서 선택한 날짜 표시
@@ -49,20 +36,22 @@ class GrowthAlbumFragment : Fragment() {
 //    private var width: Int = 0
 //    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 //    lateinit var datePicker: DatePickerDialog
-//    private val adapter = AlbumAdapter()
-//    private val babyAdapter = BabyAdapter()
+    private val adapter = AlbumAdapter()
+
+    //    private val babyAdapter = BabyAdapter()
     private var currentDay = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        initializeAlbumHolder()
         collectUiState()
         collectCurrentDate()
 //        initializeCalendar()
     }
 
 
-    private fun initializeCalendar() {
+//    private fun initializeCalendar() {
 //        class DayViewContainer(view: View) : ViewContainer(view) {
 //            val bind = ItemDayBinding.bind(view)
 //            lateinit var day: WeekDay
@@ -128,8 +117,7 @@ class GrowthAlbumFragment : Fragment() {
 //            val albumDetailDialog = AlbumDetailDialog()
 //            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
 //        }
-
-    }
+//    }
 
     private fun collectUiState() {
         repeatOnStarted {
@@ -226,7 +214,7 @@ class GrowthAlbumFragment : Fragment() {
 //            .sortedBy { LocalDate.parse(it.date) }
 //    }
 
-//    fun pickDate() {
+    //    fun pickDate() {
 //        datePicker.show()
 //        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
 //    }
@@ -285,14 +273,20 @@ class GrowthAlbumFragment : Fragment() {
 //        return LocalDate.parse(dateString, formatter)
 //    }
 //
-//    fun onKeyDown(): Boolean {
+    fun onKeyDown(): Boolean {
 //        binding.babySelectView.isGone = true
 //        binding.babySelectView.maxHeight = 0
-//        return true
-//    }
-//
-//    private fun initializeAlbumHolder() {
-//        binding.vpBabyPhoto.adapter = adapter
+        return true
+    }
+
+    //
+    private fun initializeAlbumHolder() {
+        binding.vpBabyPhoto.adapter = adapter
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.growthAlbumList.collect {
+                adapter.submitList(it)
+            }
+        }
 //        binding.vpBabyPhoto.offscreenPageLimit = 1
 //
 //        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
@@ -311,10 +305,10 @@ class GrowthAlbumFragment : Fragment() {
 //            R.dimen.viewpager_current_item_horizontal_margin
 //        )
 //        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
-//        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
-//            ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
 //                intToDate[position]?.let {
 //                    lifecycleScope.launch {
 //                        binding.wcvAlbumCalendar.apply {
@@ -328,11 +322,12 @@ class GrowthAlbumFragment : Fragment() {
 //                        }
 //                    }
 //                }
-//            }
-//        })
-//    }
-//
-//
+                viewModel.selectAlbum(position)
+            }
+        })
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
