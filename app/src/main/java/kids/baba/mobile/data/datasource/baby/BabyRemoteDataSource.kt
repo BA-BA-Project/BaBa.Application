@@ -5,6 +5,6 @@ import kids.baba.mobile.domain.model.BabyResponse
 import kotlinx.coroutines.flow.Flow
 
 interface BabyRemoteDataSource {
-    suspend fun getBabiesInfo(signToken: String, inviteCode: String): BabiesInfoResponse
+    suspend fun getBabiesInfo(inviteCode: String): Flow<BabiesInfoResponse>
     suspend fun getBaby(): Flow<BabyResponse>
 }

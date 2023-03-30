@@ -44,6 +44,9 @@ class LoginViewModel @Inject constructor(
                 is NetworkErrorException -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
             }
+        }.onSuccess { //TODO 앨범 구현중 바뀐 코드가 적용되면 수정해야함
+            _eventFlow.emit(LoginEvent.MoveToWelcome("testName"))
         }
+
     }
 }

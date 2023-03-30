@@ -8,14 +8,11 @@ import javax.inject.Inject
 
 class BabyRepositoryImpl @Inject constructor(
     private val babyRemoteDataSource: BabyRemoteDataSource
-    ) :
-    BabyRepository {
+) : BabyRepository {
     override suspend fun getBaby(): Flow<BabyResponse> = babyRemoteDataSource.getBaby()
 
     override suspend fun getBabiesInfo(
-        signToken: String,
         inviteCode: String
-    ) = runCatching {
-        babyRemoteDataSource.getBabiesInfo(signToken, inviteCode)
-    }
+    ) = babyRemoteDataSource.getBabiesInfo(inviteCode)
+
 }
