@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import kids.baba.mobile.presentation.model.CardStyleUiModel
 class CardStyleAdapter(private val listener: OnItemClickListener) :
     ListAdapter<CardStyleUiModel, CardStyleAdapter.CardViewHolder>(diffUtil) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val binding = ItemCardsStyleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CardViewHolder(binding)
@@ -19,6 +21,7 @@ class CardStyleAdapter(private val listener: OnItemClickListener) :
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
+//        holder.bind(position)
     }
 
 
@@ -26,16 +29,11 @@ class CardStyleAdapter(private val listener: OnItemClickListener) :
         binding.root
     ) {
         init {
-//            val initPosition = 0
-//            if (initPosition != RecyclerView.NO_POSITION) {
-//                val card = getItem(initPosition)
-//                listener.initItem(card, initPosition)
-//            }
-
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val card = getItem(position)
+                    binding.ivItemCard.isActivated = true
                     listener.onItemClick(card, position)
                 }
             }
@@ -43,8 +41,12 @@ class CardStyleAdapter(private val listener: OnItemClickListener) :
 
         fun bind(card: CardStyleUiModel) {
             binding.card = card
-
         }
+
+//        fun bind(position: Int) {
+//            val bindingItem = getItem(position)
+//            binding.ivItemCard.isActivated = bindingItem.isSelected
+//        }
 
     }
 
@@ -52,10 +54,9 @@ class CardStyleAdapter(private val listener: OnItemClickListener) :
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<CardStyleUiModel>() {
             override fun areItemsTheSame(oldItem: CardStyleUiModel, newItem: CardStyleUiModel) =
-                oldItem.cardStyleName == newItem.cardStyleName
+                oldItem.cardStyleIcon == newItem.cardStyleIcon
 
             override fun areContentsTheSame(oldItem: CardStyleUiModel, newItem: CardStyleUiModel): Boolean =
-//                oldItem.hashCode() == newItem.hashCode()
                 oldItem == newItem
         }
     }

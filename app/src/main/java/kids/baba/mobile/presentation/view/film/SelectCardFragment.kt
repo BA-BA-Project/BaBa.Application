@@ -41,6 +41,7 @@ class SelectCardFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         viewModel.setPreviewImg(binding.ivBabyFrameBaby)
         viewModel.setTitle(binding.tvBabyFrameTitle)
@@ -51,20 +52,18 @@ class SelectCardFragment @Inject constructor(
 
         cardAdapter = CardStyleAdapter(this)
         val layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-        binding.rvSelectCards.apply {
+        val recyclerView = binding.rvSelectCards
+        recyclerView.apply {
             adapter = cardAdapter
             this.layoutManager = layoutManager
         }
 
 
-
         viewLifecycleOwner.repeatOnStarted {
             viewModel.cardState.collect {
-                cardAdapter.submitList(it?.cardStyles)
+                cardAdapter.submitList(it.cardStyles)
             }
         }
-
-
     }
 
     override fun onDestroy() {
@@ -76,7 +75,6 @@ class SelectCardFragment @Inject constructor(
         Log.e(TAG, "card : $card, position: $position")
         viewModel.onCardSelected(card, position)
     }
-
 
 
 }

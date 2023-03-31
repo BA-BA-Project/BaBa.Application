@@ -37,6 +37,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 app:iconRes="@{card.cardStyleIcon.iconRes}"
+                android:foreground="@drawable/selector_selected_card"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,3 +62,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+<!--    android:foreground="@drawable/fg_card_is_selected"-->

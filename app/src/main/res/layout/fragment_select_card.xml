@@ -73,8 +73,9 @@
                 android:id="@+id/cl_baby_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackground="@{viewModel.cardState.cardStyles.get(3).cardStyleIcon.iconRes}"
+                app:cardBackground="@{viewModel.cardState.cardStyles.get(viewModel.cardPosition).cardStyleIcon.iconRes}"
                 tools:background="@drawable/card_candy_1">
+
 
                 <TextView
                     android:id="@+id/tv_baby_frame_today"
