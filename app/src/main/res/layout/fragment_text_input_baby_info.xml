@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="@drawable/bg_name_input"
+        android:background="@drawable/bg_baba_edit_text"
         android:hint="@string/can_enter_up_to_10_chars"
         android:maxLength="10"
         android:maxLines="1"

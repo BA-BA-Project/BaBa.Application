@@ -14,4 +14,7 @@ sealed class GrowthAlbumState {
     data class SuccessBaby(val data: List<Baby>) : GrowthAlbumState()
 
     data class Error(val t: Throwable) : GrowthAlbumState()
+    object PickDate : GrowthAlbumState()
+
+    object ChangeBaby : GrowthAlbumState()
 }
