@@ -31,17 +31,18 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageView
+            <CheckBox
+                android:button="@null"
                 android:id="@+id/iv_item_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:iconRes="@{card.cardStyleIcon.iconRes}"
+                app:cardItems="@{card.cardStyleIcon.iconRes}"
                 android:foreground="@drawable/selector_selected_card"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/card_candy_1"
+                tools:background="@drawable/card_candy_1"
                 android:contentDescription="@string/iv_item_card" />
 
         </androidx.cardview.widget.CardView>

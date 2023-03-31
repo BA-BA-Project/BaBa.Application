@@ -208,15 +208,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
-
-    <!--baby title-->
-    <!--    android:text="@{viewModel.album.title}"-->
-
-    <!--baby img-->
-    <!--    app:imageFromUrl="@{viewModel.album.photo}"-->
-
-    <!--    writer-->
-    <!--    android:text="@{viewModel.album.name}"-->
-
-    <!--    relation-->
-    <!--    android:text="@{viewModel.album.relation}"-->

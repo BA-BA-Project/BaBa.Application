@@ -61,7 +61,7 @@ class SelectCardViewModel @Inject constructor(
         Log.e(TAG, "selected position: $position")
         _cardState.value.selected = position
         _cardPosition.value = position
-        _cardState.value.cardStyles.get(position).isSelected = true
+        _cardState.value.cardStyles[position].isSelected = true
 //        cardSelectEventChannel.send(CardSelectEvent.CardSelect(card, position))
     }
 

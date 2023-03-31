@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,12 +63,23 @@ class SelectCardFragment @Inject constructor(
         }
 
 
+        val cardSelectionTracker = SelectionTracker.Builder<Long>(
+            "cardSelection",
+            recyclerView,
+            StableIdKeyProvider(recyclerView),
+            CardStyleAdapter.CardDetailsLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectSingleAnything()).build()
+
+        cardAdapter.setSelectionTracker(cardSelectionTracker)
+
         viewLifecycleOwner.repeatOnStarted {
             viewModel.cardState.collect {
                 cardAdapter.submitList(it.cardStyles)
             }
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

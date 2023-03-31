@@ -4,6 +4,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.ColorInt
@@ -50,5 +51,10 @@ fun titleTextWatcher(view: EditText, textWatcher: TextWatcher) {
 
 @BindingAdapter("cardBackground")
 fun setBackGround(view: View, @DrawableRes res: Int) {
+    view.setBackgroundResource(res)
+}
+
+@BindingAdapter("cardItems")
+fun setCardItems(view: CheckBox, @DrawableRes res: Int) {
     view.setBackgroundResource(res)
 }
