@@ -8,7 +8,6 @@ import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,19 +20,7 @@ class IntroViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
 
-    init {
-        checkLogin()
-    }
-
-    private fun checkLogin() {
-        viewModelScope.launch {
-            getMemberUseCase.getMe().catch {
-                _eventFlow.emit(IntroEvent.StartOnBoarding)
-            }.collect {
-                _eventFlow.emit(IntroEvent.MoveToMain(it.name))
-            }
-        }
-    }
+    suspend fun checkLogin() = getMemberUseCase.getMe().isSuccess
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {
@@ -41,6 +28,11 @@ class IntroViewModel @Inject constructor(
         }
     }
 
+    fun isLoginSuccess(name: String) {
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
+        }
+    }
 
     fun isSignUpStart(signToken: String) {
         viewModelScope.launch {
@@ -60,9 +52,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(name: String){
+    fun isSignUpSuccess(name: String) {
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain(name))
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
         }
     }
 }

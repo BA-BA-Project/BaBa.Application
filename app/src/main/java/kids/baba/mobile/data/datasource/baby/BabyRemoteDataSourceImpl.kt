@@ -1,31 +1,32 @@
 package kids.baba.mobile.data.datasource.baby
 
+import kids.baba.mobile.core.error.BadRequest
 import kids.baba.mobile.data.api.BabyApi
-import kids.baba.mobile.domain.model.BabiesInfoResponse
-import kids.baba.mobile.domain.model.BabyResponse
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class BabyRemoteDataSourceImpl @Inject constructor(
     private val babyApi: BabyApi
 ) : BabyRemoteDataSource {
-    override suspend fun getBabiesInfo(signToken: String, inviteCode: String) : BabiesInfoResponse {
-        val resp = babyApi.getBabiesInfoByInviteCode(signToken, inviteCode)
-
-        when (resp.code()) {
-            200 -> {
-                return resp.body() ?: throw Throwable("data is null")
+    override suspend fun getBabiesInfo(inviteCode: String) = flow {
+        runCatching { babyApi.getBabiesInfoByInviteCode(inviteCode) }
+            .onSuccess { resp ->
+                when (resp.code()) {
+                    200 -> {
+                        val data = resp.body() ?: throw Throwable("data is null")
+                        emit(data)
+                    }
+                    else -> {
+                        throw BadRequest(resp.message())
+                    }
+                }
             }
-
-            else -> throw Throwable("초대 코드 정보 확인 에러")
-        }
+            .onFailure {
+                throw it
+            }
     }
 
-    override suspend fun getBaby(): Flow<BabyResponse> = flow {
-        val response = babyApi.getBaby()
-        response.body()?.let {
-            emit(it)
-        }
+    override suspend fun getBaby() = flow {
+        emit(babyApi.getBaby())
     }
 }
