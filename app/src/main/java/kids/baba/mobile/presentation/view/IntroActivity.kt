@@ -7,8 +7,10 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
@@ -18,16 +20,17 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityIntroBinding
     private val viewModel: IntroViewModel by viewModels()
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+        binding = ActivityIntroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         checkLogin()
-        setContentView(R.layout.activity_intro)
         setNavController()
         collectEvent()
     }
@@ -68,6 +71,10 @@ class IntroActivity : AppCompatActivity() {
                         val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToInputBabiesInfoFragment(event.userProfile, event.signToken)
                         navController.navigate(action)
                     }
+                    is IntroEvent.IntroError -> {
+                        Snackbar.make(binding.root, R.string.baba_unknown_error,Snackbar.LENGTH_SHORT).show()
+                    }
+                    else -> Unit
                 }
             }
         }

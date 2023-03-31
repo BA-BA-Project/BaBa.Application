@@ -18,9 +18,7 @@ class IntroViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<IntroEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
-
-    suspend fun checkLogin() = getMemberUseCase.getMe().isSuccess
+    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {

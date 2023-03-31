@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,20 +10,36 @@
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/growth_album_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:onClick="@{() -> viewmodel.pickDate()}"
+            android:translationZ="10dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
+            android:id="@+id/imageView7"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewmodel.changeBaby()}"
             android:src="@drawable/circle_pink"
             app:layout_constraintBottom_toBottomOf="@+id/tvDate"
             app:layout_constraintEnd_toStartOf="@+id/tvDate"
             app:layout_constraintTop_toTopOf="@+id/tvDate" />
 
         <ImageView
+            android:id="@+id/imageView8"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
@@ -48,48 +65,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:onClick="@{() -> viewmodel.pickDate()}"
             android:src="@drawable/baseline_keyboard_arrow_down_24"
             app:layout_constraintBottom_toBottomOf="@+id/tvDate"
             app:layout_constraintStart_toEndOf="@+id/tvDate"
             app:layout_constraintTop_toTopOf="@+id/tvDate" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_show_date"
-            android:backgroundTint="@color/grey"
-            android:text="@string/view_by_date"
-            app:layout_constraintBottom_toTopOf="@+id/myCalendar"
-            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_right"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="10dp"-->
-        <!--            android:layout_marginEnd="40dp"-->
-        <!--            android:text="다음달"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_left"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="10dp"-->
-        <!--            android:layout_marginEnd="40dp"-->
-        <!--            android:text="이전달"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/btn_right"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-
-        <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+        <com.kizitonwose.calendar.view.WeekCalendarView
             android:id="@+id/myCalendar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
+            app:cv_dayViewResource="@layout/item_day"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +128,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_album_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -163,27 +152,62 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <ImageView
-            android:id="@+id/floating_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="50dp"
-            android:backgroundTint="@color/baba_main"
-            android:src="@drawable/baby_button"
-            app:backgroundTint="@color/white"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/baby_select_view"
+            android:layout_width="0dp"
+            android:layout_height="500dp"
+            android:background="@drawable/white_card_view"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:focusable="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baby_button_icon"
-            app:backgroundTint="@color/white"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="@+id/floating_button"
-            app:layout_constraintEnd_toEndOf="@id/floating_button"
-            app:layout_constraintTop_toTopOf="@id/floating_button"
-            app:layout_constraintBottom_toBottomOf="@id/floating_button"/>
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/baby_select_view_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="성장앨범 보러가기"
+                android:textColor="@color/black"
+                android:textSize="23sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/baby_select_view_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/baby_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingHorizontal="10dp"
+                android:paddingTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/baby_select_view_label"
+                tools:listitem="@layout/item_baby" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/black"
+            android:clickable="false"
+            android:elevation="8dp"
+            android:focusable="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

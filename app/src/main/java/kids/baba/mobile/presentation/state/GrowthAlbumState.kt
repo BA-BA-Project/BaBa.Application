@@ -25,4 +25,7 @@ sealed class GrowthAlbumState {
     data class Like(val data: Boolean) : GrowthAlbumState()
 
     data class Error(val t: Throwable) : GrowthAlbumState()
+    object PickDate : GrowthAlbumState()
+
+    object ChangeBaby : GrowthAlbumState()
 }
