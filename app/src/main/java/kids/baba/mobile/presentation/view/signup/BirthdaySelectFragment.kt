@@ -117,10 +117,9 @@ class BirthdaySelectFragment : Fragment() {
             }, cYear, cMonth, cDay
         )
 
-
-        val minDate = LocalDate.of(cYear - 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+        val minDate = LocalDate.of(cYear - 2, cMonth+1, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
             .toEpochMilli()
-        val maxDate = LocalDate.of(cYear + 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+        val maxDate = LocalDate.of(cYear + 2, cMonth+1, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
             .toEpochMilli()
 
         datePickerDialog.datePicker.minDate = minDate

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
@@ -14,6 +15,7 @@ import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
@@ -24,12 +26,22 @@ class IntroActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkLogin()
         setNavController()
         collectEvent()
+    }
+
+    private fun checkLogin(){
+        lifecycleScope.launch{
+            if(viewModel.checkLogin()){
+                MainActivity.startActivity(this@IntroActivity)
+                finish()
+            }
+        }
     }
 
     private fun setNavController() {
@@ -42,8 +54,8 @@ class IntroActivity : AppCompatActivity() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is IntroEvent.MoveToMain -> {
-                        WelcomeActivity.startActivity(this, "testName")
+                    is IntroEvent.MoveToWelcome -> {
+                        WelcomeActivity.startActivity(this, event.name)
                         finish()
                     }
                     is IntroEvent.MoveToLogin -> navController.navigate(R.id.action_onBoardingFragment_to_loginFragment3)

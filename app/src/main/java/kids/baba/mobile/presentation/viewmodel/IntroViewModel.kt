@@ -3,7 +3,6 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
@@ -22,25 +21,7 @@ class IntroViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
 
-    init {
-        checkLogin()
-    }
-
-    private fun checkLogin() {
-        viewModelScope.launch {
-            getMemberUseCase.getMe()
-                .catch {
-                    if(it is TokenEmptyException){
-                        _eventFlow.emit(IntroEvent.StartOnBoarding)
-                    } else {
-                        _eventFlow.emit(IntroEvent.IntroError)
-                    }
-                }
-                .collect {
-                    _eventFlow.emit(IntroEvent.MoveToMain)
-                }
-        }
-    }
+    suspend fun checkLogin() = getMemberUseCase.getMe().isSuccess
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {
@@ -48,9 +29,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isLoginSuccess() {
+    fun isLoginSuccess(name: String) {
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain)
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
         }
     }
 
@@ -72,7 +53,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess() {
-
+    fun isSignUpSuccess(name: String) {
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
+        }
     }
 }
