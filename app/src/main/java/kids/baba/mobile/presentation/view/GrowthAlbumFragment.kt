@@ -127,7 +127,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     fun changeBaby() {
-        Log.e("changeBaby","")
+        Log.e("changeBaby", "")
         binding.babySelectView.maxHeight = width * 3 / 2
         binding.babySelectView.isGone = false
         binding.shadow.alpha = 0.3f
@@ -139,63 +139,33 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
-        state.data.forEach {
-            Log.e("baby", "$it")
+        val now = LocalDate.now()
+        state.data.myBaby.forEach {
+            Log.e("my", "$it")
+        }
+        state.data.myBaby.let {
+            //일단 첫번째 아이 기준으로 합니다.
+            viewModel.loadAlbum(it[0].babyId, now.year, now.month.value)
+        }
+        state.data.others.forEach {
+            Log.e("other", "$it")
         }
     }
 
     private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
-        state.data.forEach {
-            Log.e("album", "$it")
+        Log.e("album", "${state.data}")
+        state.data.forEachIndexed { index, album ->
+            adapter.setItem(album)
+            val localDate = parseLocalDate(album.date.toString())
+            dateToString[localDate] = album.date.toString()
+            stringToInt[album.date.toString()] = index
+            intToDate[index] = localDate
         }
     }
 
 
     private fun loading() {
         Log.e("loading", "loading")
-    }
-
-    fun getDummyData(): List<Album> {
-        val dummyResponse = mutableListOf<Album>()
-        repeat(365) {
-            currentDay = currentDay.plusDays(1)
-            val album = Album(
-                1,
-                "Empty",
-                "엄마",
-                currentDay.toString(),
-                "빵긋빵긋",
-                false,
-                "www.naver.com",
-                "CARD_STYLE_1"
-            )
-            dummyResponse.add(album)
-        }
-        repeat(50) {
-            val album = Album(
-                1,
-                "할당",
-                "엄마",
-                generateRandomDate(),
-                "빵긋빵긋",
-                false,
-                "www.naver.com",
-                "CARD_STYLE_1"
-            )
-            dummyResponse.add(album)
-        }
-        return dummyResponse
-            .groupBy { it.date }
-            .mapValues { (_, albums) ->
-                when (albums.size) {
-                    1 -> albums[0]
-                    else -> albums.find { it.name.contains("할당") }
-                        ?: albums[0]
-                }
-            }
-            .values
-            .toList()
-            .sortedBy { LocalDate.parse(it.date) }
     }
 
     fun pickDate() {
@@ -227,13 +197,6 @@ class GrowthAlbumFragment : Fragment() {
         initializeAlbumHolder()
         binding.babyList.adapter = babyAdapter
         binding.babyList.layoutManager = LinearLayoutManager(requireContext())
-        getDummyData().forEachIndexed { index, album ->
-            adapter.setItem(album)
-            val localDate = parseLocalDate(album.date)
-            dateToString[localDate] = album.date
-            stringToInt[album.date] = index
-            intToDate[index] = localDate
-        }
         currentDay = LocalDate.now()
         repeat(5) {
             babyAdapter.setItem(Baby("$it", "$it", "$it"))
@@ -244,17 +207,7 @@ class GrowthAlbumFragment : Fragment() {
 
         binding.babySelectView.maxHeight = 0
         binding.shadow.alpha = 0f
-        viewModel.loadAlbum(1)
         viewModel.loadBaby()
-
-    }
-
-    fun generateRandomDate(): String {
-        val currentDate = LocalDate.now()
-        val randomDays = (0..100).random()
-        val randomDate = currentDate.plusDays(randomDays.toLong())
-        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-        return randomDate.format(formatter)
     }
 
     fun parseLocalDate(dateString: String): LocalDate {

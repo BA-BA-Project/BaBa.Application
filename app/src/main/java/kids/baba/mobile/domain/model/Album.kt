@@ -6,7 +6,7 @@ data class Album(
     val contentId: Int,
     val name: String,
     val relation: String,
-    val date: LocalDate,
+    val date: String,
     val title: String,
     val like: Boolean,
     val photo: String,

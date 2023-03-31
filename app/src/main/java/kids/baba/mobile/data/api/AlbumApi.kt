@@ -15,7 +15,7 @@ interface AlbumApi {
 
 
     //성장 앨범 메인
-    @GET("/album/{babyId}")
+    @GET("/api/album/{babyId}")
     suspend fun getAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
@@ -24,21 +24,21 @@ interface AlbumApi {
     ): Response<AlbumResponse>
 
     //성장 앨범 추가
-    @POST("/album/{babyId}")
+    @POST("/api/album/{babyId}")
     suspend fun addArticle(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Body article: Article
     )
 
-    @POST("/album/{babyId}/{contentId}/like")
+    @POST("/api/album/{babyId}/{contentId}/like")
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Path("contentId") contentId: String
     ): Response<LikeResponse>
 
-    @POST("/album/{babyId}/{contentId}/comment")
+    @POST("/api/album/{babyId}/{contentId}/comment")
     suspend fun addComment(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
@@ -46,13 +46,13 @@ interface AlbumApi {
         @Body commentInput: CommentInput
     )
 
-    @GET("/album/{contentId}/comments")
+    @GET("/api/album/{contentId}/comments")
     suspend fun getComments(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("contentId") contentId: String
     ): Response<CommentResponse>
 
-    @GET("/album/{contentId}/likes")
+    @GET("/api/album/{contentId}/likes")
     suspend fun getLikeDetail(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("contentId") contentId: String

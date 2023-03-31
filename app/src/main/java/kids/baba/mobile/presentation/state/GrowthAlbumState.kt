@@ -1,9 +1,6 @@
 package kids.baba.mobile.presentation.state
 
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
-import kids.baba.mobile.domain.model.Comment
-import kids.baba.mobile.domain.model.LikeDetailResponse
+import kids.baba.mobile.domain.model.*
 
 sealed class GrowthAlbumState {
 
@@ -13,7 +10,7 @@ sealed class GrowthAlbumState {
 
     data class SuccessAlbum(val data: List<Album>) : GrowthAlbumState()
 
-    data class SuccessBaby(val data: List<Baby>) : GrowthAlbumState()
+    data class SuccessBaby(val data: BabyResponse) : GrowthAlbumState()
 
     object Post : GrowthAlbumState()
 

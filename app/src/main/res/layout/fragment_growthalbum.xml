@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:onClick="@{() -> viewmodel.pickDate()}"
             android:translationZ="10dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
