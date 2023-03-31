@@ -60,7 +60,7 @@ class InputBabiesInfoFragment : Fragment() {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is InputBabiesInfoUiState.SignUpSuccess -> {
-                        activityViewModel.isSignUpSuccess()
+                        activityViewModel.isSignUpSuccess(uiState.name)
                     }
 
                     is InputBabiesInfoUiState.SignUpFailed -> {

@@ -10,21 +10,20 @@ import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentUiModel
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
-    getMemberUseCase: GetMemberUseCase
+    private val getMemberUseCase: GetMemberUseCase
 ) : ViewModel() {
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
@@ -36,17 +35,26 @@ class AlbumDetailViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<AlbumDetailEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    val member = getMemberUseCase.getMe().catch {
-        if(it is TokenEmptyException){
-            _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_token_empty_error))
-        } else {
-            _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_unknown_error))
-        }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
-
+    private val _member = MutableStateFlow<MemberUiModel?>(null)
+    val member = _member.asStateFlow()
 
     init {
+        initModel()
         getAlbumDetail()
+    }
+
+    private fun initModel() {
+        viewModelScope.launch {
+            runCatching { getMemberUseCase.getMe() }.onSuccess {
+                _member.value = it
+            }.onFailure {
+                if (it is TokenEmptyException) {
+                    _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_token_empty_error))
+                } else {
+                    _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_unknown_error))
+                }
+            }
+        }
     }
 
     private fun getAlbumDetail() {

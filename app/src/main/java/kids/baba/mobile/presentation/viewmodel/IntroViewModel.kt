@@ -8,7 +8,6 @@ import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,9 +18,7 @@ class IntroViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<IntroEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
-
-    suspend fun checkLogin() = getMemberUseCase.getMe().isSuccess
+    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {
