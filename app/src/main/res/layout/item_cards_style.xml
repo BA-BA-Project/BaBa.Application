@@ -32,18 +32,19 @@
 
 
             <CheckBox
-                android:button="@null"
                 android:id="@+id/iv_item_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:cardItems="@{card.cardStyleIcon.iconRes}"
+                android:button="@null"
+                android:contentDescription="@string/iv_item_card"
                 android:foreground="@drawable/selector_selected_card"
+                android:scaleType="fitXY"
+                app:cardBackground="@{card.cardStyleIcon.iconRes}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:background="@drawable/card_candy_1"
-                android:contentDescription="@string/iv_item_card" />
+                tools:foreground="@drawable/fg_card_is_selected" />
 
         </androidx.cardview.widget.CardView>
 
@@ -63,5 +64,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-
-<!--    android:foreground="@drawable/fg_card_is_selected"-->

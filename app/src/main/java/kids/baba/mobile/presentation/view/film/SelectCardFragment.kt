@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
+import kids.baba.mobile.presentation.extension.CardDetailsLookup
+import kids.baba.mobile.presentation.extension.RecyclerViewIdKeyProvider
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
 import javax.inject.Inject
 
@@ -26,8 +25,6 @@ import javax.inject.Inject
 class SelectCardFragment @Inject constructor(
 
 ) : Fragment(), CardStyleAdapter.OnItemClickListener {
-
-    private val TAG = "SelectCardFragment"
 
     private var _binding: FragmentSelectCardBinding? = null
     private val binding
@@ -63,11 +60,11 @@ class SelectCardFragment @Inject constructor(
         }
 
 
-        val cardSelectionTracker = SelectionTracker.Builder<Long>(
+        val cardSelectionTracker = SelectionTracker.Builder(
             "cardSelection",
             recyclerView,
-            StableIdKeyProvider(recyclerView),
-            CardStyleAdapter.CardDetailsLookup(recyclerView),
+            RecyclerViewIdKeyProvider(recyclerView),
+            CardDetailsLookup(recyclerView),
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(SelectionPredicates.createSelectSingleAnything()).build()
 
@@ -86,9 +83,8 @@ class SelectCardFragment @Inject constructor(
         _binding = null
     }
 
-    override fun onItemClick(card: CardStyleUiModel, position: Int) {
-        Log.e(TAG, "card : $card, position: $position")
-        viewModel.onCardSelected(card, position)
+    override fun onItemClick(position: Int) {
+        viewModel.onCardSelected(position)
     }
 
 

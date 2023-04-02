@@ -2,9 +2,11 @@ package kids.baba.mobile.presentation.view.film
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -17,7 +19,6 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kids.baba.mobile.presentation.viewmodel.WriteTitleViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint

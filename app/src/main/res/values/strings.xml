@@ -69,18 +69,7 @@
     <string name="today">Today</string>
 
     <string name="iv_item_card">카드 선택할 때 아이템 이미지 뷰</string>
-    <string name="card_basic_1">기본</string>
-    <string name="card_sky_1">하늘</string>
-    <string name="card_cloud_1">구름1</string>
-    <string name="card_cloud_2">구름2</string>
-    <string name="card_toy_1">장난감</string>
-    <string name="card_candy_1">알사탕</string>
-    <string name="card_snowflower_1">눈꽃1</string>
-    <string name="card_snowflower_2">눈꽃2</string>
-    <string name="card_line_1">스트라이프</string>
-    <string name="card_spring_1">스프링</string>
-    <string name="card_check_1">체크1</string>
-    <string name="card_check_2">체크2</string>
+
 
     <string name="likes_and_comment">좋아요와 댓글을 달아봐요!</string>
     <string name="iv_select_card_guide">카드 선택 창에서는 가이드용(실제 상호작용 없음)</string>
