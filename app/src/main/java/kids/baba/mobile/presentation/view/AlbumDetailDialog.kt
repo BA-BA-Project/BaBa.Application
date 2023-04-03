@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
+import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class AlbumDetailDialog : DialogFragment() {
+class AlbumDetailDialog(private val album: Album) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
@@ -58,6 +62,25 @@ class AlbumDetailDialog : DialogFragment() {
         setCommentRecyclerView()
         setImgScaleAnim()
         setBabyPhoto()
+        setDetailStateCollecter()
+        viewModel.album.value = album.toAlbumUiModel()
+    }
+
+    private fun setDetailStateCollecter() {
+        repeatOnStarted {
+            viewModel.albumDetailUiState.collect {
+                when (it) {
+                    is AlbumDetailUiState.Loading -> {}
+                    is AlbumDetailUiState.Like -> {}
+                    is AlbumDetailUiState.AddComment -> {}
+                    is AlbumDetailUiState.GetLikeDetail -> {}
+                    is AlbumDetailUiState.LoadComments -> {}
+                    is AlbumDetailUiState.Error -> {}
+                    is AlbumDetailUiState.Failure -> {}
+                    else -> {}
+                }
+            }
+        }
     }
 
 

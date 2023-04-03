@@ -62,38 +62,4 @@ class GrowthAlbumViewModel @Inject constructor(
         _growthAlbumState.value = GrowthAlbumState.Post
 
     }
-
-    fun like(id: String, contentId: String) = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        likeAlbumUseCase.like(id, contentId).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect {
-            _growthAlbumState.value = GrowthAlbumState.Like(it.isLiked)
-        }
-    }
-
-    fun addComment(id: String, contentId: String, commentInput: CommentInput) =
-        viewModelScope.launch {
-            _growthAlbumState.value = GrowthAlbumState.Loading
-            addCommentUseCase.add(id, contentId, commentInput)
-            _growthAlbumState.value = GrowthAlbumState.AddComment
-        }
-
-    fun getComments(contentId: String) = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        getCommentsUseCase.get(contentId).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
-            _growthAlbumState.value = GrowthAlbumState.LoadComments(it.comments)
-        }
-    }
-
-    fun getLikeDetail(contentId: String) = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        getLikeDetailUseCase.get(contentId).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect{
-            _growthAlbumState.value = GrowthAlbumState.GetLikeDetail(it)
-        }
-    }
 }

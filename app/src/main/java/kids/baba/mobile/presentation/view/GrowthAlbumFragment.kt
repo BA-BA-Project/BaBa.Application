@@ -30,6 +30,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.util.calendar.DayListener
+import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -62,6 +63,7 @@ class GrowthAlbumFragment : Fragment() {
     private val babyAdapter = BabyAdapter()
     private lateinit var dayViewContainer: DayViewContainer
     private var currentDay = LocalDate.now()
+    private var albums = listOf<Album>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectUiState()
@@ -103,7 +105,7 @@ class GrowthAlbumFragment : Fragment() {
         binding.myCalendar.scrollPaged = false
         binding.myCalendar.scrollToWeek(LocalDate.now())
         binding.tvAlbumTitle.setOnClickListener {
-            val albumDetailDialog = AlbumDetailDialog()
+            val albumDetailDialog = AlbumDetailDialog(albums[binding.viewPager.currentItem])
             albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
         }
 
@@ -145,7 +147,8 @@ class GrowthAlbumFragment : Fragment() {
         }
         state.data.myBaby.let {
             //일단 첫번째 아이 기준으로 합니다.
-            viewModel.loadAlbum(it[0].babyId, now.year, now.month.value)
+            viewModel.loadAlbum(it[0].babyId, now.year, 3)
+            binding.tvAlbumTitle.text = "${it[0].name}의 오늘 기록"
         }
         state.data.others.forEach {
             Log.e("other", "$it")
@@ -154,6 +157,7 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
         Log.e("album", "${state.data}")
+        albums = state.data
         state.data.forEachIndexed { index, album ->
             adapter.setItem(album)
             val localDate = parseLocalDate(album.date.toString())

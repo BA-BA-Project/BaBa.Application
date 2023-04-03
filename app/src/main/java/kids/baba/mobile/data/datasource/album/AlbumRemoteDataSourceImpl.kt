@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.album
 
+import android.util.Log
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         month: Int,
     ): Flow<AlbumResponse> = flow {
         val response = api.getAlbum(id = id, year = year, month = month)
+        Log.e("Album","${response.body()?.album} ${response.code()}")
         response.body()?.let {
             emit(it)
         }
