@@ -73,4 +73,6 @@
     <string name="user_info_collect_complete">정보 수집 완료!</string>
     <string name="welcome_baba">어서와요, %s님</string>
     <string name="today">Today</string>
+    <string name="select_baby">성장앨범 보러가기</string>
+    <string name="management_babies">아이 추가 및 관리</string>
 </resources>
