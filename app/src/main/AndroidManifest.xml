@@ -26,47 +26,39 @@
 
 
         <activity
+            android:name=".presentation.view.WelcomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.view.film.FilmActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-             android:exported="false"
-            >
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.VIEW" />-->
-
-
-<!--             <category android:name="android.intent.category.DEFAULT" />-->
-<!--             <category android:name="android.intent.category.BROWSABLE" />-->
-
-
-<!--             <data-->
-<!--             android:host="oauth"-->
-<!--             android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />-->
-<!--             </intent-filter>-->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
+            </intent-filter>
         </activity>
-        <activity android:name=".presentation.view.IntroActivity"
-            android:theme="@style/Theme.Baba.Starting"
-             android:exported="false"
-             >
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name=".presentation.view.IntroActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Baba.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.view.MainActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:exported="false" />
 
         <!-- FileProvider used to share photos with other apps -->
         <provider
@@ -85,4 +77,3 @@
     </application>
 
 </manifest>
-

@@ -37,7 +37,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-//
+
     buildFeatures {
         viewBinding true
         dataBinding true
@@ -52,7 +52,7 @@ android {
                     appLabel: "BABA-dev",
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
-            buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids\""
+            buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids/api/\""
             buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
         product {
@@ -61,7 +61,7 @@ android {
                     appLabel: "BABA",
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
-            buildConfigField "String", "BASE_URL", "\"https://baba.kids\""
+            buildConfigField "String", "BASE_URL", "\"https://baba.kids/api/\""
             buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
     }
@@ -81,7 +81,7 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
-    implementation 'com.michalsvec:single-row-calednar:1.0.0'
+    implementation 'com.kizitonwose.calendar:view:2.2.0'
 
     // 정식 버전인 security-crypto:1.0.0을 사용하면 좋겠으나....
     // 의미 없는 스택 트레이스가 눈에 거슬리게 뜨는 관계로 아래 라이브러리 이용
@@ -120,7 +120,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
 
     // cameraX
     def camerax_version = "1.1.0-beta01"

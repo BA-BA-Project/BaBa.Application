@@ -48,7 +48,6 @@ class InputBabyInfoEndFragment : Fragment() {
                 }
                 else -> Unit
             }
-            viewModel.signUpWithBabiesInfo()
         }
 
     }

@@ -3,13 +3,11 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.model.MemberModel
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,21 +18,7 @@ class IntroViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<IntroEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
-
-    init {
-        checkLogin()
-    }
-
-    private fun checkLogin() {
-        viewModelScope.launch {
-            getMemberUseCase.getMe().catch {
-                _eventFlow.emit(IntroEvent.StartOnBoarding)
-            }.collect {
-                _eventFlow.emit(IntroEvent.MoveToMain(it))
-            }
-        }
-    }
+    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {
@@ -42,9 +26,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isLoginSuccess(member: MemberModel) {
+    fun isLoginSuccess(name: String) {
         viewModelScope.launch {
-            _eventFlow.emit(IntroEvent.MoveToMain(member))
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
         }
     }
 
@@ -66,7 +50,9 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    fun isSignUpSuccess(member: MemberModel){
-
+    fun isSignUpSuccess(name: String) {
+        viewModelScope.launch {
+            _eventFlow.emit(IntroEvent.MoveToWelcome(name))
+        }
     }
 }

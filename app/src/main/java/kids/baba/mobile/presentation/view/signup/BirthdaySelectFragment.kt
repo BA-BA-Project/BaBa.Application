@@ -87,7 +87,7 @@ class BirthdaySelectFragment : Fragment() {
                 binding.btnBirthday.text = dateText
                 when (val uiState = viewModel.uiState.value) {
                     is InputBabiesInfoUiState.InputBabyBirthDay -> {
-                        uiState.babyInfo.birthday = selectedDate
+                        uiState.babyInfo.birthday = selectedDate.toString()
                         viewModel.setBabyBirthday(
                             ChatItem.UserChatWithBabyInfoItem(
                                 dateText,
@@ -100,7 +100,7 @@ class BirthdaySelectFragment : Fragment() {
 
                     is InputBabiesInfoUiState.ModifyBirthday -> {
                         selectedDate = LocalDate.of(selectedYear, selectedMonth, selectedDay)
-                        uiState.babyInfo.birthday = selectedDate
+                        uiState.babyInfo.birthday = selectedDate.toString()
                         viewModel.modifyBabyInfo(
                             ChatItem.UserChatWithBabyInfoItem(
                                 dateText,
@@ -117,10 +117,9 @@ class BirthdaySelectFragment : Fragment() {
             }, cYear, cMonth, cDay
         )
 
-
-        val minDate = LocalDate.of(cYear - 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+        val minDate = LocalDate.of(cYear - 2, cMonth+1, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
             .toEpochMilli()
-        val maxDate = LocalDate.of(cYear + 2, cMonth, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
+        val maxDate = LocalDate.of(cYear + 2, cMonth+1, cDay).atStartOfDay(ZoneOffset.UTC).toInstant()
             .toEpochMilli()
 
         datePickerDialog.datePicker.minDate = minDate

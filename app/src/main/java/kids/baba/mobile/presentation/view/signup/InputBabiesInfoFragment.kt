@@ -53,21 +53,6 @@ class InputBabiesInfoFragment : Fragment() {
         setNavController()
         collectUiState()
         collectEvent()
-        collectHaveInviteCode()
-    }
-
-    private fun collectHaveInviteCode() {
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.haveInviteCode.collect { haveInviteCode ->
-                if (haveInviteCode != null) {
-                    if (haveInviteCode) {
-                        viewModel.inputInviteCode()
-                    } else {
-                        viewModel.inputBabiesInfo()
-                    }
-                }
-            }
-        }
     }
 
     private fun collectUiState() {
@@ -75,7 +60,7 @@ class InputBabiesInfoFragment : Fragment() {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is InputBabiesInfoUiState.SignUpSuccess -> {
-                        activityViewModel.isSignUpSuccess(uiState.member)
+                        activityViewModel.isSignUpSuccess(uiState.name)
                     }
 
                     is InputBabiesInfoUiState.SignUpFailed -> {

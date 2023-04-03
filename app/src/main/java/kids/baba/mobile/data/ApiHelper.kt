@@ -44,9 +44,8 @@ private class AuthorizationInterceptor : Interceptor {
 
         if (hasAuthorization) {
             val accessToken = chain.request().header("Authorization")
-            request.addHeader("Authorization", "Bearer $accessToken")
+            request.header("Authorization", "Bearer $accessToken")
         }
-
         return chain.proceed(request.build())
     }
 }

@@ -93,6 +93,8 @@
     <string name="answer_no">아니</string>
     <string name="need_to_baby_info">추억을 기록하기 전 아이의 정보가 필요해요!</string>
     <string name="what_is_the_name_of_baby">기록할 아이의 이름이 무엇인가요?</string>
+    <string name="baba_unknown_error">동작에 문제가 발생했습니다.</string>
+    <string name="baba_token_empty_error">토큰 확인에 문제가 발생했습니다.</string>
 
     <string name="monday"> 월</string>
     <string name="tuesday"> 화</string>
@@ -111,6 +113,9 @@
     <string name="input_relation">아이와 어떤 관계이신가요?</string>
     <string name="please_input_invite_code">초대코드를 보내주세요</string>
     <string name="input_end_babies_info">좋아요!\n아래 버튼을 눌러 시작해봐요!</string>
-
-
+    <string name="add_comment">[아이이름]에게 댓글달기</string>
+    <string name="album_like_count">좋아요 %d개</string>
+    <string name="album_comment_tag">\@%s</string>
+    <string name="user_info_collect_complete">정보 수집 완료!</string>
+    <string name="welcome_baba">어서와요, %s님</string>
 </resources>

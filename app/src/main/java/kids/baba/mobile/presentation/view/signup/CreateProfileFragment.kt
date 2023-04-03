@@ -17,7 +17,6 @@ import kids.baba.mobile.databinding.FragmentCreateProfileBinding
 import kids.baba.mobile.presentation.adapter.SignUpChatAdapter
 import kids.baba.mobile.presentation.event.CreateProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.ProfileIcon
 import kids.baba.mobile.presentation.state.CreateProfileUiState
 import kids.baba.mobile.presentation.viewmodel.CreateProfileViewModel
@@ -76,19 +75,10 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
             viewModel.signUpUiState.collect { uiState ->
                 when (uiState) {
                     is CreateProfileUiState.SelectGreeting -> {
-                        viewModel.addChat(
-                            ChatItem.BabaFirstChatItem(getString(R.string.sign_up_greeting1))
-                        )
-                        viewModel.addChat(
-                            ChatItem.BabaChatItem(getString(R.string.sign_up_greeting2))
-                        )
                         viewModel.setEvent(CreateProfileEvent.WaitGreeting)
                     }
 
                     is CreateProfileUiState.InputName -> {
-                        viewModel.addChat(
-                            ChatItem.BabaFirstChatItem(getString(R.string.please_input_name))
-                        )
                         viewModel.setEvent(CreateProfileEvent.WaitName)
                     }
 
@@ -98,19 +88,14 @@ class CreateProfileFragment : Fragment(), SignUpChatAdapter.ChatEventListener {
                     }
 
                     is CreateProfileUiState.SelectProfileIcon -> {
-                        viewModel.addChat(
-                            ChatItem.BabaFirstChatItem(getString(R.string.please_select_profile_icon))
-                        )
-                        viewModel.addProfileList()
+                        viewModel.setEvent(CreateProfileEvent.ProfileSelectLoading)
                     }
 
                     is CreateProfileUiState.EndCreateProfile -> {
                         viewModel.setEvent(CreateProfileEvent.EndCreateProfile)
                     }
 
-                    is CreateProfileUiState.Loading -> {
-                        viewModel.setEvent(CreateProfileEvent.ProfileSelectLoading)
-                    }
+                    is CreateProfileUiState.Loading -> Unit
 
                 }
             }
