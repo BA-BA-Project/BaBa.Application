@@ -22,8 +22,6 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
-import kids.baba.mobile.core.constant.PrefsKey.ACCESS_TOKEN_KEY
-import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.Baby
@@ -31,9 +29,9 @@ import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.state.GrowthAlbumState
+import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.util.calendar.DayListener
-import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -62,22 +60,6 @@ class GrowthAlbumFragment : Fragment() {
     private var width: Int = 0
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
     lateinit var datePicker: DatePickerDialog
-
-    private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
-
-    private fun noPermission() {
-        // Whatever you need to do if the permission has been denied
-        Log.d("GrowthAlbumFragment", "noPermission()")
-
-    }
-
-    private fun connect() {
-        // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
-        Log.d("GrowthAlbumFragment", "connect()")
-
-        FilmActivity.startActivity(requireContext())
-    }
-
     private val adapter = AlbumAdapter()
     private val babyAdapter = BabyAdapter()
     private lateinit var dayViewContainer: DayViewContainer
@@ -150,7 +132,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     fun changeBaby() {
-        Log.e("changeBaby","")
+        Log.e("changeBaby", "")
         binding.babySelectView.maxHeight = width * 3 / 2
         binding.babySelectView.isGone = false
         binding.shadow.alpha = 0.3f
@@ -339,4 +321,20 @@ class GrowthAlbumFragment : Fragment() {
         _binding = null
         super.onDestroyView()
     }
+
+    private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
+
+    private fun noPermission() {
+        // Whatever you need to do if the permission has been denied
+        Log.d("GrowthAlbumFragment", "noPermission()")
+
+    }
+
+    private fun connect() {
+        // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
+        Log.d("GrowthAlbumFragment", "connect()")
+
+        FilmActivity.startActivity(requireContext())
+    }
+
 }

@@ -1,7 +1,7 @@
 package kids.baba.mobile.presentation.binding
 
-import android.view.View
 import android.graphics.Color
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
@@ -25,6 +25,7 @@ fun setImageFromUrl(imageView: ImageView, url: String) {
         .load(url)
         .into(imageView)
 }
+
 
 @BindingAdapter("cardBackground")
 fun setBackGround(view: View, @DrawableRes res: Int) {

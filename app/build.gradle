@@ -49,7 +49,7 @@ android {
         dev {
             dimension "app"
             manifestPlaceholders = [
-                    appLabel            : "BABA-dev",
+                    appLabel: "BABA-dev",
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids/api/\""
@@ -58,7 +58,7 @@ android {
         product {
             dimension "app"
             manifestPlaceholders = [
-                    appLabel            : "BABA",
+                    appLabel: "BABA",
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://baba.kids/api/\""
@@ -88,8 +88,6 @@ dependencies {
     // 추후 앱 출시할 때도 아래 라이브러리의 정식 버전이 안 나오면 security-crypto:1.0.0 으로 대체
     // TODO: 앱 출시전 아래 라이브러리 검토 필요
     implementation "androidx.security:security-crypto-ktx:1.1.0-alpha05"
-//    implementation "androidx.security:security-crypto:1.0.0"
-
 
     // hilt
     def hiltVersion = "2.44"
@@ -122,7 +120,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
+
+
+
 
     // cameraX
     def camerax_version = "1.2.1"

@@ -28,7 +28,6 @@
         <activity
             android:name=".presentation.view.WelcomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.view.film.FilmActivity"
             android:windowSoftInputMode="adjustResize"
@@ -54,6 +53,7 @@
             android:theme="@style/Theme.Baba.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -75,6 +75,10 @@
 
 
 
+=========
+            android:exported="false" />
+>>>>>>>>> Temporary merge branch 2
     </application>
 
 </manifest>
+
