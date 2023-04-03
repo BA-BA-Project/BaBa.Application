@@ -71,8 +71,8 @@ class SelectCardFragment @Inject constructor(
         cardAdapter.setSelectionTracker(cardSelectionTracker)
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.cardState.collect {
-                cardAdapter.submitList(it.cardStyles)
+            viewModel.cardState1.collect {
+                cardAdapter.submitList(it.toList())
             }
         }
     }

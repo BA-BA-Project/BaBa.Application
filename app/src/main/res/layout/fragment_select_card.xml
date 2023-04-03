@@ -73,7 +73,7 @@
                 android:id="@+id/cl_baby_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackground="@{viewModel.cardState.cardStyles.get(viewModel.cardPosition).cardStyleIcon.iconRes}"
+                app:cardBackground="@{viewModel.cardState1[viewModel.cardPosition].iconRes}"
                 tools:background="@drawable/card_candy_1">
 
 
@@ -208,3 +208,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
+<!--    app:cardBackground="@{viewModel.cardState.cardStyles.get(viewModel.cardPosition).cardStyleIcon.iconRes}"-->

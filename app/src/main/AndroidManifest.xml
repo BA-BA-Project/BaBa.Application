@@ -14,12 +14,12 @@
     <application
         android:name=".core.MainApplication"
         android:allowBackup="true"
-        android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="${appLabel}"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Baba"
         tools:targetApi="tiramisu">
@@ -30,8 +30,8 @@
             android:exported="false" />
         <activity
             android:name=".presentation.view.film.FilmActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -72,12 +72,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
-
-
-=========
-            android:exported="false" />
->>>>>>>>> Temporary merge branch 2
     </application>
 
 </manifest>

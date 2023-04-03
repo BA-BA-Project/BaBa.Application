@@ -87,7 +87,7 @@ class CardStyleAdapter(
                     if (viewHolder == null) {
                         return RecyclerView.NO_POSITION
                     }
-                    return viewHolder.adapterPosition
+                    return viewHolder.bindingAdapterPosition
                 }
 
                 override fun getSelectionKey(): Long {
@@ -100,7 +100,7 @@ class CardStyleAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<CardStyleUiModel>() {
             override fun areItemsTheSame(oldItem: CardStyleUiModel, newItem: CardStyleUiModel) =
-                oldItem.cardStyleName == newItem.cardStyleName
+                oldItem == newItem
 
             override fun areContentsTheSame(oldItem: CardStyleUiModel, newItem: CardStyleUiModel): Boolean =
                 oldItem == newItem
