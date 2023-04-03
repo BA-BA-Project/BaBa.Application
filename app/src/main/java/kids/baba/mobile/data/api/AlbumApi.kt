@@ -52,10 +52,11 @@ interface AlbumApi {
         @Path("contentId") contentId: String
     ): Response<CommentResponse>
 
-    @GET("/api/album/{contentId}/likes")
+    @GET("/baby/{babyId}/album/{contentId}/likes")
     suspend fun getLikeDetail(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("contentId") contentId: String
+        @Path("contentId") contentId: String,
+        @Path("babyId") id: String
     ): Response<LikeDetailResponse>
 
     //성장 앨범 좋아요

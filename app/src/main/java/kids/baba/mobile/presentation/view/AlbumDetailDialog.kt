@@ -18,6 +18,9 @@ import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.AlbumDetailUiModel
+import kids.baba.mobile.presentation.model.UserIconUiModel
+import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import kotlinx.coroutines.flow.collect
@@ -63,7 +66,10 @@ class AlbumDetailDialog(private val album: Album) : DialogFragment() {
         setImgScaleAnim()
         setBabyPhoto()
         setDetailStateCollecter()
+        binding.viewModel = viewModel
         viewModel.album.value = album.toAlbumUiModel()
+        viewModel.getLikeDetail()
+        viewModel.getComments()
     }
 
     private fun setDetailStateCollecter() {
@@ -73,14 +79,40 @@ class AlbumDetailDialog(private val album: Album) : DialogFragment() {
                     is AlbumDetailUiState.Loading -> {}
                     is AlbumDetailUiState.Like -> {}
                     is AlbumDetailUiState.AddComment -> {}
-                    is AlbumDetailUiState.GetLikeDetail -> {}
-                    is AlbumDetailUiState.LoadComments -> {}
+                    is AlbumDetailUiState.GetLikeDetail -> {
+                        getLikeDetail(it)
+                    }
+                    is AlbumDetailUiState.LoadComments -> {
+                        loadComment(it)
+                    }
                     is AlbumDetailUiState.Error -> {}
                     is AlbumDetailUiState.Failure -> {}
                     else -> {}
                 }
             }
         }
+    }
+
+    private fun getLikeDetail(it: AlbumDetailUiState.GetLikeDetail) {
+        Log.e("like","${it}")
+        viewModel.likeDetail.value = it.data
+    }
+
+    private fun loadComment(it: AlbumDetailUiState.LoadComments) {
+        Log.e("comment","${it}")
+        viewModel.comments.value = it.comments
+        val tempAlbumDetail = AlbumDetailUiModel(
+            likeCount = 3,
+            likeUsers = listOf(
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
+            ),
+            commentCount = 2,
+            comments = viewModel.comments.value?.map { it.toCommentUiModel() }
+
+        )
+        viewModel.albumDetail.value = tempAlbumDetail
     }
 
 

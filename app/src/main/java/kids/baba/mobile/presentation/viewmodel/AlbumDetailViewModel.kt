@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.error.TokenEmptyException
+import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
+import kids.baba.mobile.domain.model.LikeDetailResponse
 import kids.baba.mobile.domain.usecase.*
 import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
@@ -46,8 +48,14 @@ class AlbumDetailViewModel @Inject constructor(
     private val _member = MutableStateFlow<MemberUiModel?>(null)
     val member = _member.asStateFlow()
 
-    private val _albumDetailUiState = MutableStateFlow<AlbumDetailUiState>(AlbumDetailUiState.Loading)
+    private val _albumDetailUiState =
+        MutableStateFlow<AlbumDetailUiState>(AlbumDetailUiState.Loading)
     val albumDetailUiState = _albumDetailUiState
+
+    val comment = MutableStateFlow<String?>(null)
+    val comments = MutableStateFlow<List<Comment>?>(null)
+    val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
+
     init {
         initModel()
         getAlbumDetail()
@@ -67,175 +75,49 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
-    fun like(id: String, contentId: String) = viewModelScope.launch {
+    fun like() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        likeAlbumUseCase.like(id, contentId).catch {
+        likeAlbumUseCase.like(
+            "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb",
+            album.value!!.contentId.toString()
+        ).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {
             _albumDetailUiState.value = AlbumDetailUiState.Like(it.isLiked)
         }
     }
 
-    fun addComment(id: String, contentId: String, commentInput: CommentInput) =
+    fun addComment() =
         viewModelScope.launch {
+            val id = "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb"
+            val contentId = album.value!!.contentId.toString()
+            val commentInput = CommentInput(tag = "", comment = "test")
             _albumDetailUiState.value = AlbumDetailUiState.Loading
             addCommentUseCase.add(id, contentId, commentInput)
             _albumDetailUiState.value = AlbumDetailUiState.AddComment
         }
 
-    fun getComments(contentId: String) = viewModelScope.launch {
+    fun getComments() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        getCommentsUseCase.get(contentId).catch {
+        getCommentsUseCase.get(album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
-        }.collect{
+        }.collect {
             _albumDetailUiState.value = AlbumDetailUiState.LoadComments(it.comments)
         }
     }
 
-    fun getLikeDetail(contentId: String) = viewModelScope.launch {
+    fun getLikeDetail() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        getLikeDetailUseCase.get(contentId).catch {
+        val id = "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb"
+        getLikeDetailUseCase.get(id = id, contentId = album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
-        }.collect{
+        }.collect {
             _albumDetailUiState.value = AlbumDetailUiState.GetLikeDetail(it)
         }
     }
 
     private fun getAlbumDetail() {
-        val tempAlbum = AlbumUiModel(
-            contentId = 111,
-            name = "박재희",
-            relation = "엄마",
-            date = "21-09-28",
-            title = "앨범 테스트",
-            like = false,
-            photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
-            cardStyle = "test"
-        )
-        val tempAlbumDetail = AlbumDetailUiModel(
-            likeCount = 3,
-            likeUsers = listOf(
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
-            ),
-            commentCount = 2,
-            comments = listOf(
-                CommentUiModel(
-                    commentId = 1,
-                    memberId = "111",
-                    name = "이호성",
-                    relation = "친구",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_1,
-                    iconColor = "#629755",
-                    tag = "",
-                    comment = "댓글 테스트",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 2,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 3,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 4,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 6,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 7,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 8,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 9,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 10,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                ),
-                CommentUiModel(
-                    commentId = 11,
-                    memberId = "222",
-                    name = "박재희",
-                    relation = "엄마",
-                    profileIcon = UserProfileIconUiModel.PROFILE_G_3,
-                    iconColor = "#FFA500",
-                    tag = "이호성",
-                    comment = "댓글 테스트2",
-                    createdAt = LocalDateTime.now()
-                )
-
-            )
-        )
-        albumDetail.value = tempAlbumDetail
-        album.value = tempAlbum
+        val comments = comments.value?.map { it.toCommentUiModel() }
     }
 
     fun setExpended(expended: Boolean) {

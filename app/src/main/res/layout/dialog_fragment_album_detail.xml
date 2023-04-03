@@ -139,6 +139,7 @@
                     android:background="@drawable/bg_like"
                     android:button="@null"
                     android:checked="@{viewModel.album.like}"
+                    android:onClick="@{() -> viewModel.like()}"
                     android:elevation="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
                     app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
@@ -266,6 +267,7 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
                     android:textColorHint="@color/text_3"
+                    android:text="@{viewModel.comment}"
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toStartOf="@id/tv_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
@@ -278,6 +280,7 @@
                     android:background="@color/white"
                     android:paddingHorizontal="10dp"
                     android:text="@string/send"
+                    android:onClick="@{() -> viewModel.addComment()}"
                     android:textAppearance="@style/BABA.TextStyle.Button"
                     android:textColor="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"

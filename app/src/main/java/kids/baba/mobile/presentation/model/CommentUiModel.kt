@@ -11,5 +11,5 @@ data class CommentUiModel(
     val iconColor: String,
     val tag: String,
     val comment: String,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime?
 )

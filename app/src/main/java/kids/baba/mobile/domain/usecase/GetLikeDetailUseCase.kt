@@ -4,5 +4,6 @@ import kids.baba.mobile.domain.repository.AlbumRepository
 import javax.inject.Inject
 
 class GetLikeDetailUseCase @Inject constructor(private val repository: AlbumRepository) {
-    suspend fun get(contentId: String) = repository.getLikeDetail(contentId)
+    suspend fun get(id: String, contentId: String) =
+        repository.getLikeDetail(id = id, contentId = contentId)
 }
