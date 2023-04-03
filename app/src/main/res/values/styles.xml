@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="BABA.TextStyle" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/notosanskr</item>
@@ -59,6 +59,10 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
-
+    <style name="BABA.AlbumDialogStyle" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
 </resources>

@@ -15,13 +15,11 @@ class SignUpUseCase @Inject constructor(
     suspend fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo) = runCatching {
         val token = memberRepository.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo).first()
         setJWTToken(token)
-        memberRepository.getMe(token.accessToken).first()
     }
 
     suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode) = runCatching {
         val token = memberRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode).first()
         setJWTToken(token)
-        memberRepository.getMe(token.accessToken).first()
     }
 
     private fun setJWTToken(token: TokenResponse) {
