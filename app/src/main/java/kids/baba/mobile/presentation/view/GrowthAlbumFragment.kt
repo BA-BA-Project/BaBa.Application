@@ -74,7 +74,6 @@ class GrowthAlbumFragment : Fragment() {
     private fun connect() {
         // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
         Log.d("GrowthAlbumFragment", "connect()")
-        Log.e("GrowthAlbumFragment", "EncryptedPrefs: ${EncryptedPrefs.getString(ACCESS_TOKEN_KEY)}]")
 
         FilmActivity.startActivity(requireContext())
     }

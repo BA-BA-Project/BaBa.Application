@@ -88,6 +88,8 @@ dependencies {
     // 추후 앱 출시할 때도 아래 라이브러리의 정식 버전이 안 나오면 security-crypto:1.0.0 으로 대체
     // TODO: 앱 출시전 아래 라이브러리 검토 필요
     implementation "androidx.security:security-crypto-ktx:1.1.0-alpha05"
+//    implementation "androidx.security:security-crypto:1.0.0"
+
 
     // hilt
     def hiltVersion = "2.44"
