@@ -18,6 +18,7 @@ import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -71,13 +72,15 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun setBottomSheet(){
         binding.civBabyProfile.setOnClickListener {
-            val bottomSheet = BabyListBottomSheet{
-                viewModel.selectBaby(it)
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_BABY_KEY,viewModel.selectedBaby.value)
+            val bottomSheet = BabyListBottomSheet{baby ->
+                viewModel.selectBaby(baby)
             }
+            bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager,BabyListBottomSheet.TAG)
         }
     }
-
     private fun setCalendar() {
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = ItemDayBinding.bind(view)
