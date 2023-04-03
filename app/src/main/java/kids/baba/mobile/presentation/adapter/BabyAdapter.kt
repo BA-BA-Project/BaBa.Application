@@ -8,17 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemBabyBinding
 import kids.baba.mobile.presentation.model.BabyUiModel
 
-class BabyAdapter : ListAdapter<BabyUiModel, BabyAdapter.BabyViewHolder>(diffUtil) {
-    class BabyViewHolder(private val binding: ItemBabyBinding) :
+class BabyAdapter(private val itemClick: (BabyUiModel) -> Unit) : ListAdapter<BabyUiModel, BabyAdapter.BabyViewHolder>(diffUtil) {
+    class BabyViewHolder(private val binding: ItemBabyBinding, itemClick: (BabyUiModel) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: BabyUiModel) {
-            binding.baby = item
+
+        lateinit var baby : BabyUiModel
+        init {
+            itemView.setOnClickListener {
+                itemClick(baby)
+            }
+        }
+        fun bind(baby: BabyUiModel) {
+            binding.baby = baby
+            this.baby = baby
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BabyViewHolder {
         val view = ItemBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BabyViewHolder(view)
+        return BabyViewHolder(view, itemClick)
     }
 
     override fun onBindViewHolder(holder: BabyViewHolder, position: Int) {

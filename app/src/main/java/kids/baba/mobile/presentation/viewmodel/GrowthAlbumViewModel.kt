@@ -97,6 +97,9 @@ class GrowthAlbumViewModel @Inject constructor(
         return _growthAlbumList.value[position].date
     }
 
+    fun selectBaby(baby: BabyUiModel){
+        _selectedBaby.value = baby
+    }
 
     fun selectAlbum() {
         val date = _selectedDate.value

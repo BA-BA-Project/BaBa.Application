@@ -71,7 +71,9 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun setBottomSheet(){
         binding.civBabyProfile.setOnClickListener {
-            val bottomSheet = BabyListBottomSheet()
+            val bottomSheet = BabyListBottomSheet{
+                viewModel.selectBaby(it)
+            }
             bottomSheet.show(childFragmentManager,BabyListBottomSheet.TAG)
         }
     }

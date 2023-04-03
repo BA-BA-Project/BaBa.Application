@@ -10,13 +10,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetBabyListBinding
 import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyListViewModel
 
 @AndroidEntryPoint
-class BabyListBottomSheet : BottomSheetDialogFragment() {
-    private var _binding : BottomSheetBabyListBinding? = null
+class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDialogFragment() {
+    private var _binding: BottomSheetBabyListBinding? = null
     private val binding
-        get() = checkNotNull(_binding){ "binding was accessed outside of view lifecycle" }
+        get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private val viewModel: BabyListViewModel by viewModels()
 
@@ -27,7 +28,7 @@ class BabyListBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BottomSheetBabyListBinding.inflate(inflater,container,false)
+        _binding = BottomSheetBabyListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,19 +38,25 @@ class BabyListBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setBabyList() {
-        myBabyAdapter = BabyAdapter()
-        othersBabyAdapter = BabyAdapter()
+        myBabyAdapter = BabyAdapter {
+            itemClick(it)
+            dismiss()
+        }
+        othersBabyAdapter = BabyAdapter {
+            itemClick(it)
+            dismiss()
+        }
 
         binding.rvMyBabies.adapter = myBabyAdapter
         binding.rvOthersBabies.adapter = othersBabyAdapter
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.myBabyList.collect{
+            viewModel.myBabyList.collect {
                 myBabyAdapter.submitList(it)
             }
         }
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.othersBabyList.collect{
+            viewModel.othersBabyList.collect {
                 othersBabyAdapter.submitList(it)
             }
         }
@@ -60,7 +67,7 @@ class BabyListBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    companion object{
+    companion object {
         const val TAG = "BabyListBottomSheet"
     }
 }
