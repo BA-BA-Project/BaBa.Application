@@ -67,6 +67,10 @@ class AlbumDetailDialog(private val album: Album) : DialogFragment() {
         setBabyPhoto()
         setDetailStateCollecter()
         binding.viewModel = viewModel
+        binding.tvSend.setOnClickListener {
+            val text = binding.etMyComment.text.toString()
+            viewModel.addComment(comment = text)
+        }
         viewModel.album.value = album.toAlbumUiModel()
         viewModel.getLikeDetail()
         viewModel.getComments()
@@ -94,12 +98,12 @@ class AlbumDetailDialog(private val album: Album) : DialogFragment() {
     }
 
     private fun getLikeDetail(it: AlbumDetailUiState.GetLikeDetail) {
-        Log.e("like","${it}")
+        Log.e("like", "${it}")
         viewModel.likeDetail.value = it.data
     }
 
     private fun loadComment(it: AlbumDetailUiState.LoadComments) {
-        Log.e("comment","${it}")
+        Log.e("comment", "${it}")
         viewModel.comments.value = it.comments
         val tempAlbumDetail = AlbumDetailUiModel(
             likeCount = 3,

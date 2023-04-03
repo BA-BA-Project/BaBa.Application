@@ -58,7 +58,6 @@ class AlbumDetailViewModel @Inject constructor(
 
     init {
         initModel()
-        getAlbumDetail()
     }
 
     private fun initModel() {
@@ -87,11 +86,11 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
-    fun addComment() =
+    fun addComment(comment:String) =
         viewModelScope.launch {
             val id = "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb"
             val contentId = album.value!!.contentId.toString()
-            val commentInput = CommentInput(tag = "", comment = "test")
+            val commentInput = CommentInput(tag = "", comment = comment)
             _albumDetailUiState.value = AlbumDetailUiState.Loading
             addCommentUseCase.add(id, contentId, commentInput)
             _albumDetailUiState.value = AlbumDetailUiState.AddComment
@@ -114,10 +113,6 @@ class AlbumDetailViewModel @Inject constructor(
         }.collect {
             _albumDetailUiState.value = AlbumDetailUiState.GetLikeDetail(it)
         }
-    }
-
-    private fun getAlbumDetail() {
-        val comments = comments.value?.map { it.toCommentUiModel() }
     }
 
     fun setExpended(expended: Boolean) {
