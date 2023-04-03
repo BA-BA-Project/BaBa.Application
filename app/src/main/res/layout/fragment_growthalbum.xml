@@ -44,6 +44,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
+            android:src="@drawable/profile_baby_1"
+            app:backGroundColor="@{viewmodel.selectedBaby.groupColor}"
             android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

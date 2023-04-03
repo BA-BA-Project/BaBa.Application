@@ -38,7 +38,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/baby_image"
+                    android:id="@+id/iv_baby_icon"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:imageFromUrl="@{photo}"
@@ -55,10 +55,10 @@
                     android:layout_height="wrap_content"
                     android:text="@{date}"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/baby_image"
-                    app:layout_constraintEnd_toEndOf="@id/baby_image"
-                    app:layout_constraintStart_toStartOf="@id/baby_image"
-                    app:layout_constraintTop_toTopOf="@id/baby_image"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon"
+                    app:layout_constraintStart_toStartOf="@id/iv_baby_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_baby_icon"
                     tools:text="123123" />
 
 
@@ -72,8 +72,8 @@
                     android:button="@null"
                     android:checked="@{like}"
                     android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/baby_image"
-                    app:layout_constraintEnd_toEndOf="@+id/baby_image" />
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>

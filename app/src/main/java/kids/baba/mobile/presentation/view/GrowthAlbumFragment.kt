@@ -59,6 +59,7 @@ class GrowthAlbumFragment : Fragment() {
         collectSelectedAlbum()
         initializeAlbumHolder()
         setCalendar()
+        setBottomSheet()
 //        initializeCalendar()
     }
 
@@ -66,6 +67,13 @@ class GrowthAlbumFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
+    }
+
+    private fun setBottomSheet(){
+        binding.civBabyProfile.setOnClickListener {
+            val bottomSheet = BabyListBottomSheet()
+            bottomSheet.show(childFragmentManager,BabyListBottomSheet.TAG)
+        }
     }
 
     private fun setCalendar() {

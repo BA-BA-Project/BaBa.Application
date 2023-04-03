@@ -6,10 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.GetOneAlbumUseCase
 import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -35,6 +35,9 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _selectedAlbum = MutableStateFlow<AlbumUiModel?>(AlbumUiModel(date = LocalDate.now()))
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
+    private val _selectedBaby = MutableStateFlow<BabyUiModel?>(null)
+    val selectedBaby = _selectedBaby.asStateFlow()
+
     private val tempDate = LocalDate.now()
     private val tempAlbumList = List(5) { idx ->
         if (idx % 3 == 0) {
@@ -54,6 +57,7 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     init {
+        loadBaby()
         loadAlbum()
         selectDate(LocalDate.now())
     }
@@ -109,14 +113,15 @@ class GrowthAlbumViewModel @Inject constructor(
         _selectedAlbum.value = album
     }
 
-    fun loadBaby() = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        getOneBabyUseCase.getOneBaby().catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect {
-            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
-            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
-        }
+    private fun loadBaby() = viewModelScope.launch {
+//        _growthAlbumState.value = GrowthAlbumState.Loading
+//        getOneBabyUseCase.getOneBaby().catch {
+//            _growthAlbumState.value = GrowthAlbumState.Error(it)
+//        }.collect {
+//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
+//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
+//        }
+        _selectedBaby.value = BabyUiModel("1","#FF1234","앙쥬1", true)
     }
 
     fun changeBaby() = viewModelScope.launch {

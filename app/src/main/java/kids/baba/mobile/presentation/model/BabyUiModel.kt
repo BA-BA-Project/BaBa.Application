@@ -4,5 +4,5 @@ data class BabyUiModel(
     val babyId : String,
     val groupColor: String,
     val name: String,
-    var selected: Boolean
+    var selected: Boolean = false
 )
