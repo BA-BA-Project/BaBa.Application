@@ -50,12 +50,14 @@ class GrowthAlbumFragment : Fragment() {
 
     //    private val babyAdapter = BabyAdapter()
     private var selectedDate = LocalDate.now()
+    private var isSelectedByCalendar = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
-        initializeAlbumHolder()
         collectUiState()
         collectSelectedDate()
+        collectSelectedAlbum()
+        initializeAlbumHolder()
         setCalendar()
 //        initializeCalendar()
     }
@@ -75,10 +77,8 @@ class GrowthAlbumFragment : Fragment() {
             init {
                 view.setOnClickListener {
                     if (selectedDate != day.date) {
-                        binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
                         viewModel.selectDate(day.date)
-                        binding.wcvAlbumCalendar.notifyDateChanged(day.date)
-                        binding.wcvAlbumCalendar.smoothScrollToDate(day.date.minusDays(3))
+                        isSelectedByCalendar = true
                     }
                 }
             }
@@ -121,77 +121,9 @@ class GrowthAlbumFragment : Fragment() {
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
-        binding.wcvAlbumCalendar.scrollToDate(LocalDate.now())
+        binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
     }
 
-
-//    private fun initializeCalendar() {
-//        class DayViewContainer(view: View) : ViewContainer(view) {
-//            val bind = ItemDayBinding.bind(view)
-//            lateinit var day: WeekDay
-//
-//            private val dateFormatter = DateTimeFormatter.ofPattern("dd")
-//            private var listener: DayListener? = null
-//
-//            fun setOnSelectedDateChangeListener(listener: DayListener) {
-//                this.listener = listener
-//            }
-//
-//            init {
-//                view.setOnClickListener {
-//                    if (currentDay != day.date) {
-//                        val oldDate = currentDay
-//                        currentDay = day.date
-//                        listener?.selectDay(oldDate)
-//                    }
-//                }
-//            }
-//
-//            fun bind(day: WeekDay) {
-//                this.day = day
-//                bind.tvDate.text = dateFormatter.format(day.date)
-//                bind.tvWeekday.text = day.date.dayOfWeek.displayText()
-//                bind.selected = currentDay == day.date
-//            }
-//        }
-//
-//        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
-//            override fun create(view: View): DayViewContainer {
-//                val dayViewContainer = DayViewContainer(view)
-//                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
-//                    override fun selectDay(date: LocalDate) {
-//                        dateToString[currentDay]?.let {
-//                            binding.vpBabyPhoto.setCurrentItem(stringToInt[it]!!, true)
-//                        }
-//                        binding.wcvAlbumCalendar.notifyDateChanged(currentDay)
-//                        binding.wcvAlbumCalendar.notifyDateChanged(date)
-//                    }
-//
-//                    override fun releaseDay(date: LocalDate) {
-//
-//                    }
-//                })
-//                return dayViewContainer
-//            }
-//
-//            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
-//        }
-//        binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
-//            binding.tvDate.text = getWeekPageTitle(weekDays)
-//        }
-//        val currentMonth = YearMonth.now()
-//        binding.wcvAlbumCalendar.setup(
-//            currentMonth.minusMonths(600).atStartOfMonth(),
-//            currentMonth.plusMonths(600).atEndOfMonth(),
-//            firstDayOfWeekFromLocale(),
-//        )
-//        binding.wcvAlbumCalendar.scrollPaged = false
-//        binding.wcvAlbumCalendar.scrollToWeek(LocalDate.now())
-//        binding.tvAlbumTitle.setOnClickListener {
-//            val albumDetailDialog = AlbumDetailDialog()
-//            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
-//        }
-//    }
 
     private fun collectUiState() {
         repeatOnStarted {
@@ -212,14 +144,12 @@ class GrowthAlbumFragment : Fragment() {
     private fun collectSelectedDate() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.selectedDate.collect {
-                selectedDate = it
                 viewModel.selectAlbum()
-                binding.vpBabyPhoto.doOnPreDraw {
-                    binding.vpBabyPhoto.setCurrentItem(viewModel.getAlbumIndex(),true)
-                }
+                setSelectedDate(it)
             }
         }
     }
+
 
     fun onKeyDown(): Boolean {
 //        binding.babySelectView.isGone = true
@@ -231,13 +161,40 @@ class GrowthAlbumFragment : Fragment() {
     private fun initializeAlbumHolder() {
         albumAdapter = AlbumAdapter()
         binding.vpBabyPhoto.adapter = albumAdapter
+        binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
         viewLifecycleOwner.repeatOnStarted {
             viewModel.growthAlbumList.collect {
                 albumAdapter.submitList(it)
             }
         }
+
+//        binding.vpBabyPhoto.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                if(isSelectedByCalendar.not()){
+//                    setSelectedDate(viewModel.getDateFromPosition(position))
+//                }
+//                isSelectedByCalendar = false
+//            }
+//        })
     }
 
+    private fun collectSelectedAlbum(){
+        repeatOnStarted {
+            viewModel.selectedAlbum.collect{
+                binding.vpBabyPhoto.doOnPreDraw {
+                    binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+                }
+            }
+        }
+    }
+
+    private fun setSelectedDate(date: LocalDate) {
+        binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
+        selectedDate = date
+        binding.wcvAlbumCalendar.notifyDateChanged(date)
+        binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

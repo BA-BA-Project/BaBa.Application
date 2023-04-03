@@ -36,7 +36,7 @@ class GrowthAlbumViewModel @Inject constructor(
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
     private val tempDate = LocalDate.now()
-    private val tempAlbumList = List(30) { idx ->
+    private val tempAlbumList = List(5) { idx ->
         if (idx % 3 == 0) {
             null
         } else {
@@ -55,6 +55,7 @@ class GrowthAlbumViewModel @Inject constructor(
 
     init {
         loadAlbum()
+        selectDate(LocalDate.now())
     }
 
     private fun loadAlbum() = viewModelScope.launch {
@@ -71,7 +72,9 @@ class GrowthAlbumViewModel @Inject constructor(
 //        }
     }
 
-    fun getAlbumIndex() = _growthAlbumList.value.indexOf(_selectedAlbum.value)
+    fun getAlbumIndex(): Int {
+        return _growthAlbumList.value.indexOf(_selectedAlbum.value)
+    }
     fun selectDate(date: LocalDate) {
         _selectedDate.value = date
 //        if (growthAlbumHash[date] == null) {
@@ -83,6 +86,11 @@ class GrowthAlbumViewModel @Inject constructor(
 //            _selectedAlbum.value = growthAlbumHash[date]
 //            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
 //        }
+    }
+
+    fun getDateFromPosition(position: Int): LocalDate{
+        val a = _growthAlbumList.value
+        return _growthAlbumList.value[position].date
     }
 
 
