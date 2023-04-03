@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -14,6 +15,7 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
@@ -51,7 +53,7 @@ class GrowthAlbumFragment : Fragment() {
 
     //    private val babyAdapter = BabyAdapter()
     private var selectedDate = LocalDate.now()
-    private var isSelectedByCalendar = false
+    private var isDateInit = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -61,7 +63,6 @@ class GrowthAlbumFragment : Fragment() {
         initializeAlbumHolder()
         setCalendar()
         setBottomSheet()
-//        initializeCalendar()
     }
 
     private fun setBinding() {
@@ -70,17 +71,18 @@ class GrowthAlbumFragment : Fragment() {
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
-    private fun setBottomSheet(){
+    private fun setBottomSheet() {
         binding.civBabyProfile.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(SELECTED_BABY_KEY,viewModel.selectedBaby.value)
-            val bottomSheet = BabyListBottomSheet{baby ->
+            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.selectedBaby.value)
+            val bottomSheet = BabyListBottomSheet { baby ->
                 viewModel.selectBaby(baby)
             }
             bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager,BabyListBottomSheet.TAG)
+            bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
         }
     }
+
     private fun setCalendar() {
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = ItemDayBinding.bind(view)
@@ -91,7 +93,6 @@ class GrowthAlbumFragment : Fragment() {
                 view.setOnClickListener {
                     if (selectedDate != day.date) {
                         viewModel.selectDate(day.date)
-                        isSelectedByCalendar = true
                     }
                 }
             }
@@ -103,17 +104,16 @@ class GrowthAlbumFragment : Fragment() {
                 bind.formatter = formatter
 
 
-                //TODO 나중에 주석 풀기
-//                view.isClickable = day.date.isAfter(today).not()
-//                if (view.isClickable) {
-//                    val textColor0 = requireContext().getColor(R.color.text_0)
-//                    bind.tvDate.setTextColor(textColor0)
-//                    bind.tvWeekday.setTextColor(textColor0)
-//                } else {
-//                    val textColor3 = requireContext().getColor(R.color.text_3)
-//                    bind.tvDate.setTextColor(textColor3)
-//                    bind.tvWeekday.setTextColor(textColor3)
-//                }
+                view.isClickable = day.date.isAfter(LocalDate.now()).not()
+                if (view.isClickable) {
+                    val textColor0 = requireContext().getColor(R.color.text_0)
+                    bind.tvDate.setTextColor(textColor0)
+                    bind.tvWeekday.setTextColor(textColor0)
+                } else {
+                    val textColor3 = requireContext().getColor(R.color.text_3)
+                    bind.tvDate.setTextColor(textColor3)
+                    bind.tvWeekday.setTextColor(textColor3)
+                }
             }
         }
 
@@ -129,8 +129,7 @@ class GrowthAlbumFragment : Fragment() {
         val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
-            currentMonth.plusMonths(24).atEndOfMonth(),
-            //TODO 0으로 수정하기
+            currentMonth.plusMonths(0).atEndOfMonth(),
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
@@ -190,11 +189,30 @@ class GrowthAlbumFragment : Fragment() {
 //                isSelectedByCalendar = false
 //            }
 //        })
+
+        binding.vpBabyPhoto.offscreenPageLimit = 1
+
+        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
+        val currentItemHorizontalMarginPx =
+            resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
+        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+            page.translationX = -pageTranslationX * position
+            page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
+        }
+
+        binding.vpBabyPhoto.setPageTransformer(pageTransformer)
+
+        val itemDecoration = HorizontalMarginItemDecoration(
+            requireContext(),
+            R.dimen.viewpager_current_item_horizontal_margin
+        )
+        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
     }
 
-    private fun collectSelectedAlbum(){
+    private fun collectSelectedAlbum() {
         repeatOnStarted {
-            viewModel.selectedAlbum.collect{
+            viewModel.selectedAlbum.collect {
                 binding.vpBabyPhoto.doOnPreDraw {
                     binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 }
@@ -206,7 +224,13 @@ class GrowthAlbumFragment : Fragment() {
         binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
         selectedDate = date
         binding.wcvAlbumCalendar.notifyDateChanged(date)
-        binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
+        if (isDateInit.not()) {
+            binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
+            isDateInit = true
+        }else {
+            binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
+        }
+
     }
 
     override fun onCreateView(

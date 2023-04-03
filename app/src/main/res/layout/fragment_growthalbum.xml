@@ -119,6 +119,7 @@
                 android:layout_height="0dp"
                 android:layout_marginVertical="20dp"
                 android:clipToPadding="false"
+                android:clipChildren="false"
                 android:translationZ="8dp"
                 app:layout_constraintBottom_toTopOf="@id/tv_add_comment"
                 app:layout_constraintEnd_toEndOf="parent"
