@@ -157,4 +157,9 @@ class AlbumDetailDialog : DialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        const val TAG = "AlbumDetailDialog"
+        const val SELECTED_ALBUM_KEY = "SELECTED_ALBUM_KEY"
+    }
 }

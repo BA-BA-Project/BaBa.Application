@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,11 +26,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
-    private val getMemberUseCase: GetMemberUseCase
-) : ViewModel() {
+    private val getMemberUseCase: GetMemberUseCase,
+    savedStateHandle: SavedStateHandle
+    ) : ViewModel() {
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
-    val album = MutableStateFlow<AlbumUiModel?>(null)
+    val album = MutableStateFlow<AlbumUiModel?>(savedStateHandle[SELECTED_ALBUM_KEY])
 
     private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isPhotoExpended = _isPhotoExpended.asStateFlow()
@@ -74,7 +77,7 @@ class AlbumDetailViewModel @Inject constructor(
             likeUsers = listOf(
                 UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
                 UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#BACEE0")
             ),
             commentCount = 2,
             comments = listOf(
@@ -84,7 +87,7 @@ class AlbumDetailViewModel @Inject constructor(
                     name = "이호성",
                     relation = "친구",
                     profileIcon = UserProfileIconUiModel.PROFILE_G_1,
-                    iconColor = "#629755",
+                    iconColor = "#BACEE0",
                     tag = "",
                     comment = "댓글 테스트",
                     createdAt = LocalDateTime.now()
@@ -192,7 +195,9 @@ class AlbumDetailViewModel @Inject constructor(
             )
         )
         albumDetail.value = tempAlbumDetail
-        album.value = tempAlbum
+        if (album.value == null){
+            album.value = tempAlbum
+        }
     }
 
     fun setExpended(expended: Boolean) {

@@ -20,15 +20,14 @@ import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-//TODO 앨범 있는 날짜 횡달력에 표시
-//TODO 횡달력에서 선택한 날짜 표시
-//TODO 횡달력에서 선택한 날짜 중앙정렬 자연스럽게 하기(되긴하는데 삐걱임)
 //TODO datePicker 대신 달력 커스터 마이징
 //TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨)
 //TODO viewPager - yyyy-mm dateview 연동 자연스럽게 하기(약간 싱크가 안맞음)
@@ -43,15 +42,11 @@ class GrowthAlbumFragment : Fragment() {
     val viewModel: GrowthAlbumViewModel by viewModels()
 
 
-    //    val dateToString = hashMapOf<LocalDate, String>()
-//    val stringToInt = hashMapOf<String, Int>()
-//    val intToDate = hashMapOf<Int, LocalDate>()
-//    private var width: Int = 0
+
 //    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 //    lateinit var datePicker: DatePickerDialog
     private lateinit var albumAdapter: AlbumAdapter
 
-    //    private val babyAdapter = BabyAdapter()
     private var selectedDate = LocalDate.now()
     private var isDateInit = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -211,8 +206,18 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun collectSelectedAlbum() {
+        var selectedAlbum : AlbumUiModel? = null
+        binding.tvAlbumTitle.setOnClickListener {
+            val albumDetailDialog = AlbumDetailDialog()
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_ALBUM_KEY, selectedAlbum)
+            albumDetailDialog.arguments = bundle
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+        }
+
         repeatOnStarted {
             viewModel.selectedAlbum.collect {
+                selectedAlbum = it
                 binding.vpBabyPhoto.doOnPreDraw {
                     binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 }

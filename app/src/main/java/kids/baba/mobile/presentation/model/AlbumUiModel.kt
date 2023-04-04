@@ -1,7 +1,10 @@
 package kids.baba.mobile.presentation.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
+@Parcelize
 data class AlbumUiModel (
     val contentId: Int = -1,
     val name: String = "",
@@ -11,7 +14,7 @@ data class AlbumUiModel (
     val like: Boolean = false,
     val photo: String = "",
     val cardStyle: String = ""
-)
+) : Parcelable
 
 
 //val contentId: Int? = null,

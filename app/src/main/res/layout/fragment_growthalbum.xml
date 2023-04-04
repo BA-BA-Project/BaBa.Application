@@ -240,62 +240,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/baby_select_view"
-            android:layout_width="0dp"
-            android:layout_height="500dp"
-            android:background="@drawable/white_card_view"
-            android:clickable="true"
-            android:elevation="10dp"
-            android:focusable="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/baby_select_view_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:text="성장앨범 보러가기"
-                android:textColor="@color/black"
-                android:textSize="23sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/baby_select_view_label" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/baby_list"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:paddingHorizontal="10dp"
-                android:paddingTop="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/baby_select_view_label"
-                tools:listitem="@layout/item_baby" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--        <View-->
-        <!--            android:id="@+id/shadow"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:alpha="0"-->
-        <!--            android:background="@color/black"-->
-        <!--            android:clickable="false"-->
-        <!--            android:elevation="8dp"-->
-        <!--            android:focusable="false"-->
-        <!--            app:layout_constraintStart_toStartOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
