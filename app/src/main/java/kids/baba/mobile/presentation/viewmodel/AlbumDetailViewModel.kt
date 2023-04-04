@@ -57,9 +57,11 @@ class AlbumDetailViewModel @Inject constructor(
 
     private val comments = MutableStateFlow<List<Comment>?>(null)
 
-    val baby = MutableStateFlow<Baby?>(null)
+    private val _baby = MutableStateFlow<Baby?>(null)
+    val baby = _baby
     private val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
 
+    val comment = MutableStateFlow("")
     init {
         initModel()
     }
@@ -79,8 +81,6 @@ class AlbumDetailViewModel @Inject constructor(
     }
 
     fun fetch() = viewModelScope.launch {
-        Log.e("album","${album.value}")
-        Log.e("baby","${baby.value}")
         getComments().join()
         getLikeDetail().join()
         showComment()
@@ -89,7 +89,7 @@ class AlbumDetailViewModel @Inject constructor(
     fun like() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
         likeAlbumUseCase.like(
-            baby.value!!.babyId,
+            _baby.value!!.babyId,
             album.value!!.contentId.toString()
         ).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
@@ -97,20 +97,20 @@ class AlbumDetailViewModel @Inject constructor(
             _albumDetailUiState.value = AlbumDetailUiState.Like(it.isLiked)
         }
     }
-
-    fun addComment(comment: String) =
+    fun addComment() =
         viewModelScope.launch {
-            val id = baby.value!!.babyId
+            val id = _baby.value!!.babyId
             val contentId = album.value!!.contentId.toString()
-            val commentInput = CommentInput(tag = "", comment = comment)
+            val commentInput = CommentInput(tag = "", comment = comment.value)
             _albumDetailUiState.value = AlbumDetailUiState.Loading
             addCommentUseCase.add(id, contentId, commentInput)
             _albumDetailUiState.value = AlbumDetailUiState.AddComment
+            comment.value = ""
         }
 
     private fun getComments() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        getCommentsUseCase.get(baby.value!!.babyId, album.value!!.contentId.toString()).catch {
+        getCommentsUseCase.get(_baby.value!!.babyId, album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {
             comments.value = it.comments
@@ -134,7 +134,7 @@ class AlbumDetailViewModel @Inject constructor(
     //api 아직 완성 안됨
     private fun getLikeDetail() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        val id = baby.value!!.babyId
+        val id = _baby.value!!.babyId
         getLikeDetailUseCase.get(id = id, contentId = album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {

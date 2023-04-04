@@ -145,7 +145,6 @@ class GrowthAlbumFragment : Fragment() {
         viewModel.myBabies.value = state.data.myBaby
         viewModel.othersBabies.value = state.data.others
         state.data.myBaby.let {
-            //일단 첫번째 아이 기준으로 합니다.
             detailViewModel.baby.value = it[0]
             viewModel.baby.value = it[0]
             viewModel.loadAlbum(it[0].babyId, now.year, now.month.value)

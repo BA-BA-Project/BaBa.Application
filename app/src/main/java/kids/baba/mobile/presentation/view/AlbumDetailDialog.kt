@@ -64,13 +64,7 @@ class AlbumDetailDialog(private val viewModel: AlbumDetailViewModel) : DialogFra
         setImgScaleAnim()
         setBabyPhoto()
         setDetailStateCollecter()
-        viewModel.fetch()
-        //임시조치 dataBinding으로 변경
-        binding.tvSend.setOnClickListener {
-            val text = binding.etMyComment.text.toString()
-            viewModel.addComment(comment = text)
-            viewModel.fetch()
-        }
+        fetchData()
     }
 
     private fun setDetailStateCollecter() {
@@ -78,14 +72,18 @@ class AlbumDetailDialog(private val viewModel: AlbumDetailViewModel) : DialogFra
             viewModel.albumDetailUiState.collect {
                 when (it) {
                     is AlbumDetailUiState.Loading -> {}
-                    is AlbumDetailUiState.Like -> {}
-                    is AlbumDetailUiState.AddComment -> {}
-                    is AlbumDetailUiState.Error -> {}
+                    is AlbumDetailUiState.Like -> fetchData()
+                    is AlbumDetailUiState.AddComment -> fetchData()
+                    is AlbumDetailUiState.Error -> fetchData()
                     is AlbumDetailUiState.Failure -> {}
                     else -> {}
                 }
             }
         }
+    }
+
+    private fun fetchData() {
+        viewModel.fetch()
     }
 
     private fun setCommentRecyclerView() {
