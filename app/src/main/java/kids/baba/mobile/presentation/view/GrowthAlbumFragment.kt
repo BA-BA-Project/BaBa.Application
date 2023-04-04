@@ -103,11 +103,11 @@ class GrowthAlbumFragment : Fragment() {
             currentMonth.plusMonths(600).atEndOfMonth(),
             firstDayOfWeekFromLocale(),
         )
-        //
         binding.myCalendar.scrollPaged = false
         binding.myCalendar.scrollToWeek(LocalDate.now())
         binding.tvAlbumTitle.setOnClickListener {
-            val albumDetailDialog = AlbumDetailDialog(albums[binding.viewPager.currentItem],detailViewModel)
+            detailViewModel.album.value = albums[binding.viewPager.currentItem].toAlbumUiModel()
+            val albumDetailDialog = AlbumDetailDialog(detailViewModel)
             albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
         }
 
@@ -130,7 +130,7 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
-    fun changeBaby() {
+    private fun changeBaby() {
         Log.e("changeBaby", "")
         binding.babySelectView.maxHeight = width * 3 / 2
         binding.babySelectView.isGone = false
@@ -144,16 +144,24 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
         val now = LocalDate.now()
-        state.data.myBaby.forEach {
-            myBabyAdapter.setItem(item = it)
+        state.data.myBaby.forEach { my ->
+            myBabyAdapter.setItem(item = my) { baby ->
+                myBabyAdapter.list.clear()
+                otherBabyAdapter.list.clear()
+                viewModel.loadAlbum(baby.babyId, now.year, now.month.value)
+            }
         }
-        state.data.others.forEach {
-            otherBabyAdapter.setItem(item = it)
+        state.data.others.forEach { other ->
+            otherBabyAdapter.setItem(item = other) { baby ->
+                myBabyAdapter.list.clear()
+                otherBabyAdapter.list.clear()
+                viewModel.loadAlbum(baby.babyId, now.year, now.month.value)
+            }
         }
         state.data.myBaby.let {
             //일단 첫번째 아이 기준으로 합니다.
             detailViewModel.baby.value = it[0]
-            Log.e("baby","${it[0].babyId}")
+            Log.e("baby", "${it[0].babyId}")
             viewModel.loadAlbum(it[0].babyId, now.year, now.month.value)
             binding.tvAlbumTitle.text = "${it[0].name}의 오늘 기록"
         }
@@ -164,9 +172,9 @@ class GrowthAlbumFragment : Fragment() {
         albums = state.data
         state.data.forEachIndexed { index, album ->
             adapter.setItem(album)
-            val localDate = parseLocalDate(album.date.toString())
-            dateToString[localDate] = album.date.toString()
-            stringToInt[album.date.toString()] = index
+            val localDate = parseLocalDate(album.date)
+            dateToString[localDate] = album.date
+            stringToInt[album.date] = index
             intToDate[index] = localDate
         }
     }
@@ -176,7 +184,7 @@ class GrowthAlbumFragment : Fragment() {
         Log.e("loading", "loading")
     }
 
-    fun pickDate() {
+    private fun pickDate() {
         datePicker.show()
         binding.shadow.alpha = 0.3f
         viewModel.growthAlbumState.value = GrowthAlbumState.Loading
@@ -214,10 +222,9 @@ class GrowthAlbumFragment : Fragment() {
 
         binding.babySelectView.maxHeight = 0
         binding.shadow.alpha = 0f
-        viewModel.loadBaby()
     }
 
-    fun parseLocalDate(dateString: String): LocalDate {
+    private fun parseLocalDate(dateString: String): LocalDate {
         return LocalDate.parse(dateString, formatter)
     }
 

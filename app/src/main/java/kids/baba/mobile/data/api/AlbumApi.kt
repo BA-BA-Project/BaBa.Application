@@ -31,7 +31,7 @@ interface AlbumApi {
         @Body article: Article
     )
 
-    @POST("/api/album/{babyId}/{contentId}/like")
+    @POST("/api/baby/{babyId}/album/{contentId}/like")
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
@@ -53,7 +53,7 @@ interface AlbumApi {
         @Path("babyId") id: String
     ): Response<CommentResponse>
 
-    @GET("/baby/{babyId}/album/{contentId}/likes")
+    @GET("/api/baby/{babyId}/album/{contentId}/likes")
     suspend fun getLikeDetail(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("contentId") contentId: String,

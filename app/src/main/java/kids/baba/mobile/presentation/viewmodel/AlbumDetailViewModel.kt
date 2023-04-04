@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,11 +55,10 @@ class AlbumDetailViewModel @Inject constructor(
         MutableStateFlow<AlbumDetailUiState>(AlbumDetailUiState.Loading)
     val albumDetailUiState = _albumDetailUiState
 
-    val comment = MutableStateFlow<String?>(null)
-    val comments = MutableStateFlow<List<Comment>?>(null)
-    val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
+    private val comments = MutableStateFlow<List<Comment>?>(null)
 
     val baby = MutableStateFlow<Baby?>(null)
+    private val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
 
     init {
         initModel()
@@ -76,6 +76,14 @@ class AlbumDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun fetch() = viewModelScope.launch {
+        Log.e("album","${album.value}")
+        Log.e("baby","${baby.value}")
+        getComments().join()
+        getLikeDetail().join()
+        showComment()
     }
 
     fun like() = viewModelScope.launch {
@@ -100,23 +108,38 @@ class AlbumDetailViewModel @Inject constructor(
             _albumDetailUiState.value = AlbumDetailUiState.AddComment
         }
 
-    fun getComments() = viewModelScope.launch {
+    private fun getComments() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
         getCommentsUseCase.get(baby.value!!.babyId, album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {
-            _albumDetailUiState.value = AlbumDetailUiState.LoadComments(it.comments)
+            comments.value = it.comments
         }
     }
 
+    private fun showComment() = viewModelScope.launch {
+        val tempAlbumDetail = AlbumDetailUiModel(
+            likeCount = likeDetail.value?.likeUsers?.size ?: 0,
+            likeUsers = listOf(
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
+            ),
+            commentCount = comments.value?.size ?: 0,
+            comments = comments.value?.map { it.toCommentUiModel() }
+        )
+        albumDetail.value = tempAlbumDetail
+    }
+
     //api 아직 완성 안됨
-    fun getLikeDetail() = viewModelScope.launch {
+    private fun getLikeDetail() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
         val id = baby.value!!.babyId
         getLikeDetailUseCase.get(id = id, contentId = album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {
-            _albumDetailUiState.value = AlbumDetailUiState.GetLikeDetail(it)
+            Log.e("likeDetail", "$it")
+            likeDetail.value = it
         }
     }
 
