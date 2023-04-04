@@ -29,13 +29,27 @@ class GrowthAlbumViewModel @Inject constructor(
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
     val growthAlbumState = _growthAlbumState
 
-    var date = MutableStateFlow("")
-    val baby = MutableStateFlow<Baby?>(null)
-    val album = MutableStateFlow<Album?>(null)
-    val albums = MutableStateFlow<List<Album>>(listOf())
-    val width = MutableStateFlow(0)
-    val myBabies = MutableStateFlow<List<Baby>?>(null)
-    val othersBabies = MutableStateFlow<List<Baby>?>(null)
+    private val _date = MutableStateFlow("")
+    val date = _date
+
+    private val _baby = MutableStateFlow<Baby?>(null)
+    val baby = _baby
+
+    private val _album = MutableStateFlow<Album?>(null)
+    val album = _album
+
+    private val _albums = MutableStateFlow<List<Album>>(listOf())
+    val albums = _albums
+
+    private val _width = MutableStateFlow(0)
+    val width = _width
+
+    private val _myBabies = MutableStateFlow<List<Baby>?>(null)
+    val myBabies = _myBabies
+
+    private val _othersBabies = MutableStateFlow<List<Baby>?>(null)
+    val othersBabies = _othersBabies
+
     init {
         loadBaby()
     }
@@ -45,7 +59,6 @@ class GrowthAlbumViewModel @Inject constructor(
         getAlbumsFromBabyIdUseCase.getOneAlbum(id, year, month).catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
         }.collect {
-            Log.e("123", "${it}")
             _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
         }
     }
@@ -71,7 +84,7 @@ class GrowthAlbumViewModel @Inject constructor(
         _growthAlbumState.value = GrowthAlbumState.Loading
         likeAlbumUseCase.like(
             baby.value!!.babyId,
-            album.value!!.contentId.toString()
+            _album.value!!.contentId.toString()
         ).catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
         }.collect {
