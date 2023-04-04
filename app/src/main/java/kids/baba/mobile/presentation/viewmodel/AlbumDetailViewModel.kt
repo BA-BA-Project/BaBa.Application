@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.error.TokenEmptyException
+import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
@@ -23,6 +24,7 @@ import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -56,6 +58,8 @@ class AlbumDetailViewModel @Inject constructor(
     val comments = MutableStateFlow<List<Comment>?>(null)
     val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
 
+    val baby = MutableStateFlow<Baby?>(null)
+
     init {
         initModel()
     }
@@ -77,7 +81,7 @@ class AlbumDetailViewModel @Inject constructor(
     fun like() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
         likeAlbumUseCase.like(
-            "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb",
+            baby.value!!.babyId,
             album.value!!.contentId.toString()
         ).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
@@ -86,9 +90,9 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
-    fun addComment(comment:String) =
+    fun addComment(comment: String) =
         viewModelScope.launch {
-            val id = "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb"
+            val id = baby.value!!.babyId
             val contentId = album.value!!.contentId.toString()
             val commentInput = CommentInput(tag = "", comment = comment)
             _albumDetailUiState.value = AlbumDetailUiState.Loading
@@ -98,16 +102,17 @@ class AlbumDetailViewModel @Inject constructor(
 
     fun getComments() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        getCommentsUseCase.get(album.value!!.contentId.toString()).catch {
+        getCommentsUseCase.get(baby.value!!.babyId, album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {
             _albumDetailUiState.value = AlbumDetailUiState.LoadComments(it.comments)
         }
     }
 
+    //api 아직 완성 안됨
     fun getLikeDetail() = viewModelScope.launch {
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        val id = "4972ef56-a7f0-4c9f-a1ab-798ac04fb7fb"
+        val id = baby.value!!.babyId
         getLikeDetailUseCase.get(id = id, contentId = album.value!!.contentId.toString()).catch {
             _albumDetailUiState.value = AlbumDetailUiState.Error(it)
         }.collect {

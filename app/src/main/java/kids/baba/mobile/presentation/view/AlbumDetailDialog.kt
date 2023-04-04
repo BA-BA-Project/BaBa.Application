@@ -26,13 +26,11 @@ import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class AlbumDetailDialog(private val album: Album) : DialogFragment() {
+class AlbumDetailDialog(private val album: Album,private val viewModel: AlbumDetailViewModel) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-
-    private val viewModel: AlbumDetailViewModel by viewModels()
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
 
@@ -74,6 +72,7 @@ class AlbumDetailDialog(private val album: Album) : DialogFragment() {
         viewModel.album.value = album.toAlbumUiModel()
         viewModel.getLikeDetail()
         viewModel.getComments()
+        Log.e("baby","${viewModel.baby.value}")
     }
 
     private fun setDetailStateCollecter() {

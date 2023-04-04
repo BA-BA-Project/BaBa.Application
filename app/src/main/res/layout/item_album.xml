@@ -24,7 +24,12 @@
             <ImageView
                 android:id="@+id/album_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="@drawable/rounded_corner"
+                android:cropToPadding="true"
+                android:padding="2dp"
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:layout_width="wrap_content"

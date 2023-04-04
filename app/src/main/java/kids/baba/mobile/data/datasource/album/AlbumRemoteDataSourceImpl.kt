@@ -17,7 +17,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         month: Int,
     ): Flow<AlbumResponse> = flow {
         val response = api.getAlbum(id = id, year = year, month = month)
-        Log.e("Album","${response.body()?.album} ${response.code()}")
+        Log.e("Album", "${response.body()?.album} ${response.code()}")
         response.body()?.let {
             emit(it)
         }
@@ -38,17 +38,18 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         api.addComment(id = id, contentId = contentId, commentInput = commentInput)
     }
 
-    override suspend fun getComment(contentId: String): Flow<CommentResponse> = flow {
-        val response = api.getComments(contentId = contentId)
+    override suspend fun getComment(id: String, contentId: String): Flow<CommentResponse> = flow {
+        val response = api.getComments(id = id, contentId = contentId)
         response.body()?.let {
             emit(it)
         }
     }
 
-    override suspend fun getLikeDetail(id: String,contentId: String): Flow<LikeDetailResponse> = flow {
-        val response = api.getLikeDetail(contentId = contentId, id = id)
-        response.body()?.let {
-            emit(it)
+    override suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse> =
+        flow {
+            val response = api.getLikeDetail(contentId = contentId, id = id)
+            response.body()?.let {
+                emit(it)
+            }
         }
-    }
 }
