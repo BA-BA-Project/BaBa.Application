@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/babyChangeIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
@@ -38,7 +38,6 @@
             app:layout_constraintTop_toTopOf="@+id/tvDate" />
 
         <ImageView
-            android:id="@+id/imageView8"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
@@ -54,6 +53,7 @@
             android:layout_marginStart="60dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/black"
+            android:text="@{viewmodel.date}"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/myCalendar"

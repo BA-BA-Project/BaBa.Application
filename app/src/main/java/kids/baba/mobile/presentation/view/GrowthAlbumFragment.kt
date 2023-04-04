@@ -23,8 +23,6 @@ import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
@@ -33,6 +31,7 @@ import kids.baba.mobile.presentation.util.calendar.DayListener
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
@@ -49,68 +48,42 @@ import java.time.format.DateTimeFormatter
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
+
     private var _binding: FragmentGrowthalbumBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-    val viewModel: GrowthAlbumViewModel by viewModels()
+
+    private val viewModel: GrowthAlbumViewModel by viewModels()
     private val detailViewModel: AlbumDetailViewModel by viewModels()
-    val dateToString = hashMapOf<LocalDate, String>()
-    val stringToInt = hashMapOf<String, Int>()
-    val intToDate = hashMapOf<Int, LocalDate>()
-    private var width: Int = 0
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-    lateinit var datePicker: DatePickerDialog
-    private val adapter = AlbumAdapter()
+
+    private val dateToString = hashMapOf<LocalDate, String>()
+    private val stringToInt = hashMapOf<String, Int>()
+    private val intToDate = hashMapOf<Int, LocalDate>()
+
+    private val albumAdapter = AlbumAdapter()
     private val myBabyAdapter = BabyAdapter()
     private val otherBabyAdapter = BabyAdapter()
+
+
+    private lateinit var datePicker: DatePickerDialog
     private lateinit var dayViewContainer: DayViewContainer
-    private var currentDay = LocalDate.now()
-    private var albums = listOf<Album>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectUiState()
-        initializeCalendar()
     }
 
-    private fun initializeCalendar() {
-        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
-            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentGrowthalbumBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-            override fun create(view: View): DayViewContainer {
-                dayViewContainer = DayViewContainer(view, binding)
-                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
-                    override fun selectDay(date: LocalDate) {
-                        currentDay = date
-                        dateToString[currentDay]?.let {
-                            binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
-                        }
-                    }
-
-                    override fun releaseDay(date: LocalDate) {
-
-                    }
-                })
-                return dayViewContainer
-            }
-
-        }
-        binding.myCalendar.weekScrollListener = { weekDays ->
-            binding.tvDate.text = getWeekPageTitle(weekDays)
-        }
-        val currentMonth = YearMonth.now()
-        binding.myCalendar.setup(
-            currentMonth.minusMonths(600).atStartOfMonth(),
-            currentMonth.plusMonths(600).atEndOfMonth(),
-            firstDayOfWeekFromLocale(),
-        )
-        binding.myCalendar.scrollPaged = false
-        binding.myCalendar.scrollToWeek(LocalDate.now())
-        binding.tvAlbumTitle.setOnClickListener {
-            detailViewModel.album.value = albums[binding.viewPager.currentItem].toAlbumUiModel()
-            val albumDetailDialog = AlbumDetailDialog(detailViewModel)
-            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
-        }
-
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun collectUiState() {
@@ -130,16 +103,29 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
-    private fun changeBaby() {
-        Log.e("changeBaby", "")
-        binding.babySelectView.maxHeight = width * 3 / 2
-        binding.babySelectView.isGone = false
-        binding.shadow.alpha = 0.3f
-        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
+    private fun initialize() {
+        initializeBinding()
+        initializeCalendar()
+        initializeDatePicker()
+        initializeAlbumHolder()
+        initializeBabyAdapter()
+        initializeWidth()
     }
 
-    private fun catchError(state: GrowthAlbumState.Error) {
-        Log.e("error", "${state.t.message}")
+    private fun loading() {
+        Log.e("loading", "loading")
+    }
+
+    private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
+        Log.e("album", "${state.data}")
+        viewModel.albums.value = state.data
+        state.data.forEachIndexed { index, album ->
+            albumAdapter.setItem(album)
+            val localDate = parseLocalDate(album.date)
+            dateToString[localDate] = album.date
+            stringToInt[album.date] = index
+            intToDate[index] = localDate
+        }
     }
 
     private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
@@ -167,22 +153,6 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
-    private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
-        Log.e("album", "${state.data}")
-        albums = state.data
-        state.data.forEachIndexed { index, album ->
-            adapter.setItem(album)
-            val localDate = parseLocalDate(album.date)
-            dateToString[localDate] = album.date
-            stringToInt[album.date] = index
-            intToDate[index] = localDate
-        }
-    }
-
-
-    private fun loading() {
-        Log.e("loading", "loading")
-    }
 
     private fun pickDate() {
         datePicker.show()
@@ -190,8 +160,78 @@ class GrowthAlbumFragment : Fragment() {
         viewModel.growthAlbumState.value = GrowthAlbumState.Loading
     }
 
-    private fun initialize() {
+    private fun changeBaby() {
+        Log.e("changeBaby", "")
+        binding.babySelectView.maxHeight = viewModel.width.value * 3 / 2
+        binding.babySelectView.isGone = false
+        binding.shadow.alpha = 0.3f
+        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
+    }
+
+    private fun catchError(state: GrowthAlbumState.Error) {
+        Log.e("error", "${state.t.message}")
+    }
+
+    private fun initializeCalendar() {
+        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+
+            override fun create(view: View): DayViewContainer {
+                dayViewContainer = DayViewContainer(view, binding)
+                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
+                    override fun selectDay(date: LocalDate) {
+                        dateToString[date]?.let {
+                            binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
+                        }
+                    }
+
+                    override fun releaseDay(date: LocalDate) {
+
+                    }
+                })
+                return dayViewContainer
+            }
+
+        }
+        binding.myCalendar.weekScrollListener = { weekDays ->
+            viewModel.date.value = getWeekPageTitle(weekDays)
+        }
+        val currentMonth = YearMonth.now()
+        binding.myCalendar.setup(
+            currentMonth.minusMonths(600).atStartOfMonth(),
+            currentMonth.plusMonths(600).atEndOfMonth(),
+            firstDayOfWeekFromLocale(),
+        )
+        binding.myCalendar.scrollPaged = false
+        binding.myCalendar.scrollToWeek(LocalDate.now())
+        binding.tvAlbumTitle.setOnClickListener {
+            detailViewModel.album.value =
+                viewModel.albums.value[binding.viewPager.currentItem].toAlbumUiModel()
+            val albumDetailDialog = AlbumDetailDialog(detailViewModel)
+            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
+        }
+
+    }
+
+    private fun initializeBinding() {
+        binding.lifecycleOwner = this
         binding.viewmodel = viewModel
+    }
+
+    private fun initializeWidth() {
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        viewModel.width.value = displayMetrics.widthPixels
+    }
+
+    private fun initializeBabyAdapter() {
+        binding.myBabyList.adapter = myBabyAdapter
+        binding.myBabyList.layoutManager = LinearLayoutManager(requireContext())
+        binding.othersBabyList.adapter = otherBabyAdapter
+        binding.othersBabyList.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun initializeDatePicker() {
         datePicker =
             MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
                 val year = datePicker.datePicker.year
@@ -210,33 +250,10 @@ class GrowthAlbumFragment : Fragment() {
             }, 2023, 3, 12) {
                 binding.shadow.alpha = 0f
             }
-        initializeAlbumHolder()
-        binding.myBabyList.adapter = myBabyAdapter
-        binding.myBabyList.layoutManager = LinearLayoutManager(requireContext())
-        binding.othersBabyList.adapter = otherBabyAdapter
-        binding.othersBabyList.layoutManager = LinearLayoutManager(requireContext())
-        currentDay = LocalDate.now()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        width = displayMetrics.widthPixels
-
-        binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
-    }
-
-    private fun parseLocalDate(dateString: String): LocalDate {
-        return LocalDate.parse(dateString, formatter)
-    }
-
-    fun onKeyDown(): Boolean {
-        binding.babySelectView.isGone = true
-        binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
-        return true
     }
 
     private fun initializeAlbumHolder() {
-        binding.viewPager.adapter = adapter
+        binding.viewPager.adapter = albumAdapter
         binding.viewPager.offscreenPageLimit = 1
 
         val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
@@ -262,25 +279,22 @@ class GrowthAlbumFragment : Fragment() {
                     lifecycleScope.launch {
                         binding.myCalendar.smoothScrollToDate(it)
                         delay(200)
-                        binding.myCalendar.scrollBy(-width / 2 + 72, 0)
+                        binding.myCalendar.scrollBy(-viewModel.width.value / 2 + 72, 0)
                     }
                 }
             }
         })
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGrowthalbumBinding.inflate(inflater, container, false)
-        return binding.root
+    private fun parseLocalDate(dateString: String): LocalDate {
+        return LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+
+    fun onKeyDown(): Boolean {
+        binding.babySelectView.isGone = true
+        binding.babySelectView.maxHeight = 0
+        binding.shadow.alpha = 0f
+        return true
     }
 }
