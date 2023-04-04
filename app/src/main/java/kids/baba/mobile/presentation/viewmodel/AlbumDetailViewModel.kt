@@ -77,7 +77,7 @@ class AlbumDetailViewModel @Inject constructor(
             likeUsers = listOf(
                 UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
                 UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#BACEE0")
+                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
             ),
             commentCount = 2,
             comments = listOf(
@@ -87,7 +87,7 @@ class AlbumDetailViewModel @Inject constructor(
                     name = "이호성",
                     relation = "친구",
                     profileIcon = UserProfileIconUiModel.PROFILE_G_1,
-                    iconColor = "#BACEE0",
+                    iconColor = "#629755",
                     tag = "",
                     comment = "댓글 테스트",
                     createdAt = LocalDateTime.now()

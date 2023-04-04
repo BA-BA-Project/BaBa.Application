@@ -7,6 +7,7 @@ sealed class IntroEvent {
     data class MoveToAgree(val socialToken: String) : IntroEvent()
     data class MoveToCreateUserProfile(val signToken: String) : IntroEvent()
     data class MoveToInputBabiesInfo(val signToken: String, val userProfile: UserProfile) : IntroEvent()
-    data class MoveToWelcome(val name: String): IntroEvent()
+    object MoveToMain : IntroEvent()
     object IntroError: IntroEvent()
+    data class MoveToWelcome(val name: String): IntroEvent()
 }
