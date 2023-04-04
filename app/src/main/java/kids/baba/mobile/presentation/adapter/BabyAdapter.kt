@@ -29,7 +29,7 @@ class BabyAdapter : ListAdapter<Baby, BabyAdapter.BabyViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BabyViewHolder {
         val view = ItemBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BabyViewHolder(view,listener)
+        return BabyViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: BabyViewHolder, position: Int) {
@@ -38,6 +38,11 @@ class BabyAdapter : ListAdapter<Baby, BabyAdapter.BabyViewHolder>(diffUtil) {
 
     override fun getItemCount(): Int = list.size
 
+
+    override fun submitList(list: List<Baby>?) {
+        notifyDataSetChanged()
+        super.submitList(list)
+    }
 
     fun setItem(item: Baby, listener: (Baby) -> Unit) {
         list.add(item)

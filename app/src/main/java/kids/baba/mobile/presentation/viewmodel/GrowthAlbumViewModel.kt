@@ -34,7 +34,8 @@ class GrowthAlbumViewModel @Inject constructor(
     val album = MutableStateFlow<Album?>(null)
     val albums = MutableStateFlow<List<Album>>(listOf())
     val width = MutableStateFlow(0)
-
+    val myBabies = MutableStateFlow<List<Baby>?>(null)
+    val othersBabies = MutableStateFlow<List<Baby>?>(null)
     init {
         loadBaby()
     }

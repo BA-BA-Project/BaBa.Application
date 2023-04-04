@@ -23,6 +23,7 @@ import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
+import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.GrowthAlbumState
@@ -69,7 +70,7 @@ class GrowthAlbumFragment : Fragment() {
     private lateinit var dayViewContainer: DayViewContainer
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        collectUiState()
+        collect()
     }
 
     override fun onCreateView(
@@ -86,7 +87,7 @@ class GrowthAlbumFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun collectUiState() {
+    private fun collect() {
         repeatOnStarted {
             viewModel.growthAlbumState.collect { state ->
                 when (state) {
@@ -98,6 +99,24 @@ class GrowthAlbumFragment : Fragment() {
                     is GrowthAlbumState.ChangeBaby -> changeBaby()
                     is GrowthAlbumState.Error -> catchError(state)
                     else -> {}
+                }
+            }
+        }
+        repeatOnStarted {
+            viewModel.myBabies.collect {
+                it?.forEach { baby -> myBabyAdapter.setItem(baby) {} }
+            }
+        }
+        repeatOnStarted {
+            viewModel.othersBabies.collect {
+                it?.forEach { baby -> otherBabyAdapter.setItem(baby) {} }
+            }
+        }
+        repeatOnStarted {
+            viewModel.albums.collect {
+                it.forEachIndexed { index, album ->
+                    albumAdapter.setItem(album)
+                    mappingDateToIndex(album, index)
                 }
             }
         }
@@ -119,37 +138,17 @@ class GrowthAlbumFragment : Fragment() {
     private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
         Log.e("album", "${state.data}")
         viewModel.albums.value = state.data
-        state.data.forEachIndexed { index, album ->
-            albumAdapter.setItem(album)
-            val localDate = parseLocalDate(album.date)
-            dateToString[localDate] = album.date
-            stringToInt[album.date] = index
-            intToDate[index] = localDate
-        }
     }
 
     private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
         val now = LocalDate.now()
-        state.data.myBaby.forEach { my ->
-            myBabyAdapter.setItem(item = my) { baby ->
-                myBabyAdapter.list.clear()
-                otherBabyAdapter.list.clear()
-                viewModel.loadAlbum(baby.babyId, now.year, now.month.value)
-            }
-        }
-        state.data.others.forEach { other ->
-            otherBabyAdapter.setItem(item = other) { baby ->
-                myBabyAdapter.list.clear()
-                otherBabyAdapter.list.clear()
-                viewModel.loadAlbum(baby.babyId, now.year, now.month.value)
-            }
-        }
+        viewModel.myBabies.value = state.data.myBaby
+        viewModel.othersBabies.value = state.data.others
         state.data.myBaby.let {
             //일단 첫번째 아이 기준으로 합니다.
             detailViewModel.baby.value = it[0]
-            Log.e("baby", "${it[0].babyId}")
+            viewModel.baby.value = it[0]
             viewModel.loadAlbum(it[0].babyId, now.year, now.month.value)
-            binding.tvAlbumTitle.text = "${it[0].name}의 오늘 기록"
         }
     }
 
@@ -161,7 +160,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun changeBaby() {
-        Log.e("changeBaby", "")
         binding.babySelectView.maxHeight = viewModel.width.value * 3 / 2
         binding.babySelectView.isGone = false
         binding.shadow.alpha = 0.3f
@@ -286,6 +284,12 @@ class GrowthAlbumFragment : Fragment() {
         })
     }
 
+    private fun mappingDateToIndex(album: Album, index: Int) {
+        val localDate = parseLocalDate(album.date)
+        dateToString[localDate] = album.date
+        stringToInt[album.date] = index
+        intToDate[index] = localDate
+    }
     private fun parseLocalDate(dateString: String): LocalDate {
         return LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
     }
