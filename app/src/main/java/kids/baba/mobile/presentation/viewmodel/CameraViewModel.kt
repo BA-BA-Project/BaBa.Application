@@ -62,7 +62,7 @@ class CameraViewModel @Inject constructor(
         viewModelScope.launch {
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 .format(System.currentTimeMillis()) + "jpg"
-            val dateInfo = SimpleDateFormat("yy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
+            val dateInfo = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
             val photoFile = File(outputDirectory, fileName)
 
             val metadata = ImageCapture.Metadata().apply {

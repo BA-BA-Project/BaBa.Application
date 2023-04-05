@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.presentation.event.FilmEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
@@ -67,6 +70,10 @@ class FilmActivity : AppCompatActivity() {
                         val action =
                             WriteTitleFragmentDirections.actionWriteTitleFragmentToSelectCardFragment(event.mediaData)
                         navController.navigate(action)
+                    }
+
+                    is FilmEvent.FinishPostAlbum -> {
+                        finish()
                     }
                 }
 

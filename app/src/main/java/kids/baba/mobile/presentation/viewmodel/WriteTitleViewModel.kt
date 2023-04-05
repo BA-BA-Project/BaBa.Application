@@ -81,7 +81,8 @@ class WriteTitleViewModel @Inject constructor(
             currentTakenMedia = MediaData(
                 mediaName = title.value,
                 mediaPath = currentTakenMedia!!.mediaPath,
-                mediaDate = currentTakenMedia!!.mediaDate
+                mediaDate = currentTakenMedia!!.mediaDate,
+                mediaUri = currentTakenMedia!!.mediaUri
             )
             Log.d("WriteTitleViewModel", currentTakenMedia.toString())
         }

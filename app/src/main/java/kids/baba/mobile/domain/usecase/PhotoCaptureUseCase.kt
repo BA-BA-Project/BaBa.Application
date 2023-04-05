@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.core.net.toUri
 import kids.baba.mobile.domain.model.MediaData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -50,7 +51,8 @@ class PhotoCaptureUseCase @Inject constructor(
         return MediaData(
             mediaName = file.name,
             mediaPath = path,
-            mediaDate = dateInfo
+            mediaDate = dateInfo,
+            mediaUri = path.toUri()
         )
     }
 }

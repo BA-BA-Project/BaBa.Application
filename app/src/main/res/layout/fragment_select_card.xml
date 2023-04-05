@@ -43,7 +43,7 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/format_round_corner_blue"
-
+                    android:onClick="@{() -> viewModel.postAlbumClick()}"
                     android:contentDescription="@string/btn_album"
                     android:text="@string/save"
                     android:textColor="@color/white"
@@ -73,7 +73,7 @@
                 android:id="@+id/cl_baby_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackground="@{viewModel.cardState1[viewModel.cardPosition].iconRes}"
+                app:cardBackground="@{viewModel.cardState[viewModel.cardPosition].iconRes}"
                 tools:background="@drawable/card_candy_1">
 
 

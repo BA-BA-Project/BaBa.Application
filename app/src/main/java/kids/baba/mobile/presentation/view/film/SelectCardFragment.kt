@@ -1,10 +1,12 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionPredicates
@@ -18,6 +20,8 @@ import kids.baba.mobile.presentation.adapter.CardStyleAdapter
 import kids.baba.mobile.presentation.extension.CardDetailsLookup
 import kids.baba.mobile.presentation.extension.RecyclerViewIdKeyProvider
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.state.PostAlbumState
+import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
 import javax.inject.Inject
 
@@ -26,11 +30,13 @@ class SelectCardFragment @Inject constructor(
 
 ) : Fragment(), CardStyleAdapter.OnItemClickListener {
 
+    private val tag = "SelectCardFragment"
     private var _binding: FragmentSelectCardBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: SelectCardViewModel by viewModels()
+    val activityViewModel: FilmViewModel by activityViewModels()
 
     private lateinit var cardAdapter: CardStyleAdapter
 
@@ -42,7 +48,7 @@ class SelectCardFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.setPreviewImg(binding.ivBabyFrameBaby)
         viewModel.setTitle(binding.tvBabyFrameTitle)
@@ -59,7 +65,6 @@ class SelectCardFragment @Inject constructor(
             this.layoutManager = layoutManager
         }
 
-
         val cardSelectionTracker = SelectionTracker.Builder(
             "cardSelection",
             recyclerView,
@@ -70,9 +75,25 @@ class SelectCardFragment @Inject constructor(
 
         cardAdapter.setSelectionTracker(cardSelectionTracker)
 
+        collectState()
+
+    }
+
+    private fun collectState() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.cardState1.collect {
+            viewModel.cardState.collect {
                 cardAdapter.submitList(it.toList())
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.postAlbumState.collect { state ->
+                when (state) {
+                    is PostAlbumState.UnInitialized -> Log.d(tag, "PostAlbumState UnInitialized")
+                    is PostAlbumState.Success -> activityViewModel.isPostAlbum()
+                    is PostAlbumState.Error -> Log.e(tag, "PostAlbumState Error")
+                }
+
             }
         }
     }

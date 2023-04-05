@@ -46,9 +46,10 @@ class CropViewModel @Inject constructor(
                     )
                     currentTakenMedia =
                         MediaData(
-                            mediaName = "Cropped ",/*${it.mediaName}*/
+                            mediaName = "Cropped",
                             mediaPath = result.uriContent.toString(),
-                            mediaDate = currentTakenMedia!!.mediaDate
+                            mediaDate = currentTakenMedia!!.mediaDate,
+                            mediaUri = result.uriContent!!
                         )
 
                     Log.d(TAG, "currentTakenMedia: $currentTakenMedia!!")

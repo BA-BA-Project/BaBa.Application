@@ -41,5 +41,11 @@ class FilmViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun isPostAlbum() {
+        viewModelScope.launch {
+            _filmEventFlow.emit(FilmEvent.FinishPostAlbum)
+        }
+    }
+
 
 }

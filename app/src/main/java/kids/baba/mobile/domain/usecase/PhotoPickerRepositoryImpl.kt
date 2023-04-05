@@ -33,7 +33,8 @@ class PhotoPickerRepositoryImpl @Inject constructor(
         val mediaData = MediaData(
             mediaName = uri.toString(),
             mediaPath = uri.toString(),
-            mediaDate = date
+            mediaDate = date,
+            mediaUri = uri
         )
         emit(mediaData)
 
@@ -61,7 +62,7 @@ class PhotoPickerRepositoryImpl @Inject constructor(
                 } catch (e: Exception) {
                     throw e
                 }
-                val result = SimpleDateFormat("yy.MM.dd", Locale.KOREA).format(dateMod)
+                val result = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(dateMod)
                 Log.d(TAG, "DATE RESULT $result")
                 c.close()
                 return result
