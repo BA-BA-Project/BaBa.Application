@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AlbumRemoteDataSource {
     suspend fun getAlbum(id: String, year: Int, month: Int): Flow<AlbumResponse>
-    suspend fun postArticle(id: String, article: Article)
+    suspend fun postArticle(id: String)
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
 

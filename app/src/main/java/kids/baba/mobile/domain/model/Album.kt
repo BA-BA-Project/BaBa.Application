@@ -12,9 +12,7 @@ data class Album(
     val like: Boolean = false,
     val photo: String = "",
     val cardStyle: String = ""
-){
-    fun toAlbumUiModel() = AlbumUiModel(contentId, name, relation, date, title, like, photo, cardStyle)
-}
+)
 
 //"contentId" : 1,
 //"name" : "손제인", // 올린 사람

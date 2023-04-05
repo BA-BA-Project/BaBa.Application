@@ -7,7 +7,9 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -15,7 +17,7 @@ interface AlbumApi {
 
 
     //성장 앨범 메인
-    @GET("/api/baby/{babyId}/album")
+    @GET("/baby/{babyId}/album")
     suspend fun getAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
@@ -24,21 +26,21 @@ interface AlbumApi {
     ): Response<AlbumResponse>
 
     //성장 앨범 추가
-    @POST("/api/album/{babyId}")
+    @POST("/baby/album/{babyId}")
     suspend fun addArticle(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
-        @Body article: Article
+        //@Multipart
     )
 
-    @POST("/api/baby/{babyId}/album/{contentId}/like")
+    @POST("/baby/{babyId}/album/{contentId}/like")
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
         @Path("contentId") contentId: String
     ): Response<LikeResponse>
 
-    @POST("/api/baby/{babyId}/album/{contentId}/comment")
+    @POST("/baby/{babyId}/album/{contentId}/comment")
     suspend fun addComment(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
@@ -46,14 +48,14 @@ interface AlbumApi {
         @Body commentInput: CommentInput
     )
 
-    @GET("/api/baby/{babyId}/album/{contentId}/comments")
+    @GET("/baby/{babyId}/album/{contentId}/comments")
     suspend fun getComments(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("contentId") contentId: String,
         @Path("babyId") id: String
     ): Response<CommentResponse>
 
-    @GET("/api/baby/{babyId}/album/{contentId}/likes")
+    @GET("/baby/{babyId}/album/{contentId}/likes")
     suspend fun getLikeDetail(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("contentId") contentId: String,

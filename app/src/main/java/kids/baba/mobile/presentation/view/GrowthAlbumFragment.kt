@@ -26,6 +26,7 @@ import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.util.calendar.DayListener
@@ -203,7 +204,7 @@ class GrowthAlbumFragment : Fragment() {
         binding.myCalendar.scrollToWeek(LocalDate.now())
         binding.tvAlbumTitle.setOnClickListener {
             detailViewModel.album.value =
-                viewModel.albums.value[binding.viewPager.currentItem].toAlbumUiModel()
+                viewModel.albums.value[binding.viewPager.currentItem].toPresentation()
             val albumDetailDialog = AlbumDetailDialog(detailViewModel)
             albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
         }

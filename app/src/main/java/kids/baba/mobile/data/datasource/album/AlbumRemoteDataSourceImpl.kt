@@ -23,8 +23,8 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun postArticle(id: String, article: Article) {
-        api.addArticle(article = article, id = id)
+    override suspend fun postArticle(id: String) {
+        api.addArticle(id = id)
     }
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {

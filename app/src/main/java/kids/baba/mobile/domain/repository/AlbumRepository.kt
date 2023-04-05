@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface AlbumRepository {
     suspend fun getAlbum(id: String, year: Int, month: Int): Flow<AlbumResponse>
 
-    suspend fun addArticle(id: String, article: Article)
+    suspend fun addArticle(id: String)
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
 

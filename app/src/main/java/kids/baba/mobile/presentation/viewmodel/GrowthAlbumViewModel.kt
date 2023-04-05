@@ -1,20 +1,15 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Article
 import kids.baba.mobile.domain.model.Baby
-import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.usecase.*
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +31,7 @@ class GrowthAlbumViewModel @Inject constructor(
     val baby = _baby
 
     private val _album = MutableStateFlow<Album?>(null)
-    val album = _album
+    val album = _album.asStateFlow()
 
     private val _albums = MutableStateFlow<List<Album>>(listOf())
     val albums = _albums
@@ -81,10 +76,12 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     fun like() = viewModelScope.launch {
+        val babyId = _baby.value?.babyId ?: return@launch
+        val contentId = album.value?.contentId.toString()
         _growthAlbumState.value = GrowthAlbumState.Loading
         likeAlbumUseCase.like(
-            baby.value!!.babyId,
-            _album.value!!.contentId.toString()
+            babyId,
+            contentId
         ).catch {
             _growthAlbumState.value = GrowthAlbumState.Error(it)
         }.collect {
@@ -92,9 +89,9 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun postArticle(id: String, article: Article) = viewModelScope.launch {
+    fun postArticle(id: String) = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.Loading
-        postOneArticleUseCase.post(id, article)
+        postOneArticleUseCase.post(id)
         _growthAlbumState.value = GrowthAlbumState.Post
 
     }
