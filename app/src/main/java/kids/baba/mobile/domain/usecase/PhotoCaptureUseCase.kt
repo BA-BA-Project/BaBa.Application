@@ -4,12 +4,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.camera.video.OutputOptions
 import kids.baba.mobile.domain.model.MediaData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.Executor
 import javax.inject.Inject

@@ -7,25 +7,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
+import kids.baba.mobile.presentation.extension.CardDetailsLookup
+import kids.baba.mobile.presentation.extension.RecyclerViewIdKeyProvider
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SelectCardFragment @Inject constructor(
 
-) : Fragment() {
+) : Fragment(), CardStyleAdapter.OnItemClickListener {
 
     private var _binding: FragmentSelectCardBinding? = null
     private val binding
-
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: SelectCardViewModel by viewModels()
@@ -40,6 +42,7 @@ class SelectCardFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         viewModel.setPreviewImg(binding.ivBabyFrameBaby)
         viewModel.setTitle(binding.tvBabyFrameTitle)
@@ -48,26 +51,41 @@ class SelectCardFragment @Inject constructor(
             findNavController().navigateUp()
         }
 
-        cardAdapter = CardStyleAdapter()
+        cardAdapter = CardStyleAdapter(this)
         val layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-        binding.rvSelectCards.apply {
+        val recyclerView = binding.rvSelectCards
+        recyclerView.apply {
             adapter = cardAdapter
             this.layoutManager = layoutManager
         }
 
+
+        val cardSelectionTracker = SelectionTracker.Builder(
+            "cardSelection",
+            recyclerView,
+            RecyclerViewIdKeyProvider(recyclerView),
+            CardDetailsLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectSingleAnything()).build()
+
+        cardAdapter.setSelectionTracker(cardSelectionTracker)
+
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.cardState.collect{
-                cardAdapter.submitList(it?.cardStyles)
+            viewModel.cardState1.collect {
+                cardAdapter.submitList(it.toList())
             }
         }
-
-
-
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
+    override fun onItemClick(position: Int) {
+        viewModel.onCardSelected(position)
+    }
+
 
 }

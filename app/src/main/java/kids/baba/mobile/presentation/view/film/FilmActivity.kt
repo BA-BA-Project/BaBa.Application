@@ -47,23 +47,23 @@ class FilmActivity : AppCompatActivity() {
                     }
 
                     is FilmEvent.MoveToCrop -> {
-                        Log.e(TAG, "MOVE TO CROP")
+                        Log.d(TAG, "MOVE TO CROP")
                         val action = CameraFragmentDirections.actionCameraFragmentToCropFragment(event.mediaData)
                         navController.navigate(action)
                     }
                     is FilmEvent.MoveToWriteTitleFromCamera -> {
-                        Log.e(TAG, "MOVE TO WRITE TITLE FROM CAMERA")
+                        Log.d(TAG, "MOVE TO WRITE TITLE FROM CAMERA")
                         val action = CameraFragmentDirections.actionCameraFragmentToWriteTitleFragment(event.mediaData)
                         navController.navigate(action)
                     }
                     is FilmEvent.MoveToWriteTitleFromCrop -> {
-                        Log.e(TAG, "MOVE TO WRITE TITLE FROM CROP")
+                        Log.d(TAG, "MOVE TO WRITE TITLE FROM CROP")
                         val action = CropFragmentDirections.actionCropFragmentToWriteTitleFragment(event.mediaData)
                         navController.navigate(action)
                     }
 
                     is FilmEvent.MoveToSelectCard -> {
-                        Log.e(TAG, "MOVE TO Select Card")
+                        Log.d(TAG, "MOVE TO Select Card")
                         val action =
                             WriteTitleFragmentDirections.actionWriteTitleFragmentToSelectCardFragment(event.mediaData)
                         navController.navigate(action)

@@ -37,7 +37,7 @@ class CameraFragment @Inject constructor() : Fragment() {
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             // 선택된 사진이 있을 경우
-            Log.e(TAG, "choose picture $uri")
+            Log.d(TAG, "choose picture $uri")
 
             handlePickerResponse(uri)
         } else {
@@ -64,7 +64,7 @@ class CameraFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-//        binding.lifecycleOwner = viewLifecycleOwner
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val viewFinder = binding.viewFinder
         viewFinder.post {
@@ -85,7 +85,7 @@ class CameraFragment @Inject constructor() : Fragment() {
     }
 
 
-    ////////////////
+
     private fun goToAlbum() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
