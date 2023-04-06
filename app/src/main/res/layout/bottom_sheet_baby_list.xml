@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:behavior_draggable="false">
 
     <TextView
         android:id="@+id/tv_select_baby"
@@ -17,51 +18,24 @@
         android:textAppearance="@style/BABA.TextStyle"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/rv_babies"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/dv_my_baby"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/tv_select_baby"
-        app:layout_constraintStart_toStartOf="@id/tv_select_baby"
-        app:layout_constraintTop_toBottomOf="@id/tv_select_baby" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_my_babies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="@+id/dv_my_baby"
-        app:layout_constraintStart_toStartOf="@+id/dv_my_baby"
-        app:layout_constraintTop_toBottomOf="@+id/dv_my_baby"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_baby" />
-
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/dv_others_baby"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/rv_my_babies"
-        app:layout_constraintStart_toStartOf="@id/rv_my_babies"
-        app:layout_constraintTop_toBottomOf="@id/rv_my_babies" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_others_babies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/btn_management_babies"
-        app:layout_constraintEnd_toEndOf="@+id/rv_my_babies"
-        app:layout_constraintStart_toStartOf="@+id/dv_others_baby"
-        app:layout_constraintTop_toBottomOf="@+id/dv_others_baby"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
-        tools:itemCount="4"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_babies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/btn_management_babies"
+        app:layout_constraintEnd_toEndOf="@+id/tv_select_baby"
+        app:layout_constraintStart_toStartOf="@+id/tv_select_baby"
+        app:layout_constraintTop_toBottomOf="@+id/tv_select_baby"
+        tools:itemCount="10"
         tools:listitem="@layout/item_baby" />
 
     <com.google.android.material.button.MaterialButton
@@ -77,7 +51,8 @@
         app:icon="@drawable/ic_add"
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rv_others_babies"
-        app:layout_constraintStart_toStartOf="@+id/rv_others_babies" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_babies" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

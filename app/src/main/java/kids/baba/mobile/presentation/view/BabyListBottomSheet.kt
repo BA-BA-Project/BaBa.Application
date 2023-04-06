@@ -21,8 +21,7 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
 
     private val viewModel: BabyListViewModel by viewModels()
 
-    private lateinit var myBabyAdapter: BabyAdapter
-    private lateinit var othersBabyAdapter: BabyAdapter
+    private lateinit var babiesAdapter: BabyAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,28 +37,18 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
     }
 
     private fun setBabyList() {
-        myBabyAdapter = BabyAdapter {
-            itemClick(it)
-            dismiss()
-        }
-        othersBabyAdapter = BabyAdapter {
+        babiesAdapter = BabyAdapter {
             itemClick(it)
             dismiss()
         }
 
-        binding.rvMyBabies.adapter = myBabyAdapter
-        binding.rvOthersBabies.adapter = othersBabyAdapter
+        binding.rvBabies.adapter = babiesAdapter
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.myBabyList.collect {
-                myBabyAdapter.submitList(it)
+            viewModel.babyList.collect {
+                babiesAdapter.submitList(it)
             }
         }
 
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.othersBabyList.collect {
-                othersBabyAdapter.submitList(it)
-            }
-        }
     }
 
     override fun onDestroyView() {

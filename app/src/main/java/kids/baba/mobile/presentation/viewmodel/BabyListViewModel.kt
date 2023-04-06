@@ -14,42 +14,27 @@ class BabyListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _myBabyList = MutableStateFlow<List<BabyUiModel>>(emptyList())
-    val myBabyList = _myBabyList.asStateFlow()
-
-    private val _othersBabyList = MutableStateFlow<List<BabyUiModel>>(emptyList())
-    val othersBabyList = _othersBabyList.asStateFlow()
-
-
+    private val _babyList = MutableStateFlow<List<BabyUiModel>>(emptyList())
+    val babyList = _babyList.asStateFlow()
     init {
         getBabies()
     }
 
     private fun getBabies() {
         val selectedBaby: BabyUiModel? = savedStateHandle[SELECTED_BABY_KEY]
-        _myBabyList.value = listOf(
-            BabyUiModel(babyId = "1", groupColor = "#FF0000", name = "앙쥬1", false),
-            BabyUiModel(babyId = "2", groupColor = "#FF8C00", name = "앙쥬2", false),
-            BabyUiModel(babyId = "3", groupColor = "#FFFF00", name = "앙쥬3", false),
-        )
-        _othersBabyList.value = listOf(
-            BabyUiModel(babyId = "4", groupColor = "#008000", name = "앙쥬4", false),
-            BabyUiModel(babyId = "5", groupColor = "#0000FF", name = "앙쥬5", false),
-            BabyUiModel(babyId = "6", groupColor = "#4B0082", name = "앙쥬6", false),
-            BabyUiModel(babyId = "7", groupColor = "#800080", name = "앙쥬7", false),
-        )
+        _babyList.value = List(100) {idx ->
+            BabyUiModel(babyId = "$idx", groupColor = "#008000", name = "앙쥬${idx}", false )
+        }
         if (selectedBaby == null) {
-            _myBabyList.value.map{}
-        } else {
-            _myBabyList.value = _myBabyList.value.map {
-                if (it.babyId == selectedBaby.babyId) {
-                    it.copy(selected = true)
-                } else {
-                    it
+            _babyList.value.mapIndexed{idx, baby ->
+                if(idx == 0){
+                    baby.copy(selected = true)
+                } else{
+                    baby
                 }
             }
-
-            _othersBabyList.value = _othersBabyList.value.map {
+        } else {
+            _babyList.value = _babyList.value.map {
                 if (it.babyId == selectedBaby.babyId) {
                     it.copy(selected = true)
                 } else {

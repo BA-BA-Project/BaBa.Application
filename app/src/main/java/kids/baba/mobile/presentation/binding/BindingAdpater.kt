@@ -20,7 +20,7 @@ fun setIcon(imageView: ImageView, @DrawableRes res: Int) {
 
 @BindingAdapter("backGroundColor")
 fun setBackGroundColor(circleImageView: CircleImageView, colorString: String?) {
-    circleImageView.circleBackgroundColor = Color.GREEN
+    circleImageView.circleBackgroundColor = Color.parseColor(colorString)
 }
 
 @BindingAdapter("imageFromUrl")

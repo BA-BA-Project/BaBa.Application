@@ -127,7 +127,7 @@ class GrowthAlbumViewModel @Inject constructor(
 //            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
 //            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
 //        }
-        _selectedBaby.value = BabyUiModel("1","#FF1234","앙쥬1", true)
+        _selectedBaby.value = BabyUiModel("0","#FF1234","앙쥬0", true)
     }
 
     fun changeBaby() = viewModelScope.launch {
