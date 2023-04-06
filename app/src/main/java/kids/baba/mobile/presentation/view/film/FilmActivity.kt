@@ -29,6 +29,9 @@ class FilmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val nowDate = intent.extras?.getString(NOW_DATE) ?: resources.getString(R.string.can_not_find_date)
+        viewModel.nowDate.value = nowDate
+
         setContentView(R.layout.activity_film)
         setNavController()
         collectEvent()
@@ -83,10 +86,13 @@ class FilmActivity : AppCompatActivity() {
 
 
     companion object {
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context, nowDate: String) {
             val intent = Intent(context, FilmActivity::class.java)
+            intent.putExtra(NOW_DATE, nowDate)
             context.startActivity(intent)
         }
+
+        private const val NOW_DATE = "nowDate"
     }
 
 }

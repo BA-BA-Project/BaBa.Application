@@ -1,8 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
 import android.util.Log
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +11,7 @@ import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.state.PostAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -41,10 +40,14 @@ class SelectCardViewModel @Inject constructor(
     private val _postAlbumState = MutableStateFlow<PostAlbumState>(PostAlbumState.UnInitialized)
     val postAlbumState = _postAlbumState.asStateFlow()
 
+    val nowDate: MutableStateFlow<String> = MutableStateFlow("")
+
+    private val requestHashMap = hashMapOf<String, RequestBody>()
+
     // TODO: "memberId":"KAKAO2695099524","name":"poi" 인 계정에서의 아이로 테스트했음
     //  이 계정의 babyId 는 아래임. 추후에 SharedPreference 에
     //  사용자가 보고있는 babyId 을 저장하고 이를 불러올 것임.
-    val babyId = "1c642535-12db-416b-ae0f-46070036a752"
+    private val babyId = "1c642535-12db-416b-ae0f-46070036a752"
 
     init {
         getCards()
@@ -70,20 +73,17 @@ class SelectCardViewModel @Inject constructor(
     private suspend fun postAlbum() {
 
         val file = File(currentTakenMedia.value?.mediaUri ?: "")
-
         val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
 
-        val requestHashMap = hashMapOf<String, RequestBody>()
-        // TODO: 날짜 변경하기
-//            requestHashMap["date"] = currentTakenMedia!!.mediaDate.toPlainRequestBody()
-        requestHashMap["date"] = "2023-03-20".toPlainRequestBody()
-        requestHashMap["title"] = currentTakenMedia.value!!.mediaName.toPlainRequestBody()
+        requestHashMap["date"] = nowDate.value.toPlainRequestBody()
+        requestHashMap["title"] = currentTakenMedia.value?.mediaName.toPlainRequestBody()
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
-        postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap)/*.catch {
+        postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
+            it.printStackTrace()
             _postAlbumState.value = PostAlbumState.Error(it)
-        }*/.collect {
+        }.collect {
             _postAlbumState.value = PostAlbumState.Success
         }
     }

@@ -47,7 +47,6 @@ class PhotoCaptureUseCase @Inject constructor(
         return MediaData(
             mediaName = file.name,
             mediaDate = dateInfo,
-//            mediaUri = path.toUri()
             mediaUri = path
         )
     }

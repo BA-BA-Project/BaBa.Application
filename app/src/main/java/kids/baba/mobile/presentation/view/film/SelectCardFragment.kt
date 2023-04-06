@@ -50,6 +50,8 @@ class SelectCardFragment @Inject constructor(
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.nowDate.value = activityViewModel.nowDate.value
+
         binding.tbSelectCard.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
