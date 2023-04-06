@@ -43,7 +43,7 @@ object CameraModule {
     @Singleton
     fun providePreview(): Preview {
         return Preview.Builder().apply {
-//            setTargetAspectRatio(AspectRatio.RATIO_4_3)
+            setTargetAspectRatio(AspectRatio.RATIO_4_3)
         }.build()
     }
 

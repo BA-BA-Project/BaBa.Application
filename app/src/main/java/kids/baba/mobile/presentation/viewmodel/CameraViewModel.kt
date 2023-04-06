@@ -56,13 +56,12 @@ class CameraViewModel @Inject constructor(
     private val _camera: MutableStateFlow<Camera?> = MutableStateFlow(null)
     val camera = _camera.asStateFlow()
 
-//    private val viewPort = ViewPort.Builder(Rational(1, 1), Surface.ROTATION_0).build()
+    private val viewPort = ViewPort.Builder(Rational(1, 1), Surface.ROTATION_0).build()
 
     fun takePhoto() {
         viewModelScope.launch {
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 .format(System.currentTimeMillis()) + ".jpg"
-//            val dateInfo = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
             val photoFile = File(outputDirectory, fileName)
             Log.e(TAG, "photoFile: $photoFile")
 
@@ -116,7 +115,7 @@ class CameraViewModel @Inject constructor(
         val useCaseGroup = UseCaseGroup.Builder()
             .addUseCase(preview)
             .addUseCase(imageCapture)
-//            .setViewPort(viewPort)
+            .setViewPort(viewPort)
             .build()
 
         cameraProvider.value!!.unbindAll()
@@ -124,9 +123,7 @@ class CameraViewModel @Inject constructor(
             _camera.value = cameraProvider.value!!.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                preview,
-                imageCapture
-//                useCaseGroup
+                useCaseGroup
             )
             preview.setSurfaceProvider(previewView.surfaceProvider)
         } catch (e: Exception) {

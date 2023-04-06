@@ -17,7 +17,7 @@ class FilmViewModel @Inject constructor() : ViewModel() {
     private val _filmEventFlow = MutableEventFlow<FilmEvent>()
     val filmEventFlow = _filmEventFlow.asEventFlow()
 
-    val nowDate :MutableStateFlow<String> = MutableStateFlow("")
+    val nowDate: MutableStateFlow<String> = MutableStateFlow("")
 
     fun isMoveToCrop(mediaData: MediaData) {
         viewModelScope.launch {

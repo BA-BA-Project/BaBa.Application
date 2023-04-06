@@ -60,9 +60,9 @@
 
         <com.canhub.cropper.CropImageView
             android:id="@+id/iv_crop_image"
-            app:cropImageView="@{viewModel.currentTakenMediaInCrop.mediaUri}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:cropImageView="@{viewModel.currentTakenMediaInCrop.mediaUri}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

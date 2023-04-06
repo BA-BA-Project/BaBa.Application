@@ -58,7 +58,6 @@ class SelectCardViewModel @Inject constructor(
         _cardPosition.value = position
     }
 
-
     private fun getCards() {
         val cardUiModelArray = defaultCardUiModelArray
         _cardState.value = cardUiModelArray
