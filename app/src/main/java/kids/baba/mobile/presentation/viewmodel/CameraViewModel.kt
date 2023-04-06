@@ -61,9 +61,10 @@ class CameraViewModel @Inject constructor(
     fun takePhoto() {
         viewModelScope.launch {
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-                .format(System.currentTimeMillis()) + "jpg"
+                .format(System.currentTimeMillis()) + ".jpg"
             val dateInfo = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
             val photoFile = File(outputDirectory, fileName)
+            Log.e(TAG, "photoFile: $photoFile")
 
             val metadata = ImageCapture.Metadata().apply {
                 isReversedHorizontal = lensFacing.value == CameraSelector.LENS_FACING_FRONT
