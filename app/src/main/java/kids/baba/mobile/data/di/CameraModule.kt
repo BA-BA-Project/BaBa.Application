@@ -2,6 +2,7 @@ package kids.baba.mobile.data.di
 
 import android.content.Context
 import android.os.Environment
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.core.content.ContextCompat
@@ -41,7 +42,9 @@ object CameraModule {
     @Provides
     @Singleton
     fun providePreview(): Preview {
-        return Preview.Builder().apply { }.build()
+        return Preview.Builder().apply {
+            setTargetAspectRatio(AspectRatio.RATIO_4_3)
+        }.build()
     }
 
 

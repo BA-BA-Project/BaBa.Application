@@ -3,10 +3,9 @@ package kids.baba.mobile.presentation.viewmodel
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import android.util.Rational
+import android.view.Surface
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
@@ -57,6 +56,7 @@ class CameraViewModel @Inject constructor(
     private val _camera: MutableStateFlow<Camera?> = MutableStateFlow(null)
     val camera = _camera.asStateFlow()
 
+    private val viewPort = ViewPort.Builder(Rational(1, 1), Surface.ROTATION_0).build()
 
     fun takePhoto() {
         viewModelScope.launch {
@@ -112,13 +112,18 @@ class CameraViewModel @Inject constructor(
             requireLensFacing(lensFacing.value)
         }.build()
 
+        val useCaseGroup = UseCaseGroup.Builder()
+            .addUseCase(preview)
+            .addUseCase(imageCapture)
+            .setViewPort(viewPort)
+            .build()
+
         cameraProvider.value!!.unbindAll()
         try {
             _camera.value = cameraProvider.value!!.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                preview,
-                imageCapture
+                useCaseGroup
             )
             preview.setSurfaceProvider(previewView.surfaceProvider)
         } catch (e: Exception) {

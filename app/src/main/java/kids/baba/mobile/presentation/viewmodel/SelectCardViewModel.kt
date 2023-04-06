@@ -103,7 +103,7 @@ class SelectCardViewModel @Inject constructor(
             val requestHashMap = hashMapOf<String, RequestBody>()
             // TODO: 날짜 변경하기
 //            requestHashMap["date"] = currentTakenMedia!!.mediaDate.toPlainRequestBody()
-            requestHashMap["date"] = "2023-03-06".toPlainRequestBody()
+            requestHashMap["date"] = "2023-03-09".toPlainRequestBody()
             requestHashMap["title"] = currentTakenMedia!!.mediaName.toPlainRequestBody()
             requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
@@ -126,10 +126,8 @@ class SelectCardViewModel @Inject constructor(
         // URI -> File
         fun toFile(context: Context, uri: Uri): File {
             val fileName = getFileName(context, uri)
-//
             val file = FileUtil.createTempFile(context, fileName)
             FileUtil.copyToFile(context, uri, file)
-//            val file = uri.toFile()
 
             return File(file.absolutePath)
         }
