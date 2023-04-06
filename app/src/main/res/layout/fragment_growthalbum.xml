@@ -32,7 +32,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:onClick="@{() -> viewmodel.pickDate()}"
             android:translationZ="10dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:textColor="@color/black"
+            android:text="@{viewmodel.date}"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/civ_baby_profile"
@@ -185,7 +185,6 @@
                 android:elevation="1dp"
                 android:text="@{viewmodel.selectedAlbum.relation}"
                 android:visibility="@{viewmodel.selectedAlbum.relation.empty ? View.INVISIBLE: View.VISIBLE}"
-
                 android:textAppearance="@style/BABA.TextStyle"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
                 app:layout_constraintEnd_toEndOf="@id/btn_album_config"
@@ -240,6 +239,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/black"
+            android:clickable="false"
+            android:elevation="8dp"
+            android:focusable="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -29,6 +30,11 @@ class AlbumDetailCommentAdapter
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun submitList(list: List<CommentUiModel>?) {
+        super.submitList(list)
+        notifyDataSetChanged()
+    }
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<CommentUiModel>() {
             override fun areItemsTheSame(oldItem: CommentUiModel, newItem: CommentUiModel) =

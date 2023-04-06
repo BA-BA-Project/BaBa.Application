@@ -7,19 +7,24 @@ import kids.baba.mobile.domain.usecase.GetOneAlbumUseCase
 import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
+import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.Baby
+import kids.baba.mobile.domain.usecase.*
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class GrowthAlbumViewModel @Inject constructor(
-    private val getOneAlbumUseCase: GetOneAlbumUseCase,
-    private val getOneBabyUseCase: GetOneBabyUseCase
+    private val getAlbumsFromBabyIdUseCase: GetAlbumsFromBabyIdUseCase,
+    private val getOneBabyUseCase: GetOneBabyUseCase,
+    private val postOneArticleUseCase: PostOneArticleUseCase,
+    private val likeAlbumUseCase: LikeAlbumUseCase
 ) : ViewModel() {
-
     private val _growthAlbumState =
         MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.Loading)
     val growthAlbumState = _growthAlbumState
@@ -134,6 +139,4 @@ class GrowthAlbumViewModel @Inject constructor(
     fun pickDate() {
         _growthAlbumState.value = GrowthAlbumState.PickDate
     }
-
-
 }
