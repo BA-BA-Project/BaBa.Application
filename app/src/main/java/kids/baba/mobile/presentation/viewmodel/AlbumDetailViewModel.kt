@@ -1,7 +1,7 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,26 +11,25 @@ import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
-import kids.baba.mobile.domain.usecase.*
+import kids.baba.mobile.domain.usecase.AddCommentUseCase
+import kids.baba.mobile.domain.usecase.GetCommentsUseCase
+import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
+import kids.baba.mobile.domain.usecase.GetMemberUseCase
+import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
 import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
-import kids.baba.mobile.presentation.model.CommentUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
-import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -147,11 +146,11 @@ class AlbumDetailViewModel @Inject constructor(
             Log.e("likeDetail", "$it")
             likeDetail.value = it
         }
+    }
 
     fun setExpended(expended: Boolean) {
         if (expended != _isPhotoExpended.value) {
             _isPhotoExpended.value = expended
         }
     }
-
 }
