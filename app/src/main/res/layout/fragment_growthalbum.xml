@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:onClick="@{() -> viewmodel.pickDate()}"
             android:translationZ="10dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/babyChangeIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
@@ -39,7 +38,6 @@
             app:layout_constraintTop_toTopOf="@+id/tvDate" />
 
         <ImageView
-            android:id="@+id/imageView8"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="5dp"
@@ -55,6 +53,7 @@
             android:layout_marginStart="60dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/black"
+            android:text="@{viewmodel.date}"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/myCalendar"
@@ -133,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="30dp"
-                    android:text="@string/album_card_title"
+                    android:text="@{viewmodel.baby.name}"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -149,6 +148,16 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:background="@color/black"
+                android:clickable="false"
+                android:elevation="8dp"
+                android:focusable="false" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -179,6 +188,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
+                android:id="@+id/line_view"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/grey"
@@ -186,28 +196,77 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/baby_select_view_label" />
 
+            <View
+                android:id="@+id/line_view_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_baby_list" />
+
+            <View
+                android:id="@+id/line_view_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/others_baby_list" />
+
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/baby_list"
+                android:id="@+id/my_baby_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:paddingHorizontal="10dp"
-                android:paddingTop="20dp"
+                app:layout_constraintBottom_toTopOf="@id/others_baby_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line_view"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_weight="3"
+                tools:listitem="@layout/item_baby" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/others_baby_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/button_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_baby_list"
+                app:layout_constraintVertical_weight="6"
+                tools:listitem="@layout/item_baby" />
+
+            <View
+                android:id="@+id/button_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/baby_select_view_label"
-                tools:listitem="@layout/item_baby" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/others_baby_list"
+                app:layout_constraintVertical_weight="2" />
 
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0"
-            android:background="@color/black"
-            android:clickable="false"
-            android:elevation="8dp"
-            android:focusable="false" />
+            <ImageView
+                android:id="@+id/add_baby_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:src="@drawable/button"
+                app:layout_constraintBottom_toBottomOf="@+id/button_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/button_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="아이 추가 및 관리"
+                app:layout_constraintBottom_toBottomOf="@+id/button_view"
+                app:layout_constraintStart_toEndOf="@+id/add_baby_button"
+                app:layout_constraintTop_toTopOf="@+id/button_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

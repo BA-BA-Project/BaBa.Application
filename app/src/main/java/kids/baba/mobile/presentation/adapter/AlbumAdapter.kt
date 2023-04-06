@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kids.baba.mobile.databinding.ItemAlbumBinding
 import kids.baba.mobile.domain.model.Album
 
@@ -14,8 +15,9 @@ class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) 
     class AlbumViewHolder(private val binding: ItemAlbumBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
-            binding.dateVal.text = item.date
-            binding.check.text = item.name
+            Glide.with(binding.albumImage)
+                .load(item.photo)
+                .into(binding.albumImage)
         }
     }
 

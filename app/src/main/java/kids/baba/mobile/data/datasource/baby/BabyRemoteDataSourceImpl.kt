@@ -27,6 +27,9 @@ class BabyRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getBaby() = flow {
-        emit(babyApi.getBaby())
+        val response = babyApi.getBaby()
+        response.body()?.let {
+            emit(it)
+        }
     }
 }
