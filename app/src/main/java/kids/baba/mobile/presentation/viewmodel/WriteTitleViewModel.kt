@@ -1,6 +1,8 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.Context
 import android.content.res.Resources
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +14,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.presentation.event.FilmEvent
@@ -20,13 +23,15 @@ import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import java.io.File
 import javax.inject.Inject
 
 
 @HiltViewModel
 class WriteTitleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val resources: Resources
+    private val resources: Resources,
+//    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private var currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
@@ -39,7 +44,7 @@ class WriteTitleViewModel @Inject constructor(
 
     fun setPreviewImg(imageView: ImageView) {
         if (currentTakenMedia != null) {
-            imageView.setImageURI(currentTakenMedia!!.mediaPath.toUri())
+            imageView.setImageURI(currentTakenMedia!!.mediaUri)
         }
     }
 
@@ -78,9 +83,13 @@ class WriteTitleViewModel @Inject constructor(
 
     fun complete() = flow {
         if (currentTakenMedia != null) {
+
+//            val fileName = currentTakenMedia!!.mediaUri.toString().split("/").last()
+//            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//            val file = File(storageDir, fileName)
+
             currentTakenMedia = MediaData(
                 mediaName = title.value,
-                mediaPath = currentTakenMedia!!.mediaPath,
                 mediaDate = currentTakenMedia!!.mediaDate,
                 mediaUri = currentTakenMedia!!.mediaUri
             )

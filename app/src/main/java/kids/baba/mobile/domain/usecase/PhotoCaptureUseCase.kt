@@ -29,11 +29,7 @@ class PhotoCaptureUseCase @Inject constructor(
             cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Log.e(TAG, "file: photoFile : $photoFile")
-                    val savedUri = Uri.fromFile(photoFile)
-                    Log.e(TAG, "outputFileResults.savedUri: ${outputFileResults.savedUri}")
-                    Log.e(TAG, "savedUri: $savedUri")
-                    val data = savePhoto(/*savedUri.toString()*/photoFile.toString(), dateInfo)
+                    val data = savePhoto(photoFile.toString(), dateInfo)
                     trySendBlocking(data)
 
                 }
@@ -52,7 +48,7 @@ class PhotoCaptureUseCase @Inject constructor(
 
         return MediaData(
             mediaName = file.name,
-            mediaPath = path,
+//            mediaPath = path,
             mediaDate = dateInfo,
             mediaUri = path.toUri()
         )

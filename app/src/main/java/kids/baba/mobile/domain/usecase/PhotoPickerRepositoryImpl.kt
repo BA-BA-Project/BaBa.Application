@@ -32,7 +32,6 @@ class PhotoPickerRepositoryImpl @Inject constructor(
 
         val mediaData = MediaData(
             mediaName = uri.toString(),
-            mediaPath = uri.toString(),
             mediaDate = date,
             mediaUri = uri
         )

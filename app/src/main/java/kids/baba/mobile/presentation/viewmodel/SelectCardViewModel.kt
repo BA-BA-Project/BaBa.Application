@@ -1,13 +1,9 @@
 package kids.baba.mobile.presentation.viewmodel
 
 import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,16 +15,13 @@ import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.state.PostAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.EOFException
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +55,7 @@ class SelectCardViewModel @Inject constructor(
 
     fun setPreviewImg(imageView: ImageView) {
         if (currentTakenMedia != null) {
-            imageView.setImageURI(currentTakenMedia!!.mediaPath.toUri())
+            imageView.setImageURI(currentTakenMedia!!.mediaUri)
         }
     }
 
@@ -93,11 +86,7 @@ class SelectCardViewModel @Inject constructor(
 
         if (currentTakenMedia != null) {
             Log.e(TAG, "url: ${currentTakenMedia!!.mediaUri}")
-//            val file = File(currentTakenMedia!!.mediaUri.toString()) // 카메라에서는 이렇게
-
-            val fileName = currentTakenMedia!!.mediaUri.toString().split("/").last()
-            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val file = File(storageDir, fileName)
+            val file = File(currentTakenMedia!!.mediaUri.toString())
 
 
             Log.e(TAG, "file: $file")
@@ -107,7 +96,7 @@ class SelectCardViewModel @Inject constructor(
             val requestHashMap = hashMapOf<String, RequestBody>()
             // TODO: 날짜 변경하기
 //            requestHashMap["date"] = currentTakenMedia!!.mediaDate.toPlainRequestBody()
-            requestHashMap["date"] = "2023-03-12".toPlainRequestBody()
+            requestHashMap["date"] = "2023-03-17".toPlainRequestBody()
             requestHashMap["title"] = currentTakenMedia!!.mediaName.toPlainRequestBody()
             requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
