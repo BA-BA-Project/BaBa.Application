@@ -93,8 +93,12 @@ class SelectCardViewModel @Inject constructor(
 
         if (currentTakenMedia != null) {
             Log.e(TAG, "url: ${currentTakenMedia!!.mediaUri}")
-//            val file = UriUtil.toFile(context, currentTakenMedia!!.mediaUri) // 갤러리에서는 이렇게 해야 함.
-            val file  = File(currentTakenMedia!!.mediaUri.toString()) // 카메라에서는 이렇게
+//            val file = File(currentTakenMedia!!.mediaUri.toString()) // 카메라에서는 이렇게
+
+            val fileName = currentTakenMedia!!.mediaUri.toString().split("/").last()
+            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val file = File(storageDir, fileName)
+
 
             Log.e(TAG, "file: $file")
             val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
@@ -103,7 +107,7 @@ class SelectCardViewModel @Inject constructor(
             val requestHashMap = hashMapOf<String, RequestBody>()
             // TODO: 날짜 변경하기
 //            requestHashMap["date"] = currentTakenMedia!!.mediaDate.toPlainRequestBody()
-            requestHashMap["date"] = "2023-03-09".toPlainRequestBody()
+            requestHashMap["date"] = "2023-03-12".toPlainRequestBody()
             requestHashMap["title"] = currentTakenMedia!!.mediaName.toPlainRequestBody()
             requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
@@ -120,49 +124,6 @@ class SelectCardViewModel @Inject constructor(
     companion object {
         const val MEDIA_DATA = "mediaData"
         private val defaultCardUiModelArray = CardStyleUiModel.values()
-    }
-
-    object UriUtil {
-        // URI -> File
-        fun toFile(context: Context, uri: Uri): File {
-            val fileName = getFileName(context, uri)
-            val file = FileUtil.createTempFile(context, fileName)
-            FileUtil.copyToFile(context, uri, file)
-
-            return File(file.absolutePath)
-        }
-
-        // get file name & extension
-        private fun getFileName(context: Context, uri: Uri): String {
-            val name = uri.toString().split("/").last()
-            val ext = context.contentResolver.getType(uri)!!.split("/").last()
-
-            return "$name.$ext"
-        }
-    }
-
-    object FileUtil {
-        // 임시 파일 생성
-        fun createTempFile(context: Context, fileName: String): File {
-            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            return File(storageDir, fileName)
-        }
-
-        // 파일 내용 스트림 복사
-        fun copyToFile(context: Context, uri: Uri, file: File) {
-            val inputStream = context.contentResolver.openInputStream(uri)
-            val outputStream = FileOutputStream(file)
-
-            val buffer = ByteArray(4 * 1024)
-            while (true) {
-                val byteCount = inputStream!!.read(buffer)
-                if (byteCount < 0) break
-                outputStream.write(buffer, 0, byteCount)
-            }
-
-            outputStream.flush()
-            inputStream.close()
-        }
     }
 
 }
