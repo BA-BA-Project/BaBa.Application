@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.content.Context
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,7 +7,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
 import kids.baba.mobile.presentation.model.CardStyleUiModel
@@ -28,12 +26,11 @@ import javax.inject.Inject
 class SelectCardViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val postBabyAlbumUseCase: PostBabyAlbumUseCase,
-    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val TAG = "SelectCardViewModel"
 
-    private var currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
+    val currentTakenMedia = MutableStateFlow<MediaData?>(savedStateHandle[MEDIA_DATA])
 
     private var _cardState: MutableStateFlow<Array<CardStyleUiModel>> = MutableStateFlow(CardStyleUiModel.values())
     val cardState = _cardState.asStateFlow()
@@ -51,18 +48,6 @@ class SelectCardViewModel @Inject constructor(
 
     init {
         getCards()
-    }
-
-    fun setPreviewImg(imageView: ImageView) {
-        if (currentTakenMedia != null) {
-            imageView.setImageURI(currentTakenMedia!!.mediaUri)
-        }
-    }
-
-    fun setTitle(title: TextView) {
-        if (currentTakenMedia != null) {
-            title.text = currentTakenMedia!!.mediaName
-        }
     }
 
     fun onCardSelected(position: Int) = viewModelScope.launch {
@@ -84,27 +69,22 @@ class SelectCardViewModel @Inject constructor(
 
     private suspend fun postAlbum() {
 
-        if (currentTakenMedia != null) {
-            Log.e(TAG, "url: ${currentTakenMedia!!.mediaUri}")
-            val file = File(currentTakenMedia!!.mediaUri.toString())
+        val file = File(currentTakenMedia.value?.mediaUri ?: "")
 
+        val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
 
-            Log.e(TAG, "file: $file")
-            val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-            val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
-
-            val requestHashMap = hashMapOf<String, RequestBody>()
-            // TODO: 날짜 변경하기
+        val requestHashMap = hashMapOf<String, RequestBody>()
+        // TODO: 날짜 변경하기
 //            requestHashMap["date"] = currentTakenMedia!!.mediaDate.toPlainRequestBody()
-            requestHashMap["date"] = "2023-03-17".toPlainRequestBody()
-            requestHashMap["title"] = currentTakenMedia!!.mediaName.toPlainRequestBody()
-            requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
+        requestHashMap["date"] = "2023-03-20".toPlainRequestBody()
+        requestHashMap["title"] = currentTakenMedia.value!!.mediaName.toPlainRequestBody()
+        requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
-            postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap)/*.catch {
-                _postAlbumState.value = PostAlbumState.Error(it)
-            }*/.collect {
-                _postAlbumState.value = PostAlbumState.Success
-            }
+        postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap)/*.catch {
+            _postAlbumState.value = PostAlbumState.Error(it)
+        }*/.collect {
+            _postAlbumState.value = PostAlbumState.Success
         }
     }
 

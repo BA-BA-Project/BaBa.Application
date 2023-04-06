@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MediaData(
     val mediaName: String = "",
-    val mediaUri: Uri,
+    val mediaUri: String = "",
     val mediaDate: String = ""
 ) : Parcelable

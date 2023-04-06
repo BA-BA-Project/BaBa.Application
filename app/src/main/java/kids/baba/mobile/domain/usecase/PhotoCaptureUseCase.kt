@@ -1,6 +1,5 @@
 package kids.baba.mobile.domain.usecase
 
-import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -31,7 +30,6 @@ class PhotoCaptureUseCase @Inject constructor(
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val data = savePhoto(photoFile.toString(), dateInfo)
                     trySendBlocking(data)
-
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -48,9 +46,9 @@ class PhotoCaptureUseCase @Inject constructor(
 
         return MediaData(
             mediaName = file.name,
-//            mediaPath = path,
             mediaDate = dateInfo,
-            mediaUri = path.toUri()
+//            mediaUri = path.toUri()
+            mediaUri = path
         )
     }
 }

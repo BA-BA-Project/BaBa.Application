@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
 import android.content.Context
-import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
@@ -14,6 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.model.MediaData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import java.io.File
@@ -27,46 +27,31 @@ class CropViewModel @Inject constructor(
 
     private val TAG = "CropViewModel"
 
-    private var currentTakenMedia = savedStateHandle.get<MediaData>(MEDIA_DATA)
-
-    fun setCropFrame(cropImageView: CropImageView) {
-        cropImageView.apply {
-            setAspectRatio(1, 1)
-            setFixedAspectRatio(true)
-            guidelines = CropImageView.Guidelines.ON
-            cropShape = CropImageView.CropShape.RECTANGLE
-            scaleType = CropImageView.ScaleType.FIT_CENTER
-            isAutoZoomEnabled = false
-            isShowProgressBar = true
-        }
-        cropImageView.setImageUriAsync(currentTakenMedia!!.mediaUri/*Uri.parse(currentTakenMedia!!.mediaPath)*/)
-    }
+    val currentTakenMediaInCrop = savedStateHandle.get<MediaData>(MEDIA_DATA)
+    val currentTakenMedia = MutableStateFlow<MediaData?>(savedStateHandle[MEDIA_DATA])
 
     fun cropImage(cropImageView: CropImageView) = callbackFlow {
         viewModelScope.launch {
-            if (currentTakenMedia != null) {
-                cropImageView.setOnCropImageCompleteListener { _, result ->
-                    Log.d(
-                        TAG, "CropResult - original uri : ${result.originalUri}" +
-                                "  cropped content: ${result.uriContent}"
+            cropImageView.setOnCropImageCompleteListener { _, result ->
+                Log.d(
+                    TAG, "CropResult - original uri : ${result.originalUri}" +
+                            "  cropped content: ${result.uriContent}"
+                )
+
+                val fileName = result.uriContent.toString().split("/").last()
+                val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                val file = File(storageDir, fileName)
+
+                currentTakenMedia.value =
+                    MediaData(
+                        mediaName = "Cropped",
+                        mediaDate = currentTakenMedia.value?.mediaDate.toString(),
+                        mediaUri = file.absolutePath
                     )
 
-                    val fileName = result.uriContent.toString().split("/").last()
-                    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                    val file = File(storageDir, fileName)
-
-                    currentTakenMedia =
-                        MediaData(
-                            mediaName = "Cropped",
-                            mediaDate = currentTakenMedia!!.mediaDate,
-                            mediaUri = file.absolutePath.toUri()
-                        )
-
-                    Log.d(TAG, "currentTakenMedia: $currentTakenMedia!!")
-                    trySendBlocking(currentTakenMedia!!)
-                }
-                cropImageView.croppedImageAsync()
+                trySendBlocking(currentTakenMedia.value!!)
             }
+            cropImageView.croppedImageAsync()
 
         }
         awaitClose()
@@ -77,6 +62,3 @@ class CropViewModel @Inject constructor(
     }
 
 }
-
-
-

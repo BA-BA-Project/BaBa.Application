@@ -44,20 +44,17 @@ class CropFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-
         val cropImageView = binding.ivCropImage
 
-        initView(cropImageView)
+        initView()
 
         addListener(binding.btnCropComplete, cropImageView)
     }
 
-    private fun initView(cropImageView: CropImageView) {
+    private fun initView() {
         binding.tbCrop.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-
-        viewModel.setCropFrame(cropImageView)
     }
 
     private fun addListener(

@@ -50,9 +50,6 @@ class SelectCardFragment @Inject constructor(
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.setPreviewImg(binding.ivBabyFrameBaby)
-        viewModel.setTitle(binding.tvBabyFrameTitle)
-
         binding.tbSelectCard.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
