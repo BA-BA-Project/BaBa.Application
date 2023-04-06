@@ -3,7 +3,6 @@ package kids.baba.mobile.presentation.viewmodel
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,7 +44,6 @@ class CropViewModel @Inject constructor(
                 currentTakenMedia.value =
                     MediaData(
                         mediaName = "Cropped",
-                        mediaDate = currentTakenMedia.value?.mediaDate.toString(),
                         mediaUri = file.absolutePath
                     )
 

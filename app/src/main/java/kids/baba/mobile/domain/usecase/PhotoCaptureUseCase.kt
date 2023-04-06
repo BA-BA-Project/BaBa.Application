@@ -3,7 +3,6 @@ package kids.baba.mobile.domain.usecase
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.core.net.toUri
 import kids.baba.mobile.domain.model.MediaData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -20,20 +19,22 @@ class PhotoCaptureUseCase @Inject constructor(
     suspend fun getMe(
         imageCapture: ImageCapture,
         outputOptions: ImageCapture.OutputFileOptions,
-        photoFile: File, dateInfo: String
+        photoFile: File
     ) = callbackFlow {
-
+        Log.e(TAG, "getMe Called")
         imageCapture.takePicture(
             outputOptions,
             cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val data = savePhoto(photoFile.toString(), dateInfo)
+                    Log.e(TAG, "onImageSaved Called")
+                    val data = savePhoto(photoFile.toString())
                     trySendBlocking(data)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
                     val msg = "Photo capture failed: ${exception.message}"
+                    exception.printStackTrace()
                     Log.e(TAG, msg)
                 }
             }
@@ -41,12 +42,11 @@ class PhotoCaptureUseCase @Inject constructor(
         awaitClose()
     }
 
-    private fun savePhoto(path: String, dateInfo: String): MediaData {
+    private fun savePhoto(path: String): MediaData {
         val file = File(path)
 
         return MediaData(
             mediaName = file.name,
-            mediaDate = dateInfo,
             mediaUri = path
         )
     }

@@ -63,7 +63,6 @@ class WriteTitleViewModel @Inject constructor(
 
         currentTakenMedia.value = MediaData(
             mediaName = title.value,
-            mediaDate = currentTakenMedia.value?.mediaDate.toString(),
             mediaUri = currentTakenMedia.value?.mediaUri ?: ""
         )
         emit(currentTakenMedia.value)
