@@ -2,18 +2,36 @@ package kids.baba.mobile.data
 
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.domain.model.TokenRefreshRequest
-import okhttp3.*
+import okhttp3.Authenticator
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object ApiHelper {
-    private val gson = GsonBuilder().setLenient().create()
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+        .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+        .create()
 
     private fun createOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
@@ -35,6 +53,28 @@ object ApiHelper {
         addConverterFactory(GsonConverterFactory.create(gson))
         client(createOkHttpClient())
     }.build().create(service)
+}
+
+private class LocalDateTimeAdapter : JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    override fun serialize(src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return JsonPrimitive(formatter.format(src))
+    }
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime {
+        return formatter.parse(json!!.asString, LocalDateTime::from)
+    }
+}
+
+private class LocalDateAdapter : JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+    override fun serialize(src: LocalDate?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return JsonPrimitive(formatter.format(src))
+    }
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDate {
+        return formatter.parse(json!!.asString, LocalDate::from)
+    }
 }
 
 private class AuthorizationInterceptor : Interceptor {
