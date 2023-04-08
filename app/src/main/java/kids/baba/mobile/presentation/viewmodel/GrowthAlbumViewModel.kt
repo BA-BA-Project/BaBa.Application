@@ -38,8 +38,6 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _growthAlbumList = MutableStateFlow<List<AlbumUiModel>>(emptyList())
     val growthAlbumList = _growthAlbumList.asStateFlow()
 
-    private var growthAlbumHash = HashMap<LocalDate, AlbumUiModel>()
-
     private val _selectedAlbum = MutableStateFlow(AlbumUiModel(date = LocalDate.now()))
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
@@ -47,22 +45,6 @@ class GrowthAlbumViewModel @Inject constructor(
     val selectedBaby = _selectedBaby.asStateFlow()
 
     private val tempDate = LocalDate.now()
-    private val tempAlbumList = List(5) { idx ->
-        if (idx % 3 == 0) {
-            null
-        } else {
-            AlbumUiModel(
-                contentId = idx,
-                name = "이호성$idx",
-                relation = "아빠$idx",
-                date = tempDate.minusDays(idx.toLong()),
-                title = "제목$idx",
-                like = idx % 2 == 0,
-                photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
-                cardStyle = "TEST"
-            )
-        }
-    }
 
     init {
         loadBaby()
@@ -71,11 +53,23 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     private fun loadAlbum() = viewModelScope.launch {
-        tempAlbumList.filterNotNull().forEach {
-            growthAlbumHash[it.date] = it
+        val nowYear = _selectedDate.value.year
+        val nowMonth = _selectedDate.value.monthValue
+        val startDate = LocalDate.of(nowYear,nowMonth,1)
+        val thisMonthAlbumList = MutableList(_selectedDate.value.lengthOfMonth()){idx ->
+            AlbumUiModel(date = startDate.plusDays(idx.toLong()))
         }
-        growthAlbumHash[LocalDate.now()] = AlbumUiModel(date = LocalDate.now())
-        _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
+        getAlbumsFromBabyIdUseCase.getAlbumsFromBabyId(
+            selectedBaby.value.babyId,
+            nowYear,
+            nowMonth
+        ).collect { albumList ->
+            albumList.album.forEach {
+                val day = it.date.dayOfMonth
+                thisMonthAlbumList[day-1] = it.toPresentation()
+            }
+            _growthAlbumList.value = thisMonthAlbumList
+        }
 
 //        getOneAlbumUseCase.getOneAlbum(id).catch {
 //            _growthAlbumState.value = GrowthAlbumState.Error(it)
@@ -87,6 +81,7 @@ class GrowthAlbumViewModel @Inject constructor(
     fun getAlbumIndex(): Int {
         return _growthAlbumList.value.indexOf(_selectedAlbum.value)
     }
+
     fun selectDate(date: LocalDate) {
         _selectedDate.value = date
 //        if (growthAlbumHash[date] == null) {
@@ -100,38 +95,40 @@ class GrowthAlbumViewModel @Inject constructor(
 //        }
     }
 
-    fun getDateFromPosition(position: Int): LocalDate{
+    fun getDateFromPosition(position: Int): LocalDate {
         return _growthAlbumList.value[position].date
     }
 
-    fun selectBaby(baby: BabyUiModel){
+    fun selectBaby(baby: BabyUiModel) {
         _selectedBaby.value = baby
         EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
     }
 
     fun selectAlbum() {
-        val date = _selectedDate.value
-        var album = growthAlbumHash[date]
-
-        if(album == null){
-            album = AlbumUiModel(date = date)
-            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
-            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
-            _growthAlbumList.value = beforeDateAlbum + album + afterDateAlbum
-        } else {
-            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
-        }
-        _selectedAlbum.value = album
+//        val date = _selectedDate.value
+//        var album = growthAlbumHash[date]
+//
+//        if (album == null) {
+//            album = AlbumUiModel(date = date)
+//            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
+//            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
+//            _growthAlbumList.value = beforeDateAlbum + album + afterDateAlbum
+//        } else {
+//            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
+//        }
+//        _selectedAlbum.value = album
     }
 
     private fun loadBaby() = viewModelScope.launch {
-         runCatching { _selectedBaby.value = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).toPresentation() }.getOrElse {
-             if(it is BabyNotFoundException){
-                 getBabiesUseCase.getBabies().collect{ babyList ->
-                     _selectedBaby.value = babyList.myBaby.first().toPresentation()
-                 }
-             }
-         }
+        runCatching {
+            _selectedBaby.value = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).toPresentation()
+        }.getOrElse {
+            if (it is BabyNotFoundException) {
+                getBabiesUseCase.getBabies().collect { babyList ->
+                    _selectedBaby.value = babyList.myBaby.first().toPresentation()
+                }
+            }
+        }
     }
 
     fun changeBaby() = viewModelScope.launch {

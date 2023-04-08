@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class Album(
     val contentId: Int = -1,
-    val name: String = "",
+    val ownerName: String = "",
     val relation: String = "",
     val date: LocalDate,
     val title: String = "",
