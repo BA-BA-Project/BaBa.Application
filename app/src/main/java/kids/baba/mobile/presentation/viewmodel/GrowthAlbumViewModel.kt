@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
-import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
+import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
 import kids.baba.mobile.domain.usecase.PostOneArticleUseCase
 import kids.baba.mobile.presentation.model.AlbumUiModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GrowthAlbumViewModel @Inject constructor(
     private val getAlbumsFromBabyIdUseCase: GetAlbumsFromBabyIdUseCase,
-    private val getOneBabyUseCase: GetOneBabyUseCase,
+    private val getBabiesUseCase: GetBabiesUseCase,
     private val postOneArticleUseCase: PostOneArticleUseCase,
     private val likeAlbumUseCase: LikeAlbumUseCase
 ) : ViewModel() {
