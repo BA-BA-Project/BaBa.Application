@@ -3,10 +3,15 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.error.BabyNotFoundException
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
 import kids.baba.mobile.domain.usecase.PostOneArticleUseCase
+import kids.baba.mobile.presentation.mapper.toDomain
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.state.GrowthAlbumState
@@ -35,10 +40,10 @@ class GrowthAlbumViewModel @Inject constructor(
 
     private var growthAlbumHash = HashMap<LocalDate, AlbumUiModel>()
 
-    private val _selectedAlbum = MutableStateFlow<AlbumUiModel?>(AlbumUiModel(date = LocalDate.now()))
+    private val _selectedAlbum = MutableStateFlow(AlbumUiModel(date = LocalDate.now()))
     val selectedAlbum = _selectedAlbum.asStateFlow()
 
-    private val _selectedBaby = MutableStateFlow<BabyUiModel?>(null)
+    private val _selectedBaby = MutableStateFlow(BabyUiModel())
     val selectedBaby = _selectedBaby.asStateFlow()
 
     private val tempDate = LocalDate.now()
@@ -96,12 +101,12 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     fun getDateFromPosition(position: Int): LocalDate{
-        val a = _growthAlbumList.value
         return _growthAlbumList.value[position].date
     }
 
     fun selectBaby(baby: BabyUiModel){
         _selectedBaby.value = baby
+        EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
     }
 
     fun selectAlbum() {
@@ -120,14 +125,13 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     private fun loadBaby() = viewModelScope.launch {
-//        _growthAlbumState.value = GrowthAlbumState.Loading
-//        getOneBabyUseCase.getOneBaby().catch {
-//            _growthAlbumState.value = GrowthAlbumState.Error(it)
-//        }.collect {
-//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
-//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
-//        }
-        _selectedBaby.value = BabyUiModel("0","#FF1234","앙쥬0", true)
+         runCatching { _selectedBaby.value = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).toPresentation() }.getOrElse {
+             if(it is BabyNotFoundException){
+                 getBabiesUseCase.getBabies().collect{ babyList ->
+                     _selectedBaby.value = babyList.myBaby.first().toPresentation()
+                 }
+             }
+         }
     }
 
     fun changeBaby() = viewModelScope.launch {

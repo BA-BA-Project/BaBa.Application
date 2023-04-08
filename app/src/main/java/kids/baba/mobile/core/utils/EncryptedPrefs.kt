@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.GsonBuilder
+import kids.baba.mobile.core.error.BabyNotFoundException
 import kids.baba.mobile.core.error.MemberNotFoundException
+import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.MemberModel
 
 object EncryptedPrefs {
@@ -36,6 +38,15 @@ object EncryptedPrefs {
     fun getMember(key: String): MemberModel{
         val value = prefs?.getString(key,null) ?: throw MemberNotFoundException()
         return gson.fromJson(value, MemberModel::class.java)
+    }
+
+    fun putBaby(key: String, value: Baby){
+        val json = gson.toJson(value,Baby::class.java)
+        putString(key,json)
+    }
+    fun getBaby(key: String): Baby {
+        val value = prefs?.getString(key,null) ?: throw BabyNotFoundException()
+        return gson.fromJson(value, Baby::class.java)
     }
 
     fun putString(key: String, value: String) {

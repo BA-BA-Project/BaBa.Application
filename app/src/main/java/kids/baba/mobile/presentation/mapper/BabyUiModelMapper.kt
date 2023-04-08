@@ -7,15 +7,21 @@ import kids.baba.mobile.presentation.model.BabyUiModel
 
 fun BabyResponse.toPresentation() =
     BabiesUiModel(
-        myBaby = myBaby.toPresentation(),
-        othersBaby = others.toPresentation()
+        myBaby = myBaby.map { it.toPresentation() },
+        othersBaby = others.map { it.toPresentation() }
     )
 
-fun List<Baby>.toPresentation() = this.map {
+fun Baby.toPresentation() =
     BabyUiModel(
-        babyId = it.babyId,
-        groupColor = it.groupColor,
-        name = it.name,
+        babyId = this.babyId,
+        groupColor = this.groupColor,
+        name = this.name,
         selected = false
     )
-}
+
+fun BabyUiModel.toDomain() =
+    Baby(
+        babyId = this.babyId,
+        groupColor = this.groupColor,
+        name = this.name,
+    )
