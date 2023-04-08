@@ -48,15 +48,15 @@ class GrowthAlbumViewModel @Inject constructor(
 
     init {
         loadBaby()
-        loadAlbum()
+        loadAlbum(LocalDate.now())
         selectDate(LocalDate.now())
     }
 
-    private fun loadAlbum() = viewModelScope.launch {
-        val nowYear = _selectedDate.value.year
-        val nowMonth = _selectedDate.value.monthValue
+    private fun loadAlbum(date: LocalDate) = viewModelScope.launch {
+        val nowYear = date.year
+        val nowMonth = date.monthValue
         val startDate = LocalDate.of(nowYear,nowMonth,1)
-        val thisMonthAlbumList = MutableList(_selectedDate.value.lengthOfMonth()){idx ->
+        val thisMonthAlbumList = MutableList(date.dayOfMonth){idx ->
             AlbumUiModel(date = startDate.plusDays(idx.toLong()))
         }
         getAlbumsFromBabyIdUseCase.getAlbumsFromBabyId(
@@ -69,13 +69,9 @@ class GrowthAlbumViewModel @Inject constructor(
                 thisMonthAlbumList[day-1] = it.toPresentation()
             }
             _growthAlbumList.value = thisMonthAlbumList
+            _selectedDate.value = date
+            _selectedAlbum.value = _growthAlbumList.value[date.dayOfMonth - 1]
         }
-
-//        getOneAlbumUseCase.getOneAlbum(id).catch {
-//            _growthAlbumState.value = GrowthAlbumState.Error(it)
-//        }.collect {
-//            _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
-//        }
     }
 
     fun getAlbumIndex(): Int {
@@ -83,16 +79,14 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     fun selectDate(date: LocalDate) {
-        _selectedDate.value = date
-//        if (growthAlbumHash[date] == null) {
-//            val tempAlbum = AlbumUiModel(date = date)
-//            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
-//            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
-//            _growthAlbumList.value = beforeDateAlbum + tempAlbum + afterDateAlbum
-//        } else {
-//            _selectedAlbum.value = growthAlbumHash[date]
-//            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
-//        }
+        if(_selectedDate.value.month != date.month){
+            loadAlbum(date)
+        } else {
+            _selectedDate.value = date
+            if(_growthAlbumList.value.isNotEmpty()){
+                _selectedAlbum.value = _growthAlbumList.value[date.dayOfMonth - 1]
+            }
+        }
     }
 
     fun getDateFromPosition(position: Int): LocalDate {
