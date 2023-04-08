@@ -48,15 +48,18 @@ class GrowthAlbumViewModel @Inject constructor(
 
     init {
         loadBaby()
-        loadAlbum(LocalDate.now())
-        selectDate(LocalDate.now())
     }
 
     private fun loadAlbum(date: LocalDate) = viewModelScope.launch {
         val nowYear = date.year
         val nowMonth = date.monthValue
         val startDate = LocalDate.of(nowYear,nowMonth,1)
-        val thisMonthAlbumList = MutableList(date.dayOfMonth){idx ->
+        val size = if(date == LocalDate.now()) {
+            date.dayOfMonth
+        } else {
+            date.lengthOfMonth()
+        }
+        val thisMonthAlbumList = MutableList(size){idx ->
             AlbumUiModel(date = startDate.plusDays(idx.toLong()))
         }
         getAlbumsFromBabyIdUseCase.getAlbumsFromBabyId(
@@ -89,8 +92,10 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun getDateFromPosition(position: Int): LocalDate {
-        return _growthAlbumList.value[position].date
+    fun selectDateFromPosition(position: Int) {
+        _selectedAlbum.value = _growthAlbumList.value[position]
+        _selectedDate.value = _growthAlbumList.value[position].date
+
     }
 
     fun selectBaby(baby: BabyUiModel) {
@@ -123,6 +128,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
             }
         }
+        loadAlbum(LocalDate.now())
     }
 
     fun changeBaby() = viewModelScope.launch {

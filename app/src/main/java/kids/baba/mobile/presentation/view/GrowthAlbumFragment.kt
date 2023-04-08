@@ -166,6 +166,7 @@ class GrowthAlbumFragment : Fragment() {
 
     //
     private fun initializeAlbumHolder() {
+        var isViewPagerInit = false
         albumAdapter = AlbumAdapter()
         binding.vpBabyPhoto.adapter = albumAdapter
         binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
@@ -175,15 +176,15 @@ class GrowthAlbumFragment : Fragment() {
             }
         }
 
-//        binding.vpBabyPhoto.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                if(isSelectedByCalendar.not()){
-//                    setSelectedDate(viewModel.getDateFromPosition(position))
-//                }
-//                isSelectedByCalendar = false
-//            }
-//        })
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(isViewPagerInit){
+                    viewModel.selectDateFromPosition(position)
+                }
+                isViewPagerInit = true
+            }
+        })
 
         binding.vpBabyPhoto.offscreenPageLimit = 1
 
