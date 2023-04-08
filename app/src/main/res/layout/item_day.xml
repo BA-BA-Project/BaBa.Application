@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    tools:background="@color/baba_main">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="10dp">
+    <data>
+
+        <variable
+            name="selected"
+            type="Boolean" />
+
+        <variable
+            name="formatter"
+            type="java.time.format.DateTimeFormatter" />
+
+        <variable
+            name="date"
+            type="java.time.LocalDate" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@{selected ? @drawable/bg_selected_day : null}"
+        tools:background="@drawable/bg_selected_day">
 
         <TextView
-            android:id="@+id/exSevenDayText"
+            android:id="@+id/tv_weekday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            tools:text="Mon" />
-
-        <TextView
-            android:layout_marginTop="4dp"
-            android:id="@+id/exSevenDateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:textColor="@color/black"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="8dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/BABA.TextStyle"
             android:textSize="14sp"
+            android:textStyle="bold"
+            app:date="@{date}"
+            app:layout_constraintBottom_toTopOf="@id/tv_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="월" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:date="@{date}"
+            app:formatter="@{formatter}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_weekday"
             tools:text="24" />
-    </LinearLayout>
 
-    <View
-        android:id="@+id/exSevenSelectedView"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_gravity="bottom"
-        android:background="@color/baba_main" />
-
-</FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
 

@@ -3,14 +3,17 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
-import kids.baba.mobile.domain.usecase.*
+import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
+import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
+import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
+import kids.baba.mobile.domain.usecase.PostOneArticleUseCase
+import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,78 +24,117 @@ class GrowthAlbumViewModel @Inject constructor(
     private val likeAlbumUseCase: LikeAlbumUseCase
 ) : ViewModel() {
     private val _growthAlbumState =
-        MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.UnInitialized)
+        MutableStateFlow<GrowthAlbumState>(GrowthAlbumState.Loading)
     val growthAlbumState = _growthAlbumState
 
-    private val _date = MutableStateFlow("")
-    val date = _date
+    private val _selectedDate = MutableStateFlow<LocalDate>(LocalDate.now())
+    val selectedDate = _selectedDate.asStateFlow()
 
-    private val _baby = MutableStateFlow<Baby?>(null)
-    val baby = _baby
+    private val _growthAlbumList = MutableStateFlow<List<AlbumUiModel>>(emptyList())
+    val growthAlbumList = _growthAlbumList.asStateFlow()
 
-    private val _album = MutableStateFlow<Album?>(null)
-    val album = _album.asStateFlow()
+    private var growthAlbumHash = HashMap<LocalDate, AlbumUiModel>()
 
-    private val _albums = MutableStateFlow<List<Album>>(listOf())
-    val albums = _albums
+    private val _selectedAlbum = MutableStateFlow<AlbumUiModel?>(AlbumUiModel(date = LocalDate.now()))
+    val selectedAlbum = _selectedAlbum.asStateFlow()
 
-    private val _width = MutableStateFlow(0)
-    val width = _width
+    private val _selectedBaby = MutableStateFlow<BabyUiModel?>(null)
+    val selectedBaby = _selectedBaby.asStateFlow()
 
-    private val _myBabies = MutableStateFlow<List<Baby>?>(null)
-    val myBabies = _myBabies
-
-    private val _othersBabies = MutableStateFlow<List<Baby>?>(null)
-    val othersBabies = _othersBabies
-
-    init {
-        loadBaby()
-    }
-
-    fun loadAlbum(id: String, year: Int, month: Int) = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        getAlbumsFromBabyIdUseCase.getOneAlbum(id, year, month).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect {
-            _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
+    private val tempDate = LocalDate.now()
+    private val tempAlbumList = List(5) { idx ->
+        if (idx % 3 == 0) {
+            null
+        } else {
+            AlbumUiModel(
+                contentId = idx,
+                name = "이호성$idx",
+                relation = "아빠$idx",
+                date = tempDate.minusDays(idx.toLong()),
+                title = "제목$idx",
+                like = idx % 2 == 0,
+                photo = "https://www.shutterstock.com/image-photo/cute-little-african-american-infant-600w-1937038210.jpg",
+                cardStyle = "TEST"
+            )
         }
     }
 
-    fun pickDate() = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.PickDate
+    init {
+        loadBaby()
+        loadAlbum()
+        selectDate(LocalDate.now())
+    }
+
+    private fun loadAlbum() = viewModelScope.launch {
+        tempAlbumList.filterNotNull().forEach {
+            growthAlbumHash[it.date] = it
+        }
+        growthAlbumHash[LocalDate.now()] = AlbumUiModel(date = LocalDate.now())
+        _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
+
+//        getOneAlbumUseCase.getOneAlbum(id).catch {
+//            _growthAlbumState.value = GrowthAlbumState.Error(it)
+//        }.collect {
+//            _growthAlbumState.value = GrowthAlbumState.SuccessAlbum(it.album)
+//        }
+    }
+
+    fun getAlbumIndex(): Int {
+        return _growthAlbumList.value.indexOf(_selectedAlbum.value)
+    }
+    fun selectDate(date: LocalDate) {
+        _selectedDate.value = date
+//        if (growthAlbumHash[date] == null) {
+//            val tempAlbum = AlbumUiModel(date = date)
+//            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
+//            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
+//            _growthAlbumList.value = beforeDateAlbum + tempAlbum + afterDateAlbum
+//        } else {
+//            _selectedAlbum.value = growthAlbumHash[date]
+//            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
+//        }
+    }
+
+    fun getDateFromPosition(position: Int): LocalDate{
+        val a = _growthAlbumList.value
+        return _growthAlbumList.value[position].date
+    }
+
+    fun selectBaby(baby: BabyUiModel){
+        _selectedBaby.value = baby
+    }
+
+    fun selectAlbum() {
+        val date = _selectedDate.value
+        var album = growthAlbumHash[date]
+
+        if(album == null){
+            album = AlbumUiModel(date = date)
+            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
+            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
+            _growthAlbumList.value = beforeDateAlbum + album + afterDateAlbum
+        } else {
+            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
+        }
+        _selectedAlbum.value = album
+    }
+
+    private fun loadBaby() = viewModelScope.launch {
+//        _growthAlbumState.value = GrowthAlbumState.Loading
+//        getOneBabyUseCase.getOneBaby().catch {
+//            _growthAlbumState.value = GrowthAlbumState.Error(it)
+//        }.collect {
+//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.myBaby)
+//            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it.others)
+//        }
+        _selectedBaby.value = BabyUiModel("0","#FF1234","앙쥬0", true)
     }
 
     fun changeBaby() = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.ChangeBaby
     }
 
-    private fun loadBaby() = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        getOneBabyUseCase.getOneBaby().catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect {
-            _growthAlbumState.value = GrowthAlbumState.SuccessBaby(it)
-        }
-    }
-
-    fun like() = viewModelScope.launch {
-        val babyId = _baby.value?.babyId ?: return@launch
-        val contentId = album.value?.contentId.toString()
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        likeAlbumUseCase.like(
-            babyId,
-            contentId
-        ).catch {
-            _growthAlbumState.value = GrowthAlbumState.Error(it)
-        }.collect {
-            _growthAlbumState.value = GrowthAlbumState.Like(it.isLiked)
-        }
-    }
-
-    fun postArticle(id: String) = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.Loading
-        postOneArticleUseCase.post(id)
-        _growthAlbumState.value = GrowthAlbumState.Post
-
+    fun pickDate() {
+        _growthAlbumState.value = GrowthAlbumState.PickDate
     }
 }

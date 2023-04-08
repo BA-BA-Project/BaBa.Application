@@ -10,5 +10,4 @@ sealed class IntroEvent {
     object MoveToMain : IntroEvent()
     object IntroError: IntroEvent()
     data class MoveToWelcome(val name: String): IntroEvent()
-
 }

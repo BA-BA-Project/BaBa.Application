@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.view
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,14 +22,17 @@ import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
+import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class AlbumDetailDialog(private val viewModel: AlbumDetailViewModel) : DialogFragment() {
+class AlbumDetailDialog : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+
+    private val viewModel: AlbumDetailViewModel by viewModels()
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
 
@@ -174,10 +176,16 @@ class AlbumDetailDialog(private val viewModel: AlbumDetailViewModel) : DialogFra
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "AlbumDetailDialog"
+        const val SELECTED_ALBUM_KEY = "SELECTED_ALBUM_KEY"
     }
 }

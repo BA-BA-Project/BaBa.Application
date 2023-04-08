@@ -39,7 +39,7 @@
     <string name="create_profile_complete">프로필 생성 완료</string>
     <string name="view_by_date">날짜별 보기</string>
     <string name="album_card_record_image">기록하기를 눌러 사진을 남겨 봐요</string>
-    <string name="album_card_title">{아기}의 오늘 기록</string>
+    <string name="default_album_title">%s의 기록</string>
     <string name="input_children_info">아이 정보 기입</string>
     <string name="check_have_invite_code">초대코드를 받으셨나요?</string>
     <string name="babies_info_by_invite_code">%s의 %s이시군요!</string>
@@ -72,4 +72,7 @@
     <string name="album_comment_tag">\@%s</string>
     <string name="user_info_collect_complete">정보 수집 완료!</string>
     <string name="welcome_baba">어서와요, %s님</string>
+    <string name="today">Today</string>
+    <string name="select_baby">성장앨범 보러가기</string>
+    <string name="management_babies">아이 추가 및 관리</string>
 </resources>
