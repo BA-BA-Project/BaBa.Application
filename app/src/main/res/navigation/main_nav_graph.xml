@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/growth_album_fragment">
+    <fragment
+        android:id="@+id/growth_album_fragment"
+        android:name="kids.baba.mobile.presentation.view.GrowthAlbumFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_growthalbum">
+    </fragment>
+    <fragment
+        android:id="@+id/my_page_fragment"
+        android:name="kids.baba.mobile.presentation.view.MyPageFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_mypage">
+    </fragment>
+    <fragment
+        android:id="@+id/collapse_fragment"
+        android:name="kids.baba.mobile.presentation.view.CollapseFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_collapse">
+    </fragment>
+</navigation>
