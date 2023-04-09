@@ -8,6 +8,18 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
+
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
+
+        <variable
+            name="baby"
+            type="kids.baba.mobile.presentation.model.BabyUiModel" />
+
+        <import type="java.time.LocalDate" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,247 +38,215 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/babyChangeIcon"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_baby_profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="5dp"
-            android:onClick="@{() -> viewmodel.changeBaby()}"
-            android:src="@drawable/circle_pink"
-            app:layout_constraintBottom_toBottomOf="@+id/tvDate"
-            app:layout_constraintEnd_toStartOf="@+id/tvDate"
-            app:layout_constraintTop_toTopOf="@+id/tvDate" />
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="20dp"
             android:src="@drawable/profile_baby_1"
-            app:layout_constraintBottom_toBottomOf="@+id/tvDate"
-            app:layout_constraintEnd_toStartOf="@+id/tvDate"
-            app:layout_constraintTop_toTopOf="@+id/tvDate" />
+            app:backGroundColor="@{viewmodel.selectedBaby.groupColor}"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:civ_circle_background_color="@color/pink"
+            tools:src="@drawable/profile_baby_1" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
             android:textColor="@color/black"
-            android:text="@{viewmodel.date}"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/myCalendar"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/civ_baby_profile"
+            app:layout_constraintStart_toEndOf="@id/civ_baby_profile"
+            app:layout_constraintTop_toTopOf="@id/civ_baby_profile"
+            tools:text="2022.03" />
 
-        <ImageView
-            android:id="@+id/imageButton"
+        <ImageButton
+            android:id="@+id/btn_select_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:background="@android:color/transparent"
             android:onClick="@{() -> viewmodel.pickDate()}"
             android:src="@drawable/baseline_keyboard_arrow_down_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tvDate"
-            app:layout_constraintStart_toEndOf="@+id/tvDate"
-            app:layout_constraintTop_toTopOf="@+id/tvDate" />
-
+            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+            app:layout_constraintStart_toEndOf="@id/tv_date"
+            app:layout_constraintTop_toTopOf="@id/tv_date" />
 
         <com.kizitonwose.calendar.view.WeekCalendarView
-            android:id="@+id/myCalendar"
+            android:id="@+id/wcv_album_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            app:cv_dayViewResource="@layout/item_day"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="80dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:translationZ="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cardView" />
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView"
-            android:layout_width="280dp"
-            android:layout_height="360dp"
             android:layout_marginTop="20dp"
-            android:translationZ="-8dp"
-            app:cardCornerRadius="16dp"
-            app:cardUseCompatPadding="true"
+            app:cv_dayViewResource="@layout/item_day"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myCalendar"
-            app:strokeColor="@color/baba_main"
-            app:strokeWidth="1dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tvDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/orange"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_album_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="30dp"
-                    android:text="@{viewmodel.baby.name}"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="@string/album_card_record_image"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/shadow"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0"
-                android:background="@color/black"
-                android:clickable="false"
-                android:elevation="8dp"
-                android:focusable="false" />
-
-        </com.google.android.material.card.MaterialCardView>
-
+            app:layout_constraintTop_toBottomOf="@id/tv_date"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_day"
+            tools:orientation="horizontal" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/baby_select_view"
-            android:layout_width="0dp"
-            android:layout_height="500dp"
-            android:background="@drawable/white_card_view"
-            android:clickable="true"
-            android:elevation="10dp"
-            android:focusable="true"
-            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wcv_album_calendar">
 
-            <TextView
-                android:id="@+id/baby_select_view_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:text="성장앨범 보러가기"
-                android:textColor="@color/black"
-                android:textSize="23sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/line_view"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/baby_select_view_label" />
-
-            <View
-                android:id="@+id/line_view_2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/my_baby_list" />
-
-            <View
-                android:id="@+id/line_view_3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/others_baby_list" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/my_baby_list"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_baby_album"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/others_baby_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line_view"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintVertical_weight="3"
-                tools:listitem="@layout/item_baby" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/others_baby_list"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/button_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/my_baby_list"
-                app:layout_constraintVertical_weight="6"
-                tools:listitem="@layout/item_baby" />
-
-            <View
-                android:id="@+id/button_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_marginHorizontal="28dp"
+                app:cardCornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/others_baby_list"
-                app:layout_constraintVertical_weight="2" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/baba_main"
+                app:strokeWidth="1dp" />
 
-            <ImageView
-                android:id="@+id/add_baby_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:src="@drawable/button"
-                app:layout_constraintBottom_toBottomOf="@+id/button_view"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_baby_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginVertical="20dp"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:translationZ="8dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_add_comment"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/button_view" />
+                app:layout_constraintTop_toBottomOf="@id/tv_album_title" />
 
             <TextView
+                android:id="@+id/tv_album_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="18dp"
+                android:elevation="2dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/BABA.TextStyle"
+                android:textColor="@color/baba_sub_2"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:date="@{viewmodel.selectedAlbum.date}"
+                app:formatter="@{dateTimeFormatter}"
+                app:layout_constraintEnd_toStartOf="@id/btn_album_config"
+                app:layout_constraintStart_toStartOf="@id/cv_baby_album"
+                app:layout_constraintTop_toTopOf="@id/cv_baby_album"
+                tools:text="today" />
+
+            <ImageButton
+                android:id="@+id/btn_album_config"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:text="아이 추가 및 관리"
-                app:layout_constraintBottom_toBottomOf="@+id/button_view"
-                app:layout_constraintStart_toEndOf="@+id/add_baby_button"
-                app:layout_constraintTop_toTopOf="@+id/button_view" />
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:elevation="1dp"
+                android:visibility="@{viewmodel.selectedAlbum.contentId == -1 ? View.INVISIBLE: View.VISIBLE}"
+                android:src="@drawable/ic_meatballs_menu"
+                app:layout_constraintBottom_toBottomOf="@id/tv_album_date"
+                app:layout_constraintEnd_toEndOf="@id/cv_baby_album"
+                app:layout_constraintStart_toEndOf="@id/tv_album_date"
+                app:layout_constraintTop_toTopOf="@id/tv_album_date" />
+
+            <TextView
+                android:id="@+id/tv_album_writer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:includeFontPadding="false"
+                android:text="@{viewmodel.selectedAlbum.name}"
+                android:textAppearance="@style/BABA.TextStyle"
+                android:textSize="13sp"
+                android:visibility="@{viewmodel.selectedAlbum.name.empty ? View.INVISIBLE: View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
+                app:layout_constraintEnd_toStartOf="@id/tv_album_relation"
+                app:layout_constraintStart_toEndOf="@id/tv_album_title"
+                app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                tools:text="손제인" />
+
+            <TextView
+                android:id="@+id/tv_album_relation"
+                style="@style/BABA.TextStyle.Relation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_album_relation"
+                android:elevation="1dp"
+                android:text="@{viewmodel.selectedAlbum.relation}"
+                android:visibility="@{viewmodel.selectedAlbum.relation.empty ? View.INVISIBLE: View.VISIBLE}"
+                android:textAppearance="@style/BABA.TextStyle"
+                app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
+                app:layout_constraintEnd_toEndOf="@id/btn_album_config"
+                app:layout_constraintStart_toEndOf="@id/tv_album_writer"
+                app:layout_constraintTop_toTopOf="@id/tv_album_title"
+                tools:text="엄마" />
+
+            <TextView
+                android:id="@+id/tv_album_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="8dp"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@{viewmodel.selectedAlbum.title.empty ? @string/default_album_title(baby.name) : viewmodel.selectedAlbum.title }"
+                android:textAppearance="@style/BABA.TextStyle"
+                android:textColor="@color/text_0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/tv_album_writer"
+                app:layout_constraintStart_toStartOf="@id/tv_album_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_album_date"
+                tools:text="@string/default_album_title" />
+
+            <TextView
+                android:id="@+id/tv_add_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:elevation="1dp"
+                android:includeFontPadding="false"
+                android:text="@string/album_card_record_image"
+                android:textAppearance="@style/BABA.TextStyle"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/cv_baby_album"
+                app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
+                app:layout_constraintEnd_toStartOf="@+id/btn_add_comment"
+                app:layout_constraintStart_toStartOf="@+id/tv_album_title" />
+
+            <ImageButton
+                android:id="@+id/btn_add_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:elevation="1dp"
+                android:src="@drawable/ic_arrow_down"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_add_comment"
+                app:layout_constraintEnd_toEndOf="@+id/cv_baby_album"
+                app:layout_constraintTop_toTopOf="@+id/tv_add_comment" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/black"
+            android:clickable="false"
+            android:elevation="8dp"
+            android:focusable="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

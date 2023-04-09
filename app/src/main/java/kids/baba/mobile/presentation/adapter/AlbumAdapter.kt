@@ -1,48 +1,38 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kids.baba.mobile.databinding.ItemAlbumBinding
-import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.presentation.model.AlbumUiModel
 
-class AlbumAdapter : ListAdapter<Album, AlbumAdapter.AlbumViewHolder>(diffUtil) {
-    val list = mutableListOf<Album>()
-
-    class AlbumViewHolder(private val binding: ItemAlbumBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Album) {
-            Glide.with(binding.albumImage)
-                .load(item.photo)
-                .into(binding.albumImage)
-        }
-    }
-
+class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         val view = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlbumViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(getItem(position))
     }
 
-    fun setItem(item: Album) {
-        list.add(item)
-        notifyDataSetChanged()
+    class AlbumViewHolder(private val binding: ItemAlbumBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: AlbumUiModel) {
+            binding.like = item.like
+            binding.photo = item.photo
+            //Todo test용 날짜지우기
+            binding.date = item.date.toString()
+        }
     }
-
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Album>() {
-            override fun areItemsTheSame(oldItem: Album, newItem: Album) =
+        val diffUtil = object : DiffUtil.ItemCallback<AlbumUiModel>() {
+            override fun areItemsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel) =
                 oldItem.contentId == newItem.contentId
 
-            override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean =
+            override fun areContentsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel): Boolean =
                 oldItem.hashCode() == newItem.hashCode()
         }
     }

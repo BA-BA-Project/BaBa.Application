@@ -1,58 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <!--        test용 날짜-->
+        <variable
+            name="date"
+            type="String" />
 
         <variable
-            name="viewmodel"
-            type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
+            name="photo"
+            type="String" />
+
+        <variable
+            name="like"
+            type="Boolean" />
+
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardCornerRadius="8dp"
-        app:cardUseCompatPadding="true"
-        app:strokeColor="@color/baba_main"
-        app:strokeWidth="1dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/album_image"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:background="@drawable/rounded_corner"
-                android:cropToPadding="true"
-                android:padding="2dp"
-                android:scaleType="centerCrop" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:src="@drawable/bg_profile_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/iv_baby_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:imageFromUrl="@{photo}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/album_default" />
 
-            <CheckBox
-                android:id="@+id/cb_album_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
-                android:layout_marginBottom="21dp"
-                android:background="@drawable/bg_like"
-                android:button="@null"
-                android:checked="@{viewmodel.album.like}"
-                android:onClick="@{() -> viewmodel.like()}"
-                android:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"  />
+                <!--            테스트용 날짜-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{date}"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon"
+                    app:layout_constraintStart_toStartOf="@id/iv_baby_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_baby_icon"
+                    tools:text="123123" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+
+                <CheckBox
+                    android:id="@+id/cb_album_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="21dp"
+                    android:background="@drawable/bg_like"
+                    android:button="@null"
+                    android:checked="@{like}"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

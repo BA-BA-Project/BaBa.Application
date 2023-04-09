@@ -5,57 +5,39 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ItemBabyBinding
-import kids.baba.mobile.domain.model.Baby
+import kids.baba.mobile.presentation.model.BabyUiModel
 
-class BabyAdapter : ListAdapter<Baby, BabyAdapter.BabyViewHolder>(diffUtil) {
-    val list = mutableListOf<Baby>()
-    private lateinit var listener: (Baby) -> Unit
-
-    class BabyViewHolder(
-        private val binding: ItemBabyBinding,
-        private val listener: (Baby) -> Unit
-    ) :
+class BabyAdapter(private val itemClick: (BabyUiModel) -> Unit) : ListAdapter<BabyUiModel, BabyAdapter.BabyViewHolder>(diffUtil) {
+    class BabyViewHolder(private val binding: ItemBabyBinding, itemClick: (BabyUiModel) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Baby) {
-            binding.babyImage.setImageResource(R.drawable.profile_baby_1)
-            binding.babyName.text = item.name
-            binding.root.setOnClickListener {
-                listener(item)
+
+        lateinit var baby : BabyUiModel
+        init {
+            itemView.setOnClickListener {
+                itemClick(baby)
             }
+        }
+        fun bind(baby: BabyUiModel) {
+            binding.baby = baby
+            this.baby = baby
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BabyViewHolder {
         val view = ItemBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BabyViewHolder(view, listener)
+        return BabyViewHolder(view, itemClick)
     }
 
     override fun onBindViewHolder(holder: BabyViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = list.size
-
-
-    override fun submitList(list: List<Baby>?) {
-        notifyDataSetChanged()
-        super.submitList(list)
-    }
-
-    fun setItem(item: Baby, listener: (Baby) -> Unit) {
-        list.add(item)
-        this.listener = listener
-        notifyDataSetChanged()
-    }
-
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Baby>() {
-            override fun areItemsTheSame(oldItem: Baby, newItem: Baby) =
+        val diffUtil = object : DiffUtil.ItemCallback<BabyUiModel>() {
+            override fun areItemsTheSame(oldItem: BabyUiModel, newItem: BabyUiModel) =
                 oldItem.babyId == newItem.babyId
 
-            override fun areContentsTheSame(oldItem: Baby, newItem: Baby): Boolean =
+            override fun areContentsTheSame(oldItem: BabyUiModel, newItem: BabyUiModel): Boolean =
                 oldItem.hashCode() == newItem.hashCode()
         }
     }
