@@ -9,7 +9,6 @@ import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
-import kids.baba.mobile.domain.usecase.PostOneArticleUseCase
 import kids.baba.mobile.presentation.mapper.toDomain
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumUiModel
@@ -30,7 +29,6 @@ import javax.inject.Inject
 class GrowthAlbumViewModel @Inject constructor(
     private val getAlbumsFromBabyIdUseCase: GetAlbumsFromBabyIdUseCase,
     private val getBabiesUseCase: GetBabiesUseCase,
-    private val postOneArticleUseCase: PostOneArticleUseCase,
     private val likeAlbumUseCase: LikeAlbumUseCase
 ) : ViewModel() {
     private val _growthAlbumState =
@@ -117,6 +115,21 @@ class GrowthAlbumViewModel @Inject constructor(
             }
         }
         loadAlbum(LocalDate.now())
+    }
+
+    fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
+        if(album.contentId != -1){
+            likeAlbumUseCase.like(selectedBaby.value.babyId, album.contentId.toString()).collect{ likeResponse ->
+                _growthAlbumList.value = _growthAlbumList.value.map {
+                    if(it == album){
+                        _selectedAlbum.value = album.copy(like = likeResponse.isLiked)
+                        selectedAlbum.value
+                    }else {
+                        it
+                    }
+                }
+            }
+        }
     }
 
 }

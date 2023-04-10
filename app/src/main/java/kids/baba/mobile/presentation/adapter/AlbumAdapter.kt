@@ -8,23 +8,30 @@ import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemAlbumBinding
 import kids.baba.mobile.presentation.model.AlbumUiModel
 
-class AlbumAdapter : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
+class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit) : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         val view = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AlbumViewHolder(view)
+        return AlbumViewHolder(view, likeClick)
     }
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class AlbumViewHolder(private val binding: ItemAlbumBinding) :
+    class AlbumViewHolder(private val binding: ItemAlbumBinding, likeClick: (AlbumUiModel) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AlbumUiModel) {
-            binding.like = item.like
-            binding.photo = item.photo
+        private lateinit var album : AlbumUiModel
+        init {
+            binding.cbAlbumLike.setOnClickListener {
+                likeClick(album)
+            }
+        }
+        fun bind(album: AlbumUiModel) {
+            this.album = album
+            binding.like = album.like
+            binding.photo = album.photo
             //Todo test용 날짜지우기
-            binding.date = item.date.toString()
+            binding.date = album.date.toString()
         }
     }
     companion object {

@@ -191,7 +191,9 @@ class GrowthAlbumFragment : Fragment() {
     //
     private fun initializeAlbumHolder() {
         var isViewPagerInit = false
-        albumAdapter = AlbumAdapter()
+        albumAdapter = AlbumAdapter{
+            viewModel.likeAlbum(it)
+        }
         binding.vpBabyPhoto.adapter = albumAdapter
         binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
         viewLifecycleOwner.repeatOnStarted {
