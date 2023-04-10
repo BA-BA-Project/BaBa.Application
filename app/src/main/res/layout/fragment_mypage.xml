@@ -114,12 +114,26 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_kids_title" />
 
                     <ImageView
+                        android:id="@+id/iv_edit_kids"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
                         android:layout_marginEnd="15dp"
                         android:src="@drawable/ic_edit_my_page"
                         app:layout_constraintEnd_toEndOf="@id/kids_container"
                         app:layout_constraintTop_toTopOf="@id/tv_kids_title" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_kids"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="@id/kids_container"
+                        app:layout_constraintEnd_toEndOf="@id/iv_edit_kids"
+                        app:layout_constraintStart_toStartOf="@id/tv_kids_title"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_kids_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,12 +185,26 @@
                                 app:layout_constraintTop_toBottomOf="@id/tv_family_title" />
 
                             <ImageView
+                                android:id="@+id/iv_edit_family"
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
                                 android:layout_marginEnd="15dp"
                                 android:src="@drawable/ic_edit_my_page"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/tv_family_title" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_family"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/iv_edit_family"
+                                app:layout_constraintStart_toStartOf="@id/tv_family_title"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_family_desc" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -206,12 +234,27 @@
                                 app:layout_constraintTop_toBottomOf="@id/tv_mother_family_title" />
 
                             <ImageView
+                                android:id="@+id/iv_edit_mother_family"
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
                                 android:layout_marginEnd="15dp"
                                 android:src="@drawable/ic_edit_my_page"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/tv_mother_family_title" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_mother_family"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/iv_edit_mother_family"
+                                app:layout_constraintStart_toStartOf="@id/tv_mother_family_title"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_mother_family_desc" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -241,12 +284,26 @@
                                 app:layout_constraintTop_toBottomOf="@id/tv_father_family_title" />
 
                             <ImageView
+                                android:id="@+id/iv_edit_father_family"
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
                                 android:layout_marginEnd="15dp"
                                 android:src="@drawable/ic_edit_my_page"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/tv_father_family_title" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_father_family"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/iv_edit_father_family"
+                                app:layout_constraintStart_toStartOf="@id/tv_father_family_title"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_father_family_desc" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,12 +333,26 @@
                                 app:layout_constraintTop_toBottomOf="@id/tv_friends_title" />
 
                             <ImageView
+                                android:id="@+id/iv_edit_friends"
                                 android:layout_width="26dp"
                                 android:layout_height="26dp"
                                 android:layout_marginEnd="15dp"
                                 android:src="@drawable/ic_edit_my_page"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/tv_friends_title" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_friends"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/iv_edit_friends"
+                                app:layout_constraintStart_toStartOf="@id/tv_friends_title"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_friends_desc" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
