@@ -100,7 +100,7 @@ private class TokenAuthenticator : Authenticator {
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
                 val tokenRefreshRequest = TokenRefreshRequest(refreshToken)
                 val authApi = ApiHelper.create(AuthApi::class.java)
-                val resp = authApi.tokenRefresh(tokenRefreshRequest)
+                val resp = authApi.tokenRefresh(tokenRefreshRequest).execute()
 
                 if (!resp.isSuccessful) {
                     throw Throwable("토큰 갱신 실패")
