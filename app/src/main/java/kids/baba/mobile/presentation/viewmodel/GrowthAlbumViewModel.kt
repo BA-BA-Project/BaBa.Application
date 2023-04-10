@@ -21,6 +21,11 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+//TODO UISTATE를 하나의 클래스에서 관리하고 COLLECT를 해야하나 싶음.
+//TODO 각자 COLLECT를 진행하니 별도의 코루틴으로 동작하여 가끔 제대로된 값을 가져오지 못하는 경우가 있는것 같음
+
+
+
 @HiltViewModel
 class GrowthAlbumViewModel @Inject constructor(
     private val getAlbumsFromBabyIdUseCase: GetAlbumsFromBabyIdUseCase,
@@ -95,7 +100,6 @@ class GrowthAlbumViewModel @Inject constructor(
     fun selectDateFromPosition(position: Int) {
         _selectedAlbum.value = _growthAlbumList.value[position]
         _selectedDate.value = _growthAlbumList.value[position].date
-
     }
 
     fun selectBaby(baby: BabyUiModel) {
@@ -103,20 +107,6 @@ class GrowthAlbumViewModel @Inject constructor(
         EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
     }
 
-    fun selectAlbum() {
-//        val date = _selectedDate.value
-//        var album = growthAlbumHash[date]
-//
-//        if (album == null) {
-//            album = AlbumUiModel(date = date)
-//            val beforeDateAlbum = _growthAlbumList.value.filter { it.date.isBefore(date) }
-//            val afterDateAlbum = _growthAlbumList.value.filter { it.date.isAfter(date) }
-//            _growthAlbumList.value = beforeDateAlbum + album + afterDateAlbum
-//        } else {
-//            _growthAlbumList.value = growthAlbumHash.values.sortedBy { it.date }
-//        }
-//        _selectedAlbum.value = album
-    }
 
     private fun loadBaby() = viewModelScope.launch {
         runCatching {

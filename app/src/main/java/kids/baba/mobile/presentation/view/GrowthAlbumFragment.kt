@@ -29,9 +29,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 //TODO datePicker 대신 달력 커스터 마이징
-//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨)
-//TODO viewPager - yyyy-mm dateview 연동 자연스럽게 하기(약간 싱크가 안맞음)
-
+//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨
 // 사용한 오픈소스 달력
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -97,7 +95,16 @@ class GrowthAlbumFragment : Fragment() {
                 bind.date = day.date
                 bind.selected = selectedDate == day.date
                 bind.formatter = formatter
+                bind.hasAlbum = false
 
+                if(viewModel.growthAlbumList.value.isNotEmpty()){
+                    if(day.date.month == selectedDate.month){
+                        val idx = day.date.dayOfMonth - 1
+                        if(idx <= viewModel.growthAlbumList.value.lastIndex && viewModel.growthAlbumList.value[idx].contentId != -1){
+                            bind.hasAlbum = true
+                        }
+                    }
+                }
 
                 view.isClickable = day.date.isAfter(LocalDate.now()).not()
                 if (view.isClickable) {
@@ -151,7 +158,6 @@ class GrowthAlbumFragment : Fragment() {
     private fun collectSelectedDate() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.selectedDate.collect {
-                viewModel.selectAlbum()
                 setSelectedDate(it)
             }
         }
@@ -173,6 +179,7 @@ class GrowthAlbumFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.growthAlbumList.collect {
                 albumAdapter.submitList(it)
+                binding.wcvAlbumCalendar.notifyCalendarChanged()
             }
         }
 
@@ -221,6 +228,9 @@ class GrowthAlbumFragment : Fragment() {
                 selectedAlbum = it
                 binding.vpBabyPhoto.doOnPreDraw {
                     binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+                }
+                if(selectedDate==LocalDate.now()){
+                    binding.tvAlbumDate.setText(R.string.today)
                 }
             }
         }
