@@ -49,8 +49,6 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _selectedBaby = MutableStateFlow(BabyUiModel())
     val selectedBaby = _selectedBaby.asStateFlow()
 
-    private val tempDate = LocalDate.now()
-
     init {
         loadBaby()
     }
@@ -121,11 +119,4 @@ class GrowthAlbumViewModel @Inject constructor(
         loadAlbum(LocalDate.now())
     }
 
-    fun changeBaby() = viewModelScope.launch {
-        _growthAlbumState.value = GrowthAlbumState.ChangeBaby
-    }
-
-    fun pickDate() {
-        _growthAlbumState.value = GrowthAlbumState.PickDate
-    }
 }

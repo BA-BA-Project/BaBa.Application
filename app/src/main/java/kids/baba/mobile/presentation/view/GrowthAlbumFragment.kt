@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,9 @@ import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 //TODO datePicker 대신 달력 커스터 마이징
 //TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨
@@ -39,10 +42,6 @@ class GrowthAlbumFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
 
-
-
-//    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-//    lateinit var datePicker: DatePickerDialog
     private lateinit var albumAdapter: AlbumAdapter
 
     private var selectedDate = LocalDate.now()
@@ -77,6 +76,25 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setCalendar() {
+
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                viewModel.selectDate(LocalDate.of(year, monthOfYear + 1, dayOfMonth))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val maxDate = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        datePickerDialog.datePicker.maxDate = maxDate
+
+        binding.tvDate.setOnClickListener {
+            datePickerDialog.show()
+        }
+
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = ItemDayBinding.bind(view)
             lateinit var day: WeekDay
@@ -97,10 +115,10 @@ class GrowthAlbumFragment : Fragment() {
                 bind.formatter = formatter
                 bind.hasAlbum = false
 
-                if(viewModel.growthAlbumList.value.isNotEmpty()){
-                    if(day.date.month == selectedDate.month){
+                if (viewModel.growthAlbumList.value.isNotEmpty()) {
+                    if (day.date.month == selectedDate.month) {
                         val idx = day.date.dayOfMonth - 1
-                        if(idx <= viewModel.growthAlbumList.value.lastIndex && viewModel.growthAlbumList.value[idx].contentId != -1){
+                        if (idx <= viewModel.growthAlbumList.value.lastIndex && viewModel.growthAlbumList.value[idx].contentId != -1) {
                             bind.hasAlbum = true
                         }
                     }
@@ -183,10 +201,11 @@ class GrowthAlbumFragment : Fragment() {
             }
         }
 
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(isViewPagerInit){
+                if (isViewPagerInit) {
                     viewModel.selectDateFromPosition(position)
                 }
                 isViewPagerInit = true
@@ -214,7 +233,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun collectSelectedAlbum() {
-        var selectedAlbum : AlbumUiModel? = null
+        var selectedAlbum: AlbumUiModel? = null
         binding.tvAlbumTitle.setOnClickListener {
             val albumDetailDialog = AlbumDetailDialog()
             val bundle = Bundle()
@@ -229,7 +248,7 @@ class GrowthAlbumFragment : Fragment() {
                 binding.vpBabyPhoto.doOnPreDraw {
                     binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 }
-                if(selectedDate==LocalDate.now()){
+                if (selectedDate == LocalDate.now()) {
                     binding.tvAlbumDate.setText(R.string.today)
                 }
             }
@@ -243,7 +262,7 @@ class GrowthAlbumFragment : Fragment() {
         if (isDateInit.not()) {
             binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
             isDateInit = true
-        }else {
+        } else {
             binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
         }
 
