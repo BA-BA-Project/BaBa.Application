@@ -125,7 +125,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_kids"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
                         android:orientation="horizontal"
@@ -133,7 +133,8 @@
                         app:layout_constraintBottom_toBottomOf="@id/kids_container"
                         app:layout_constraintEnd_toEndOf="@id/iv_edit_kids"
                         app:layout_constraintStart_toStartOf="@id/tv_kids_title"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_kids_desc" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_kids_desc"
+                        tools:listitem="@layout/item_member" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,15 +197,15 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_family"
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="15dp"
                                 android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@id/iv_edit_family"
                                 app:layout_constraintStart_toStartOf="@id/tv_family_title"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_family_desc" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_family_desc"
+                                tools:listitem="@layout/item_member" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -245,15 +246,15 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_mother_family"
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="15dp"
                                 android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@id/iv_edit_mother_family"
                                 app:layout_constraintStart_toStartOf="@id/tv_mother_family_title"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_mother_family_desc" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_mother_family_desc"
+                                tools:listitem="@layout/item_member" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -295,15 +296,15 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_father_family"
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="15dp"
                                 android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@id/iv_edit_father_family"
                                 app:layout_constraintStart_toStartOf="@id/tv_father_family_title"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_father_family_desc" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_father_family_desc"
+                                tools:listitem="@layout/item_member" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -344,15 +345,16 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_friends"
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="15dp"
                                 android:orientation="horizontal"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                                 app:layout_constraintEnd_toEndOf="@id/iv_edit_friends"
                                 app:layout_constraintStart_toStartOf="@id/tv_friends_title"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_friends_desc" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_friends_desc"
+                                app:spanCount="2"
+                                tools:listitem="@layout/item_member" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
