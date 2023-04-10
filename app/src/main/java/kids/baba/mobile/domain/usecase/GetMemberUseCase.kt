@@ -23,7 +23,9 @@ class GetMemberUseCase @Inject constructor(private val memberRepository: MemberR
                     Log.e(tag, msg)
                     throw TokenEmptyException(msg)
                 } else {
-                    memberRepository.getMe(accessToken).first().toPresentation()
+                    val member = memberRepository.getMe(accessToken).first()
+                    EncryptedPrefs.putMember(PrefsKey.MEMBER_KEY,member)
+                    member.toPresentation()
                 }
             } else {
                 throw it

@@ -30,7 +30,7 @@ object EncryptedPrefs {
         }
     }
 
-    fun putMember(key: String, value: MemberModel){
+    fun putMember(key: String, value: MemberModel?){
         val json = gson.toJson(value,MemberModel::class.java)
         putString(key,json)
     }
@@ -40,7 +40,7 @@ object EncryptedPrefs {
         return gson.fromJson(value, MemberModel::class.java)
     }
 
-    fun putBaby(key: String, value: Baby){
+    fun putBaby(key: String, value: Baby?){
         val json = gson.toJson(value,Baby::class.java)
         putString(key,json)
     }

@@ -110,6 +110,8 @@ private class TokenAuthenticator : Authenticator {
 
                 EncryptedPrefs.putString(PrefsKey.ACCESS_TOKEN_KEY, token.accessToken)
                 EncryptedPrefs.putString(PrefsKey.REFRESH_TOKEN_KEY, token.refreshToken)
+                EncryptedPrefs.putMember(PrefsKey.MEMBER_KEY,null)
+                EncryptedPrefs.putBaby(PrefsKey.BABY_KEY,null)
 
                 return response.request.newBuilder().apply {
                     removeHeader("Authorization")
