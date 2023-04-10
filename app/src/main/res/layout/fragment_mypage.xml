@@ -22,9 +22,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/my_info"
                     android:layout_width="match_parent"
                     android:layout_height="200dp">
 
@@ -71,24 +73,244 @@
                     <ImageView
                         android:layout_width="26dp"
                         android:layout_height="26dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_setting"
                         android:layout_marginTop="55dp"
                         android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_setting"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/baba_main">
+                    android:layout_height="200dp">
 
+                    <View
+                        android:id="@+id/kids_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/bg_my_page_card" />
+
+                    <TextView
+                        android:id="@+id/tv_kids_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="아이들"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/kids_container"
+                        app:layout_constraintTop_toTopOf="@id/kids_container" />
+
+                    <TextView
+                        android:id="@+id/tv_kids_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="등록된 아이의 소식을 확인할 수 있어요"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_kids_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_kids_title" />
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/ic_edit_my_page"
+                        app:layout_constraintEnd_toEndOf="@id/kids_container"
+                        app:layout_constraintTop_toTopOf="@id/tv_kids_title" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="920dp"
-                    android:background="@color/baba_main"></androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="900dp">
+
+                    <View
+                        android:id="@+id/relation_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+
+                        android:background="@drawable/bg_my_page_card" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@id/relation_container"
+                        app:layout_constraintEnd_toEndOf="@id/relation_container"
+                        app:layout_constraintStart_toStartOf="@id/relation_container"
+                        app:layout_constraintTop_toTopOf="@id/relation_container">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp">
+
+                            <TextView
+                                android:id="@+id/tv_family_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:text="앙쥬네 가족"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_family_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="모든 그룹과 소식을 공유할 수 있어요"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="@+id/tv_family_title"
+                                app:layout_constraintTop_toBottomOf="@id/tv_family_title" />
+
+                            <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_marginEnd="15dp"
+                                android:src="@drawable/ic_edit_my_page"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_family_title" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp">
+
+                            <TextView
+                                android:id="@+id/tv_mother_family_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:text="외가"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_mother_family_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="앙쥬네 가족, 외가의 소식만 볼 수 있어요"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="@+id/tv_mother_family_title"
+                                app:layout_constraintTop_toBottomOf="@id/tv_mother_family_title" />
+
+                            <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_marginEnd="15dp"
+                                android:src="@drawable/ic_edit_my_page"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_mother_family_title" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp">
+
+                            <TextView
+                                android:id="@+id/tv_father_family_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:text="친가"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_father_family_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="앙쥬네 가족, 친가의 소식만 볼 수 있어요"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="@+id/tv_father_family_title"
+                                app:layout_constraintTop_toBottomOf="@id/tv_father_family_title" />
+
+                            <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_marginEnd="15dp"
+                                android:src="@drawable/ic_edit_my_page"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_father_family_title" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp">
+
+                            <TextView
+                                android:id="@+id/tv_friends_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:text="친구"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_friends_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="앙쥬네 가족, 친구의 소식만 볼 수 있어요"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="@+id/tv_friends_title"
+                                app:layout_constraintTop_toBottomOf="@id/tv_friends_title" />
+
+                            <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_marginEnd="15dp"
+                                android:src="@drawable/ic_edit_my_page"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_friends_title" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:id="@+id/tv_add_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="+ 그룹만들기"
+                        android:textColor="#B4B4B4"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#B4B4B4"
+                        app:layout_constraintEnd_toEndOf="@id/tv_add_group"
+                        app:layout_constraintStart_toStartOf="@id/tv_add_group"
+                        app:layout_constraintTop_toBottomOf="@id/tv_add_group" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
