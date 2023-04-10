@@ -28,6 +28,21 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        setBottomSheet()
+    }
+
+    private fun initView() {
         binding.viewmodel = viewModel
+    }
+
+    private fun setBottomSheet() {
+        binding.ivEditKids.setOnClickListener {
+            val bundle = Bundle()
+    //            bundle.putParcelable(BabyListBottomSheet.SELECTED_BABY_KEY, viewModel.selectedBaby.value)
+            val bottomSheet = BabyEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+        }
     }
 }

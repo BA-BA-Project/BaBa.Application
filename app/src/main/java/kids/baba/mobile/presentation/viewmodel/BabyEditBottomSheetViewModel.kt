@@ -5,9 +5,5 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(
-) : ViewModel() {
-    fun editKid(){
-
-    }
+class BabyEditBottomSheetViewModel @Inject constructor(): ViewModel() {
 }
