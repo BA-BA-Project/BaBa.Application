@@ -34,8 +34,6 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
             this.album = album
             binding.like = album.like
             binding.photo = album.photo
-            //Todo test용 날짜지우기
-            binding.date = album.date.toString()
             if(album.contentId == null){
                 binding.btnAlbumLike.visibility = View.GONE
                 binding.btnCreateAlbum.visibility = View.VISIBLE

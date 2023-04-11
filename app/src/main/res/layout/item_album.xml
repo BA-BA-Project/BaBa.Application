@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--        test용 날짜-->
-        <variable
-            name="date"
-            type="String" />
 
         <variable
             name="photo"
@@ -49,18 +45,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:src="@drawable/album_default" />
 
-                <!--            테스트용 날짜-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{date}"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
-                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon"
-                    app:layout_constraintStart_toStartOf="@id/iv_baby_icon"
-                    app:layout_constraintTop_toTopOf="@id/iv_baby_icon"
-                    tools:text="123123" />
-
 
                 <ImageButton
                     android:id="@+id/btn_create_album"
@@ -71,8 +55,8 @@
                     android:src="@drawable/ic_photo"
                     android:background="@android:color/transparent"
                     android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
-                    app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />
+                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon" />
 
                 <ImageButton
                     android:id="@+id/btn_album_like"
@@ -80,11 +64,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="21dp"
-                    android:src="@drawable/ic_photo"
+                    android:src="@{like ? @drawable/ic_like_checked : @drawable/ic_like_unchecked}"
                     android:background="@android:color/transparent"
                     android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
-                    app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />
+                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon"
+                    tools:src="@drawable/ic_like_unchecked"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>

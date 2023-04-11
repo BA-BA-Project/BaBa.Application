@@ -136,7 +136,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <CheckBox
-                    android:id="@+id/btn_album_like"
+                    android:id="@+id/cb_album_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"

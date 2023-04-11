@@ -54,7 +54,7 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setAlbumDialog() {
-        binding.tvAlbumTitle.setOnClickListener {
+        binding.cvBabyAlbum.setOnClickListener {
             val albumDetailDialog = AlbumDetailDialog()
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
