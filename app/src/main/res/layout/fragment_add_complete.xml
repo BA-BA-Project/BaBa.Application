@@ -69,6 +69,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginBottom="52dp"
         android:text="확인"
+        android:background="@drawable/button_complete"
         android:textColor="@color/baba_main"
         android:textSize="18sp"
         android:textStyle="bold"
