@@ -38,6 +38,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/iv_close_edit"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     android:layout_marginTop="27dp"
@@ -65,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="이름"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -75,9 +76,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
                     android:text="이재임"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,8 +102,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="아이와 관계"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -123,8 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:text="완료"
-                    android:textStyle="bold"
                     android:textColor="@color/baba_main"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -148,8 +149,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="소속 그룹"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -159,8 +160,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="외가"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_change_relation"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -195,8 +196,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="멤버 삭제하기"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -207,8 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:text="삭제"
-                    android:textStyle="bold"
                     android:textColor="#ff0000"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
