@@ -62,15 +62,26 @@
                     tools:text="123123" />
 
 
-                <CheckBox
-                    android:id="@+id/cb_album_like"
+                <ImageButton
+                    android:id="@+id/btn_create_album"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="21dp"
-                    android:background="@drawable/bg_like"
-                    android:button="@null"
-                    android:checked="@{like}"
+                    android:src="@drawable/ic_photo"
+                    android:background="@android:color/transparent"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />
+
+                <ImageButton
+                    android:id="@+id/btn_album_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="21dp"
+                    android:src="@drawable/ic_photo"
+                    android:background="@android:color/transparent"
                     android:elevation="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
                     app:layout_constraintEnd_toEndOf="@+id/iv_baby_icon" />

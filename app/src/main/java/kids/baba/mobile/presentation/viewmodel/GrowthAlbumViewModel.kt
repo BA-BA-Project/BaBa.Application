@@ -129,7 +129,7 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
     fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
-        if(album.contentId != -1){
+        if(album.contentId != null){
             likeAlbumUseCase.like(growthAlbumState.value.selectedBaby.babyId, album.contentId.toString()).collect{ likeResponse ->
                 var selectedAlbum = growthAlbumState.value.selectedAlbum
                 val growthAlbumList = growthAlbumState.value.growthAlbumList.map {
@@ -148,6 +148,10 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun createAlbum(){
+
     }
 
 }

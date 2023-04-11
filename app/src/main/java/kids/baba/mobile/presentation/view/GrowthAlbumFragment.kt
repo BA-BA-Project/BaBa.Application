@@ -31,10 +31,6 @@ import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-
-//TODO datePicker 대신 달력 커스터 마이징
-//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨
-// 사용한 오픈소스 달력
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -130,7 +126,7 @@ class GrowthAlbumFragment : Fragment() {
                 if (growthAlbumList.isNotEmpty()) {
                     if (day.date.month == selectedDate.month) {
                         val idx = day.date.dayOfMonth - 1
-                        if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != -1) {
+                        if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != null) {
                             bind.hasAlbum = true
                         }
                     }
@@ -211,11 +207,16 @@ class GrowthAlbumFragment : Fragment() {
         return true
     }
 
-    //
+
     private fun initializeAlbumHolder() {
-        albumAdapter = AlbumAdapter {
-            viewModel.likeAlbum(it)
-        }
+        albumAdapter = AlbumAdapter(
+            likeClick = {
+                viewModel.likeAlbum(it)
+            },
+            createAlbum = {
+                viewModel.createAlbum()
+            }
+        )
         binding.vpBabyPhoto.adapter = albumAdapter
 
         binding.vpBabyPhoto.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
