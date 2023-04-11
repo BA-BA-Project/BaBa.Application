@@ -17,7 +17,10 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivAddBaby.setOnClickListener {
-            requireActivity().startActivity(Intent(requireContext(), AddBabyActivity::class.java))
+            requireActivity().startActivity(Intent(requireContext(), AddBabyActivity::class.java).putExtra("next","baby"))
+        }
+        binding.ivInputInviteCode.setOnClickListener {
+            requireActivity().startActivity(Intent(requireContext(), AddBabyActivity::class.java).putExtra("next","invite"))
         }
     }
 

@@ -12,7 +12,11 @@ class AddBabyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddbabyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        showFragment(AddBabyFragment())
+        if(intent.getStringExtra("next") == "baby"){
+            showFragment(AddBabyFragment())
+        }else{
+            showFragment(InputInviteCodeFragment())
+        }
     }
 
     private fun showFragment(fragment: Fragment): Boolean {
