@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
 
 class EditDialogFragment : DialogFragment() {
@@ -13,6 +14,11 @@ class EditDialogFragment : DialogFragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
+        isCancelable = true
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivCloseEdit.setOnClickListener {
