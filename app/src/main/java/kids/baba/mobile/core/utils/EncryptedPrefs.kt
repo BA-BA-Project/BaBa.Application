@@ -30,13 +30,13 @@ object EncryptedPrefs {
         }
     }
 
-    fun putMember(key: String, value: MemberModel?){
-        val json = gson.toJson(value,MemberModel::class.java)
-        putString(key,json)
+    fun putMember(key: String, value: MemberModel?) {
+        val json = gson.toJson(value, MemberModel::class.java)
+        putString(key, json)
     }
 
-    fun getMember(key: String): MemberModel{
-        val value = prefs?.getString(key,null) ?: throw MemberNotFoundException()
+    fun getMember(key: String): MemberModel {
+        val value = prefs?.getString(key, null) ?: throw MemberNotFoundException()
         return gson.fromJson(value, MemberModel::class.java)
     }
 
@@ -93,5 +93,7 @@ object EncryptedPrefs {
         return prefs?.getBoolean(key, false) ?: false
     }
 
-
+    fun clearPrefs() {
+        prefs?.edit()?.clear()?.apply()
+    }
 }
