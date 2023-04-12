@@ -18,14 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CropViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val outputDirectory: File,
+    private val storageDir: File,
 ) : ViewModel() {
 
     private val TAG = "CropViewModel"
 
     val currentTakenMediaInCrop = savedStateHandle.get<MediaData>(MEDIA_DATA)
     private val currentTakenMedia =
-        MutableStateFlow(savedStateHandle[WriteTitleViewModel.MEDIA_DATA] ?: MediaData())
+        MutableStateFlow(savedStateHandle[MEDIA_DATA] ?: MediaData())
 
 
     fun cropImage(cropImageView: CropImageView) = callbackFlow {
@@ -37,7 +37,7 @@ class CropViewModel @Inject constructor(
                 )
 
                 val fileName = result.uriContent.toString().split("/").last()
-                val file = File(outputDirectory, fileName)
+                val file = File(storageDir, fileName)
 
                 currentTakenMedia.value =
                     MediaData(

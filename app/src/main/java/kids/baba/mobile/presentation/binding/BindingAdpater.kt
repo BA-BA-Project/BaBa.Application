@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.binding
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

@@ -29,7 +29,7 @@ class SelectCardViewModel @Inject constructor(
 
     private val TAG = "SelectCardViewModel"
 
-    val currentTakenMedia = MutableStateFlow<MediaData?>(savedStateHandle[MEDIA_DATA])
+    val currentTakenMedia = MutableStateFlow(savedStateHandle[MEDIA_DATA] ?: MediaData())
 
     private var _cardState: MutableStateFlow<Array<CardStyleUiModel>> = MutableStateFlow(CardStyleUiModel.values())
     val cardState = _cardState.asStateFlow()
@@ -47,7 +47,7 @@ class SelectCardViewModel @Inject constructor(
     // TODO: "memberId":"KAKAO2695099524","name":"poi" 인 계정에서의 아이로 테스트했음
     //  이 계정의 babyId 는 아래임. 추후에 SharedPreference 에
     //  사용자가 보고있는 babyId 을 저장하고 이를 불러올 것임.
-    private val babyId = "1c642535-12db-416b-ae0f-46070036a752"
+    private val babyId = "fead51d4-11c5-4436-9a1c-36e844b3138d"
 
     init {
         getCards()
@@ -71,12 +71,13 @@ class SelectCardViewModel @Inject constructor(
 
     private suspend fun postAlbum() {
 
-        val file = File(currentTakenMedia.value?.mediaUri ?: "")
+        val file = File(currentTakenMedia.value.mediaUri)
+        Log.e(TAG, "file Size: ${file.length()}")
         val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
 
         requestHashMap["date"] = nowDate.value.toPlainRequestBody()
-        requestHashMap["title"] = currentTakenMedia.value?.mediaName.toPlainRequestBody()
+        requestHashMap["title"] = currentTakenMedia.value.mediaName.toPlainRequestBody()
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
         postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {

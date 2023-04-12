@@ -103,7 +103,6 @@ class CameraFragment @Inject constructor() : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
