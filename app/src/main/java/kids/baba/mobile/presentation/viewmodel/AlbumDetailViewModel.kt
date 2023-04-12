@@ -5,9 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Baby
-import kids.baba.mobile.domain.model.Comment
-import kids.baba.mobile.domain.model.LikeDetailResponse
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
 import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
@@ -17,7 +14,6 @@ import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -40,18 +36,12 @@ class AlbumDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     //TODO 특정 날짜의 앨범만 호출하는 기능이 필요?
-
-    val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
-    val album = MutableStateFlow<AlbumUiModel?>(savedStateHandle[SELECTED_ALBUM_KEY])
-
     private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isPhotoExpended = _isPhotoExpended.asStateFlow()
 
     private val _eventFlow = MutableEventFlow<AlbumDetailEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val _member = MutableStateFlow<MemberUiModel?>(null)
-    val member = _member.asStateFlow()
 
     private val _albumDetailUiState = MutableStateFlow(
         AlbumDetailUiState(
@@ -62,19 +52,13 @@ class AlbumDetailViewModel @Inject constructor(
     )
     val albumDetailUiState = _albumDetailUiState.asStateFlow()
 
-    private val comments = MutableStateFlow<List<Comment>?>(null)
-
-    private val _baby = MutableStateFlow<Baby?>(null)
-    val baby = _baby
-    private val likeDetail = MutableStateFlow<LikeDetailResponse?>(null)
-
     val comment = MutableStateFlow("")
 
     init {
-
+        getAlbumDetailData()
     }
 
-    fun getAlbumDetailData() = viewModelScope.launch {
+    private fun getAlbumDetailData() = viewModelScope.launch {
         val babyId = savedStateHandle[SELECTED_BABY_ID_KEY] ?: ""
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (babyId.isEmpty()) {
@@ -86,28 +70,11 @@ class AlbumDetailViewModel @Inject constructor(
                 runCatching {
                     getLikeDetail(babyId, contentId)
                     getComments(babyId, contentId)
+                }.onFailure {
+                    _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
                 }
             }
         }
-    }
-
-    fun fetch() = viewModelScope.launch {
-//        getComments().join()
-//        getLikeDetail().join()
-//        showComment()
-    }
-
-    fun like() = viewModelScope.launch {
-//        val babyId = _baby.value?.babyId ?: return@launch
-//        val contentId = album.value?.contentId
-////        _albumDetailUiState.value = AlbumDetailUiState.Loading
-//        likeAlbumUseCase.like(
-//            babyId, contentId
-//        ).catch {
-////            _albumDetailUiState.value = AlbumDetailUiState.Error(it)
-//        }.collect {
-////            _albumDetailUiState.value = AlbumDetailUiState.Like(it.isLiked)
-//        }
     }
 
     fun addComment() =
@@ -128,8 +95,7 @@ class AlbumDetailViewModel @Inject constructor(
                     albumDetail = state.albumDetail.copy(
                         comments = it.comments.map { comment ->
                             comment.toPresentation()
-                        },
-                        commentCount = it.comments.size
+                        }
                     )
                 )
             }

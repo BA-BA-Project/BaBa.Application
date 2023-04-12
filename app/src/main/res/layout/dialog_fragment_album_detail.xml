@@ -10,6 +10,10 @@
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
         <variable
+            name="albumDetail"
+            type="kids.baba.mobile.presentation.model.AlbumDetailUiModel" />
+
+        <variable
             name="dateTimeFormatter"
             type="java.time.format.DateTimeFormatter" />
 
@@ -45,7 +49,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:includeFontPadding="false"
-                    app:date="@{viewModel.album.date}"
+                    app:date="@{albumDetail.album.date}"
                     app:formatter="@{dateTimeFormatter}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/baba_sub_2"
@@ -75,7 +79,7 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@{viewModel.album.title}"
+                    android:text="@{albumDetail.album.title}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -89,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{viewModel.album.name}"
+                    android:text="@{albumDetail.album.name}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
@@ -105,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:background="@drawable/bg_album_relation"
-                    android:text="@{viewModel.album.relation}"
+                    android:text="@{albumDetail.album.relation}"
                     android:textAppearance="@style/BABA.TextStyle"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_album_title"
                     app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
@@ -130,7 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageFromUrl="@{viewModel.album.photo}"
+                        app:imageFromUrl="@{albumDetail.album.photo}"
                         tools:src="@mipmap/ic_launcher" />
 
                 </androidx.cardview.widget.CardView>
@@ -143,7 +147,7 @@
                     android:layout_marginBottom="21dp"
                     android:background="@drawable/bg_like"
                     android:button="@null"
-                    android:checked="@{viewModel.album.like}"
+                    android:checked="@{albumDetail.album.like}"
                     android:elevation="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
                     app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
@@ -157,49 +161,49 @@
                     app:layout_constraintStart_toStartOf="@+id/tv_album_date"
                     app:layout_constraintTop_toBottomOf="@id/cv_baby_Photo">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_3"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="36dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(2).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(2).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
+<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/civ_like_user_3"-->
+<!--                        android:layout_width="22dp"-->
+<!--                        android:layout_height="22dp"-->
+<!--                        android:layout_marginStart="36dp"-->
+<!--                        app:backGroundColor="@{albumDetail.likeUsers.get(2).iconColor}"-->
+<!--                        app:civ_border_color="@color/white"-->
+<!--                        app:civ_border_width="2dp"-->
+<!--                        app:iconRes="@{albumDetail.likeUsers.get(2).userProfileIconUiModel.iconRes}"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"-->
+<!--                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"-->
+<!--                        tools:civ_circle_background_color="@color/baba_main"-->
+<!--                        tools:src="@drawable/profile_w_5" />-->
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_2"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="18dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(1).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(1).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
+<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/civ_like_user_2"-->
+<!--                        android:layout_width="22dp"-->
+<!--                        android:layout_height="22dp"-->
+<!--                        android:layout_marginStart="18dp"-->
+<!--                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(1).iconColor}"-->
+<!--                        app:civ_border_color="@color/white"-->
+<!--                        app:civ_border_width="2dp"-->
+<!--                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(1).userProfileIconUiModel.iconRes}"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"-->
+<!--                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"-->
+<!--                        tools:civ_circle_background_color="@color/baba_main"-->
+<!--                        tools:src="@drawable/profile_w_5" />-->
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_1"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(0).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(0).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
+<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/civ_like_user_1"-->
+<!--                        android:layout_width="22dp"-->
+<!--                        android:layout_height="22dp"-->
+<!--                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(0).iconColor}"-->
+<!--                        app:civ_border_color="@color/white"-->
+<!--                        app:civ_border_width="2dp"-->
+<!--                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(0).userProfileIconUiModel.iconRes}"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        tools:civ_circle_background_color="@color/baba_main"-->
+<!--                        tools:src="@drawable/profile_w_5" />-->
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -210,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:includeFontPadding="false"
-                    android:text="@{@string/album_like_count(viewModel.albumDetail.likeCount)}"
+                    android:text="@{@string/album_like_count(albumDetail.likeCount)}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/text_2"
                     app:layout_constraintBottom_toBottomOf="@id/cl_like_users"
@@ -247,18 +251,27 @@
                     app:layout_constraintBottom_toTopOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toEndOf="@id/rv_album_comment"
                     app:layout_constraintStart_toStartOf="@id/rv_album_comment" />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/civ_my_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginBottom="20dp"
-                    app:backGroundColor="@{viewModel.member.userIconUiModel.iconColor}"
-                    app:iconRes="@{viewModel.member.userIconUiModel.userProfileIconUiModel.iconRes}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_album_date"
                     tools:civ_circle_background_color="@color/baba_main"
                     tools:src="@drawable/profile_w_5" />
+
+<!--                <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                    android:id="@+id/civ_my_icon"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    app:backGroundColor="@{viewModel.member.userIconUiModel.iconColor}"-->
+<!--                    app:iconRes="@{viewModel.member.userIconUiModel.userProfileIconUiModel.iconRes}"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_album_date"-->
+<!--                    tools:civ_circle_background_color="@color/baba_main"-->
+<!--                    tools:src="@drawable/profile_w_5" />-->
 
                 <EditText
                     android:id="@+id/et_my_comment"
@@ -304,7 +317,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="55dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_dialog_close"
             app:layout_constraintBottom_toBottomOf="parent"

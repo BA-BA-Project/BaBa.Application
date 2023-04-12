@@ -60,22 +60,17 @@ class AlbumDetailDialog : DialogFragment() {
         setImgScaleAnim()
         setBabyPhoto()
         setDetailStateCollecter()
-        fetchData()
     }
 
     private fun setDetailStateCollecter() {
         repeatOnStarted {
             viewModel.albumDetailUiState.collect {
-                when (it) {
-                    else -> {}
-                }
+                binding.albumDetail = it.albumDetail
+                commentAdapter.submitList(it.albumDetail.comments)
             }
         }
     }
 
-    private fun fetchData() {
-        viewModel.fetch()
-    }
 
     private fun setCommentRecyclerView() {
         commentAdapter = AlbumDetailCommentAdapter()
@@ -100,12 +95,6 @@ class AlbumDetailDialog : DialogFragment() {
                     isReachedTop = canScrollVertically(-1).not()
                 }
             })
-        }
-
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.albumDetail.collect {
-                commentAdapter.submitList(it?.comments)
-            }
         }
 
     }

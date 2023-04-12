@@ -3,7 +3,7 @@ package kids.baba.mobile.domain.model
 import java.time.LocalDate
 
 data class Album(
-    val contentId: Int = -1,
+    val contentId: String? = null,
     val ownerName: String = "",
     val relation: String = "",
     val date: LocalDate,
