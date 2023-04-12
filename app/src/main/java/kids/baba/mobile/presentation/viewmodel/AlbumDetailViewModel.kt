@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Comment
-import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
@@ -20,8 +18,6 @@ import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -29,7 +25,6 @@ import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_A
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,6 +38,8 @@ class AlbumDetailViewModel @Inject constructor(
     private val getLikeDetailUseCase: GetLikeDetailUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    //TODO 특정 날짜의 앨범만 호출하는 기능이 필요?
 
     val albumDetail = MutableStateFlow<AlbumDetailUiModel?>(null)
     val album = MutableStateFlow<AlbumUiModel?>(savedStateHandle[SELECTED_ALBUM_KEY])
@@ -86,7 +83,10 @@ class AlbumDetailViewModel @Inject constructor(
             if (contentId == null) {
                 _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
             } else {
-                getLikeDetail(babyId, contentId)
+                runCatching {
+                    getLikeDetail(babyId, contentId)
+                    getComments(babyId, contentId)
+                }
             }
         }
     }
@@ -121,16 +121,19 @@ class AlbumDetailViewModel @Inject constructor(
 //            comment.value = ""
         }
 
-    private fun getComments() = viewModelScope.launch {
-//        val babyId = _baby.value?.babyId ?: return@launch
-//        val contentId = album.value?.contentId
-////        _albumDetailUiState.value = AlbumDetailUiState.Loading
-//        getCommentsUseCase.get(babyId, contentId).catch {
-////            _albumDetailUiState.value = AlbumDetailUiState.Error(it)
-//        }.collect {
-//            comments.value = it.comments
-//        }
-    }
+    private suspend fun getComments(babyId: String, contentId: String) =
+        getCommentsUseCase.get(babyId, contentId).collect {
+            _albumDetailUiState.update { state ->
+                state.copy(
+                    albumDetail = state.albumDetail.copy(
+                        comments = it.comments.map { comment ->
+                            comment.toPresentation()
+                        },
+                        commentCount = it.comments.size
+                    )
+                )
+            }
+        }
 
     private fun showComment() = viewModelScope.launch {
 //        val tempAlbumDetail = AlbumDetailUiModel(
@@ -150,7 +153,8 @@ class AlbumDetailViewModel @Inject constructor(
             _albumDetailUiState.update { state ->
                 state.copy(
                     albumDetail = state.albumDetail.copy(
-                        likeDetail = it.toPresentation()
+                        likeDetail = it.toPresentation(),
+                        likeCount = it.likeUsers.size
                     )
                 )
             }
