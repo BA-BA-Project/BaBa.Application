@@ -16,6 +16,7 @@ import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
 import kids.baba.mobile.presentation.event.AlbumDetailEvent
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
@@ -29,6 +30,7 @@ import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -145,14 +147,18 @@ class AlbumDetailViewModel @Inject constructor(
 
     private suspend fun getLikeDetail(babyId: String, contentId: String) =
         getLikeDetailUseCase.get(babyId, contentId).collect {
-            Log.e("likeDetail", "$it")
-            likeDetail.value = it
+            _albumDetailUiState.update { state ->
+                state.copy(
+                    albumDetail = state.albumDetail.copy(
+                        likeDetail = it.toPresentation()
+                    )
+                )
+            }
         }
 
-
-//    fun setExpended(expended: Boolean) {
-//        if (expended != _isPhotoExpended.value) {
-//            _isPhotoExpended.value = expended
-//        }
-//    }
+    fun setExpended(expended: Boolean) {
+        if (expended != _isPhotoExpended.value) {
+            _isPhotoExpended.value = expended
+        }
+    }
 }
