@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.album
 
+import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -19,6 +20,20 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
     ) = flow {
-        emit(api.postAlbum(accessToken, id, photo, bodyDataHashMap))
+        runCatching { api.postAlbum(accessToken, id, photo, bodyDataHashMap) }
+            .onSuccess { resp ->
+                when (resp.code()) {
+                    201 -> {
+                        val data = resp.body() ?: throw Throwable("data is null")
+                        emit(data)
+                    }
+                    413 -> {
+                        throw EntityTooLargeException("사진의 용량이 너무 큽니다.")
+                    }
+                }
+            }
+            .onFailure {
+                throw it
+            }
     }
 }

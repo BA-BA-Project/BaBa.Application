@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +16,8 @@ import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
+import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
 import kids.baba.mobile.presentation.extension.CardDetailsLookup
@@ -86,11 +89,16 @@ class SelectCardFragment @Inject constructor(
         }
 
         repeatOnStarted {
-            viewModel.postAlbumState.collect { state ->
-                when (state) {
+            viewModel.postAlbumState.collect { event ->
+                when (event) {
                     is PostAlbumState.UnInitialized -> Log.d(tag, "PostAlbumState UnInitialized")
                     is PostAlbumState.Success -> activityViewModel.isPostAlbum()
-                    is PostAlbumState.Error -> Log.e(tag, "PostAlbumState Error")
+                    is PostAlbumState.Error -> {
+                        if (event.t is EntityTooLargeException) {
+                            Toast.makeText(requireContext(), R.string.entity_too_large, Toast.LENGTH_SHORT).show()
+                        }
+                        Log.e(tag, "PostAlbum Error")
+                    }
                 }
 
             }

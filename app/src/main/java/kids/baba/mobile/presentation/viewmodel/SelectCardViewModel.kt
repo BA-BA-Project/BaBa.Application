@@ -72,7 +72,7 @@ class SelectCardViewModel @Inject constructor(
     private suspend fun postAlbum() {
 
         val file = File(currentTakenMedia.value.mediaUri)
-        Log.e(TAG, "file Size: ${file.length()}")
+
         val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
 
@@ -81,7 +81,6 @@ class SelectCardViewModel @Inject constructor(
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
         postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
-            it.printStackTrace()
             _postAlbumState.value = PostAlbumState.Error(it)
         }.collect {
             _postAlbumState.value = PostAlbumState.Success

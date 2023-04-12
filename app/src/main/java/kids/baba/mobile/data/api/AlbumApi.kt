@@ -3,6 +3,7 @@ package kids.baba.mobile.data.api
 import kids.baba.mobile.domain.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface AlbumApi {
@@ -20,7 +21,7 @@ interface AlbumApi {
         @Path("babyId") id: String,
         @Part photo: MultipartBody.Part,
         @PartMap bodyDataHashMap: HashMap<String, RequestBody>
-    ): PostAlbumResponse
+    ): Response<PostAlbumResponse>/*PostAlbumResponse*/
 
 
     //성장 앨범 좋아요
