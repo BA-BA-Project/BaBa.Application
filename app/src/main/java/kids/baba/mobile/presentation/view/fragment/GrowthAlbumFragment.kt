@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,8 +21,11 @@ import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.AlbumUiModel
-import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
-import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
+import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
+import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
+import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
+import kids.baba.mobile.presentation.view.HorizontalMarginItemDecoration
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth

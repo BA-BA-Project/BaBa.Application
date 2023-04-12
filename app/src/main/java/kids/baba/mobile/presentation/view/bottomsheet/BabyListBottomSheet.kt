@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kids.baba.mobile.databinding.BottomSheetBabyListBinding
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
+import kids.baba.mobile.presentation.view.activity.AddBabyActivity
 
 class BabyEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null

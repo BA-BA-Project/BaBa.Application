@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.activity
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,6 +13,8 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.view.fragment.LoginFragmentDirections
+import kids.baba.mobile.presentation.view.fragment.TermsAgreeFragmentDirections
 import kids.baba.mobile.presentation.view.signup.CreateProfileFragmentDirections
 import kids.baba.mobile.presentation.viewmodel.IntroViewModel
 import kotlinx.coroutines.launch
@@ -60,11 +62,15 @@ class IntroActivity : AppCompatActivity() {
                     }
                     is IntroEvent.MoveToLogin -> navController.navigate(R.id.action_onBoardingFragment_to_loginFragment3)
                     is IntroEvent.MoveToAgree -> {
-                        val action = LoginFragmentDirections.actionLoginFragmentToTermsAgreeFragment(event.socialToken)
+                        val action =
+                            LoginFragmentDirections.actionLoginFragmentToTermsAgreeFragment(event.socialToken)
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToCreateUserProfile -> {
-                        val action = TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(event.signToken)
+                        val action =
+                            TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(
+                                event.signToken
+                            )
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {

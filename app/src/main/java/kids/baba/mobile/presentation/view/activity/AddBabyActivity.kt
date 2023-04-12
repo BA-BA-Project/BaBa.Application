@@ -1,10 +1,12 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityAddbabyBinding
+import kids.baba.mobile.presentation.view.fragment.AddBabyFragment
+import kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment
 
 class AddBabyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddbabyBinding

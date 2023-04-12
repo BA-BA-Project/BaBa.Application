@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.activity
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMainBinding
+import kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

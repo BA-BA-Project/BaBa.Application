@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
 
-class EditDialogFragment : DialogFragment() {
+class EditMemberDialog : DialogFragment() {
 
     private var _binding: DialogFragmentEditMemberBinding? = null
     private val binding

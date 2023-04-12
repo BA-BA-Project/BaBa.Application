@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.activity
 
 import android.content.Context
 import android.content.Intent

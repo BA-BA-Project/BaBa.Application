@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Baba"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.view.WelcomeActivity"
+            android:name=".presentation.view.activity.WelcomeActivity"
             android:exported="false" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -32,13 +32,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.IntroActivity"
+            android:name=".presentation.view.activity.IntroActivity"
             android:exported="true"
-            android:theme="@style/Theme.Baba.Starting">
-        </activity>
+            android:theme="@style/Theme.Baba.Starting"></activity>
         <activity
-            android:name=".presentation.view.MainActivity"
-            android:exported="true" >
+            android:name=".presentation.view.activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +45,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".presentation.view.AddBabyActivity"/>
+        <activity android:name=".presentation.view.activity.AddBabyActivity" />
     </application>
 
 </manifest>

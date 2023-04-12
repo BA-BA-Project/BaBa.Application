@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view
+package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,8 @@ import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
+import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 
 @AndroidEntryPoint
@@ -40,11 +42,11 @@ class MyPageFragment : Fragment() {
     private fun initView() {
         binding.viewmodel = viewModel
         familyAdapter = MemberAdapter {
-            val editDialogFragment = EditDialogFragment()
+            val editMemberDialog = EditMemberDialog()
             val bundle = Bundle()
-            bundle.putParcelable(EditDialogFragment.SELECTED_MEMBER_KEY, it)
-            editDialogFragment.arguments = bundle
-            editDialogFragment.show(childFragmentManager, EditDialogFragment.TAG)
+            bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
+            editMemberDialog.arguments = bundle
+            editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
         }
         binding.rvFamily.adapter = familyAdapter
         binding.rvFamily.layoutManager =
