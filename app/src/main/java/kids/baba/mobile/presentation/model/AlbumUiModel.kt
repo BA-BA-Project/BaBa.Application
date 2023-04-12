@@ -9,7 +9,7 @@ data class AlbumUiModel (
     val contentId: Int? = null,
     val name: String = "",
     val relation: String = "",
-    val date: LocalDate,
+    val date: LocalDate = LocalDate.now(),
     val title: String = "",
     val like: Boolean = false,
     val photo: String = "",
