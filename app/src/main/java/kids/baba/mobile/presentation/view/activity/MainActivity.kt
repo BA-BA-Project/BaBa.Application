@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNavController() {
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.CONTAINER) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
         binding.btvMenu.setupWithNavController(navController)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            val fragment = supportFragmentManager.findFragmentById(R.id.CONTAINER)
+            val fragment = supportFragmentManager.findFragmentById(R.id.container)
             if (fragment is GrowthAlbumFragment) fragment.onKeyDown()
             return true
         }

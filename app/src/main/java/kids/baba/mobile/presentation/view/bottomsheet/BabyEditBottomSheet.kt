@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
-import kids.baba.mobile.presentation.view.activity.AddBabyActivity
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 
 class BabyEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
@@ -17,10 +17,10 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivAddBaby.setOnClickListener {
-            requireActivity().startActivity(Intent(requireContext(), AddBabyActivity::class.java).putExtra("next","baby"))
+            requireActivity().startActivity(Intent(requireContext(), MyPageActivity::class.java).putExtra("next","addBaby"))
         }
         binding.ivInputInviteCode.setOnClickListener {
-            requireActivity().startActivity(Intent(requireContext(), AddBabyActivity::class.java).putExtra("next","invite"))
+            requireActivity().startActivity(Intent(requireContext(), MyPageActivity::class.java).putExtra("next","invite"))
         }
     }
 

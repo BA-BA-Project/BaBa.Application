@@ -45,7 +45,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".presentation.view.activity.AddBabyActivity" />
+        <activity android:name=".presentation.view.activity.MyPageActivity" />
     </application>
 
 </manifest>
