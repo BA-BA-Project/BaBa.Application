@@ -49,6 +49,7 @@
     <string name="what_is_the_name_of_baby">기록할 아이의 이름이 무엇인가요?</string>
     <string name="baba_unknown_error">동작에 문제가 발생했습니다.</string>
     <string name="baba_token_empty_error">토큰 확인에 문제가 발생했습니다.</string>
+    <string name="album_not_found_error">앨범을 확인할 수 없습니다.</string>
 
     <string name="monday"> 월</string>
     <string name="tuesday"> 화</string>

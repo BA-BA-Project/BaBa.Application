@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.BabyUiModel
-import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
+import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,14 +26,14 @@ class BabyListViewModel @Inject constructor(
     }
 
     private fun getBabies() {
-        val selectedBaby: BabyUiModel? = savedStateHandle[SELECTED_BABY_KEY]
+        val selectedBabyId: String? = savedStateHandle[SELECTED_BABY_ID_KEY]
         viewModelScope.launch {
             getBabiesUseCase.getBabies().collect{
                 val babies = it.toPresentation()
                 _babyList.value = babies.myBaby + babies.othersBaby
             }
         }
-        if (selectedBaby == null) {
+        if (selectedBabyId == null) {
             _babyList.value.mapIndexed{idx, baby ->
                 if(idx == 0){
                     baby.copy(selected = true)
@@ -43,7 +43,7 @@ class BabyListViewModel @Inject constructor(
             }
         } else {
             _babyList.value = _babyList.value.map {
-                if (it.babyId == selectedBaby.babyId) {
+                if (it.babyId == selectedBabyId) {
                     it.copy(selected = true)
                 } else {
                     it

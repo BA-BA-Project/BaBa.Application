@@ -24,13 +24,14 @@ import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
-import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
+import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -58,6 +59,7 @@ class GrowthAlbumFragment : Fragment() {
             val albumDetailDialog = AlbumDetailDialog()
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
+            bundle.putString(SELECTED_BABY_ID_KEY, viewModel.growthAlbumState.value.selectedBaby.babyId)
             albumDetailDialog.arguments = bundle
             albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
         }
@@ -72,7 +74,7 @@ class GrowthAlbumFragment : Fragment() {
     private fun setBottomSheet() {
         binding.civBabyProfile.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.growthAlbumState.value.selectedBaby)
+            bundle.putString(SELECTED_BABY_ID_KEY, viewModel.growthAlbumState.value.selectedBaby.babyId)
             val bottomSheet = BabyListBottomSheet { baby ->
                 viewModel.selectBaby(baby)
             }
