@@ -31,7 +31,7 @@ class WriteTitleViewModel @Inject constructor(
     private val _title: MutableStateFlow<String> = MutableStateFlow("")
     val title = _title.asStateFlow()
 
-    val currentTakenMedia = MutableStateFlow<MediaData?>(savedStateHandle[MEDIA_DATA])
+    val currentTakenMedia = MutableStateFlow(savedStateHandle[MEDIA_DATA] ?: MediaData())
 
     fun onTextChanged(editable: EditText, button: Button) {
         textChangedListener(editable, button)
@@ -63,7 +63,7 @@ class WriteTitleViewModel @Inject constructor(
 
         currentTakenMedia.value = MediaData(
             mediaName = title.value,
-            mediaUri = currentTakenMedia.value?.mediaUri ?: ""
+            mediaUri = currentTakenMedia.value.mediaUri
         )
         emit(currentTakenMedia.value)
     }

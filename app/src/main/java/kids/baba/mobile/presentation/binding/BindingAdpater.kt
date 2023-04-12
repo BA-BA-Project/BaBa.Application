@@ -11,6 +11,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
+import kids.baba.mobile.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,9 +55,8 @@ fun setCropImgView(cropImgView: CropImageView, url: String) {
 
 @BindingAdapter("dateString")
 fun setDateString(textView: TextView, nowDate: String) {
-    if (nowDate == SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis()).toString()) {
-        Log.e("BindingAdapter", "이게 호출되면 nowDate 가 오늘 날짜오 ㅏ같은 것입니다.")
-        textView.text = "Today"
+    if (nowDate == SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())) {
+        textView.setText(R.string.today)
     } else {
         textView.text = nowDate
     }

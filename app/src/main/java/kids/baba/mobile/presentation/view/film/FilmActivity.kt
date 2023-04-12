@@ -26,7 +26,8 @@ class FilmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val nowDate = intent.extras?.getString(NOW_DATE) ?: resources.getString(R.string.can_not_find_date)
+//        val nowDate = intent.extras?.getString(NOW_DATE) ?: resources.getString(R.string.can_not_find_date)
+        val nowDate = intent.getStringExtra(NOW_DATE)?: resources.getString(R.string.can_not_find_date)
         viewModel.nowDate.value = nowDate
 
         setContentView(R.layout.activity_film)

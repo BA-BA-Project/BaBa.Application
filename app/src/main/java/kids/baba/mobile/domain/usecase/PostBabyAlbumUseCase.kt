@@ -7,6 +7,7 @@ import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.repository.AlbumRepository
 import kids.baba.mobile.presentation.mapper.toPresentation
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,5 +32,18 @@ class PostBabyAlbumUseCase @Inject constructor(private val albumRepository: Albu
             }
         }
     }
+
+//    suspend fun postAlbum(id: String, photo: MultipartBody.Part, bodyDataHashmap: HashMap<String, RequestBody>) = flow {
+//        val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
+//        if (accessToken.isEmpty()) {
+//            val msg = "accessToken 이 존재하지 않음"
+//            Log.e(tag, msg)
+//            throw TokenEmptyException(msg)
+//        } else {
+//            albumRepository.postAlbum(accessToken, id, photo, bodyDataHashmap).collect{postAlbumResponse ->
+//                emit(postAlbumResponse)
+//            }
+//        }
+//    }
 
 }

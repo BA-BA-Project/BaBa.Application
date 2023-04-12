@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.data.repository.*
 import kids.baba.mobile.domain.repository.*
-import kids.baba.mobile.domain.usecase.PhotoPickerRepositoryImpl
 
 @Module
 @InstallIn(SingletonComponent::class)

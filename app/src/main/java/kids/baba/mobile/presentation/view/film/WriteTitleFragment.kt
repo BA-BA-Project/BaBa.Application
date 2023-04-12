@@ -71,7 +71,7 @@ class WriteTitleFragment : Fragment() {
                     Log.e(TAG, it.toString())
                     throw it
                 }.collect {
-                    activityViewModel.isMoveToSelectCard(it!!)
+                    activityViewModel.isMoveToSelectCard(it)
                 }
             }
         }

@@ -74,7 +74,7 @@ class CameraViewModel @Inject constructor(
                     setMetadata(metadata)
                 }.build()
 
-            photoCaptureUseCase.getMe(imageCapture, outputOptions, photoFile).catch {
+            photoCaptureUseCase(imageCapture, outputOptions, photoFile).catch {
                 Log.e(TAG, it.message.toString())
                 it.printStackTrace()
                 throw it

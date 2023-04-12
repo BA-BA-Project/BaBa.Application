@@ -16,7 +16,7 @@ class PhotoCaptureUseCase @Inject constructor(
 ) {
     private val TAG = "PhotoCaptureUseCase"
 
-    suspend fun getMe(
+    suspend operator fun invoke(
         imageCapture: ImageCapture,
         outputOptions: ImageCapture.OutputFileOptions,
         photoFile: File

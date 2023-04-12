@@ -36,7 +36,7 @@ class SelectCardFragment @Inject constructor(
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: SelectCardViewModel by viewModels()
-    val activityViewModel: FilmViewModel by activityViewModels()
+    private val activityViewModel: FilmViewModel by activityViewModels()
 
     private lateinit var cardAdapter: CardStyleAdapter
 
@@ -98,8 +98,8 @@ class SelectCardFragment @Inject constructor(
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
