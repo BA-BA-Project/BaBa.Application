@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view
 
 import android.animation.ValueAnimator
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
+import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.UserIconUiModel
+import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
 
@@ -29,6 +33,7 @@ class AlbumDetailDialog : DialogFragment() {
     private val viewModel: AlbumDetailViewModel by viewModels()
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
+    private lateinit var likeUsersAdapter: LikeUsersAdapter
 
     private val imageWidth by lazy {
         binding.cvBabyPhoto.width
@@ -57,6 +62,7 @@ class AlbumDetailDialog : DialogFragment() {
         setBinding()
         setCloseBtn()
         setCommentRecyclerView()
+        setLikeUsersRecyclerView()
         setImgScaleAnim()
         setBabyPhoto()
         setDetailStateCollecter()
@@ -67,6 +73,18 @@ class AlbumDetailDialog : DialogFragment() {
             viewModel.albumDetailUiState.collect {
                 binding.albumDetail = it.albumDetail
                 commentAdapter.submitList(it.albumDetail.comments)
+                //TODO 리사이클러뷰 데코레이션 동작 확인용 tempData
+                likeUsersAdapter.submitList(listOf(
+                    UserIconUiModel(
+                        UserProfileIconUiModel.PROFILE_G_1,"#2b2b2b"
+                    ),
+                    UserIconUiModel(
+                        UserProfileIconUiModel.PROFILE_G_2,"#2b2b2b"
+                    ),                    UserIconUiModel(
+                        UserProfileIconUiModel.PROFILE_G_3,"#2b2b2b"
+                    )
+                ))
+//                likeUsersAdapter.submitList(it.albumDetail.likeDetail.likeUsersPreview)
             }
         }
     }
@@ -96,7 +114,25 @@ class AlbumDetailDialog : DialogFragment() {
                 }
             })
         }
+    }
 
+    private fun setLikeUsersRecyclerView(){
+        likeUsersAdapter = LikeUsersAdapter()
+        binding.rvLikeUsers.adapter = likeUsersAdapter
+        val overlapWidth = resources.getDimensionPixelSize(R.dimen.overlap_width)
+        binding.rvLikeUsers.addItemDecoration(object : RecyclerView.ItemDecoration(){
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                if(parent.getChildAdapterPosition(view) == 0){
+                    return
+                }
+                outRect.left = -overlapWidth
+            }
+        })
     }
 
     private fun setImgScaleAnim() {
