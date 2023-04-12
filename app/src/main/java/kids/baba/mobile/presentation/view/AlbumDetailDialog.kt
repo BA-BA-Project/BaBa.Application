@@ -14,16 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
-import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.AlbumDetailUiModel
-import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.model.UserProfileIconUiModel
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class AlbumDetailDialog : DialogFragment() {
@@ -73,11 +67,6 @@ class AlbumDetailDialog : DialogFragment() {
         repeatOnStarted {
             viewModel.albumDetailUiState.collect {
                 when (it) {
-                    is AlbumDetailUiState.Loading -> {}
-                    is AlbumDetailUiState.Like -> fetchData()
-                    is AlbumDetailUiState.AddComment -> fetchData()
-                    is AlbumDetailUiState.Error -> fetchData()
-                    is AlbumDetailUiState.Failure -> {}
                     else -> {}
                 }
             }
