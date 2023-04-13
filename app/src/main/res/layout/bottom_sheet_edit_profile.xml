@@ -8,8 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/container"
@@ -29,6 +28,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_sheet_title" />
 
         <include
+            android:id="@+id/name_view"
             layout="@layout/profile_name_view" />
 
         <View
@@ -37,7 +37,9 @@
             android:layout_marginHorizontal="20dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/profile_color_view" />
+        <include
+            android:id="@+id/color_view"
+            layout="@layout/profile_color_view" />
 
         <View
             android:layout_width="match_parent"
@@ -45,7 +47,9 @@
             android:layout_marginHorizontal="20dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/profile_icon_view" />
+        <include
+            android:id="@+id/icon_view"
+            layout="@layout/profile_icon_view" />
 
         <View
             android:layout_width="match_parent"
@@ -53,6 +57,8 @@
             android:layout_marginHorizontal="20dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/profile_intro_view" />
+        <include
+            android:id="@+id/intro_view"
+            layout="@layout/profile_intro_view" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

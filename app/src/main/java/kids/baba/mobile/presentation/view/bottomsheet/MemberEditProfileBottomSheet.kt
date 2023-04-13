@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 
-class MemberEditProfileBottomSheet: BottomSheetDialogFragment() {
+class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditProfileBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.nameView.tvGroupNameTitle.text = "아이 이름"
+        binding.introView.tvInviteTitle.text = "내 소개"
+        binding.colorView.tvGroupNameTitle.text = "배경 컬러"
     }
 
     override fun onCreateView(

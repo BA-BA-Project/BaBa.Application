@@ -13,7 +13,7 @@
         android:layout_marginTop="28dp"
         android:textColor="@color/black"
         android:textSize="18dp"
-        android:text="내 소개"
+        tools:text="내 소개"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
