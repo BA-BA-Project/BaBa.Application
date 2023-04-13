@@ -58,6 +58,14 @@ class MyPageFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.ivSetting.setOnClickListener {
+            requireActivity().startActivity(
+                Intent(
+                    requireContext(),
+                    MyPageActivity::class.java
+                ).putExtra("next", "setting")
+            )
+        }
         initializeRecyclerView()
     }
 

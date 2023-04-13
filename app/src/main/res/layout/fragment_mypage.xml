@@ -72,6 +72,7 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_my_status_message" />
 
                     <ImageView
+                        android:id="@+id/iv_setting"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
                         android:layout_marginTop="55dp"
