@@ -18,6 +18,7 @@ import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
@@ -152,6 +153,30 @@ class MyPageFragment : Fragment() {
             val bottomSheet = MemberEditProfileBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+        }
+        binding.familyView.ivEditButton.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+        }
+        binding.motherFamilyView.ivEditButton.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+        }
+        binding.fatherFamilyView.ivEditButton.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+        }
+        binding.ivEditFriends.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
     }
 }
