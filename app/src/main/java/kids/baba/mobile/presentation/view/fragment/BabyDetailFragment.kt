@@ -45,12 +45,12 @@ class BabyDetailFragment : Fragment() {
         myGroupAdapter = MemberAdapter {
 
         }
-        binding.rvFamily.adapter = familyAdapter
-        binding.rvFamily.layoutManager =
+        binding.familyView.rvGroupMembers.adapter = familyAdapter
+        binding.familyView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.rvMyGroup.adapter = myGroupAdapter
-        binding.rvMyGroup.layoutManager =
+        binding.myGroupView.rvGroupMembers.adapter = myGroupAdapter
+        binding.myGroupView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         familyAdapter.submitList(getDummy())
