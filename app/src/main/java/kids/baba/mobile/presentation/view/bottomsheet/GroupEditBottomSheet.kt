@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
+import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
+import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 
 class GroupEditBottomSheet: BottomSheetDialogFragment() {
 
@@ -25,6 +28,13 @@ class GroupEditBottomSheet: BottomSheetDialogFragment() {
         binding.deleteView.tvDeleteDesc.text = "삭제하기"
         binding.addMemberView.tvAddButtonTitle.text = "멤버 초대"
         binding.addMemberView.tvAddButtonDesc.isGone = true
+        binding.addMemberView.ivAddButton.setOnClickListener {
+            val fragment = InviteMemberFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     override fun onCreateView(
