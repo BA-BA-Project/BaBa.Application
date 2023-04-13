@@ -17,6 +17,7 @@ import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 
@@ -48,6 +49,9 @@ class MyPageFragment : Fragment() {
 
     private fun initView() {
         binding.viewmodel = viewModel
+        binding.ivProfileEditPen.setOnClickListener {
+
+        }
         initializeRecyclerView()
     }
 
@@ -139,6 +143,12 @@ class MyPageFragment : Fragment() {
             val bundle = Bundle()
             //            bundle.putParcelable(BabyListBottomSheet.SELECTED_BABY_KEY, viewModel.selectedBaby.value)
             val bottomSheet = BabyEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+        }
+        binding.ivProfileEditPen.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = MemberEditProfileBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
