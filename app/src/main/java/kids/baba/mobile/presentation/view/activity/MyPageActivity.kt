@@ -12,6 +12,7 @@ import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.view.fragment.AddBabyFragment
 import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment
 import kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment
+import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 
 class MyPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddbabyBinding
@@ -23,6 +24,7 @@ class MyPageActivity : AppCompatActivity() {
             "addBaby" -> showFragment(AddBabyFragment())
             "invite" -> showFragment(InputInviteCodeFragment())
             "babyDetail" -> showFragment(BabyDetailFragment())
+            "member" -> showFragment(InviteMemberFragment())
         }
     }
 

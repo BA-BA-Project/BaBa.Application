@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
 import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 
@@ -29,11 +31,14 @@ class GroupEditBottomSheet: BottomSheetDialogFragment() {
         binding.addMemberView.tvAddButtonTitle.text = "멤버 초대"
         binding.addMemberView.tvAddButtonDesc.isGone = true
         binding.addMemberView.ivAddButton.setOnClickListener {
-            val fragment = InviteMemberFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            binding.addMemberView.ivAddButton.setOnClickListener {
+                requireActivity().startActivity(
+                    Intent(
+                        requireContext(),
+                        MyPageActivity::class.java
+                    ).putExtra("next", "member")
+                )
+            }
         }
     }
 

@@ -51,8 +51,12 @@ class MyPageFragment : Fragment() {
 
     private fun initView() {
         binding.viewmodel = viewModel
-        binding.ivProfileEditPen.setOnClickListener {
-
+        binding.tvAddGroup.setOnClickListener {
+            val fragment = AddGroupFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
         initializeRecyclerView()
     }
