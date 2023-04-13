@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
@@ -101,21 +102,21 @@ class MyPageFragment : Fragment() {
         binding.rvKids.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.rvFamily.adapter = familyAdapter
-        binding.rvFamily.layoutManager =
+        binding.familyView.rvGroupMembers.adapter = familyAdapter
+        binding.familyView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.rvMotherFamily.adapter = motherFamilyAdapter
-        binding.rvMotherFamily.layoutManager =
+        binding.motherFamilyView.rvGroupMembers.adapter = motherFamilyAdapter
+        binding.motherFamilyView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.rvFatherFamily.adapter = fatherFamilyAdapter
-        binding.rvFatherFamily.layoutManager =
+        binding.fatherFamilyView.rvGroupMembers.adapter = fatherFamilyAdapter
+        binding.fatherFamilyView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         binding.rvFriends.adapter = friendsAdapter
         binding.rvFriends.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
 
         babyAdapter.submitList(getDummy())
         familyAdapter.submitList(getDummy())
