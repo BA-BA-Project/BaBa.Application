@@ -59,6 +59,6 @@
 
         <include
             android:id="@+id/intro_view"
-            layout="@layout/composable_intro_view" />
+            layout="@layout/composable_input_view" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

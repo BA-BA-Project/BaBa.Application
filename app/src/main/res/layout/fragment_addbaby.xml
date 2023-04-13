@@ -6,12 +6,13 @@
 
     <LinearLayout
         android:id="@+id/container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout" />
@@ -20,6 +21,11 @@
             android:id="@+id/banner_view"
             layout="@layout/composable_banner_view"
             app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EDEDED" />
+
     </LinearLayout>
 
     <View
@@ -45,190 +51,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <include
+                android:id="@+id/name_view"
+                layout="@layout/composable_input_view" />
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
 
-                <TextView
-                    android:id="@+id/tv_baby_name_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="아이 이름"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/et_edit_baby_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <include
+                android:id="@+id/relation_view"
+                layout="@layout/composable_input_with_desc_view" />
 
-                <EditText
-                    android:id="@+id/et_edit_baby_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/bg_my_page_delete_button"
-                    android:hint="이름을 입력하세요"
-                    android:paddingVertical="5dp"
-                    android:paddingStart="15dp"
-                    android:textColor="#000000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_baby_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_name_title" />
-
-                <TextView
-                    android:id="@+id/tv_edit_baby_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="18dp"
-                    android:text="편집"
-                    android:textColor="#B4B4B4"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/et_edit_baby_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/et_edit_baby_name" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
 
-                <TextView
-                    android:id="@+id/tv_baby_relation_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="나와 아이의 관계"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_baby_relation_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="내가 추가한 아이들와 나의 관계입니다."
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toTopOf="@+id/et_edit_baby_relation"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_relation_title" />
-
-                <EditText
-                    android:id="@+id/et_edit_baby_relation"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/bg_my_page_delete_button"
-                    android:hint="관계를 입력하세요"
-                    android:paddingVertical="5dp"
-                    android:paddingStart="15dp"
-                    android:textColor="#000000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_baby_relation"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_relation_desc" />
-
-                <TextView
-                    android:id="@+id/tv_edit_baby_relation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="18dp"
-                    android:text="편집"
-                    android:textColor="#B4B4B4"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/et_edit_baby_relation"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/et_edit_baby_relation" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_baby_birth_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="아이 생일 혹은 출산 예정일"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/et_edit_baby_birth"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/et_edit_baby_birth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="18dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/bg_my_page_delete_button"
-                    android:hint="생일 혹은 출산 예정일을 입력하세요"
-                    android:paddingVertical="5dp"
-                    android:paddingStart="15dp"
-                    android:textColor="#000000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_baby_birth"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_baby_birth_title" />
-
-                <TextView
-                    android:id="@+id/tv_edit_baby_birth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="18dp"
-                    android:text="편집"
-                    android:textColor="#B4B4B4"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/et_edit_baby_birth"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/et_edit_baby_birth" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/birth_view"
+                layout="@layout/composable_input_view" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

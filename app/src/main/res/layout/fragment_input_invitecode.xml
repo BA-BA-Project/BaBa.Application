@@ -4,57 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/add_top"
-        layout="@layout/composable_top_layout" />
-
-    <TextView
-        android:id="@+id/tv_invite_desc1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:gravity="center_horizontal"
-        android:text="초대코드를 \n입력해 아이를 추가해봐요."
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_top" />
-
-    <TextView
-        android:id="@+id/tv_invite_desc2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:text="지인의 아이를 추가하고 소통해봐요!"
-        android:textColor="#71767C"
-        android:textSize="16dp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_invite_desc1" />
-
-    <View
-        android:id="@+id/line_view_desc"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="64dp"
-        android:background="#EDEDED"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_invite_desc2" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/line_view_desc">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <include
-            android:id="@+id/code_input_view"
-            layout="@layout/composable_intro_view" />
+            android:id="@+id/add_top"
+            layout="@layout/composable_top_layout" />
+
+        <include layout="@layout/composable_banner_view" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EDEDED" />
+
+        <include
+            android:id="@+id/input_view"
+            layout="@layout/composable_input_view" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
