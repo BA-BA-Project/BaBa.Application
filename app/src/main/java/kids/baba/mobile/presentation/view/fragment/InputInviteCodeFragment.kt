@@ -26,7 +26,7 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.codeInputView.tvInviteTitle.text = "내 소개"
+        binding.codeInputView.tvInputTitle.text = "내 소개"
         binding.btnAddInviteUser.setOnClickListener {
             val fragment = InviteResultFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()

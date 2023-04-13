@@ -4,43 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/add_title_layout" android:id="@+id/add_top" />
-
-    <TextView
-        android:id="@+id/tv_add_baby_desc1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:text="내 아이를 추가해봐요"
-        android:textColor="#000000"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+    <LinearLayout
+        android:id="@+id/container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_top" />
-
-    <TextView
-        android:id="@+id/tv_add_baby_desc2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="직접 성장앨범을 기록할 아이를 만들어요."
-        android:textColor="#71767C"
-        android:textSize="14dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_baby_desc1" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/top_app_bar"
+            layout="@layout/composable_top_layout" />
+
+        <include
+            android:id="@+id/banner_view"
+            layout="@layout/composable_banner_view"
+            app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
+    </LinearLayout>
 
     <View
         android:id="@+id/line_view_desc"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="34dp"
         android:background="#EDEDED"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_baby_desc2" />
+        app:layout_constraintTop_toBottomOf="@+id/container" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -50,10 +39,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line_view_desc">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

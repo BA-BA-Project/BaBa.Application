@@ -19,11 +19,16 @@ class EditMemberDialog : DialogFragment() {
         setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
         isCancelable = true
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivCloseEdit.setOnClickListener {
             dismiss()
         }
+        binding.nameView.tvTitle.text = "이름"
+        binding.nameView.tvDesc.text = "이재임"
+        binding.deleteView.tvDeleteTitle.text = "멤버 삭제하기"
+        binding.deleteView.tvDeleteDesc.text = "삭제"
     }
 
     override fun onCreateView(

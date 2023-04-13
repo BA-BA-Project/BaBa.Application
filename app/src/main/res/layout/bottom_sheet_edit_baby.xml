@@ -56,11 +56,20 @@
 
         <include
             android:id="@+id/input_name_view"
-            layout="@layout/profile_name_view" />
+            layout="@layout/composable_name_view" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="#EDEDED"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_group_title"
@@ -110,11 +119,11 @@
 
         <include
             android:id="@+id/add_baby_view"
-            layout="@layout/profile_addbutton_view" />
+            layout="@layout/composable_addbutton_view" />
 
         <include
             android:id="@+id/invite_view"
-            layout="@layout/profile_addbutton_view" />
+            layout="@layout/composable_addbutton_view" />
 
         <View
             android:layout_width="match_parent"

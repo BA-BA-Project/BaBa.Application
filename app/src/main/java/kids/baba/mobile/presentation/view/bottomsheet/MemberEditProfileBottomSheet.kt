@@ -14,8 +14,8 @@ class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameView.tvGroupNameTitle.text = "아이 이름"
-        binding.introView.tvInviteTitle.text = "내 소개"
+        binding.nameView.tvTitle.text = "아이 이름"
+        binding.introView.tvInputTitle.text = "내 소개"
         binding.colorView.tvGroupNameTitle.text = "배경 컬러"
     }
 

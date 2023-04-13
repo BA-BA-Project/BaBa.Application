@@ -20,7 +20,7 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
         binding.addBabyView.tvAddButtonDesc.text = "직접 성장앨범을 촬영할 아이를 생성합니다."
         binding.inviteView.tvAddButtonTitle.text = "초대코드 입력"
         binding.inviteView.tvAddButtonDesc.text = "초대받은 코드를 입력해 아이를 추가합니다."
-        binding.inputNameView.tvGroupNameTitle.text = "아이 그룹 이름"
+        binding.inputNameView.tvTitle.text = "아이 그룹 이름"
         binding.addBabyView.ivAddButton.setOnClickListener {
             requireActivity().startActivity(
                 Intent(

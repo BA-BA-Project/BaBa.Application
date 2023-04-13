@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/add_top"
-        layout="@layout/add_title_layout" />
+        layout="@layout/composable_top_layout" />
 
     <TextView
         android:id="@+id/tv_invite_desc1"
@@ -54,7 +54,7 @@
 
         <include
             android:id="@+id/code_input_view"
-            layout="@layout/profile_intro_view" />
+            layout="@layout/composable_intro_view" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

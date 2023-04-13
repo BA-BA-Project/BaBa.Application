@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/add_top"
-        layout="@layout/add_title_layout" />
+        layout="@layout/composable_top_layout" />
 
     <TextView
         android:id="@+id/tv_invite_desc1"
