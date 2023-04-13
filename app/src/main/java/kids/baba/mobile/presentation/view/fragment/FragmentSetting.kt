@@ -36,6 +36,7 @@ class FragmentSetting : Fragment() {
         binding.tvCreator.setOnClickListener {
             showFragment(FragmentCreator())
         }
+        binding.topAppBar.tvTopTitle.text = "설정"
     }
 
     private fun showFragment(fragment: Fragment) {

@@ -24,7 +24,9 @@
             android:layout_height="1dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/composable_two_text_view" />
+        <include
+            android:id="@+id/group_view"
+            layout="@layout/composable_two_text_view" />
 
         <View
             android:layout_width="match_parent"
@@ -32,7 +34,9 @@
             android:layout_marginHorizontal="10dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/composable_two_text_view" />
+        <include
+            android:id="@+id/relation_view"
+            layout="@layout/composable_two_text_view" />
 
         <View
             android:layout_width="match_parent"
@@ -40,8 +44,11 @@
             android:layout_marginHorizontal="10dp"
             android:background="#EDEDED" />
 
-        <include layout="@layout/composable_two_text_view" />
+        <include
+            android:id="@+id/permission_view"
+            layout="@layout/composable_two_text_view" />
     </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_complete"
         android:layout_width="0dp"
@@ -53,7 +60,7 @@
         android:textColor="@color/baba_main"
         android:textSize="18sp"
         android:textStyle="bold"
-       app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

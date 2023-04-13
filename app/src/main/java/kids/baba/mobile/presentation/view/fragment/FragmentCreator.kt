@@ -24,5 +24,14 @@ class FragmentCreator : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.topAppBar.tvTopTitle.text = "서비스 제작자"
+        binding.design.tvTitle.text = "기획 및 디자인"
+        binding.design.tvDesc.text = "박재희"
+        binding.android.tvTitle.text = "안드로이드 개발"
+        binding.android.tvDesc.text = "심지훈\n이윤호\n이호성"
+        binding.backend.tvTitle.text = "백엔드 개발"
+        binding.backend.tvDesc.text = "김준형\n박성우"
+        binding.helper.tvTitle.text = "도운주신 분"
+        binding.helper.tvDesc.text = "서종환"
     }
 }

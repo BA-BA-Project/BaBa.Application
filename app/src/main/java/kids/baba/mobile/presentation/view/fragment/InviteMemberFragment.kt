@@ -24,6 +24,13 @@ class InviteMemberFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.topAppBar.tvTopTitle.text = "멤버 초대"
+        binding.bannerView.tvBannerTitle.text = "아이와 나의 소식을 공유할\n멤버를 초대해요"
+        binding.bannerView.tvBannerDesc.text = "직접 생성한 아이의 성장앨범과\n자신의 일기를 공유할 수 있어요."
+        binding.inputGroupView.tvTitle.text = "초대 멤버의 소속 그룹"
+        binding.inputGroupView.tvDesc.text = "초대받을 멤버가 어떤 그룹인가요?"
+        binding.inputRelationView.tvTitle.text = "초대 멤버와 아이의 관계"
+        binding.inputRelationView.tvDesc.text = "초대받을 멤버의 별명으로 초대 멤버와\n 그룹에게 공개됩니다."
     }
 
     override fun onCreateView(

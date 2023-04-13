@@ -37,15 +37,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/composable_check" />
+            <include
+                android:id="@+id/for_data_delete"
+                layout="@layout/composable_check" />
 
-            <include layout="@layout/composable_check" />
+            <include
+                android:id="@+id/uncomfortable"
+                layout="@layout/composable_check" />
 
-            <include layout="@layout/composable_check" />
+            <include
+                android:id="@+id/frequent_errors"
+                layout="@layout/composable_check" />
 
-            <include layout="@layout/composable_check" />
+            <include
+                android:id="@+id/not_use"
+                layout="@layout/composable_check" />
 
-            <include layout="@layout/composable_check" />
+            <include
+                android:id="@+id/etc"
+                layout="@layout/composable_check" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

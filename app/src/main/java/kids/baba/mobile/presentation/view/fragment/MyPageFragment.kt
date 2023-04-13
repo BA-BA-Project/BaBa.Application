@@ -66,6 +66,12 @@ class MyPageFragment : Fragment() {
                 ).putExtra("next", "setting")
             )
         }
+        binding.familyView.tvGroupTitle.text = "앙쥬네 가족"
+        binding.familyView.tvGroupDesc.text = "모든 그룹과 소식을 공유할 수 있어요"
+        binding.motherFamilyView.tvGroupTitle.text = "외가"
+        binding.motherFamilyView.tvGroupDesc.text = "앙쥬네 가족, 외가의 소식만 볼 수 있어요"
+        binding.fatherFamilyView.tvGroupTitle.text = "친가"
+        binding.fatherFamilyView.tvGroupDesc.text = "앙쥬네 가족, 친가의 소식만 볼 수 있어요"
         initializeRecyclerView()
     }
 

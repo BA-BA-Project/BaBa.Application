@@ -32,5 +32,12 @@ class AddBabyFragment: Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.topAppBar.tvTopTitle.text = "아이 추가하기"
+        binding.bannerView.tvBannerTitle.text = "내 아이를 추가해봐요"
+        binding.bannerView.tvBannerDesc.text = "직접 성장앨범을 기록할 아이를 만들어요."
+        binding.nameView.tvInputTitle.text = "아이 이름"
+        binding.relationView.tvTitle.text = "나와 아이의 관계"
+        binding.relationView.tvDesc.text = "내가 추가한 아이들와 나의 관계입니다."
+        binding.birthView.tvInputTitle.text = "아이 생일 혹은 출산 예정일"
     }
 }

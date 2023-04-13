@@ -15,7 +15,7 @@
             android:id="@+id/add_top"
             layout="@layout/composable_top_layout" />
 
-        <include layout="@layout/composable_banner_view" />
+        <include layout="@layout/composable_banner_view" android:id="@+id/banner_view"/>
 
         <View
             android:layout_width="match_parent"

@@ -25,6 +25,14 @@ class FragmentDeleteMember: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.topAppBar.tvTopTitle.text = "계정 삭제"
+        binding.bannerView.tvBannerTitle.text = "계정을 삭제하려는 이유가\n 무엇인가요?"
+        binding.bannerView.tvBannerDesc.text = "서비스 개선을 위해 선택해주세요."
+        binding.forDataDelete.tvContent.text = "데이터 삭제를 위해"
+        binding.uncomfortable.tvContent.text = "불편한 사용성으로 인해"
+        binding.frequentErrors.tvContent.text = "잦은 오류로 인해"
+        binding.notUse.tvContent.text = "낮은 사용 빈도로 인해"
+        binding.etc.tvContent.text = "기타"
     }
 
 }

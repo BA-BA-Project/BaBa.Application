@@ -15,6 +15,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.nameView.tvTitle.text = "아이 이름"
     }
 
     override fun onCreateView(

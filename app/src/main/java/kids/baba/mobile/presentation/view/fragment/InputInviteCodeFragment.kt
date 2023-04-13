@@ -26,7 +26,6 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.inputView.tvInputTitle.text = "내 소개"
         binding.btnAddInviteUser.setOnClickListener {
             val fragment = InviteResultFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -34,6 +33,10 @@ class InputInviteCodeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.addTop.tvTopTitle.text = "아이 추가하기"
+        binding.bannerView.tvBannerTitle.text = "초대코드를\n입력해 아이를 추가해봐요."
+        binding.bannerView.tvBannerDesc.text = "지인의 아이를 추가하고 소통해봐요!"
+        binding.inputView.tvInputTitle.text = "초대코드 입력하기"
     }
 
 }

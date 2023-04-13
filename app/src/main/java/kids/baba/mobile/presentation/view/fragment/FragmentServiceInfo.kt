@@ -25,5 +25,6 @@ class FragmentServiceInfo: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.topAppBar.tvTopTitle.text = "서비스 정보"
     }
 }
