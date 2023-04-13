@@ -12,6 +12,8 @@ import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 
 class BabyDetailFragment : Fragment() {
 
@@ -27,6 +29,28 @@ class BabyDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
         Log.e("bundle", "${this.arguments?.getParcelable<MemberUiModel>(SELECTED_BABY_KEY)}")
+        setBottomSheet()
+    }
+
+    private fun setBottomSheet() {
+        binding.ivProfileEditPen.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = BabyEditProfileBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
+        }
+        binding.myGroupView.ivEditButton.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+        }
+        binding.familyView.ivEditButton.setOnClickListener {
+            val bundle = Bundle()
+            val bottomSheet = GroupEditBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+        }
     }
 
     override fun onCreateView(

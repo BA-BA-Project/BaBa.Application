@@ -15,6 +15,17 @@
         android:layout_height="match_parent"
         android:background="#EEEEEE">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_edit_pen"
+            android:layout_width="14dp"
+            android:layout_height="13dp"
+            android:layout_marginStart="4dp"
+            app:civ_circle_background_color="#EDEDED"
+            android:src="@drawable/ic_edit_pen"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_my_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_my_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_my_name" />
+
         <ImageView
             android:id="@+id/civ_my_profile"
             android:layout_width="65dp"
