@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -56,7 +56,9 @@
 
         <include
             android:id="@+id/input_name_view"
-            layout="@layout/composable_name_view" />
+            layout="@layout/composable_name_view"
+            bind:button="@{viewModel.button}"
+            bind:title="@{viewModel.title}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -119,11 +121,15 @@
 
         <include
             android:id="@+id/add_baby_view"
-            layout="@layout/composable_addbutton_view" />
+            layout="@layout/composable_addbutton_view"
+            bind:description="@{viewModel.addBabyDescription}"
+            bind:title="@{viewModel.addBabyTitle}" />
 
         <include
             android:id="@+id/invite_view"
-            layout="@layout/composable_addbutton_view" />
+            layout="@layout/composable_addbutton_view"
+            bind:description="@{viewModel.inputInviteCodeDescription}"
+            bind:title="@{viewModel.inputInviteCodeTitle}" />
 
         <View
             android:layout_width="match_parent"

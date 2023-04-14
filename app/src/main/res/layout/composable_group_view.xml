@@ -1,30 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+
+<layout>
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="description"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
         <TextView
             android:id="@+id/tv_group_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            tools:text="앙쥬네 가족"
+            android:text="@{title}"
             android:textColor="#000000"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="앙쥬네 가족" />
 
         <TextView
             android:id="@+id/tv_group_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="모든 그룹과 소식을 공유할 수 있어요"
+            android:text="@{description}"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tv_group_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_group_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_group_title"
+            tools:text="모든 그룹과 소식을 공유할 수 있어요" />
 
         <ImageView
             android:id="@+id/iv_edit_button"
@@ -47,4 +64,5 @@
             app:layout_constraintStart_toStartOf="@id/tv_group_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_group_desc"
             tools:listitem="@layout/item_member" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

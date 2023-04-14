@@ -5,17 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
 class BabyEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-
+    private val viewModel : BabyEditBottomSheetViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
         binding.addBabyView.tvAddButtonTitle.text = "아이 추가하기"
         binding.addBabyView.tvAddButtonDesc.text = "직접 성장앨범을 촬영할 아이를 생성합니다."
         binding.inviteView.tvAddButtonTitle.text = "초대코드 입력"
