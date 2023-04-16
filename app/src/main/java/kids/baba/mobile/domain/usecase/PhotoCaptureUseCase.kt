@@ -18,8 +18,7 @@ class PhotoCaptureUseCase @Inject constructor(
 
     suspend operator fun invoke(
         imageCapture: ImageCapture,
-        outputOptions: ImageCapture.OutputFileOptions,
-        photoFile: File
+        outputOptions: ImageCapture.OutputFileOptions
     ) = callbackFlow {
         Log.e(TAG, "getMe Called")
         imageCapture.takePicture(
@@ -28,7 +27,7 @@ class PhotoCaptureUseCase @Inject constructor(
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     Log.e(TAG, "onImageSaved Called")
-                    val data = savePhoto(photoFile.toString())
+                    val data = savePhoto(outputFileResults.savedUri.toString())
                     trySendBlocking(data)
                 }
 

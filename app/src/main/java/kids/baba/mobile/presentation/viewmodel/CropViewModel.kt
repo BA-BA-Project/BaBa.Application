@@ -11,14 +11,13 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class CropViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val storageDir: File,
 ) : ViewModel() {
 
     private val TAG = "CropViewModel"
@@ -36,14 +35,9 @@ class CropViewModel @Inject constructor(
                             "  cropped content: ${result.uriContent}"
                 )
 
-                val fileName = result.uriContent.toString().split("/").last()
-                val file = File(storageDir, fileName)
-
-                currentTakenMedia.value =
-                    MediaData(
-                        mediaName = "Cropped",
-                        mediaUri = file.absolutePath
-                    )
+                currentTakenMedia.update {
+                    it.copy(mediaName = "Cropped", mediaUri = result.uriContent.toString())
+                }
 
                 trySendBlocking(currentTakenMedia.value)
             }

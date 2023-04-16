@@ -21,7 +21,7 @@ interface AlbumApi {
         @Path("babyId") id: String,
         @Part photo: MultipartBody.Part,
         @PartMap bodyDataHashMap: HashMap<String, RequestBody>
-    ): Response<PostAlbumResponse>/*PostAlbumResponse*/
+    ): Response<PostAlbumResponse>
 
 
     //성장 앨범 좋아요

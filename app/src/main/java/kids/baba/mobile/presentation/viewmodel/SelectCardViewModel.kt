@@ -1,12 +1,16 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.Context
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
+import kids.baba.mobile.presentation.extension.FileUtil
 import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.state.PostAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +29,7 @@ import javax.inject.Inject
 class SelectCardViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val postBabyAlbumUseCase: PostBabyAlbumUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val TAG = "SelectCardViewModel"
@@ -47,7 +52,7 @@ class SelectCardViewModel @Inject constructor(
     // TODO: "memberId":"KAKAO2695099524","name":"poi" 인 계정에서의 아이로 테스트했음
     //  이 계정의 babyId 는 아래임. 추후에 SharedPreference 에
     //  사용자가 보고있는 babyId 을 저장하고 이를 불러올 것임.
-    private val babyId = "fead51d4-11c5-4436-9a1c-36e844b3138d"
+    private val babyId = "fa0319b3-ceb3-41dd-a297-1ac318f5bb09"
 
     init {
         getCards()
@@ -71,7 +76,7 @@ class SelectCardViewModel @Inject constructor(
 
     private suspend fun postAlbum() {
 
-        val file = File(currentTakenMedia.value.mediaUri)
+        val file = File(FileUtil.optimizeBitmap(context, currentTakenMedia.value.mediaUri.toUri()))
 
         val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
@@ -81,18 +86,22 @@ class SelectCardViewModel @Inject constructor(
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
         postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
+            Log.d(TAG, " file Size After compress : ${file.length()}")
             _postAlbumState.value = PostAlbumState.Error(it)
         }.collect {
+            Log.d(TAG, " file Size After compress : ${file.length()}")
             _postAlbumState.value = PostAlbumState.Success
         }
     }
 
     private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
+
     companion object {
         const val MEDIA_DATA = "mediaData"
         private val defaultCardUiModelArray = CardStyleUiModel.values()
     }
+
 
 }
 

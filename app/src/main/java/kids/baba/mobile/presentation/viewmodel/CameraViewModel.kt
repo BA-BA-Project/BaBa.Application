@@ -1,7 +1,10 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Rational
 import android.view.Surface
@@ -30,7 +33,6 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     private val photoCaptureUseCase: PhotoCaptureUseCase,
     private val photoPickerRepository: PhotoPickerRepository,
-    private val outputDirectory: File,
     private val cameraExecutor: Executor,
     /*private val imageAnalyzerExecutor: ExecutorService,
     private val imageAnalyzer: ImageAnalysis,*/
@@ -53,19 +55,28 @@ class CameraViewModel @Inject constructor(
         viewModelScope.launch {
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 .format(System.currentTimeMillis()) + ".jpg"
-            val photoFile = File(outputDirectory, fileName)
-            Log.e(TAG, "photoFile: $photoFile")
+
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+
+                // P: Android 9 (28)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                    put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BaBa")
+                }
+            }
 
             val metadata = ImageCapture.Metadata().apply {
                 isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
             }
 
-            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
+            val outputOptions = ImageCapture.OutputFileOptions
+                .Builder(context.contentResolver, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
                 .apply {
                     setMetadata(metadata)
                 }.build()
 
-            photoCaptureUseCase(imageCapture, outputOptions, photoFile).catch {
+            photoCaptureUseCase(imageCapture, outputOptions).catch {
                 Log.e(TAG, it.message.toString())
                 it.printStackTrace()
                 throw it

@@ -16,6 +16,7 @@ import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 
@@ -61,10 +62,10 @@ class WriteTitleViewModel @Inject constructor(
 
     fun complete() = flow {
 
-        currentTakenMedia.value = MediaData(
-            mediaName = title.value,
-            mediaUri = currentTakenMedia.value.mediaUri
-        )
+        currentTakenMedia.update {
+            it.copy(mediaName = title.value)
+        }
+
         emit(currentTakenMedia.value)
     }
 
