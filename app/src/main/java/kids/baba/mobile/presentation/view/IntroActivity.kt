@@ -1,5 +1,7 @@
 package kids.baba.mobile.presentation.view
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -77,6 +79,15 @@ class IntroActivity : AppCompatActivity() {
                     else -> Unit
                 }
             }
+        }
+    }
+
+    companion object{
+        fun startActivity(context: Context) {
+            val intent = Intent(context, IntroActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
         }
     }
 }
