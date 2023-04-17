@@ -60,6 +60,7 @@ class IntroActivity : AppCompatActivity() {
         lifecycleScope.launch{
             if(viewModel.checkLogin()){
                 MainActivity.startActivity(this@IntroActivity)
+                finish()
             }
             isReady = true
         }
