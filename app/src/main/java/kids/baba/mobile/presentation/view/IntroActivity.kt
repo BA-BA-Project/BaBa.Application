@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -27,22 +28,40 @@ class IntroActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
+    private var isReady = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
         binding = ActivityIntroBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setSplash()
         checkLogin()
+        setContentView(binding.root)
         setNavController()
         collectEvent()
+    }
+
+    private fun setSplash() {
+        binding.root.viewTreeObserver.addOnPreDrawListener (
+            object : ViewTreeObserver.OnPreDrawListener{
+                override fun onPreDraw(): Boolean {
+                    return if (isReady) {
+                        binding.root.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
     }
 
     private fun checkLogin(){
         lifecycleScope.launch{
             if(viewModel.checkLogin()){
                 MainActivity.startActivity(this@IntroActivity)
-                finish()
             }
+            isReady = true
         }
     }
 

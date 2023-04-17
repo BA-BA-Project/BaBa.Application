@@ -120,8 +120,10 @@ object NetworkModule {
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
                 val tokenRefreshRequest = TokenRefreshRequest(refreshToken)
                 val resp = authApi.tokenRefresh(tokenRefreshRequest).execute()
+                EncryptedPrefs.clearPrefs()
 
                 if (!resp.isSuccessful) {
+                    IntroActivity.startActivity(context)
                     throw TokenRefreshFailedException("토큰 갱신 실패")
                 }
 
@@ -136,9 +138,6 @@ object NetworkModule {
                 }.build()
             } catch (e: Exception) {
                 Log.e(tag, e.message.toString(), e)
-                if (e is TokenRefreshFailedException) {
-                    IntroActivity.startActivity(context)
-                }
             }
         }
         null
