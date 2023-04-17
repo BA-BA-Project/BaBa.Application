@@ -19,11 +19,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.repository.PhotoPickerRepository
 import kids.baba.mobile.domain.usecase.PhotoCaptureUseCase
 import kids.baba.mobile.presentation.event.GetPictureEvent
+import kids.baba.mobile.presentation.extension.FileUtil
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor

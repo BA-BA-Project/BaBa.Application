@@ -1,20 +1,16 @@
 package kids.baba.mobile.data.di
 
 import android.content.Context
-import android.os.Environment
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.google.common.util.concurrent.ListenableFuture
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kids.baba.mobile.R
-import java.io.File
+import kids.baba.mobile.presentation.extension.FileUtil
 import java.util.concurrent.Executor
 import javax.inject.Singleton
 
@@ -22,12 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CameraModule {
 
-    @Provides
-    @Singleton
-    fun provideStorageDir(@ApplicationContext context: Context): File {
-        val appContext = context.applicationContext
-        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: appContext.filesDir
-    }
 
     @Provides
     @Singleton
@@ -52,6 +42,11 @@ object CameraModule {
             setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
         }.build()
     }
+
+    @Provides
+    @Singleton
+    fun provideFileUtil(@ApplicationContext context: Context) = FileUtil(context)
+
 }
 
 /*

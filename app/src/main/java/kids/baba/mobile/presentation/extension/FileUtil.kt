@@ -7,17 +7,20 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.util.Log
 import androidx.exifinterface.media.ExifInterface
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import javax.inject.Inject
 
-object FileUtil {
+
+class FileUtil @Inject constructor(
+    @ApplicationContext private val context: Context
+){
     private val TAG = "FileUtil"
-    private const val MAX_WIDTH = 1280
-    private const val MAX_HEIGHT = 960
 
-    fun optimizeBitmap(context: Context, uri: Uri): String {
+    fun optimizeBitmap(uri: Uri): String {
         try {
             val storage = context.cacheDir
             val fileName = String.format("%s.%s", UUID.randomUUID(), "jpg")
@@ -73,12 +76,12 @@ object FileUtil {
         val (height: Int, width: Int) = options.run { outHeight to outWidth }
         var inSampleSize = 1
 
-        if (height > MAX_HEIGHT || width > MAX_WIDTH) {
+        if (height > Companion.MAX_HEIGHT || width > Companion.MAX_WIDTH) {
 
             val halfHeight: Int = height / 2
             val halfWidth: Int = width / 2
 
-            while (halfHeight / inSampleSize >= MAX_HEIGHT && halfWidth / inSampleSize >= MAX_WIDTH) {
+            while (halfHeight / inSampleSize >= Companion.MAX_HEIGHT && halfWidth / inSampleSize >= Companion.MAX_WIDTH) {
                 inSampleSize *= 2
             }
         }
@@ -105,6 +108,11 @@ object FileUtil {
         val matrix = Matrix()
         matrix.postRotate(degree)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    companion object {
+        private const val MAX_HEIGHT = 960
+        private const val MAX_WIDTH = 1280
     }
 
 }

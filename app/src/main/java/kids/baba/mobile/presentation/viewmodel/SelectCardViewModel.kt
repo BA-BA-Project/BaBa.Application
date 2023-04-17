@@ -29,7 +29,7 @@ import javax.inject.Inject
 class SelectCardViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val postBabyAlbumUseCase: PostBabyAlbumUseCase,
-    @ApplicationContext private val context: Context
+    private val fileUtil: FileUtil,
 ) : ViewModel() {
 
     private val TAG = "SelectCardViewModel"
@@ -76,7 +76,7 @@ class SelectCardViewModel @Inject constructor(
 
     private suspend fun postAlbum() {
 
-        val file = File(FileUtil.optimizeBitmap(context, currentTakenMedia.value.mediaUri.toUri()))
+        val file = File(fileUtil.optimizeBitmap(currentTakenMedia.value.mediaUri.toUri()))
 
         val requestPhotoFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val photoFile: MultipartBody.Part = MultipartBody.Part.createFormData("photo", "photo", requestPhotoFile)
