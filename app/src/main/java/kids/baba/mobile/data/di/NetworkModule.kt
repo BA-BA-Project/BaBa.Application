@@ -34,14 +34,19 @@ object NetworkModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
-    annotation class Authorization
+    annotation class BabaClient
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class AuthClient
+
 
     @Singleton
     @Provides
     fun provideGsonBuilder(): GsonBuilder {
         return GsonBuilder()
-            .registerTypeAdapter(LocalDate::class.java,LocalDateAdapter())
-            .registerTypeAdapter(LocalDateTime::class.java,LocalDateTimeAdapter())
+            .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
     }
 
     @Singleton
@@ -54,10 +59,10 @@ object NetworkModule {
         )
     }
 
+    @BabaClient
     @Singleton
     @Provides
-    fun provideOkhttpClient(
-        @Authorization
+    fun provideBabaClient(
         authorizationInterceptor: Interceptor,
         tokenAuthenticator: Authenticator
     ): OkHttpClient {
@@ -72,7 +77,22 @@ object NetworkModule {
         return builder.build()
     }
 
-    @Authorization
+    @AuthClient
+    @Singleton
+    @Provides
+    fun provideAuthClient(
+        authorizationInterceptor: Interceptor
+    ): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.apply {
+            addInterceptor(loggingInterceptor)
+            addInterceptor(authorizationInterceptor)
+        }
+        return builder.build()
+    }
+
     @Singleton
     @Provides
     fun providesAuthorizationInterceptor() = Interceptor { chain ->
@@ -86,12 +106,15 @@ object NetworkModule {
         chain.proceed(request.build())
     }
 
+    @Singleton
+    @Provides
     fun provideTokenAuthenticator(
         @ApplicationContext context: Context,
         authApi: AuthApi
     ) = Authenticator { _, response ->
         val tag = "TokenAuthenticator"
-        val isPathRefresh = response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
+        val isPathRefresh =
+            response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
         if (response.code == 401 && !isPathRefresh) {
             try {
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
@@ -113,7 +136,7 @@ object NetworkModule {
                 }.build()
             } catch (e: Exception) {
                 Log.e(tag, e.message.toString(), e)
-                if(e is TokenRefreshFailedException){
+                if (e is TokenRefreshFailedException) {
                     IntroActivity.startActivity(context)
                 }
             }
