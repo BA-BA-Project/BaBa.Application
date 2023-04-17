@@ -43,7 +43,6 @@ class GrowthAlbumFragment : Fragment() {
     private lateinit var albumAdapter: AlbumAdapter
 
     private var selectedDate = LocalDate.now()
-    private var isDateInit = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -261,12 +260,7 @@ class GrowthAlbumFragment : Fragment() {
             binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
             selectedDate = date
             binding.wcvAlbumCalendar.notifyDateChanged(date)
-            if (isDateInit.not()) {
-                binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
-                isDateInit = true
-            } else {
-                binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
-            }
+            binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
         }
     }
 
