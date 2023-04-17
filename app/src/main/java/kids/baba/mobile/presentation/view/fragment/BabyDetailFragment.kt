@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
@@ -15,6 +16,7 @@ import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 
+@AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
 
     private lateinit var familyAdapter: MemberAdapter
@@ -34,6 +36,11 @@ class BabyDetailFragment : Fragment() {
         binding.familyView.tvGroupDesc.text = "모든 그룹과 소식을 공유할 수 있어요"
         binding.myGroupView.tvGroupTitle.text = "내가 속한 그룹 이름"
         binding.myGroupView.tvGroupDesc.text = "[가족 그룹], [내가 속한 그룹]의 소식만 볼 수 있어요"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setBottomSheet() {

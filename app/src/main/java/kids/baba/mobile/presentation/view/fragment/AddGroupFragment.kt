@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
 import kids.baba.mobile.presentation.view.activity.MainActivity
 
+@AndroidEntryPoint
 class AddGroupFragment : Fragment(){
 
     private var _binding: FragmentAddGroupBinding? = null
@@ -20,6 +22,11 @@ class AddGroupFragment : Fragment(){
     ): View {
         _binding = FragmentAddGroupBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

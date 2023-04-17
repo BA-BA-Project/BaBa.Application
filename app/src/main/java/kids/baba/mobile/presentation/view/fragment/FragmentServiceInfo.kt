@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentServiceInfoBinding
 import kids.baba.mobile.databinding.FragmentSettingBinding
 
+@AndroidEntryPoint
 class FragmentServiceInfo: Fragment() {
     private var _binding: FragmentServiceInfoBinding? = null
     private val binding
@@ -23,6 +25,10 @@ class FragmentServiceInfo: Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.tvTopTitle.text = "서비스 정보"

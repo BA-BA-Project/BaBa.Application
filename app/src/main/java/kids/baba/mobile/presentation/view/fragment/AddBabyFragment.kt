@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
 
+@AndroidEntryPoint
 class AddBabyFragment: Fragment() {
 
     private var _binding: FragmentAddbabyBinding? = null
@@ -21,6 +23,11 @@ class AddBabyFragment: Fragment() {
     ): View {
         _binding = FragmentAddbabyBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyProfileBinding
 
+@AndroidEntryPoint
 class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditBabyProfileBinding? = null
@@ -27,6 +29,10 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     companion object {
         const val TAG = "BabyEditProfileBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"

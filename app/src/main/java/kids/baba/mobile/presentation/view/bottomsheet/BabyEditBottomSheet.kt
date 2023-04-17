@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
+@AndroidEntryPoint
 class BabyEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
     private val binding
@@ -40,6 +42,11 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                 ).putExtra("next", "invite")
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateView(

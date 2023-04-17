@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
 
+@AndroidEntryPoint
 class InputInviteCodeFragment : Fragment() {
 
     private var _binding: FragmentInputInvitecodeBinding? = null
@@ -22,6 +24,11 @@ class InputInviteCodeFragment : Fragment() {
     ): View {
         _binding = FragmentInputInvitecodeBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

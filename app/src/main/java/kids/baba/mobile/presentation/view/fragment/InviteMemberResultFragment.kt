@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMemberInviteResultBinding
 import kids.baba.mobile.presentation.view.activity.MainActivity
 
+@AndroidEntryPoint
 class InviteMemberResultFragment : Fragment() {
 
     private var _binding: FragmentMemberInviteResultBinding? = null
@@ -36,6 +38,10 @@ class InviteMemberResultFragment : Fragment() {
         binding.permissionView.tvDesc.text = "없음"
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

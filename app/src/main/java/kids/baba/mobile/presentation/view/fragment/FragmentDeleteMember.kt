@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentDeleteUserBinding
 import kids.baba.mobile.databinding.FragmentServiceInfoBinding
 
+@AndroidEntryPoint
 class FragmentDeleteMember: Fragment() {
 
     private var _binding: FragmentDeleteUserBinding? = null
@@ -21,6 +23,11 @@ class FragmentDeleteMember: Fragment() {
     ): View {
         _binding = FragmentDeleteUserBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

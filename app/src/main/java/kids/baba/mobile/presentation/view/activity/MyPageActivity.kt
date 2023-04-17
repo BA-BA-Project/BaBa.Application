@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityAddbabyBinding
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.view.fragment.*
 
+@AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddbabyBinding
     override fun onCreate(savedInstanceState: Bundle?) {

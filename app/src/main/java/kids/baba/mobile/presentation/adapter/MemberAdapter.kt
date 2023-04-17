@@ -34,7 +34,7 @@ class MemberAdapter(private val itemClick: (MemberUiModel) -> Unit) :
             override fun areContentsTheSame(
                 oldItem: MemberUiModel,
                 newItem: MemberUiModel
-            ): Boolean = oldItem.name == newItem.name
+            ): Boolean = oldItem == newItem
 
         }
     }

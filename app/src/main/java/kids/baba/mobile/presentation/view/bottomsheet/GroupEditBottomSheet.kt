@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
@@ -14,6 +15,7 @@ import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
 import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 
+@AndroidEntryPoint
 class GroupEditBottomSheet: BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
@@ -49,6 +51,11 @@ class GroupEditBottomSheet: BottomSheetDialogFragment() {
     ): View {
         _binding = BottomSheetEditGroupBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 
+@AndroidEntryPoint
 class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditProfileBinding? = null
     private val binding
@@ -26,6 +28,11 @@ class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
     ): View {
         _binding = BottomSheetEditProfileBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

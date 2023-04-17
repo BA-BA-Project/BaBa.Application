@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentCollapseBinding
 
-
+@AndroidEntryPoint
 class CollapseFragment : Fragment() {
     private var _binding: FragmentCollapseBinding? = null
     private val binding
@@ -20,5 +21,10 @@ class CollapseFragment : Fragment() {
     ): View {
         _binding = FragmentCollapseBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

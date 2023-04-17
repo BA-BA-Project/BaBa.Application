@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.databinding.FragmentInviteResultBinding
 import kids.baba.mobile.presentation.view.activity.MainActivity
 
+@AndroidEntryPoint
 class InviteMemberFragment : Fragment() {
 
     private var _binding: FragmentInviteMemberBinding? = null
@@ -31,6 +33,11 @@ class InviteMemberFragment : Fragment() {
         binding.inputGroupView.tvDesc.text = "초대받을 멤버가 어떤 그룹인가요?"
         binding.inputRelationView.tvTitle.text = "초대 멤버와 아이의 관계"
         binding.inputRelationView.tvDesc.text = "초대받을 멤버의 별명으로 초대 멤버와\n 그룹에게 공개됩니다."
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateView(

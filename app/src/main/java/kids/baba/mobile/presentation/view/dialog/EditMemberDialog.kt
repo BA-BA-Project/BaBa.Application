@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
 
+@AndroidEntryPoint
 class EditMemberDialog : DialogFragment() {
 
     private var _binding: DialogFragmentEditMemberBinding? = null
@@ -38,6 +40,11 @@ class EditMemberDialog : DialogFragment() {
     ): View {
         _binding = DialogFragmentEditMemberBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
