@@ -72,6 +72,9 @@
     <string name="album_comment_tag">\@%s</string>
     <string name="user_info_collect_complete">정보 수집 완료!</string>
     <string name="welcome_baba">어서와요, %s님</string>
+    <string name="collapse">모아보기</string>
+    <string name="growth_album">성장 앨범</string>
+    <string name="my_page">마이 페이지</string>
     <string name="today">Today</string>
     <string name="select_baby">성장앨범 보러가기</string>
     <string name="management_babies">아이 추가 및 관리</string>

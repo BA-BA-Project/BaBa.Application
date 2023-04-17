@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/collapse"
-        android:title="모아보기"
-        android:icon="@drawable/ic_baba_logo">
+    <item android:id="@+id/collapse_fragment"
+        android:title="@string/collapse"
+        android:icon="@drawable/collapse_off">
     </item>
 
-    <item android:id="@+id/growth_album"
-        android:title="성장 앨범"
-        android:icon="@drawable/ic_baba_logo">
+    <item android:id="@+id/growth_album_fragment"
+        android:title="@string/growth_album"
+        android:icon="@drawable/growth_album_off">
     </item>
 
-    <item android:id="@+id/my_page"
-        android:title="마이 페이지"
-        android:icon="@drawable/ic_baba_logo">
+    <item android:id="@+id/my_page_fragment"
+        android:title="@string/my_page"
+        android:icon="@drawable/my_page_off">
     </item>
 </menu>
