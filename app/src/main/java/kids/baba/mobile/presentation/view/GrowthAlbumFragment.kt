@@ -157,7 +157,7 @@ class GrowthAlbumFragment : Fragment() {
         val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
-            currentMonth.plusMonths(0).atEndOfMonth(),
+            LocalDate.now(),
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
