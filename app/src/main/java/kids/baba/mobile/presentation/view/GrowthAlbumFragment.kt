@@ -23,6 +23,7 @@ import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
@@ -41,6 +42,9 @@ class GrowthAlbumFragment : Fragment() {
 
     private lateinit var albumAdapter: AlbumAdapter
 
+    private val albumDateTimeFormatter by lazy {
+        DateTimeFormatter.ofPattern("yy-MM-dd")
+    }
     private var selectedDate = LocalDate.now()
     private var isDateInit = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +70,6 @@ class GrowthAlbumFragment : Fragment() {
     private fun setBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     private fun setBottomSheet() {
@@ -110,7 +113,6 @@ class GrowthAlbumFragment : Fragment() {
                 view.setOnClickListener {
                     if (selectedDate != day.date) {
                         viewModel.selectDate(day.date)
-                        setAlbum()
                     }
                 }
             }
@@ -170,19 +172,29 @@ class GrowthAlbumFragment : Fragment() {
             viewModel.growthAlbumState.collect { state ->
                 val growthAlbumList = state.growthAlbumList
                 val selectedDate = state.selectedDate
+                val selectedAlbum = state.selectedAlbum
+                val selectedBaby = state.selectedBaby
 
+                setAlbum(selectedBaby, selectedAlbum)
                 setSelectedDate(selectedDate)
                 setViewPagerItem(growthAlbumList)
             }
         }
     }
 
-    private fun setAlbum() {
+    private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
         binding.vpBabyPhoto.doOnPreDraw {
             binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-        }
-        if (selectedDate == LocalDate.now()) {
-            binding.tvAlbumDate.setText(R.string.today)
+            if(album.contentId == null){
+                binding.tvAlbumTitle.text = String.format(baby.name, R.string.default_album_title)
+            } else {
+                binding.tvAlbumTitle.text = album.title
+            }
+            if(album.date == LocalDate.now()){
+                binding.tvAlbumDate.setText(R.string.today)
+            } else {
+                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+            }
         }
     }
 
@@ -192,7 +204,6 @@ class GrowthAlbumFragment : Fragment() {
 
         albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                setAlbum()
                 binding.wcvAlbumCalendar.notifyCalendarChanged()
                 albumAdapter.unregisterAdapterDataObserver(this)
 

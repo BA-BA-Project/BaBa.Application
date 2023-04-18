@@ -10,10 +10,6 @@
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
 
         <variable
-            name="dateTimeFormatter"
-            type="java.time.format.DateTimeFormatter" />
-
-        <variable
             name="baby"
             type="kids.baba.mobile.presentation.model.BabyUiModel" />
 
@@ -99,7 +95,7 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:translationZ="8dp"
-                app:layout_constraintBottom_toTopOf="@id/tv_add_comment"
+                app:layout_constraintBottom_toTopOf="@id/tv_do_some"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_album_title" />
@@ -116,8 +112,6 @@
                 android:textColor="@color/baba_sub_2"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:date="@{viewmodel.growthAlbumState.selectedAlbum.date}"
-                app:formatter="@{dateTimeFormatter}"
                 app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                 app:layout_constraintStart_toStartOf="@id/cv_baby_album"
                 app:layout_constraintTop_toTopOf="@id/cv_baby_album"
@@ -179,7 +173,6 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="@{viewmodel.growthAlbumState.selectedAlbum.title.empty ? @string/default_album_title(baby.name) : viewmodel.growthAlbumState.selectedAlbum.title }"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textColor="@color/text_0"
                 android:textSize="20sp"
@@ -190,13 +183,12 @@
                 tools:text="@string/default_album_title" />
 
             <TextView
-                android:id="@+id/tv_add_comment"
+                android:id="@+id/tv_do_some"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:elevation="1dp"
                 android:includeFontPadding="false"
-                android:text="@string/album_card_record_image"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/cv_baby_album"
@@ -211,9 +203,9 @@
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
                 android:src="@drawable/ic_arrow_down"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_add_comment"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_do_some"
                 app:layout_constraintEnd_toEndOf="@+id/cv_baby_album"
-                app:layout_constraintTop_toTopOf="@+id/tv_add_comment" />
+                app:layout_constraintTop_toTopOf="@+id/tv_do_some" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
