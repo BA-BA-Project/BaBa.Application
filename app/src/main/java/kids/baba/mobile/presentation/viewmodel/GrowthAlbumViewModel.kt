@@ -42,10 +42,10 @@ class GrowthAlbumViewModel @Inject constructor(
         } else {
             date.lengthOfMonth()
         }
-        val thisMonthAlbumList = MutableList(size) { idx ->
-            AlbumUiModel(date = startDate.plusDays(idx.toLong()))
-        }
         val selectedBaby = growthAlbumState.value.selectedBaby
+        val thisMonthAlbumList = MutableList(size) { idx ->
+            AlbumUiModel(date = startDate.plusDays(idx.toLong()), isMyBaby = selectedBaby.isMyBaby)
+        }
         getAlbumsFromBabyIdUseCase.getAlbumsFromBabyId(
             selectedBaby.babyId,
             nowYear,

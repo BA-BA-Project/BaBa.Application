@@ -39,7 +39,7 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
 
 
             binding.btnAlbumLike.visibility = if(album.contentId != null){View.VISIBLE} else {View.GONE}
-            binding.btnCreateAlbum.visibility = if(album.contentId != null && isMyBaby){View.VISIBLE} else {View.GONE}
+            binding.btnCreateAlbum.visibility = if(album.contentId == null && isMyBaby){View.VISIBLE} else {View.GONE}
 
             if(album.date == LocalDate.now() && album.contentId == null){
                 binding.ivAlbum.visibility = View.INVISIBLE
