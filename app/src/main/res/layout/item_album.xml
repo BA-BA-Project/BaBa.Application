@@ -43,7 +43,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/album_default"/>
+                    tools:src="@drawable/last_album"/>
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/lav_today_album"
@@ -56,6 +56,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:lottie_fileName="today_album_lottie.json"
                     app:lottie_loop="true"
+                    tools:visibility="invisible"
                     />
 
 
