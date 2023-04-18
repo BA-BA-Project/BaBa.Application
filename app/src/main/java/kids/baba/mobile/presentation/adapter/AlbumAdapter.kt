@@ -33,24 +33,22 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
         }
         fun bind(album: AlbumUiModel) {
             this.album = album
+            val isMyBaby = album.isMyBaby
             binding.like = album.like
             binding.photo = album.photo
 
-            if(album.contentId == null){
-                binding.btnAlbumLike.visibility = View.GONE
-                binding.btnCreateAlbum.visibility = View.VISIBLE
 
-            } else {
-                binding.btnAlbumLike.visibility = View.VISIBLE
-                binding.btnCreateAlbum.visibility = View.GONE
-            }
+            binding.btnAlbumLike.visibility = if(album.contentId != null){View.VISIBLE} else {View.GONE}
+            binding.btnCreateAlbum.visibility = if(album.contentId != null && isMyBaby){View.VISIBLE} else {View.GONE}
 
-            if(album.contentId == null && album.date == LocalDate.now()){
+            if(album.date == LocalDate.now() && album.contentId == null){
                 binding.ivAlbum.visibility = View.INVISIBLE
                 binding.lavTodayAlbum.visibility = View.VISIBLE
+                binding.lavTodayAlbum.playAnimation()
             } else {
                 binding.ivAlbum.visibility = View.VISIBLE
                 binding.lavTodayAlbum.visibility = View.INVISIBLE
+                binding.lavTodayAlbum.pauseAnimation()
             }
 
         }
