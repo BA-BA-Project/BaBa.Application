@@ -185,7 +185,7 @@ class GrowthAlbumFragment : Fragment() {
         binding.vpBabyPhoto.doOnPreDraw {
             binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
             if(album.contentId == null){
-                binding.tvAlbumTitle.text = String.format(baby.name, R.string.default_album_title)
+                binding.tvAlbumTitle.text = String.format(getString(R.string.default_album_title),baby.name)
             } else {
                 binding.tvAlbumTitle.text = album.title
             }
