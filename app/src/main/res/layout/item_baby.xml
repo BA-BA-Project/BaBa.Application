@@ -19,7 +19,7 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_baby_icon"
+            android:id="@+id/iv_album"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/profile_baby_1"
@@ -38,9 +38,9 @@
             android:text="@{baby.name}"
             android:textAppearance="@style/BABA.TextStyle"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_baby_icon"
-            app:layout_constraintStart_toEndOf="@+id/iv_baby_icon"
-            app:layout_constraintTop_toTopOf="@+id/iv_baby_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_album"
+            app:layout_constraintStart_toEndOf="@+id/iv_album"
+            app:layout_constraintTop_toTopOf="@+id/iv_album"
             tools:text="앙쥬" />
 
         <ImageView

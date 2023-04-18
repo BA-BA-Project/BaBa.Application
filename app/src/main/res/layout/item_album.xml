@@ -34,7 +34,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/iv_baby_icon"
+                    android:id="@+id/iv_album"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:imageFromUrl="@{photo}"
@@ -43,7 +43,20 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/album_default" />
+                    tools:src="@drawable/album_default"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lav_today_album"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_fileName="today_album_lottie.json"
+                    app:lottie_loop="true"
+                    />
 
 
                 <ImageButton
@@ -55,8 +68,8 @@
                     android:src="@drawable/ic_photo"
                     android:background="@android:color/transparent"
                     android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
-                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon" />
+                    app:layout_constraintBottom_toBottomOf="@id/iv_album"
+                    app:layout_constraintEnd_toEndOf="@id/iv_album" />
 
                 <ImageButton
                     android:id="@+id/btn_album_like"
@@ -67,8 +80,8 @@
                     android:src="@{like ? @drawable/ic_like_checked : @drawable/ic_like_unchecked}"
                     android:background="@android:color/transparent"
                     android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_baby_icon"
-                    app:layout_constraintEnd_toEndOf="@id/iv_baby_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_album"
+                    app:layout_constraintEnd_toEndOf="@id/iv_album"
                     tools:src="@drawable/ic_like_unchecked"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
