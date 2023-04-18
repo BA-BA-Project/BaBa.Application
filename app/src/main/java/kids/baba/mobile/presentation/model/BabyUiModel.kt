@@ -8,5 +8,6 @@ data class BabyUiModel(
     val babyId : String = "",
     val groupColor: String = "#FF0000" ,
     val name: String = "",
-    var selected: Boolean = false
+    val selected: Boolean = false,
+    val isMyBaby: Boolean = false
 ): Parcelable
