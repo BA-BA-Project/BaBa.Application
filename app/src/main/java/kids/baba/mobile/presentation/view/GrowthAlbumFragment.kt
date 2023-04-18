@@ -76,7 +76,7 @@ class GrowthAlbumFragment : Fragment() {
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_BABY_KEY, viewModel.growthAlbumState.value.selectedBaby)
             val bottomSheet = BabyListBottomSheet { baby ->
-                viewModel.selectBaby(baby)
+                viewModel.selectBaby(baby, selectedDate)
             }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)

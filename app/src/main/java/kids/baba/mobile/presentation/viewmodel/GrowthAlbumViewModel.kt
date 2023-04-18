@@ -99,13 +99,14 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun selectBaby(baby: BabyUiModel) {
+    fun selectBaby(baby: BabyUiModel, selectedDate: LocalDate) {
         _growthAlbumState.update {
             it.copy(
-                selectedBaby = baby
+                selectedBaby = baby.copy(selected = true)
             )
         }
         EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
+        loadAlbum(selectedDate)
     }
 
 
