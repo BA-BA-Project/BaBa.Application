@@ -118,32 +118,32 @@ class GrowthAlbumFragment : Fragment() {
             }
 
             fun bind(day: WeekDay) {
+                var hasAlbum = false
                 this.day = day
                 bind.date = day.date
                 bind.selected = selectedDate == day.date
                 bind.formatter = formatter
-                bind.hasAlbum = false
                 val growthAlbumList = viewModel.growthAlbumState.value.growthAlbumList
 
                 if (growthAlbumList.isNotEmpty()) {
                     if (day.date.month == selectedDate.month) {
                         val idx = day.date.dayOfMonth - 1
                         if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != null) {
-                            bind.hasAlbum = true
+                            hasAlbum = true
                         }
                     }
                 }
-
+                bind.hasAlbum = hasAlbum
                 view.isClickable = day.date.isAfter(LocalDate.now()).not()
-                if (view.isClickable) {
-                    val textColor0 = requireContext().getColor(R.color.text_0)
-                    bind.tvDate.setTextColor(textColor0)
-                    bind.tvWeekday.setTextColor(textColor0)
-                } else {
-                    val textColor3 = requireContext().getColor(R.color.text_3)
-                    bind.tvDate.setTextColor(textColor3)
-                    bind.tvWeekday.setTextColor(textColor3)
+                var textColor = if(view.isClickable) R.color.text_0 else R.color.text_3
+                bind.tvWeekday.setTextColor(requireContext().getColor(textColor))
+                if(hasAlbum) {
+                    textColor = R.color.white
+                    bind.tvDate.setBackgroundResource(R.drawable.bg_day_has_album)
+                }else {
+                    bind.tvDate.background = null
                 }
+                bind.tvDate.setTextColor(requireContext().getColor(textColor))
             }
         }
 
