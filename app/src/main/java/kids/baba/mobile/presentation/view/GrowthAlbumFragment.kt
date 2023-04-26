@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -184,15 +185,30 @@ class GrowthAlbumFragment : Fragment() {
     private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
         binding.vpBabyPhoto.doOnPreDraw {
             binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-            if(album.contentId == null){
-                binding.tvAlbumTitle.text = String.format(getString(R.string.default_album_title),baby.name)
+            @StringRes
+            val toDoMessage = if(album.contentId != null){
+                R.string.add_like_and_comment
             } else {
-                binding.tvAlbumTitle.text = album.title
+                if(album.isMyBaby){
+                    R.string.record_album
+                } else {
+                    R.string.no_albums_recorded
+                }
             }
+            binding.tvDoSome.setText(toDoMessage)
+
             if(album.date == LocalDate.now()){
                 binding.tvAlbumDate.setText(R.string.today)
-            } else {
+            } else{
                 binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+            }
+
+            binding.tvAlbumTitle.text = if(album.contentId != null){
+                album.title
+            } else if(album.date == LocalDate.now()){
+                String.format(getString(R.string.today_album_title),baby.name)
+            } else {
+                String.format(getString(R.string.past_album_title),baby.name)
             }
         }
     }
