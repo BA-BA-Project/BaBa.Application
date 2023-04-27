@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.accounts.NetworkErrorException
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +16,6 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -82,19 +80,20 @@ class TermsAgreeViewModel @Inject constructor(
 
     fun getSignToken() {
         viewModelScope.launch {
-            getSignTokenUseCase(
+            val result = getSignTokenUseCase(
                 socialToken = socialToken,
                 termsData = termsList.value.map {
                     it.toDomain()
                 }
-            ).catch {
-                if (it is NetworkErrorException) {
-                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
-                } else {
-                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
+            )
+            when (result){
+                is Result.Success -> {
+                    _signToken.value = result.data
                 }
-            }.collect {
-                _signToken.emit(it)
+                is Result.NetworkError -> {
+                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
+                }
+                else -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))
             }
         }
     }
