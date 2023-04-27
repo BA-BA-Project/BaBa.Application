@@ -14,6 +14,8 @@ import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.core.error.TokenRefreshFailedException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.data.api.AuthApi
+import kids.baba.mobile.data.network.SafeApiHelper
+import kids.baba.mobile.data.network.SafeApiHelperImpl
 import kids.baba.mobile.data.util.LocalDateAdapter
 import kids.baba.mobile.data.util.LocalDateTimeAdapter
 import kids.baba.mobile.domain.model.TokenRefreshRequest
@@ -142,4 +144,9 @@ object NetworkModule {
         }
         null
     }
+
+    @Singleton
+    @Provides
+    fun provideSafeApi() : SafeApiHelper = SafeApiHelperImpl()
+
 }
