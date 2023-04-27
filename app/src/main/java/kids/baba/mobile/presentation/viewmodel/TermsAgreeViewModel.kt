@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetSignTokenUseCase
 import kids.baba.mobile.domain.usecase.GetTermsListUseCase
 import kids.baba.mobile.presentation.event.TermsAgreeEvent
 import kids.baba.mobile.presentation.mapper.toDomain
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.TermsUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -42,15 +44,15 @@ class TermsAgreeViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
     init {
+        getTerms()
+    }
+
+    private fun getTerms() {
         viewModelScope.launch {
-            getTermsListUseCase(socialToken).catch {
-                if (it is NetworkErrorException) {
-                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
-                } else {
-                    _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
-                }
-            }.collect {
-                _termsList.value = it
+            when (val result = getTermsListUseCase(socialToken)) {
+                is Result.Success -> _termsList.value = result.data.map { it.toPresentation() }
+                is Result.NetworkError -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
             }
         }
     }

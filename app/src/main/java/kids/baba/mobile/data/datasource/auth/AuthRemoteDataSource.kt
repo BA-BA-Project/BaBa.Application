@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRemoteDataSource {
     suspend fun login(socialToken: String): Result<TokenResponse>
 
-    fun getTerms(socialToken: String): Flow<List<TermsData>>
+    suspend fun getTerms(socialToken: String): Result<List<TermsData>>
 
     fun getSignToken(signTokenRequest: SignTokenRequest): Flow<String>
 }
