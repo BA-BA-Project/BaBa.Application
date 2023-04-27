@@ -29,9 +29,9 @@ import kids.baba.mobile.presentation.adapter.BabyAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.state.GrowthAlbumState
-import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.util.MyDatePickerDialog
 import kids.baba.mobile.presentation.util.calendar.DayListener
+import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -333,8 +333,8 @@ class GrowthAlbumFragment : Fragment() {
     private fun connect() {
         // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
         Log.d("GrowthAlbumFragment", "connect()")
-
-        FilmActivity.startActivity(requireContext())
+        // TODO: 여기서 nowDate 을 String 으로 넘겨주어야 합니다.
+        FilmActivity.startActivity(requireContext(), nowDate = "2023-01-11")
     }
 
 }

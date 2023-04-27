@@ -7,6 +7,7 @@ import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.presentation.event.FilmEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class FilmViewModel @Inject constructor() : ViewModel() {
     private val _filmEventFlow = MutableEventFlow<FilmEvent>()
     val filmEventFlow = _filmEventFlow.asEventFlow()
 
+    val nowDate: MutableStateFlow<String> = MutableStateFlow("")
 
     fun isMoveToCrop(mediaData: MediaData) {
         viewModelScope.launch {
@@ -38,6 +40,12 @@ class FilmViewModel @Inject constructor() : ViewModel() {
     fun isMoveToSelectCard(mediaData: MediaData) {
         viewModelScope.launch {
             _filmEventFlow.emit(FilmEvent.MoveToSelectCard(mediaData))
+        }
+    }
+
+    fun isPostAlbum() {
+        viewModelScope.launch {
+            _filmEventFlow.emit(FilmEvent.FinishPostAlbum)
         }
     }
 

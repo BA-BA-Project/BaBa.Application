@@ -85,7 +85,6 @@ class CameraFragment @Inject constructor() : Fragment() {
     }
 
 
-
     private fun goToAlbum() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
@@ -104,7 +103,6 @@ class CameraFragment @Inject constructor() : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 

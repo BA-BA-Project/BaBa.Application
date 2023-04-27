@@ -1,6 +1,5 @@
 package kids.baba.mobile.domain.usecase
 
-import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -17,26 +16,24 @@ class PhotoCaptureUseCase @Inject constructor(
 ) {
     private val TAG = "PhotoCaptureUseCase"
 
-    suspend fun getMe(
+    suspend operator fun invoke(
         imageCapture: ImageCapture,
-        outputOptions: ImageCapture.OutputFileOptions,
-        photoFile: File, dateInfo: String
+        outputOptions: ImageCapture.OutputFileOptions
     ) = callbackFlow {
-
+        Log.e(TAG, "getMe Called")
         imageCapture.takePicture(
             outputOptions,
             cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-
-                    val savedUri = Uri.fromFile(photoFile)
-                    val data = savePhoto(savedUri.toString(), dateInfo)
+                    Log.e(TAG, "onImageSaved Called")
+                    val data = savePhoto(outputFileResults.savedUri.toString())
                     trySendBlocking(data)
-
                 }
 
                 override fun onError(exception: ImageCaptureException) {
                     val msg = "Photo capture failed: ${exception.message}"
+                    exception.printStackTrace()
                     Log.e(TAG, msg)
                 }
             }
@@ -44,13 +41,12 @@ class PhotoCaptureUseCase @Inject constructor(
         awaitClose()
     }
 
-    private fun savePhoto(path: String, dateInfo: String): MediaData {
+    private fun savePhoto(path: String): MediaData {
         val file = File(path)
 
         return MediaData(
             mediaName = file.name,
-            mediaPath = path,
-            mediaDate = dateInfo
+            mediaUri = path
         )
     }
 }

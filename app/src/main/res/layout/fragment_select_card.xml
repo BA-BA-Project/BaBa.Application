@@ -43,8 +43,8 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/format_round_corner_blue"
-
                     android:contentDescription="@string/btn_album"
+                    android:onClick="@{_ -> viewModel.postAlbumClick()}"
                     android:text="@string/save"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -73,7 +73,7 @@
                 android:id="@+id/cl_baby_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackground="@{viewModel.cardState1[viewModel.cardPosition].iconRes}"
+                app:cardBackground="@{viewModel.cardState[viewModel.cardPosition].iconRes}"
                 tools:background="@drawable/card_candy_1">
 
 
@@ -85,11 +85,11 @@
                     android:layout_marginTop="18dp"
                     android:background="@color/transparent"
                     android:includeFontPadding="false"
-                    android:text="@string/today"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/baba_sub_2"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    app:dateString="@{viewModel.nowDate}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,6 +112,7 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
+                    android:text="@{viewModel.currentTakenMedia.mediaName}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -140,6 +141,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/iv_final_post"
                         android:scaleType="fitXY"
+                        app:imageFromUrl="@{viewModel.currentTakenMedia.mediaUri}"
                         tools:src="@drawable/ic_baba_logo" />
                 </androidx.cardview.widget.CardView>
 
@@ -207,5 +209,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-
-<!--    app:cardBackground="@{viewModel.cardState.cardStyles.get(viewModel.cardPosition).cardStyleIcon.iconRes}"-->

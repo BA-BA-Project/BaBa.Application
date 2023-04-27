@@ -1,12 +1,14 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import android.util.Rational
+import android.view.Surface
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
@@ -17,13 +19,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kids.baba.mobile.domain.repository.PhotoPickerRepository
 import kids.baba.mobile.domain.usecase.PhotoCaptureUseCase
 import kids.baba.mobile.presentation.event.GetPictureEvent
+import kids.baba.mobile.presentation.extension.FileUtil
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -33,7 +33,6 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     private val photoCaptureUseCase: PhotoCaptureUseCase,
     private val photoPickerRepository: PhotoPickerRepository,
-    private val outputDirectory: File,
     private val cameraExecutor: Executor,
     /*private val imageAnalyzerExecutor: ExecutorService,
     private val imageAnalyzer: ImageAnalysis,*/
@@ -41,58 +40,60 @@ class CameraViewModel @Inject constructor(
     private val imageCapture: ImageCapture,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-
     private val TAG = "CameraViewModel"
-
 
     private val _eventFlow = MutableEventFlow<GetPictureEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val _lensFacing = MutableStateFlow(CameraSelector.LENS_FACING_BACK)
-    val lensFacing = _lensFacing.asStateFlow()
-
-    private val _cameraProvider: MutableStateFlow<ProcessCameraProvider?> = MutableStateFlow(null)
-    val cameraProvider = _cameraProvider.asStateFlow()
-
-    private val _camera: MutableStateFlow<Camera?> = MutableStateFlow(null)
-    val camera = _camera.asStateFlow()
+    private var lensFacing = CameraSelector.LENS_FACING_BACK
+    private lateinit var camera: Camera
+    private lateinit var cameraProvider: ProcessCameraProvider
+    private val viewPort = ViewPort.Builder(Rational(1, 1), Surface.ROTATION_0).build()
 
 
     fun takePhoto() {
         viewModelScope.launch {
             val fileName = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-                .format(System.currentTimeMillis()) + "jpg"
-            val dateInfo = SimpleDateFormat("yy-MM-dd", Locale.KOREA).format(System.currentTimeMillis())
-            val photoFile = File(outputDirectory, fileName)
+                .format(System.currentTimeMillis()) + ".jpg"
 
-            val metadata = ImageCapture.Metadata().apply {
-                isReversedHorizontal = lensFacing.value == CameraSelector.LENS_FACING_FRONT
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+
+                // P: Android 9 (28)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                    put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BaBa")
+                }
             }
 
-            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
+            val metadata = ImageCapture.Metadata().apply {
+                isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            }
+
+            val outputOptions = ImageCapture.OutputFileOptions
+                .Builder(context.contentResolver, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
                 .apply {
                     setMetadata(metadata)
                 }.build()
 
-            photoCaptureUseCase.getMe(imageCapture, outputOptions, photoFile, dateInfo).catch {
+            photoCaptureUseCase(imageCapture, outputOptions).catch {
                 Log.e(TAG, it.message.toString())
+                it.printStackTrace()
                 throw it
             }.collect {
                 _eventFlow.emit(GetPictureEvent.GetFromCamera(it))
-                Log.d("CameraViewModel", "collect called $it")
 
             }
         }
     }
 
-
     fun setUpCamera(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         cameraProviderFuture.addListener({
-            _cameraProvider.value = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
 
             // 전면 후면 카메라 선택
-            _lensFacing.value = when {
+            lensFacing = when {
                 hasBackCamera() -> CameraSelector.LENS_FACING_BACK
                 hasFrontCamera() -> CameraSelector.LENS_FACING_FRONT
                 else -> throw IllegalStateException("Back and Front camera are unavailable")
@@ -104,20 +105,22 @@ class CameraViewModel @Inject constructor(
     }
 
     private fun bindCameraUseCases(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
-        if (cameraProvider.value == null) {
-            throw IllegalStateException("Camera Initialization failed")
-        }
         val cameraSelector = CameraSelector.Builder().apply {
-            requireLensFacing(lensFacing.value)
+            requireLensFacing(lensFacing)
         }.build()
 
-        cameraProvider.value!!.unbindAll()
+        val useCaseGroup = UseCaseGroup.Builder()
+            .addUseCase(preview)
+            .addUseCase(imageCapture)
+            .setViewPort(viewPort)
+            .build()
+
+        cameraProvider.unbindAll()
         try {
-            _camera.value = cameraProvider.value!!.bindToLifecycle(
+            camera = cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                preview,
-                imageCapture
+                useCaseGroup
             )
             preview.setSurfaceProvider(previewView.surfaceProvider)
         } catch (e: Exception) {
@@ -127,7 +130,7 @@ class CameraViewModel @Inject constructor(
 
 
     fun toggleCamera(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
-        _lensFacing.value = if (CameraSelector.LENS_FACING_FRONT == lensFacing.value) {
+        lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
             CameraSelector.LENS_FACING_BACK
         } else {
             CameraSelector.LENS_FACING_FRONT
@@ -136,11 +139,11 @@ class CameraViewModel @Inject constructor(
     }
 
     private fun hasBackCamera(): Boolean {
-        return cameraProvider.value?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
+        return cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA)
     }
 
     private fun hasFrontCamera(): Boolean {
-        return cameraProvider.value?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
+        return cameraProvider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)
     }
 
 

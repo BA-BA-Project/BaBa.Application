@@ -50,14 +50,13 @@ class WriteTitleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        binding.tbWriteTitle.title = activityViewModel.nowDate.value
         val completeBtn = binding.btnCropComplete
         val writeTitleEt = binding.etWriteTitle
 
         binding.tbWriteTitle.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-        viewModel.setPreviewImg(binding.ivWriteTitle)
-        viewModel.setTitle(binding.tbWriteTitle)
         viewModel.onTextChanged(writeTitleEt, completeBtn)
 
         setSoftKeyboard(writeTitleEt)

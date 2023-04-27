@@ -9,6 +9,7 @@
 
     <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
 
     <application
@@ -30,6 +31,7 @@
             android:exported="false" />
         <activity
             android:name=".presentation.view.film.FilmActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
@@ -64,7 +66,7 @@
         <!-- FileProvider used to share photos with other apps -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -75,4 +77,5 @@
     </application>
 
 </manifest>
+
 

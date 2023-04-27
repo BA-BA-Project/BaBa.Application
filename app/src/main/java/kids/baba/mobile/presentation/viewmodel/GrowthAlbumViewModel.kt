@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +7,6 @@ import kids.baba.mobile.domain.usecase.GetOneAlbumUseCase
 import kids.baba.mobile.domain.usecase.GetOneBabyUseCase
 import kids.baba.mobile.presentation.state.GrowthAlbumState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,7 +40,7 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun changeBaby() = viewModelScope.launch{
+    fun changeBaby() = viewModelScope.launch {
         _growthAlbumState.value = GrowthAlbumState.ChangeBaby
     }
 
