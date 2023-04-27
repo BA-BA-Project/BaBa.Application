@@ -82,5 +82,7 @@ object EncryptedPrefs {
         return prefs?.getBoolean(key, false) ?: false
     }
 
-
+    fun clearPrefs() {
+        prefs?.edit()?.clear()?.apply()
+    }
 }
