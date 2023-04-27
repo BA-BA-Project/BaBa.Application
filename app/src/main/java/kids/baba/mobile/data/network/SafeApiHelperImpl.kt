@@ -35,7 +35,7 @@ class SafeApiHelperImpl @Inject constructor(
                     if (errorMessage.isBlank()) {
                         errorMessage = "Unknown Error"
                     }
-                    result = Result.Failure(it.code(), errorMessage)
+                    result = Result.Failure(it.code(), errorMessage,null)
                 }
             }
             .onFailure {

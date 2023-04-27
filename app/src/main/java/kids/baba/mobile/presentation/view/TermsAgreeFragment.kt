@@ -51,6 +51,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         setNextBtn()
         setTermsCheckBox()
         collectEvent()
+        collectSignToken()
     }
 
     private fun collectEvent() {
@@ -84,15 +85,18 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         binding.btnSignUpStart.setOnClickListener {
             if(viewModel.checkEssentialAllChecked()){
                 viewModel.getSignToken()
-                viewLifecycleOwner.repeatOnStarted {
-                    viewModel.signToken.collectLatest{
-                        if(it.isNotEmpty()){
-                            activityViewModel.isSignUpStart(it)
-                        }
-                    }
-                }
             } else {
                 showSnackBar(R.string.required_terms_acceptance)
+            }
+        }
+    }
+
+    private fun collectSignToken(){
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.signToken.collectLatest{
+                if(it.isNotEmpty()){
+                    activityViewModel.isSignUpStart(it)
+                }
             }
         }
     }
