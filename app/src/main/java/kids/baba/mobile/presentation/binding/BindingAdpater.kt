@@ -27,17 +27,13 @@ fun setBackGroundColor(circleImageView: CircleImageView, colorString: String?) {
 fun setImageFromUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
-        .placeholder(R.drawable.album_default)
+        .placeholder(R.drawable.last_album)
         .into(imageView)
 }
 
 @BindingAdapter("date", "formatter")
 fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter) {
-    textView.text = if (date == LocalDate.now()) {
-        textView.context.getText(R.string.today)
-    } else {
-        date.format(formatter)
-    }
+    textView.text = date.format(formatter)
 }
 
 @BindingAdapter("date")

@@ -10,10 +10,6 @@
             type="kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel" />
 
         <variable
-            name="dateTimeFormatter"
-            type="java.time.format.DateTimeFormatter" />
-
-        <variable
             name="baby"
             type="kids.baba.mobile.presentation.model.BabyUiModel" />
 
@@ -27,25 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <DatePicker
-            android:id="@+id/date_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:translationZ="10dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_baby_profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/profile_baby_1"
-            app:backGroundColor="@{viewmodel.selectedBaby.groupColor}"
             android:layout_marginTop="40dp"
+            android:src="@drawable/profile_baby_1"
+            app:backGroundColor="@{viewmodel.growthAlbumState.selectedBaby.groupColor}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:civ_circle_background_color="@color/pink"
@@ -59,22 +44,12 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
+            app:drawableEndCompat="@drawable/baseline_keyboard_arrow_down_24"
             app:layout_constraintBottom_toBottomOf="@id/civ_baby_profile"
             app:layout_constraintStart_toEndOf="@id/civ_baby_profile"
             app:layout_constraintTop_toTopOf="@id/civ_baby_profile"
             tools:text="2022.03" />
 
-        <ImageButton
-            android:id="@+id/btn_select_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@android:color/transparent"
-            android:onClick="@{() -> viewmodel.pickDate()}"
-            android:src="@drawable/baseline_keyboard_arrow_down_24"
-            app:layout_constraintBottom_toBottomOf="@id/tv_date"
-            app:layout_constraintStart_toEndOf="@id/tv_date"
-            app:layout_constraintTop_toTopOf="@id/tv_date" />
 
         <com.kizitonwose.calendar.view.WeekCalendarView
             android:id="@+id/wcv_album_calendar"
@@ -117,10 +92,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginVertical="20dp"
-                android:clipToPadding="false"
                 android:clipChildren="false"
+                android:clipToPadding="false"
                 android:translationZ="8dp"
-                app:layout_constraintBottom_toTopOf="@id/tv_add_comment"
+                app:layout_constraintBottom_toTopOf="@id/tv_do_some"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_album_title" />
@@ -137,8 +112,6 @@
                 android:textColor="@color/baba_sub_2"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:date="@{viewmodel.selectedAlbum.date}"
-                app:formatter="@{dateTimeFormatter}"
                 app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                 app:layout_constraintStart_toStartOf="@id/cv_baby_album"
                 app:layout_constraintTop_toTopOf="@id/cv_baby_album"
@@ -151,8 +124,8 @@
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
-                android:visibility="@{viewmodel.selectedAlbum.contentId == -1 ? View.INVISIBLE: View.VISIBLE}"
                 android:src="@drawable/ic_meatballs_menu"
+                android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.contentId == -1 ? View.INVISIBLE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_date"
                 app:layout_constraintEnd_toEndOf="@id/cv_baby_album"
                 app:layout_constraintStart_toEndOf="@id/tv_album_date"
@@ -164,10 +137,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="1dp"
                 android:includeFontPadding="false"
-                android:text="@{viewmodel.selectedAlbum.name}"
+                android:text="@{viewmodel.growthAlbumState.selectedAlbum.name}"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textSize="13sp"
-                android:visibility="@{viewmodel.selectedAlbum.name.empty ? View.INVISIBLE: View.VISIBLE}"
+                android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.name.empty ? View.INVISIBLE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
                 app:layout_constraintEnd_toStartOf="@id/tv_album_relation"
                 app:layout_constraintStart_toEndOf="@id/tv_album_title"
@@ -182,9 +155,9 @@
                 android:layout_marginStart="4dp"
                 android:background="@drawable/bg_album_relation"
                 android:elevation="1dp"
-                android:text="@{viewmodel.selectedAlbum.relation}"
-                android:visibility="@{viewmodel.selectedAlbum.relation.empty ? View.INVISIBLE: View.VISIBLE}"
+                android:text="@{viewmodel.growthAlbumState.selectedAlbum.relation}"
                 android:textAppearance="@style/BABA.TextStyle"
+                android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.relation.empty ? View.INVISIBLE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
                 app:layout_constraintEnd_toEndOf="@id/btn_album_config"
                 app:layout_constraintStart_toEndOf="@id/tv_album_writer"
@@ -200,7 +173,6 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="@{viewmodel.selectedAlbum.title.empty ? @string/default_album_title(baby.name) : viewmodel.selectedAlbum.title }"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textColor="@color/text_0"
                 android:textSize="20sp"
@@ -208,16 +180,15 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_album_writer"
                 app:layout_constraintStart_toStartOf="@id/tv_album_date"
                 app:layout_constraintTop_toBottomOf="@id/tv_album_date"
-                tools:text="@string/default_album_title" />
+                tools:text="@string/past_album_title" />
 
             <TextView
-                android:id="@+id/tv_add_comment"
+                android:id="@+id/tv_do_some"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:elevation="1dp"
                 android:includeFontPadding="false"
-                android:text="@string/album_card_record_image"
                 android:textAppearance="@style/BABA.TextStyle"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/cv_baby_album"
@@ -232,21 +203,11 @@
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
                 android:src="@drawable/ic_arrow_down"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_add_comment"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_do_some"
                 app:layout_constraintEnd_toEndOf="@+id/cv_baby_album"
-                app:layout_constraintTop_toTopOf="@+id/tv_add_comment" />
+                app:layout_constraintTop_toTopOf="@+id/tv_do_some" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0"
-            android:background="@color/black"
-            android:clickable="false"
-            android:elevation="8dp"
-            android:focusable="false" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,15 +2,20 @@ package kids.baba.mobile.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.domain.usecase.GetBabiesUseCase
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BabyListViewModel @Inject constructor(
+    private val getBabiesUseCase: GetBabiesUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -22,8 +27,11 @@ class BabyListViewModel @Inject constructor(
 
     private fun getBabies() {
         val selectedBaby: BabyUiModel? = savedStateHandle[SELECTED_BABY_KEY]
-        _babyList.value = List(100) {idx ->
-            BabyUiModel(babyId = "$idx", groupColor = "#008000", name = "앙쥬${idx}", false )
+        viewModelScope.launch {
+            getBabiesUseCase.getBabies().collect{
+                val babies = it.toPresentation()
+                _babyList.value = babies.myBaby + babies.othersBaby
+            }
         }
         if (selectedBaby == null) {
             _babyList.value.mapIndexed{idx, baby ->
@@ -42,7 +50,6 @@ class BabyListViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
 }

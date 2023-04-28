@@ -7,6 +7,7 @@ import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 
 fun MemberModel.toPresentation(): MemberUiModel {
     return MemberUiModel(
+        memberId = memberId,
         name = name,
         introduction = introduction,
         userIconUiModel = UserIconUiModel(
@@ -18,6 +19,7 @@ fun MemberModel.toPresentation(): MemberUiModel {
 
 fun MemberUiModel.toDomain(): MemberModel {
     return MemberModel(
+        memberId = memberId,
         name = name,
         introduction = introduction,
         iconName = userIconUiModel.userProfileIconUiModel.name,

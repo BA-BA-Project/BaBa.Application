@@ -15,6 +15,7 @@ interface AuthApi {
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<TokenResponse>
 
+    //TODO 토큰 만료시 동작 확인
     @POST("auth/refresh")
     fun tokenRefresh(@Body tokenRefreshRequest: TokenRefreshRequest): Call<TokenResponse>
 

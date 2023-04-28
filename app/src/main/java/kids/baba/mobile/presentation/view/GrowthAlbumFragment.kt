@@ -1,12 +1,15 @@
 package kids.baba.mobile.presentation.view
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
@@ -21,18 +24,15 @@ import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-
-//TODO datePicker 대신 달력 커스터 마이징
-//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨)
-//TODO viewPager - yyyy-mm dateview 연동 자연스럽게 하기(약간 싱크가 안맞음)
-
-// 사용한 오픈소스 달력
+import java.util.Calendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -41,37 +41,43 @@ class GrowthAlbumFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
 
-
-
-//    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-//    lateinit var datePicker: DatePickerDialog
     private lateinit var albumAdapter: AlbumAdapter
 
+    private val albumDateTimeFormatter by lazy {
+        DateTimeFormatter.ofPattern("yy-MM-dd")
+    }
     private var selectedDate = LocalDate.now()
-    private var isDateInit = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
-        collectUiState()
-        collectSelectedDate()
-        collectSelectedAlbum()
         initializeAlbumHolder()
         setCalendar()
+        setAlbumDialog()
         setBottomSheet()
+        collectUiState()
+    }
+
+    private fun setAlbumDialog() {
+        binding.cvBabyAlbum.setOnClickListener {
+            val albumDetailDialog = AlbumDetailDialog()
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
+            albumDetailDialog.arguments = bundle
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+        }
     }
 
     private fun setBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     private fun setBottomSheet() {
         binding.civBabyProfile.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.selectedBaby.value)
+            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.growthAlbumState.value.selectedBaby)
             val bottomSheet = BabyListBottomSheet { baby ->
-                viewModel.selectBaby(baby)
+                viewModel.selectBaby(baby, selectedDate)
             }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
@@ -79,6 +85,25 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setCalendar() {
+
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                viewModel.selectDate(LocalDate.of(year, monthOfYear + 1, dayOfMonth))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val maxDate = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        datePickerDialog.datePicker.maxDate = maxDate
+
+        binding.tvDate.setOnClickListener {
+            datePickerDialog.show()
+        }
+
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = ItemDayBinding.bind(view)
             lateinit var day: WeekDay
@@ -93,22 +118,32 @@ class GrowthAlbumFragment : Fragment() {
             }
 
             fun bind(day: WeekDay) {
+                var hasAlbum = false
                 this.day = day
                 bind.date = day.date
                 bind.selected = selectedDate == day.date
                 bind.formatter = formatter
+                val growthAlbumList = viewModel.growthAlbumState.value.growthAlbumList
 
-
-                view.isClickable = day.date.isAfter(LocalDate.now()).not()
-                if (view.isClickable) {
-                    val textColor0 = requireContext().getColor(R.color.text_0)
-                    bind.tvDate.setTextColor(textColor0)
-                    bind.tvWeekday.setTextColor(textColor0)
-                } else {
-                    val textColor3 = requireContext().getColor(R.color.text_3)
-                    bind.tvDate.setTextColor(textColor3)
-                    bind.tvWeekday.setTextColor(textColor3)
+                if (growthAlbumList.isNotEmpty()) {
+                    if (day.date.month == selectedDate.month) {
+                        val idx = day.date.dayOfMonth - 1
+                        if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != null) {
+                            hasAlbum = true
+                        }
+                    }
                 }
+                bind.hasAlbum = hasAlbum
+                view.isClickable = day.date.isAfter(LocalDate.now()).not()
+                var textColor = if(view.isClickable) R.color.text_0 else R.color.text_3
+                bind.tvWeekday.setTextColor(requireContext().getColor(textColor))
+                if(hasAlbum) {
+                    textColor = R.color.white
+                    bind.tvDate.setBackgroundResource(R.drawable.bg_day_has_album)
+                }else {
+                    bind.tvDate.background = null
+                }
+                bind.tvDate.setTextColor(requireContext().getColor(textColor))
             }
         }
 
@@ -124,7 +159,7 @@ class GrowthAlbumFragment : Fragment() {
         val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
-            currentMonth.plusMonths(0).atEndOfMonth(),
+            LocalDate.now(),
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
@@ -135,26 +170,60 @@ class GrowthAlbumFragment : Fragment() {
     private fun collectUiState() {
         repeatOnStarted {
             viewModel.growthAlbumState.collect { state ->
-//                when (state) {
-//                    is GrowthAlbumState.UnInitialized -> initialize()
-//                    is GrowthAlbumState.Loading -> loading()
-//                    is GrowthAlbumState.SuccessAlbum -> setAlbumData(state)
-//                    is GrowthAlbumState.SuccessBaby -> setBabyData(state)
-//                    is GrowthAlbumState.PickDate -> pickDate()
-//                    is GrowthAlbumState.ChangeBaby -> changeBaby()
-//                    is GrowthAlbumState.Error -> catchError(state)
-//                }
+                val growthAlbumList = state.growthAlbumList
+                val selectedDate = state.selectedDate
+                val selectedAlbum = state.selectedAlbum
+                val selectedBaby = state.selectedBaby
+
+                setAlbum(selectedBaby, selectedAlbum)
+                setSelectedDate(selectedDate)
+                setViewPagerItem(growthAlbumList)
             }
         }
     }
 
-    private fun collectSelectedDate() {
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.selectedDate.collect {
-                viewModel.selectAlbum()
-                setSelectedDate(it)
+    private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
+        binding.vpBabyPhoto.doOnPreDraw {
+            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+            @StringRes
+            val toDoMessage = if(album.contentId != null){
+                R.string.add_like_and_comment
+            } else {
+                if(album.isMyBaby){
+                    R.string.record_album
+                } else {
+                    R.string.no_albums_recorded
+                }
+            }
+            binding.tvDoSome.setText(toDoMessage)
+
+            if(album.date == LocalDate.now()){
+                binding.tvAlbumDate.setText(R.string.today)
+            } else{
+                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+            }
+
+            binding.tvAlbumTitle.text = if(album.contentId != null){
+                album.title
+            } else if(album.date == LocalDate.now()){
+                String.format(getString(R.string.today_album_title),baby.name)
+            } else {
+                String.format(getString(R.string.past_album_title),baby.name)
             }
         }
+    }
+
+    private fun setViewPagerItem(growthAlbumList: List<AlbumUiModel>) {
+        albumAdapter.submitList(growthAlbumList)
+
+
+        albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.wcvAlbumCalendar.notifyCalendarChanged()
+                albumAdapter.unregisterAdapterDataObserver(this)
+
+            }
+        })
     }
 
 
@@ -164,26 +233,32 @@ class GrowthAlbumFragment : Fragment() {
         return true
     }
 
-    //
-    private fun initializeAlbumHolder() {
-        albumAdapter = AlbumAdapter()
-        binding.vpBabyPhoto.adapter = albumAdapter
-        binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.growthAlbumList.collect {
-                albumAdapter.submitList(it)
-            }
-        }
 
-//        binding.vpBabyPhoto.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                if(isSelectedByCalendar.not()){
-//                    setSelectedDate(viewModel.getDateFromPosition(position))
-//                }
-//                isSelectedByCalendar = false
-//            }
-//        })
+    private fun initializeAlbumHolder() {
+        albumAdapter = AlbumAdapter(
+            likeClick = {
+                viewModel.likeAlbum(it)
+            },
+            createAlbum = {
+                viewModel.createAlbum()
+            }
+        )
+        binding.vpBabyPhoto.adapter = albumAdapter
+
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            var isUserScrolling = false
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if(state == ViewPager2.SCROLL_STATE_DRAGGING){
+                    isUserScrolling = true
+                } else if(state == ViewPager2.SCROLL_STATE_IDLE){
+                    if(isUserScrolling){
+                        viewModel.selectDateFromPosition(binding.vpBabyPhoto.currentItem)
+                    }
+                    isUserScrolling = false
+                }
+            }
+        })
 
         binding.vpBabyPhoto.offscreenPageLimit = 1
 
@@ -205,37 +280,13 @@ class GrowthAlbumFragment : Fragment() {
         binding.vpBabyPhoto.addItemDecoration(itemDecoration)
     }
 
-    private fun collectSelectedAlbum() {
-        var selectedAlbum : AlbumUiModel? = null
-        binding.tvAlbumTitle.setOnClickListener {
-            val albumDetailDialog = AlbumDetailDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(SELECTED_ALBUM_KEY, selectedAlbum)
-            albumDetailDialog.arguments = bundle
-            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
-        }
-
-        repeatOnStarted {
-            viewModel.selectedAlbum.collect {
-                selectedAlbum = it
-                binding.vpBabyPhoto.doOnPreDraw {
-                    binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-                }
-            }
-        }
-    }
-
     private fun setSelectedDate(date: LocalDate) {
-        binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
-        selectedDate = date
-        binding.wcvAlbumCalendar.notifyDateChanged(date)
-        if (isDateInit.not()) {
-            binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
-            isDateInit = true
-        }else {
+        if (date != selectedDate) {
+            binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
+            selectedDate = date
+            binding.wcvAlbumCalendar.notifyDateChanged(date)
             binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
         }
-
     }
 
     override fun onCreateView(

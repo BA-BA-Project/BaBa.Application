@@ -1,28 +1,13 @@
 package kids.baba.mobile.presentation.state
 
-import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
+import java.time.LocalDate
 
-sealed class GrowthAlbumState {
-
-    object UnInitialized : GrowthAlbumState()
-
-    object Loading : GrowthAlbumState()
-
-    data class SuccessAlbum(val data: List<Album>) : GrowthAlbumState()
-
-    data class SuccessBaby(val data: BabyResponse) : GrowthAlbumState()
-
-    object Post : GrowthAlbumState()
-
-    object AddComment : GrowthAlbumState()
-
-    data class LoadComments(val comments: List<Comment>) : GrowthAlbumState()
-
-    data class GetLikeDetail(val data: LikeDetailResponse) : GrowthAlbumState()
-    data class Like(val data: Boolean) : GrowthAlbumState()
-
-    data class Error(val t: Throwable) : GrowthAlbumState()
-    object PickDate : GrowthAlbumState()
-
-    object ChangeBaby : GrowthAlbumState()
+data class GrowthAlbumState(
+    val growthAlbumList: List<AlbumUiModel> = emptyList(),
+    val selectedDate: LocalDate = LocalDate.now(),
+    val selectedAlbum: AlbumUiModel = AlbumUiModel(date = LocalDate.now()),
+    val selectedBaby: BabyUiModel = BabyUiModel()
+) {
 }
