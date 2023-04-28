@@ -21,6 +21,7 @@ import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_A
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +36,6 @@ class AlbumDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    //TODO 특정 날짜의 앨범만 호출하는 기능이 필요?
     private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isPhotoExpended = _isPhotoExpended.asStateFlow()
 
@@ -68,8 +68,17 @@ class AlbumDetailViewModel @Inject constructor(
                 _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
             } else {
                 runCatching {
-                    getLikeDetail(babyId, contentId)
-                    getComments(babyId, contentId)
+                    val likeDetail = getLikeDetail(babyId, contentId)
+                    val comments = getComments(babyId, contentId)
+                    _albumDetailUiState.update { uiState ->
+                        uiState.copy(
+                            albumDetail = uiState.albumDetail.copy(
+                                likeDetail = likeDetail,
+                                likeCount = likeDetail.likeUsers.size,
+                                comments = comments
+                            )
+                        )
+                    }
                 }.onFailure {
                     _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
                 }
@@ -89,42 +98,10 @@ class AlbumDetailViewModel @Inject constructor(
         }
 
     private suspend fun getComments(babyId: String, contentId: String) =
-        getCommentsUseCase.get(babyId, contentId).collect {
-            _albumDetailUiState.update { state ->
-                state.copy(
-                    albumDetail = state.albumDetail.copy(
-                        comments = it.comments.map { comment ->
-                            comment.toPresentation()
-                        }
-                    )
-                )
-            }
-        }
-
-    private fun showComment() = viewModelScope.launch {
-//        val tempAlbumDetail = AlbumDetailUiModel(
-//            likeUsers = listOf(
-//                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#FFA500"),
-//                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#BACEE0"),
-//                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#629755")
-//            ),
-//            commentCount = comments.value?.size ?: 0,
-////            comments = comments.value?.map { it.toCommentUiModel() }
-//        )
-//        albumDetail.value = tempAlbumDetail
-    }
+        getCommentsUseCase.get(babyId, contentId).first().comments.map { it.toPresentation() }
 
     private suspend fun getLikeDetail(babyId: String, contentId: String) =
-        getLikeDetailUseCase.get(babyId, contentId).collect {
-            _albumDetailUiState.update { state ->
-                state.copy(
-                    albumDetail = state.albumDetail.copy(
-                        likeDetail = it.toPresentation(),
-                        likeCount = it.likeUsers.size
-                    )
-                )
-            }
-        }
+        getLikeDetailUseCase.get(babyId, contentId).first().toPresentation()
 
     fun setExpended(expended: Boolean) {
         if (expended != _isPhotoExpended.value) {
