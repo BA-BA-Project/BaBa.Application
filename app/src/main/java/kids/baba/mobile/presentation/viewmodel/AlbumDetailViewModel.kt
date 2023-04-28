@@ -15,6 +15,8 @@ import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.CommentTag
+import kids.baba.mobile.presentation.model.CommentUiModel
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -34,7 +36,7 @@ class AlbumDetailViewModel @Inject constructor(
     private val addCommentUseCase: AddCommentUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getLikeDetailUseCase: GetLikeDetailUseCase,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _isPhotoExpended: MutableStateFlow<Boolean?> = MutableStateFlow(null)
@@ -43,6 +45,7 @@ class AlbumDetailViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<AlbumDetailEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
+    private lateinit var member: MemberUiModel
 
     private val _albumDetailUiState = MutableStateFlow(
         AlbumDetailUiState(
@@ -61,6 +64,9 @@ class AlbumDetailViewModel @Inject constructor(
     private val babyId = savedStateHandle[SELECTED_BABY_ID_KEY] ?: ""
 
     init {
+        viewModelScope.launch {
+            member = getMemberUseCase.getMe()
+        }
         getAlbumDetailData()
     }
 
@@ -116,4 +122,10 @@ class AlbumDetailViewModel @Inject constructor(
     fun setTag(memberName: String, memberId: String) {
         _commentTag.value = CommentTag(memberName,memberId)
     }
+
+    fun deleteComment(comment: CommentUiModel) = viewModelScope.launch {
+
+    }
+
+    fun checkMyComment(comment: CommentUiModel) = member.memberId == comment.memberId
 }

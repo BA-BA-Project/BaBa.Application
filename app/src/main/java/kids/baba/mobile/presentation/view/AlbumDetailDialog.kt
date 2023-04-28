@@ -83,6 +83,12 @@ class AlbumDetailDialog : DialogFragment() {
         commentAdapter = AlbumDetailCommentAdapter(
             itemClick = { comment ->
                 viewModel.setTag(comment.name, comment.memberId)
+            },
+            itemLongClick = { comment ->
+                viewModel.checkMyComment(comment)
+            },
+            deleteComment = { comment ->
+                viewModel.deleteComment(comment)
             }
         )
         val layoutManager = LinearLayoutManager(requireContext())

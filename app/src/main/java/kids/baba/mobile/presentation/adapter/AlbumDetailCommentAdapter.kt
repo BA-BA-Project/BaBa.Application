@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,22 +12,30 @@ import kids.baba.mobile.databinding.ItemAlbumCommentBinding
 import kids.baba.mobile.presentation.model.CommentUiModel
 
 class AlbumDetailCommentAdapter(
-    val itemClick: (CommentUiModel) -> Unit
+    val itemClick: (CommentUiModel) -> Unit,
+    val itemLongClick: (CommentUiModel) -> Boolean,
+    val deleteComment: (CommentUiModel) -> Unit,
 ) : ListAdapter<CommentUiModel, AlbumDetailCommentAdapter.CommentViewHolder>(diffUtil) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        CommentViewHolder(itemClick, parent)
+        CommentViewHolder(itemClick, itemLongClick,deleteComment, parent)
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class CommentViewHolder(itemClick: (CommentUiModel) -> Unit, parent: ViewGroup) :
+    class CommentViewHolder(
+        itemClick: (CommentUiModel) -> Unit,
+        itemLongClick: (CommentUiModel) -> Boolean,
+        deleteComment: (CommentUiModel) -> Unit,
+        parent: ViewGroup
+    ) :
         RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_album_comment, parent, false)
         ) {
         private val binding = ItemAlbumCommentBinding.bind(itemView)
-        private lateinit var comment : CommentUiModel
+        private lateinit var comment: CommentUiModel
 
         init {
             binding.tvCommentName.setOnClickListener {
@@ -34,6 +43,17 @@ class AlbumDetailCommentAdapter(
             }
             binding.tvCommentRelation.setOnClickListener {
                 itemClick(comment)
+            }
+            binding.btnDeleteComment.setOnClickListener {
+                deleteComment(comment)
+            }
+            itemView.setOnLongClickListener {
+                binding.btnDeleteComment.visibility = if(itemLongClick(comment)){
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                true
             }
         }
 
