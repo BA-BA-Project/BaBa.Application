@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +24,7 @@ import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
@@ -42,6 +44,9 @@ class GrowthAlbumFragment : Fragment() {
 
     private lateinit var albumAdapter: AlbumAdapter
 
+    private val albumDateTimeFormatter by lazy {
+        DateTimeFormatter.ofPattern("yy-MM-dd")
+    }
     private var selectedDate = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +72,6 @@ class GrowthAlbumFragment : Fragment() {
     private fun setBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     private fun setBottomSheet() {
@@ -75,7 +79,7 @@ class GrowthAlbumFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString(SELECTED_BABY_ID_KEY, viewModel.growthAlbumState.value.selectedBaby.babyId)
             val bottomSheet = BabyListBottomSheet { baby ->
-                viewModel.selectBaby(baby)
+                viewModel.selectBaby(baby, selectedDate)
             }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
@@ -111,38 +115,37 @@ class GrowthAlbumFragment : Fragment() {
                 view.setOnClickListener {
                     if (selectedDate != day.date) {
                         viewModel.selectDate(day.date)
-                        setAlbum()
                     }
                 }
             }
 
             fun bind(day: WeekDay) {
+                var hasAlbum = false
                 this.day = day
                 bind.date = day.date
                 bind.selected = selectedDate == day.date
                 bind.formatter = formatter
-                bind.hasAlbum = false
                 val growthAlbumList = viewModel.growthAlbumState.value.growthAlbumList
 
                 if (growthAlbumList.isNotEmpty()) {
                     if (day.date.month == selectedDate.month) {
                         val idx = day.date.dayOfMonth - 1
                         if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != null) {
-                            bind.hasAlbum = true
+                            hasAlbum = true
                         }
                     }
                 }
-
+                bind.hasAlbum = hasAlbum
                 view.isClickable = day.date.isAfter(LocalDate.now()).not()
-                if (view.isClickable) {
-                    val textColor0 = requireContext().getColor(R.color.text_0)
-                    bind.tvDate.setTextColor(textColor0)
-                    bind.tvWeekday.setTextColor(textColor0)
-                } else {
-                    val textColor3 = requireContext().getColor(R.color.text_3)
-                    bind.tvDate.setTextColor(textColor3)
-                    bind.tvWeekday.setTextColor(textColor3)
+                var textColor = if(view.isClickable) R.color.text_0 else R.color.text_3
+                bind.tvWeekday.setTextColor(requireContext().getColor(textColor))
+                if(hasAlbum) {
+                    textColor = R.color.white
+                    bind.tvDate.setBackgroundResource(R.drawable.bg_day_has_album)
+                }else {
+                    bind.tvDate.background = null
                 }
+                bind.tvDate.setTextColor(requireContext().getColor(textColor))
             }
         }
 
@@ -158,7 +161,7 @@ class GrowthAlbumFragment : Fragment() {
         val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
-            currentMonth.plusMonths(0).atEndOfMonth(),
+            LocalDate.now(),
             firstDayOfWeekFromLocale()
         )
         binding.wcvAlbumCalendar.scrollPaged = false
@@ -171,19 +174,44 @@ class GrowthAlbumFragment : Fragment() {
             viewModel.growthAlbumState.collect { state ->
                 val growthAlbumList = state.growthAlbumList
                 val selectedDate = state.selectedDate
+                val selectedAlbum = state.selectedAlbum
+                val selectedBaby = state.selectedBaby
 
+                setAlbum(selectedBaby, selectedAlbum)
                 setSelectedDate(selectedDate)
                 setViewPagerItem(growthAlbumList)
             }
         }
     }
 
-    private fun setAlbum() {
+    private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
         binding.vpBabyPhoto.doOnPreDraw {
             binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-        }
-        if (selectedDate == LocalDate.now()) {
-            binding.tvAlbumDate.setText(R.string.today)
+            @StringRes
+            val toDoMessage = if(album.contentId != null){
+                R.string.add_like_and_comment
+            } else {
+                if(album.isMyBaby){
+                    R.string.record_album
+                } else {
+                    R.string.no_albums_recorded
+                }
+            }
+            binding.tvDoSome.setText(toDoMessage)
+
+            if(album.date == LocalDate.now()){
+                binding.tvAlbumDate.setText(R.string.today)
+            } else{
+                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+            }
+
+            binding.tvAlbumTitle.text = if(album.contentId != null){
+                album.title
+            } else if(album.date == LocalDate.now()){
+                String.format(getString(R.string.today_album_title),baby.name)
+            } else {
+                String.format(getString(R.string.past_album_title),baby.name)
+            }
         }
     }
 
@@ -193,7 +221,6 @@ class GrowthAlbumFragment : Fragment() {
 
         albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                setAlbum()
                 binding.wcvAlbumCalendar.notifyCalendarChanged()
                 albumAdapter.unregisterAdapterDataObserver(this)
 

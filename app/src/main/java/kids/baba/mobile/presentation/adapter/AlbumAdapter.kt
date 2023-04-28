@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemAlbumBinding
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import java.time.LocalDate
 
 class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val createAlbum : () -> Unit) : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
@@ -32,15 +33,24 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
         }
         fun bind(album: AlbumUiModel) {
             this.album = album
+            val isMyBaby = album.isMyBaby
             binding.like = album.like
             binding.photo = album.photo
-            if(album.contentId == null){
-                binding.btnAlbumLike.visibility = View.GONE
-                binding.btnCreateAlbum.visibility = View.VISIBLE
+
+
+            binding.btnAlbumLike.visibility = if(album.contentId != null){View.VISIBLE} else {View.GONE}
+            binding.btnCreateAlbum.visibility = if(album.contentId == null && isMyBaby){View.VISIBLE} else {View.GONE}
+
+            if(album.date == LocalDate.now() && album.contentId == null){
+                binding.ivAlbum.visibility = View.INVISIBLE
+                binding.lavTodayAlbum.visibility = View.VISIBLE
+                binding.lavTodayAlbum.playAnimation()
             } else {
-                binding.btnAlbumLike.visibility = View.VISIBLE
-                binding.btnCreateAlbum.visibility = View.GONE
+                binding.ivAlbum.visibility = View.VISIBLE
+                binding.lavTodayAlbum.visibility = View.INVISIBLE
+                binding.lavTodayAlbum.pauseAnimation()
             }
+
         }
     }
     companion object {

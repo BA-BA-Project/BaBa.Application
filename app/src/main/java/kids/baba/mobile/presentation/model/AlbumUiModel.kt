@@ -13,7 +13,8 @@ data class AlbumUiModel (
     val title: String = "",
     val like: Boolean = false,
     val photo: String = "",
-    val cardStyle: String = ""
+    val cardStyle: String = "",
+    val isMyBaby: Boolean = false
 ) : Parcelable
 
 

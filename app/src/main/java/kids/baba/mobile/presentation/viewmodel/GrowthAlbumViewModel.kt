@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.core.constant.PrefsKey
-import kids.baba.mobile.core.error.BabyNotFoundException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
@@ -43,17 +42,18 @@ class GrowthAlbumViewModel @Inject constructor(
         } else {
             date.lengthOfMonth()
         }
+        val selectedBaby = growthAlbumState.value.selectedBaby
         val thisMonthAlbumList = MutableList(size) { idx ->
-            AlbumUiModel(date = startDate.plusDays(idx.toLong()))
+            AlbumUiModel(date = startDate.plusDays(idx.toLong()), isMyBaby = selectedBaby.isMyBaby)
         }
         getAlbumsFromBabyIdUseCase.getAlbumsFromBabyId(
-            growthAlbumState.value.selectedBaby.babyId,
+            selectedBaby.babyId,
             nowYear,
             nowMonth
         ).collect { albumList ->
             albumList.album.forEach {
                 val day = it.date.dayOfMonth
-                thisMonthAlbumList[day - 1] = it.toPresentation()
+                thisMonthAlbumList[day - 1] = it.toPresentation(selectedBaby.isMyBaby)
             }
             _growthAlbumState.update {
                 it.copy(
@@ -74,17 +74,17 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun selectDate(date: LocalDate) {
         val albumState = growthAlbumState.value
-        if(albumState.selectedDate.month != date.month){
+        if (albumState.selectedDate.month != date.month) {
             loadAlbum(date)
         } else {
             var selectedAlbum = albumState.selectedAlbum
-            if(albumState.growthAlbumList.isNotEmpty()){
+            if (albumState.growthAlbumList.isNotEmpty()) {
                 selectedAlbum = albumState.growthAlbumList[date.dayOfMonth - 1]
             }
             _growthAlbumState.update {
                 it.copy(
                     selectedDate = date,
-                    selectedAlbum =  selectedAlbum
+                    selectedAlbum = selectedAlbum
                 )
             }
         }
@@ -99,44 +99,49 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun selectBaby(baby: BabyUiModel) {
+    fun selectBaby(baby: BabyUiModel, selectedDate: LocalDate) {
         _growthAlbumState.update {
             it.copy(
-                selectedBaby = baby
+                selectedBaby = baby.copy(selected = true)
             )
         }
         EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
+        loadAlbum(selectedDate)
     }
 
 
     private fun loadBaby() = viewModelScope.launch {
-        runCatching {
-            val selectedBaby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).toPresentation()
-            _growthAlbumState.update {
-                it.copy(selectedBaby = selectedBaby)
-            }
-        }.getOrElse {
-            if (it is BabyNotFoundException) {
-                getBabiesUseCase.getBabies().collect { babyList ->
-                    val selectedBaby = babyList.myBaby.first().toPresentation()
-                    _growthAlbumState.update {growthAlbumState ->
-                        growthAlbumState.copy(selectedBaby = selectedBaby)
-                    }
+        val babyId = runCatching { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }.getOrNull()
+        getBabiesUseCase.getBabies().collect { babyResponse ->
+            val selectedBaby =
+                if (babyId == null) {
+                    babyResponse.myBaby.first().toPresentation(true)
+                } else {
+                    babyResponse.myBaby.firstOrNull { it.babyId == babyId }?.toPresentation(true)
+                        ?: babyResponse.others.firstOrNull { it.babyId == babyId }?.toPresentation(false)
+                        ?: babyResponse.myBaby.first().toPresentation(true)
                 }
+            EncryptedPrefs.putBaby(PrefsKey.BABY_KEY,selectedBaby.toDomain())
+
+            _growthAlbumState.update { growthAlbumState ->
+                growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
             }
         }
         loadAlbum(LocalDate.now())
     }
 
     fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
-        if(album.contentId != null){
-            likeAlbumUseCase.like(growthAlbumState.value.selectedBaby.babyId, album.contentId.toString()).collect{ likeResponse ->
+        if (album.contentId != null) {
+            likeAlbumUseCase.like(
+                growthAlbumState.value.selectedBaby.babyId,
+                album.contentId.toString()
+            ).collect { likeResponse ->
                 var selectedAlbum = growthAlbumState.value.selectedAlbum
                 val growthAlbumList = growthAlbumState.value.growthAlbumList.map {
-                    if(it == album){
+                    if (it == album) {
                         selectedAlbum = album.copy(like = likeResponse.isLiked)
                         selectedAlbum
-                    }else {
+                    } else {
                         it
                     }
                 }
@@ -150,7 +155,7 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun createAlbum(){
+    fun createAlbum() {
 
     }
 

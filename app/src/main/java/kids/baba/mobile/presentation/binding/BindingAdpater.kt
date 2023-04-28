@@ -27,7 +27,7 @@ fun setBackGroundColor(circleImageView: CircleImageView, colorString: String?) {
 fun setImageFromUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
-        .placeholder(R.drawable.album_default)
+        .placeholder(R.drawable.last_album)
         .into(imageView)
 }
 
