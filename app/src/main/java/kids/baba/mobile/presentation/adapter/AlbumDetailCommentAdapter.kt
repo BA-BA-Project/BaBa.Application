@@ -10,22 +10,35 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ItemAlbumCommentBinding
 import kids.baba.mobile.presentation.model.CommentUiModel
 
-class AlbumDetailCommentAdapter
-    : ListAdapter<CommentUiModel, AlbumDetailCommentAdapter.CommentViewHolder>(diffUtil) {
+class AlbumDetailCommentAdapter(
+    val itemClick: (CommentUiModel) -> Unit
+) : ListAdapter<CommentUiModel, AlbumDetailCommentAdapter.CommentViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        CommentViewHolder(parent)
+        CommentViewHolder(itemClick, parent)
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class CommentViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_album_comment, parent, false)
-    ) {
+    class CommentViewHolder(itemClick: (CommentUiModel) -> Unit, parent: ViewGroup) :
+        RecyclerView.ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_album_comment, parent, false)
+        ) {
         private val binding = ItemAlbumCommentBinding.bind(itemView)
+        private lateinit var comment : CommentUiModel
 
-        fun bind(comment: CommentUiModel){
+        init {
+            binding.tvCommentName.setOnClickListener {
+                itemClick(comment)
+            }
+            binding.tvCommentRelation.setOnClickListener {
+                itemClick(comment)
+            }
+        }
+
+        fun bind(comment: CommentUiModel) {
+            this.comment = comment
             binding.comment = comment
         }
     }
@@ -35,6 +48,7 @@ class AlbumDetailCommentAdapter
         super.submitList(list)
         notifyDataSetChanged()
     }
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<CommentUiModel>() {
             override fun areItemsTheSame(oldItem: CommentUiModel, newItem: CommentUiModel) =

@@ -14,6 +14,7 @@ import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumDetailUiModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.CommentTag
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -52,14 +53,18 @@ class AlbumDetailViewModel @Inject constructor(
     )
     val albumDetailUiState = _albumDetailUiState.asStateFlow()
 
+    private val _commentTag: MutableStateFlow<CommentTag?> = MutableStateFlow(null)
+    val commentTag = _commentTag.asStateFlow()
+
     val comment = MutableStateFlow("")
+
+    private val babyId = savedStateHandle[SELECTED_BABY_ID_KEY] ?: ""
 
     init {
         getAlbumDetailData()
     }
 
     private fun getAlbumDetailData() = viewModelScope.launch {
-        val babyId = savedStateHandle[SELECTED_BABY_ID_KEY] ?: ""
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (babyId.isEmpty()) {
             _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
@@ -86,16 +91,15 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
-    fun addComment() =
-        viewModelScope.launch {
-//            val babyId = _baby.value?.babyId ?: return@launch
-//            val contentId = album.value?.contentId
-//            val commentInput = CommentInput(tag = "", comment = comment.value)
+    fun addComment() = viewModelScope.launch {
+//        val contentId = albumDetailUiState.value.albumDetail.album.contentId
+//
+//        val commentInput = CommentInput(tag = "", comment = comment.value)
 ////            _albumDetailUiState.value = AlbumDetailUiState.Loading
 //            addCommentUseCase.add(babyId, contentId, commentInput)
 ////            _albumDetailUiState.value = AlbumDetailUiState.AddComment
 //            comment.value = ""
-        }
+    }
 
     private suspend fun getComments(babyId: String, contentId: String) =
         getCommentsUseCase.get(babyId, contentId).first().comments.map { it.toPresentation() }
@@ -107,5 +111,9 @@ class AlbumDetailViewModel @Inject constructor(
         if (expended != _isPhotoExpended.value) {
             _isPhotoExpended.value = expended
         }
+    }
+
+    fun setTag(memberName: String, memberId: String) {
+        _commentTag.value = CommentTag(memberName,memberId)
     }
 }

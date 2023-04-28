@@ -18,8 +18,6 @@ import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
 
@@ -65,33 +63,28 @@ class AlbumDetailDialog : DialogFragment() {
         setLikeUsersRecyclerView()
         setImgScaleAnim()
         setBabyPhoto()
-        setDetailStateCollecter()
+        collectAlbumDetail()
     }
 
-    private fun setDetailStateCollecter() {
-        repeatOnStarted {
+
+
+    private fun collectAlbumDetail() {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.albumDetailUiState.collect {
                 binding.albumDetail = it.albumDetail
                 commentAdapter.submitList(it.albumDetail.comments)
-                //TODO 리사이클러뷰 데코레이션 동작 확인용 tempData
-                likeUsersAdapter.submitList(listOf(
-                    UserIconUiModel(
-                        UserProfileIconUiModel.PROFILE_G_1,"#2b2b2b"
-                    ),
-                    UserIconUiModel(
-                        UserProfileIconUiModel.PROFILE_G_2,"#2b2b2b"
-                    ),                    UserIconUiModel(
-                        UserProfileIconUiModel.PROFILE_G_3,"#2b2b2b"
-                    )
-                ))
-//                likeUsersAdapter.submitList(it.albumDetail.likeDetail.likeUsersPreview)
+                likeUsersAdapter.submitList(it.albumDetail.likeDetail.likeUsersPreview)
             }
         }
     }
 
 
     private fun setCommentRecyclerView() {
-        commentAdapter = AlbumDetailCommentAdapter()
+        commentAdapter = AlbumDetailCommentAdapter(
+            itemClick = { comment ->
+                viewModel.setTag(comment.name, comment.memberId)
+            }
+        )
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvAlbumComment.apply {
             adapter = commentAdapter
