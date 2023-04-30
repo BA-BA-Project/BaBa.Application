@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
+import kids.baba.mobile.presentation.viewmodel.EditMemberViewModel
 
 @AndroidEntryPoint
 class EditMemberDialog : DialogFragment() {
@@ -15,7 +17,7 @@ class EditMemberDialog : DialogFragment() {
     private var _binding: DialogFragmentEditMemberBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-
+    private val viewModel: EditMemberViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
@@ -27,10 +29,6 @@ class EditMemberDialog : DialogFragment() {
         binding.ivCloseEdit.setOnClickListener {
             dismiss()
         }
-        binding.nameView.tvTitle.text = "이름"
-        binding.nameView.tvDesc.text = "이재임"
-        binding.deleteView.tvDeleteTitle.text = "멤버 삭제하기"
-        binding.deleteView.tvDeleteDesc.text = "삭제"
     }
 
     override fun onCreateView(
@@ -39,6 +37,7 @@ class EditMemberDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogFragmentEditMemberBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
         return binding.root
     }
 
