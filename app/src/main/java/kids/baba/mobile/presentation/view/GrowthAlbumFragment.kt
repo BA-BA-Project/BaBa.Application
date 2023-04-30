@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +24,19 @@ import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
+import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
+import java.util.*
+
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -47,6 +51,17 @@ class GrowthAlbumFragment : Fragment() {
         DateTimeFormatter.ofPattern("yy-MM-dd")
     }
     private var selectedDate = LocalDate.now()
+
+    private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
+
+    private fun connect() {
+        FilmActivity.startActivity(requireContext(), viewModel.growthAlbumState.value.selectedDate.toString())
+    }
+
+    private fun noPermission() {
+        Log.e("GrowthAlbumFragment", "noPermission()")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -135,12 +150,12 @@ class GrowthAlbumFragment : Fragment() {
                 }
                 bind.hasAlbum = hasAlbum
                 view.isClickable = day.date.isAfter(LocalDate.now()).not()
-                var textColor = if(view.isClickable) R.color.text_0 else R.color.text_3
+                var textColor = if (view.isClickable) R.color.text_0 else R.color.text_3
                 bind.tvWeekday.setTextColor(requireContext().getColor(textColor))
-                if(hasAlbum) {
+                if (hasAlbum) {
                     textColor = R.color.white
                     bind.tvDate.setBackgroundResource(R.drawable.bg_day_has_album)
-                }else {
+                } else {
                     bind.tvDate.background = null
                 }
                 bind.tvDate.setTextColor(requireContext().getColor(textColor))
@@ -186,10 +201,10 @@ class GrowthAlbumFragment : Fragment() {
         binding.vpBabyPhoto.doOnPreDraw {
             binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
             @StringRes
-            val toDoMessage = if(album.contentId != null){
+            val toDoMessage = if (album.contentId != null) {
                 R.string.add_like_and_comment
             } else {
-                if(album.isMyBaby){
+                if (album.isMyBaby) {
                     R.string.record_album
                 } else {
                     R.string.no_albums_recorded
@@ -197,18 +212,18 @@ class GrowthAlbumFragment : Fragment() {
             }
             binding.tvDoSome.setText(toDoMessage)
 
-            if(album.date == LocalDate.now()){
+            if (album.date == LocalDate.now()) {
                 binding.tvAlbumDate.setText(R.string.today)
-            } else{
+            } else {
                 binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
             }
 
-            binding.tvAlbumTitle.text = if(album.contentId != null){
+            binding.tvAlbumTitle.text = if (album.contentId != null) {
                 album.title
-            } else if(album.date == LocalDate.now()){
-                String.format(getString(R.string.today_album_title),baby.name)
+            } else if (album.date == LocalDate.now()) {
+                String.format(getString(R.string.today_album_title), baby.name)
             } else {
-                String.format(getString(R.string.past_album_title),baby.name)
+                String.format(getString(R.string.past_album_title), baby.name)
             }
         }
     }
@@ -240,19 +255,20 @@ class GrowthAlbumFragment : Fragment() {
                 viewModel.likeAlbum(it)
             },
             createAlbum = {
-                viewModel.createAlbum()
+                // 권한 허용
+                permissionRequester.checkPermissions(requireContext())
             }
         )
         binding.vpBabyPhoto.adapter = albumAdapter
 
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             var isUserScrolling = false
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
-                if(state == ViewPager2.SCROLL_STATE_DRAGGING){
+                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
                     isUserScrolling = true
-                } else if(state == ViewPager2.SCROLL_STATE_IDLE){
-                    if(isUserScrolling){
+                } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    if (isUserScrolling) {
                         viewModel.selectDateFromPosition(binding.vpBabyPhoto.currentItem)
                     }
                     isUserScrolling = false

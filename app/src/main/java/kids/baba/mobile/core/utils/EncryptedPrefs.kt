@@ -16,7 +16,7 @@ object EncryptedPrefs {
 
     fun initSharedPreferences(context: Context) {
         synchronized(this) {
-            val sharedPrefsFile = "BaBaPrefs"
+            val sharedPrefsFile = "BaBaPrefs3"
             val masterKey = MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
@@ -40,12 +40,13 @@ object EncryptedPrefs {
         return gson.fromJson(value, MemberModel::class.java)
     }
 
-    fun putBaby(key: String, value: Baby?){
-        val json = gson.toJson(value,Baby::class.java)
-        putString(key,json)
+    fun putBaby(key: String, value: Baby?) {
+        val json = gson.toJson(value, Baby::class.java)
+        putString(key, json)
     }
+
     fun getBaby(key: String): Baby {
-        val value = prefs?.getString(key,null) ?: throw BabyNotFoundException()
+        val value = prefs?.getString(key, null) ?: throw BabyNotFoundException()
         return gson.fromJson(value, Baby::class.java)
     }
 

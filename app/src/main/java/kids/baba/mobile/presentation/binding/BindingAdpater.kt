@@ -36,6 +36,13 @@ fun setImageFromUrl(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
+@BindingAdapter("cameraImageFromUrl")
+fun setCameraImageFromUrl(imageView: ImageView, url: String) {
+    Glide.with(imageView.context)
+        .load(url)
+        .into(imageView)
+}
+
 @BindingAdapter("date", "formatter")
 fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter) {
     textView.text = date.format(formatter)

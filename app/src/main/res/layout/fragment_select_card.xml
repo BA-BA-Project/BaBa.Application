@@ -141,7 +141,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/iv_final_post"
                         android:scaleType="fitXY"
-                        app:imageFromUrl="@{viewModel.currentTakenMedia.mediaUri}"
+                        app:cameraImageFromUrl="@{viewModel.currentTakenMedia.mediaUri}"
                         tools:src="@drawable/ic_baba_logo" />
                 </androidx.cardview.widget.CardView>
 

@@ -1,13 +1,13 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
 import kids.baba.mobile.presentation.extension.FileUtil
@@ -49,10 +49,7 @@ class SelectCardViewModel @Inject constructor(
 
     private val requestHashMap = hashMapOf<String, RequestBody>()
 
-    // TODO: "memberId":"KAKAO2695099524","name":"poi" 인 계정에서의 아이로 테스트했음
-    //  이 계정의 babyId 는 아래임. 추후에 SharedPreference 에
-    //  사용자가 보고있는 babyId 을 저장하고 이를 불러올 것임.
-    private val babyId = "fa0319b3-ceb3-41dd-a297-1ac318f5bb09"
+    private val babyId = run { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }
 
     init {
         getCards()
@@ -86,10 +83,8 @@ class SelectCardViewModel @Inject constructor(
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
         postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
-            Log.d(TAG, " file Size After compress : ${file.length()}")
             _postAlbumState.value = PostAlbumState.Error(it)
         }.collect {
-            Log.d(TAG, " file Size After compress : ${file.length()}")
             _postAlbumState.value = PostAlbumState.Success
         }
     }
