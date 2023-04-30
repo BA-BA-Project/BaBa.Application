@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.GsonBuilder
+import kids.baba.mobile.core.error.BabyNotFoundException
 import kids.baba.mobile.core.error.MemberNotFoundException
+import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.MemberModel
 
 object EncryptedPrefs {
@@ -14,7 +16,7 @@ object EncryptedPrefs {
 
     fun initSharedPreferences(context: Context) {
         synchronized(this) {
-            val sharedPrefsFile = "BaBaPrefs10"
+            val sharedPrefsFile = "BaBaPrefs"
             val masterKey = MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
@@ -28,14 +30,23 @@ object EncryptedPrefs {
         }
     }
 
-    fun putMember(key: String, value: MemberModel){
-        val json = gson.toJson(value,MemberModel::class.java)
-        putString(key,json)
+    fun putMember(key: String, value: MemberModel?) {
+        val json = gson.toJson(value, MemberModel::class.java)
+        putString(key, json)
     }
 
-    fun getMember(key: String): MemberModel{
-        val value = prefs?.getString(key,null) ?: throw MemberNotFoundException()
+    fun getMember(key: String): MemberModel {
+        val value = prefs?.getString(key, null) ?: throw MemberNotFoundException()
         return gson.fromJson(value, MemberModel::class.java)
+    }
+
+    fun putBaby(key: String, value: Baby?){
+        val json = gson.toJson(value,Baby::class.java)
+        putString(key,json)
+    }
+    fun getBaby(key: String): Baby {
+        val value = prefs?.getString(key,null) ?: throw BabyNotFoundException()
+        return gson.fromJson(value, Baby::class.java)
     }
 
     fun putString(key: String, value: String) {
@@ -82,5 +93,7 @@ object EncryptedPrefs {
         return prefs?.getBoolean(key, false) ?: false
     }
 
-
+    fun clearPrefs() {
+        prefs?.edit()?.clear()?.apply()
+    }
 }

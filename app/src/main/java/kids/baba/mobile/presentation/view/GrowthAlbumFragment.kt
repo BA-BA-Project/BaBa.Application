@@ -2,51 +2,37 @@ package kids.baba.mobile.presentation.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
+import androidx.annotation.StringRes
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.calendarnew.DayViewContainer
 import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
-import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Baby
-import kids.baba.mobile.presentation.adapter.BabyAdapter
+import kids.baba.mobile.databinding.ItemDayBinding
+import kids.baba.mobile.presentation.adapter.AlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.helper.CameraPermissionRequester
-import kids.baba.mobile.presentation.state.GrowthAlbumState
-import kids.baba.mobile.presentation.util.MyDatePickerDialog
-import kids.baba.mobile.presentation.util.calendar.DayListener
-import kids.baba.mobile.presentation.view.film.FilmActivity
+import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
+import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
+import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-
-//TODO 앨범 있는 날짜 횡달력에 표시
-//TODO 횡달력에서 선택한 날짜 표시
-//TODO 횡달력에서 선택한 날짜 중앙정렬 자연스럽게 하기(되긴하는데 삐걱임)
-//TODO datePicker 대신 달력 커스터 마이징
-//TODO api 연동(dummySource대신 불러온 데이터 넣기만 하면됨)
-//TODO viewPager - yyyy-mm dateview 연동 자연스럽게 하기(약간 싱크가 안맞음)
-
-// 사용한 오픈소스 달력
+import java.util.Calendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
@@ -54,228 +40,227 @@ class GrowthAlbumFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: GrowthAlbumViewModel by viewModels()
-    val dateToString = hashMapOf<LocalDate, String>()
-    val stringToInt = hashMapOf<String, Int>()
-    val intToDate = hashMapOf<Int, LocalDate>()
-    private var width: Int = 0
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-    lateinit var datePicker: DatePickerDialog
-    private val adapter = AlbumAdapter()
-    private val babyAdapter = BabyAdapter()
-    private lateinit var dayViewContainer: DayViewContainer
-    private var currentDay = LocalDate.now()
+
+    private lateinit var albumAdapter: AlbumAdapter
+
+    private val albumDateTimeFormatter by lazy {
+        DateTimeFormatter.ofPattern("yy-MM-dd")
+    }
+    private var selectedDate = LocalDate.now()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setBinding()
+        initializeAlbumHolder()
+        setCalendar()
+        setAlbumDialog()
+        setBottomSheet()
         collectUiState()
-        initializeCalendar()
-        binding.cardView.setOnClickListener {
-            permissionRequester.checkPermissions(requireContext())
+    }
+
+    private fun setAlbumDialog() {
+        binding.cvBabyAlbum.setOnClickListener {
+            val albumDetailDialog = AlbumDetailDialog()
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
+            albumDetailDialog.arguments = bundle
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
         }
     }
 
-    private fun initializeCalendar() {
-        binding.myCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
-            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+    private fun setBinding() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = viewModel
+    }
 
-            override fun create(view: View): DayViewContainer {
-                dayViewContainer = DayViewContainer(view, binding)
-                dayViewContainer.setOnSelectedDateChangeListener(object : DayListener {
-                    override fun selectDay(date: LocalDate) {
-                        currentDay = date
-                        dateToString[currentDay]?.let {
-                            binding.viewPager.setCurrentItem(stringToInt[it]!!, true)
-                        }
+    private fun setBottomSheet() {
+        binding.civBabyProfile.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.growthAlbumState.value.selectedBaby)
+            val bottomSheet = BabyListBottomSheet { baby ->
+                viewModel.selectBaby(baby, selectedDate)
+            }
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
+        }
+    }
+
+    private fun setCalendar() {
+
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                viewModel.selectDate(LocalDate.of(year, monthOfYear + 1, dayOfMonth))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val maxDate = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        datePickerDialog.datePicker.maxDate = maxDate
+
+        binding.tvDate.setOnClickListener {
+            datePickerDialog.show()
+        }
+
+        class DayViewContainer(view: View) : ViewContainer(view) {
+            val bind = ItemDayBinding.bind(view)
+            lateinit var day: WeekDay
+            val formatter = DateTimeFormatter.ofPattern("dd")
+
+            init {
+                view.setOnClickListener {
+                    if (selectedDate != day.date) {
+                        viewModel.selectDate(day.date)
                     }
-
-                    override fun releaseDay(date: LocalDate) {
-
-                    }
-                })
-                return dayViewContainer
+                }
             }
 
-        }
-        binding.myCalendar.weekScrollListener = { weekDays ->
-            binding.tvDate.text = getWeekPageTitle(weekDays)
-        }
-        val currentMonth = YearMonth.now()
-        binding.myCalendar.setup(
-            currentMonth.minusMonths(600).atStartOfMonth(),
-            currentMonth.plusMonths(600).atEndOfMonth(),
-            firstDayOfWeekFromLocale(),
-        )
-        //
-        binding.myCalendar.scrollPaged = false
-        binding.myCalendar.scrollToWeek(LocalDate.now())
-        binding.tvAlbumTitle.setOnClickListener {
-            val albumDetailDialog = AlbumDetailDialog()
-            albumDetailDialog.show(parentFragmentManager, "AlbumDetail")
+            fun bind(day: WeekDay) {
+                var hasAlbum = false
+                this.day = day
+                bind.date = day.date
+                bind.selected = selectedDate == day.date
+                bind.formatter = formatter
+                val growthAlbumList = viewModel.growthAlbumState.value.growthAlbumList
+
+                if (growthAlbumList.isNotEmpty()) {
+                    if (day.date.month == selectedDate.month) {
+                        val idx = day.date.dayOfMonth - 1
+                        if (idx <= growthAlbumList.lastIndex && growthAlbumList[idx].contentId != null) {
+                            hasAlbum = true
+                        }
+                    }
+                }
+                bind.hasAlbum = hasAlbum
+                view.isClickable = day.date.isAfter(LocalDate.now()).not()
+                var textColor = if(view.isClickable) R.color.text_0 else R.color.text_3
+                bind.tvWeekday.setTextColor(requireContext().getColor(textColor))
+                if(hasAlbum) {
+                    textColor = R.color.white
+                    bind.tvDate.setBackgroundResource(R.drawable.bg_day_has_album)
+                }else {
+                    bind.tvDate.background = null
+                }
+                bind.tvDate.setTextColor(requireContext().getColor(textColor))
+            }
         }
 
+        binding.wcvAlbumCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
+            override fun create(view: View): DayViewContainer = DayViewContainer(view)
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+        }
+
+        binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
+            binding.tvDate.text = getWeekPageTitle(weekDays)
+        }
+
+        val currentMonth = YearMonth.now()
+        binding.wcvAlbumCalendar.setup(
+            currentMonth.minusMonths(24).atStartOfMonth(),
+            LocalDate.now(),
+            firstDayOfWeekFromLocale()
+        )
+        binding.wcvAlbumCalendar.scrollPaged = false
+        binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
     }
+
 
     private fun collectUiState() {
         repeatOnStarted {
             viewModel.growthAlbumState.collect { state ->
-                when (state) {
-                    is GrowthAlbumState.UnInitialized -> initialize()
-                    is GrowthAlbumState.Loading -> loading()
-                    is GrowthAlbumState.SuccessAlbum -> setAlbumData(state)
-                    is GrowthAlbumState.SuccessBaby -> setBabyData(state)
-                    is GrowthAlbumState.PickDate -> pickDate()
-                    is GrowthAlbumState.ChangeBaby -> changeBaby()
-                    is GrowthAlbumState.Error -> catchError(state)
-                    else -> {}
-                }
+                val growthAlbumList = state.growthAlbumList
+                val selectedDate = state.selectedDate
+                val selectedAlbum = state.selectedAlbum
+                val selectedBaby = state.selectedBaby
+
+                setAlbum(selectedBaby, selectedAlbum)
+                setSelectedDate(selectedDate)
+                setViewPagerItem(growthAlbumList)
             }
         }
     }
 
-    fun changeBaby() {
-        Log.e("changeBaby", "")
-        binding.babySelectView.maxHeight = width * 3 / 2
-        binding.babySelectView.isGone = false
-        binding.shadow.alpha = 0.3f
-        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
-    }
-
-    private fun catchError(state: GrowthAlbumState.Error) {
-        Log.e("error", "${state.t.message}")
-    }
-
-    private fun setBabyData(state: GrowthAlbumState.SuccessBaby) {
-        state.data.forEach {
-            Log.e("baby", "$it")
-        }
-    }
-
-    private fun setAlbumData(state: GrowthAlbumState.SuccessAlbum) {
-        state.data.forEach {
-            Log.e("album", "$it")
-        }
-    }
-
-
-    private fun loading() {
-        Log.e("loading", "loading")
-    }
-
-    fun getDummyData(): List<Album> {
-        val dummyResponse = mutableListOf<Album>()
-        repeat(365) {
-            currentDay = currentDay.plusDays(1)
-            val album = Album(
-                1,
-                "Empty",
-                "엄마",
-                currentDay.toString(),
-                "빵긋빵긋",
-                false,
-                "www.naver.com",
-                "CARD_STYLE_1"
-            )
-            dummyResponse.add(album)
-        }
-        repeat(50) {
-            val album = Album(
-                1,
-                "할당",
-                "엄마",
-                generateRandomDate(),
-                "빵긋빵긋",
-                false,
-                "www.naver.com",
-                "CARD_STYLE_1"
-            )
-            dummyResponse.add(album)
-        }
-        return dummyResponse
-            .groupBy { it.date }
-            .mapValues { (_, albums) ->
-                when (albums.size) {
-                    1 -> albums[0]
-                    else -> albums.find { it.name.contains("할당") }
-                        ?: albums[0]
+    private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
+        binding.vpBabyPhoto.doOnPreDraw {
+            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+            @StringRes
+            val toDoMessage = if(album.contentId != null){
+                R.string.add_like_and_comment
+            } else {
+                if(album.isMyBaby){
+                    R.string.record_album
+                } else {
+                    R.string.no_albums_recorded
                 }
             }
-            .values
-            .toList()
-            .sortedBy { LocalDate.parse(it.date) }
-    }
+            binding.tvDoSome.setText(toDoMessage)
 
-    fun pickDate() {
-        datePicker.show()
-        binding.shadow.alpha = 0.3f
-        viewModel.growthAlbumState.value = GrowthAlbumState.Loading
-    }
-
-    private fun initialize() {
-        binding.viewmodel = viewModel
-        datePicker =
-            MyDatePickerDialog(requireContext(), listener = { _, _, _, _ ->
-                val year = datePicker.datePicker.year
-                val month = datePicker.datePicker.month
-                val day = datePicker.datePicker.dayOfMonth
-                binding.shadow.alpha = 0f
-                binding.myCalendar.smoothScrollToWeek(
-                    WeekDay(
-                        LocalDate.of(year, month + 1, day),
-                        position = WeekDayPosition.InDate
-                    )
-                )
-                dateToString[LocalDate.of(year, month + 1, day)]?.let {
-                    binding.viewPager.currentItem = stringToInt[it]!!
-                }
-            }, 2023, 3, 12) {
-                binding.shadow.alpha = 0f
+            if(album.date == LocalDate.now()){
+                binding.tvAlbumDate.setText(R.string.today)
+            } else{
+                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
             }
-        initializeAlbumHolder()
-        binding.babyList.adapter = babyAdapter
-        binding.babyList.layoutManager = LinearLayoutManager(requireContext())
-        getDummyData().forEachIndexed { index, album ->
-            adapter.setItem(album)
-            val localDate = parseLocalDate(album.date)
-            dateToString[localDate] = album.date
-            stringToInt[album.date] = index
-            intToDate[index] = localDate
+
+            binding.tvAlbumTitle.text = if(album.contentId != null){
+                album.title
+            } else if(album.date == LocalDate.now()){
+                String.format(getString(R.string.today_album_title),baby.name)
+            } else {
+                String.format(getString(R.string.past_album_title),baby.name)
+            }
         }
-        currentDay = LocalDate.now()
-        repeat(5) {
-            babyAdapter.setItem(Baby("$it", "$it", "$it"))
-        }
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        width = displayMetrics.widthPixels
-
-        binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
-        viewModel.loadAlbum(1)
-        viewModel.loadBaby()
-
     }
 
-    fun generateRandomDate(): String {
-        val currentDate = LocalDate.now()
-        val randomDays = (0..100).random()
-        val randomDate = currentDate.plusDays(randomDays.toLong())
-        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-        return randomDate.format(formatter)
+    private fun setViewPagerItem(growthAlbumList: List<AlbumUiModel>) {
+        albumAdapter.submitList(growthAlbumList)
+
+
+        albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.wcvAlbumCalendar.notifyCalendarChanged()
+                albumAdapter.unregisterAdapterDataObserver(this)
+
+            }
+        })
     }
 
-    fun parseLocalDate(dateString: String): LocalDate {
-        return LocalDate.parse(dateString, formatter)
-    }
 
     fun onKeyDown(): Boolean {
-        binding.babySelectView.isGone = true
-        binding.babySelectView.maxHeight = 0
-        binding.shadow.alpha = 0f
+//        binding.babySelectView.isGone = true
+//        binding.babySelectView.maxHeight = 0
         return true
     }
 
+
     private fun initializeAlbumHolder() {
-        binding.viewPager.adapter = adapter
-        binding.viewPager.offscreenPageLimit = 1
+        albumAdapter = AlbumAdapter(
+            likeClick = {
+                viewModel.likeAlbum(it)
+            },
+            createAlbum = {
+                viewModel.createAlbum()
+            }
+        )
+        binding.vpBabyPhoto.adapter = albumAdapter
+
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            var isUserScrolling = false
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if(state == ViewPager2.SCROLL_STATE_DRAGGING){
+                    isUserScrolling = true
+                } else if(state == ViewPager2.SCROLL_STATE_IDLE){
+                    if(isUserScrolling){
+                        viewModel.selectDateFromPosition(binding.vpBabyPhoto.currentItem)
+                    }
+                    isUserScrolling = false
+                }
+            }
+        })
+
+        binding.vpBabyPhoto.offscreenPageLimit = 1
 
         val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
         val currentItemHorizontalMarginPx =
@@ -286,27 +271,23 @@ class GrowthAlbumFragment : Fragment() {
             page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
         }
 
-        binding.viewPager.setPageTransformer(pageTransformer)
+        binding.vpBabyPhoto.setPageTransformer(pageTransformer)
 
         val itemDecoration = HorizontalMarginItemDecoration(
             requireContext(),
             R.dimen.viewpager_current_item_horizontal_margin
         )
-        binding.viewPager.addItemDecoration(itemDecoration)
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                intToDate[position]?.let {
-                    lifecycleScope.launch {
-                        binding.myCalendar.smoothScrollToDate(it)
-                        delay(200)
-                        binding.myCalendar.scrollBy(-width / 2 + 72, 0)
-                    }
-                }
-            }
-        })
+        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
     }
 
+    private fun setSelectedDate(date: LocalDate) {
+        if (date != selectedDate) {
+            binding.wcvAlbumCalendar.notifyDateChanged(selectedDate)
+            selectedDate = date
+            binding.wcvAlbumCalendar.notifyDateChanged(date)
+            binding.wcvAlbumCalendar.smoothScrollToDate(date.minusDays(3))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -321,20 +302,4 @@ class GrowthAlbumFragment : Fragment() {
         _binding = null
         super.onDestroyView()
     }
-
-    private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
-
-    private fun noPermission() {
-        // Whatever you need to do if the permission has been denied
-        Log.d("GrowthAlbumFragment", "noPermission()")
-
-    }
-
-    private fun connect() {
-        // 카메라 권한을 사용하는 무엇이든지 호출하면 이 메서드 실행
-        Log.d("GrowthAlbumFragment", "connect()")
-        // TODO: 여기서 nowDate 을 String 으로 넘겨주어야 합니다.
-        FilmActivity.startActivity(requireContext(), nowDate = "2023-01-11")
-    }
-
 }

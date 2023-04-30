@@ -12,6 +12,9 @@ import com.canhub.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -21,7 +24,7 @@ fun setIcon(imageView: ImageView, @DrawableRes res: Int) {
 }
 
 @BindingAdapter("backGroundColor")
-fun setBackGroundColor(circleImageView: CircleImageView, colorString: String) {
+fun setBackGroundColor(circleImageView: CircleImageView, colorString: String?) {
     circleImageView.circleBackgroundColor = Color.parseColor(colorString)
 }
 
@@ -29,7 +32,27 @@ fun setBackGroundColor(circleImageView: CircleImageView, colorString: String) {
 fun setImageFromUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
+        .placeholder(R.drawable.last_album)
         .into(imageView)
+}
+
+@BindingAdapter("date", "formatter")
+fun setDate(textView: TextView, date: LocalDate, formatter: DateTimeFormatter) {
+    textView.text = date.format(formatter)
+}
+
+@BindingAdapter("date")
+fun setDayOfWeek(textView: TextView, date: LocalDate) {
+    val dayOfWeek = when (date.dayOfWeek) {
+        DayOfWeek.SUNDAY -> R.string.sunday
+        DayOfWeek.MONDAY -> R.string.monday
+        DayOfWeek.TUESDAY -> R.string.tuesday
+        DayOfWeek.WEDNESDAY -> R.string.wednesday
+        DayOfWeek.THURSDAY -> R.string.thursday
+        DayOfWeek.FRIDAY -> R.string.friday
+        else -> R.string.saturday
+    }
+    textView.text = textView.context.getText(dayOfWeek)
 }
 
 

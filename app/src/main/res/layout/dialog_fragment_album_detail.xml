@@ -9,6 +9,10 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
+
         <import type="java.util.List" />
     </data>
 
@@ -41,7 +45,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:includeFontPadding="false"
-                    android:text="@{viewModel.album.date}"
+                    app:date="@{viewModel.album.date}"
+                    app:formatter="@{dateTimeFormatter}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/baba_sub_2"
                     android:textSize="14sp"
@@ -265,6 +270,7 @@
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
+                    android:text="@={viewModel.comment}"
                     android:textColorHint="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toStartOf="@id/tv_send"
@@ -278,6 +284,7 @@
                     android:background="@color/white"
                     android:paddingHorizontal="10dp"
                     android:text="@string/send"
+                    android:onClick="@{() -> viewModel.addComment()}"
                     android:textAppearance="@style/BABA.TextStyle.Button"
                     android:textColor="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"

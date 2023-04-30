@@ -1,14 +1,12 @@
 package kids.baba.mobile.data.datasource.album
 
-import kids.baba.mobile.domain.model.AlbumResponse
-import kids.baba.mobile.domain.model.PostAlbumResponse
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface AlbumRemoteDataSource {
-    suspend fun getAlbum(id: Int): Flow<AlbumResponse>
-
+    suspend fun getAlbum(id: String, year: Int, month: Int): Flow<AlbumResponse>
 
     suspend fun postAlbum(
         accessToken: String,
@@ -16,4 +14,13 @@ interface AlbumRemoteDataSource {
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Flow<PostAlbumResponse>
+
+    suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
+
+    suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
+
+
+    suspend fun getComment(id: String, contentId: String): Flow<CommentResponse>
+
+    suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse>
 }

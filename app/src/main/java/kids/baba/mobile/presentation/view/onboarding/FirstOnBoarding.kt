@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.onboarding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ class FirstOnBoarding : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("testLog","test")
         return inflater.inflate(R.layout.fragment_first_on_boarding, container, false)
     }
 

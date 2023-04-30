@@ -6,6 +6,7 @@ import kids.baba.mobile.domain.model.SignTokenResponse
 import kids.baba.mobile.domain.model.TermsResponse
 import kids.baba.mobile.domain.model.TokenRefreshRequest
 import kids.baba.mobile.domain.model.TokenResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -14,8 +15,9 @@ interface AuthApi {
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<TokenResponse>
 
+    //TODO 토큰 만료시 동작 확인
     @POST("auth/refresh")
-    fun tokenRefresh(@Body tokenRefreshRequest: TokenRefreshRequest): Response<TokenResponse>
+    fun tokenRefresh(@Body tokenRefreshRequest: TokenRefreshRequest): Call<TokenResponse>
 
     @POST("auth/terms")
     suspend fun getTerms(@Body socialToken: String): Response<TermsResponse>
