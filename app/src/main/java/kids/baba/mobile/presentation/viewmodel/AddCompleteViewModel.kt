@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCompleteViewModel @Inject constructor() : ViewModel() {
-    val title = MutableStateFlow("1")
-    val bannerTitle = MutableStateFlow("2")
-    val bannerDescription = MutableStateFlow("3")
+    val title = MutableStateFlow("")
+    val bannerTitle = MutableStateFlow("")
+    val bannerDescription = MutableStateFlow("")
 
     fun bind(context: Context) = with(context) {
         title.value = getString(R.string.add_baby_title)
