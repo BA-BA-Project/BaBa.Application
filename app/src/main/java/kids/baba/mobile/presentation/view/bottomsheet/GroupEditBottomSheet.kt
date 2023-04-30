@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
@@ -14,23 +15,18 @@ import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
 import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
+import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
 @AndroidEntryPoint
-class GroupEditBottomSheet: BottomSheetDialogFragment() {
+class GroupEditBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+    private val viewModel: EditGroupBottomSheetViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameView.tvTitle.text = "가족 이름"
-        binding.permissionView.tvTitle.text = "성장앨범 업로드 권함"
-        binding.colorView.tvGroupNameTitle.text = "그룹 컬러"
-        binding.permissionView.tvDesc.text = "없음"
-        binding.deleteView.tvDeleteTitle.text = "그룹 삭제"
-        binding.deleteView.tvDeleteDesc.text = "삭제하기"
-        binding.addMemberView.tvAddButtonTitle.text = "멤버 초대"
         binding.addMemberView.tvAddButtonDesc.isGone = true
         binding.addMemberView.ivAddButton.setOnClickListener {
             binding.addMemberView.ivAddButton.setOnClickListener {
@@ -50,6 +46,7 @@ class GroupEditBottomSheet: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetEditGroupBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
         return binding.root
     }
 

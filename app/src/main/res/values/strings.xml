@@ -87,4 +87,5 @@
     <string name="delete_member">회원탈퇴</string>
     <string name="creator">서비스 제작자</string>
     <string name="add_button">추가하기</string>
+    <string name="manage_kids">아이 관리</string>
 </resources>
