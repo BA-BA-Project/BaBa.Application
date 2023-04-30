@@ -93,4 +93,8 @@
     <string name="check">확인</string>
     <string name="set_profile">프로필 설정</string>
     <string name="delete_baby">아이 삭제</string>
+    <string name="email_info">문의 이메일 정보</string>
+    <string name="baba_email">baba.service.care@gmail.com</string>
+    <string name="delete_warning">계정을 삭제시 모든 데이터가 삭제되며\n 복구되지 않습니다.</string>
+    <string name="complete">완료</string>
 </resources>

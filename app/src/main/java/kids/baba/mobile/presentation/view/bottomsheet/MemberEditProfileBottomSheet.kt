@@ -4,21 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
+import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 
 @AndroidEntryPoint
 class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditProfileBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+    private val viewModel: EditMemberProfileBottomSheetViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameView.tvTitle.text = "아이 이름"
-        binding.introView.tvInputTitle.text = "내 소개"
-        binding.colorView.tvGroupNameTitle.text = "배경 컬러"
     }
 
     override fun onCreateView(
@@ -27,6 +27,7 @@ class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetEditProfileBinding.inflate(inflater, container, false)
+        binding.viewmodel = viewModel
         return binding.root
     }
 

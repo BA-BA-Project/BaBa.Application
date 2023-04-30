@@ -1,51 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="design"
+            type="String" />
+
+        <variable
+            name="designer"
+            type="String" />
+
+        <variable
+            name="android"
+            type="String" />
+
+        <variable
+            name="androidDev"
+            type="String" />
+
+        <variable
+            name="backEnd"
+            type="String" />
+
+        <variable
+            name="backEndDev"
+            type="String" />
+
+        <variable
+            name="helper"
+            type="String" />
+
+        <variable
+            name="helperName"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/top_app_bar"
-            layout="@layout/composable_top_layout" />
-
-        <include
-            android:id="@+id/design"
-            layout="@layout/composable_two_text_view" />
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <include
-            android:id="@+id/android"
-            layout="@layout/composable_two_text_view" />
+            <include
+                android:id="@+id/top_app_bar"
+                layout="@layout/composable_top_layout"
+                bind:title="@{title}" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
+            <include
+                layout="@layout/composable_two_text_view"
+                bind:description="@{designer}"
+                bind:title="@{design}" />
 
-        <include
-            android:id="@+id/backend"
-            layout="@layout/composable_two_text_view" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
+            <include
+                layout="@layout/composable_two_text_view"
+                bind:description="@{androidDev}"
+                bind:title="@{android}" />
 
-        <include
-            android:id="@+id/helper"
-            layout="@layout/composable_two_text_view" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                layout="@layout/composable_two_text_view"
+                bind:description="@{backEndDev}"
+                bind:title="@{backEnd}" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                layout="@layout/composable_two_text_view"
+                bind:description="@{helperName}"
+                bind:title="@{helper}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,7 +11,7 @@ import kids.baba.mobile.databinding.FragmentServiceInfoBinding
 import kids.baba.mobile.databinding.FragmentSettingBinding
 
 @AndroidEntryPoint
-class FragmentServiceInfo: Fragment() {
+class FragmentServiceInfo : Fragment() {
     private var _binding: FragmentServiceInfoBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -22,6 +22,7 @@ class FragmentServiceInfo: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentServiceInfoBinding.inflate(inflater, container, false)
+        binding.title = getString(R.string.service_info)
         return binding.root
     }
 
@@ -29,6 +30,7 @@ class FragmentServiceInfo: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
