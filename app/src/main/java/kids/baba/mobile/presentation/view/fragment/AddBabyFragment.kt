@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
+import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
 
 @AndroidEntryPoint
-class AddBabyFragment: Fragment() {
+class AddBabyFragment : Fragment() {
 
     private var _binding: FragmentAddbabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+    private val viewModel: AddBabyViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +25,7 @@ class AddBabyFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddbabyBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -39,12 +43,5 @@ class AddBabyFragment: Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-        binding.topAppBar.tvTopTitle.text = "아이 추가하기"
-        binding.bannerView.tvBannerTitle.text = "내 아이를 추가해봐요"
-        binding.bannerView.tvBannerDesc.text = "직접 성장앨범을 기록할 아이를 만들어요."
-        binding.nameView.tvInputTitle.text = "아이 이름"
-        binding.relationView.tvTitle.text = "나와 아이의 관계"
-        binding.relationView.tvDesc.text = "내가 추가한 아이들와 나의 관계입니다."
-        binding.birthView.tvInputTitle.text = "아이 생일 혹은 출산 예정일"
     }
 }

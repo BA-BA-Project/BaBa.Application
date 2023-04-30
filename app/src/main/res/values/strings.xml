@@ -81,4 +81,10 @@
     <string name="baby_add_complete">아이가 추가되었어요!</string>
     <string name="add_baby_title">아이 추가하기</string>
     <string name="save_your_memories">소중한 추억을 기록해봐요 :)</string>
+    <string name="service_description">바바(BABA)는 \n 양육자를 위한 성장다이어리입니다.\n 아이의 성장을 기록하고, 지인과 소통하며 행 \n 복한 육아를 경험하길 바랍니다.</string>
+    <string name="service_info">서비스 정보</string>
+    <string name="ask">문의하기</string>
+    <string name="delete_member">회원탈퇴</string>
+    <string name="creator">서비스 제작자</string>
+    <string name="add_button">추가하기</string>
 </resources>

@@ -1,89 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.AddBabyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/top_app_bar"
-            layout="@layout/composable_top_layout" />
-
-        <include
-            android:id="@+id/banner_view"
-            layout="@layout/composable_banner_view"
-            app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/line_view_desc"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#EDEDED"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container" />
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add_baby"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_view_desc">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/name_view"
-                layout="@layout/composable_input_view" />
+                android:id="@+id/top_app_bar"
+                layout="@layout/composable_top_layout"
+                bind:title="@{viewModel.title}" />
+
+            <include
+                android:id="@+id/banner_view"
+                layout="@layout/composable_banner_view"
+                app:layout_constraintTop_toBottomOf="@+id/top_app_bar"
+                bind:description="@{viewModel.bannerDesc}"
+                bind:title="@{viewModel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#EDEDED" />
 
-            <include
-                android:id="@+id/relation_view"
-                layout="@layout/composable_input_with_desc_view" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#EDEDED" />
-
-            <include
-                android:id="@+id/birth_view"
-                layout="@layout/composable_input_view" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/btn_add_baby"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginBottom="52dp"
-        android:backgroundTint="@color/baba_main"
-        android:text="추가하기"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/line_view_desc"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#EDEDED"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_add_baby"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_view_desc">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/name_view"
+                    layout="@layout/composable_input_view"
+                    bind:title="@{viewModel.nameTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
+
+                <include
+                    android:id="@+id/relation_view"
+                    layout="@layout/composable_input_with_desc_view"
+                    bind:description="@{viewModel.relationDesc}"
+                    bind:title="@{viewModel.relationTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
+
+                <include
+                    android:id="@+id/birth_view"
+                    layout="@layout/composable_input_view"
+                    bind:title="@{viewModel.birthTitle}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_add_baby"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="52dp"
+            android:backgroundTint="@color/baba_main"
+            android:text="@string/add_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

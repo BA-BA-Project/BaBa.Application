@@ -2,11 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <include
         android:id="@+id/top_app_bar"
-        layout="@layout/composable_top_layout" />
+        layout="@layout/composable_top_layout"
+        bind:title="아이 추가하기"/>
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -23,9 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
-        android:text="바바(BABA)는 \n 양육자를 위한 성장다이어리입니다.\n
-아이의 성장을 기록하고, 지인과 소통하며 행 \n 복한 육아를 경험하길 바랍니다.
-"
+        android:text="@string/service_description"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
