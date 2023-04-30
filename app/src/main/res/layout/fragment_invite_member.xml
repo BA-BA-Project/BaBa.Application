@@ -1,91 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/top_container"
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/top_app_bar"
-            layout="@layout/composable_top_layout" />
-
-        <include
-            android:id="@+id/banner_view"
-            layout="@layout/composable_banner_view" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED" />
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/input_container"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:layout_constraintTop_toBottomOf="@+id/top_container">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/top_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/input_group_view"
-                layout="@layout/composable_input_with_desc_view" />
+                android:id="@+id/top_app_bar"
+                layout="@layout/composable_top_layout"
+                bind:title="@{viewmodel.topAppBarTitle}" />
+
+            <include
+                android:id="@+id/banner_view"
+                layout="@layout/composable_banner_view"
+                bind:description="@{viewmodel.bannerDesc}"
+                bind:title="@{viewmodel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#EDEDED" />
-
-            <include
-                android:id="@+id/input_relation_view"
-                layout="@layout/composable_input_with_desc_view" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#EDEDED"
-        app:layout_constraintTop_toBottomOf="@+id/input_container" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/input_container"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:layout_constraintTop_toBottomOf="@+id/top_container">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_copy_code"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/button_complete"
-        android:text="초대코드 복사하기"
-        android:textColor="@color/baba_main"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_invite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_invite"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/button_complete_blue"
-        android:text="카카오톡으로 초대하기"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <include
+                    android:id="@+id/input_group_view"
+                    layout="@layout/composable_input_with_desc_view"
+                    bind:description="@{viewmodel.inputGroupDesc}"
+                    bind:title="@{viewmodel.inputGroupTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
+
+                <include
+                    android:id="@+id/input_relation_view"
+                    layout="@layout/composable_input_with_desc_view"
+                    bind:button="@{viewmodel.inputRelationButton}"
+                    bind:description="@{viewmodel.inputRelationDesc}"
+                    bind:title="@{viewmodel.inputRelationTitle}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EDEDED"
+            app:layout_constraintTop_toBottomOf="@+id/input_container" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_copy_code"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_complete"
+            android:text="@string/copy_invite_code"
+            android:textColor="@color/baba_main"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/btn_invite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_invite"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="52dp"
+            android:background="@drawable/button_complete_blue"
+            android:text="@string/invite_kakaotalk"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

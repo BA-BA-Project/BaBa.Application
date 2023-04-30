@@ -88,4 +88,7 @@
     <string name="creator">서비스 제작자</string>
     <string name="add_button">추가하기</string>
     <string name="manage_kids">아이 관리</string>
+    <string name="copy_invite_code">초대코드 복사하기</string>
+    <string name="invite_kakaotalk">카카오톡으로 초대하기</string>
+    <string name="check">확인</string>
 </resources>

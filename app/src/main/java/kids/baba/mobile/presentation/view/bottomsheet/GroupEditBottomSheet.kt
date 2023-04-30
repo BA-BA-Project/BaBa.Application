@@ -29,14 +29,12 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.addMemberView.tvAddButtonDesc.isGone = true
         binding.addMemberView.ivAddButton.setOnClickListener {
-            binding.addMemberView.ivAddButton.setOnClickListener {
-                requireActivity().startActivity(
-                    Intent(
-                        requireContext(),
-                        MyPageActivity::class.java
-                    ).putExtra("next", "member")
-                )
-            }
+            requireActivity().startActivity(
+                Intent(
+                    requireContext(),
+                    MyPageActivity::class.java
+                ).putExtra("next", "member")
+            )
         }
     }
 
