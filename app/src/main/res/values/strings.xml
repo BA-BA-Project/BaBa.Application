@@ -91,4 +91,6 @@
     <string name="copy_invite_code">초대코드 복사하기</string>
     <string name="invite_kakaotalk">카카오톡으로 초대하기</string>
     <string name="check">확인</string>
+    <string name="set_profile">프로필 설정</string>
+    <string name="delete_baby">아이 삭제</string>
 </resources>
