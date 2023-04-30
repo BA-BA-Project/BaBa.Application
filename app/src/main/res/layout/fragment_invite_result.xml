@@ -99,7 +99,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:background="@drawable/button_complete"
-            android:text="확인"
+            android:text="@string/check"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
             android:textStyle="bold"

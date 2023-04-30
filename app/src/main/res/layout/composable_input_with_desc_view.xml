@@ -61,7 +61,6 @@
             android:layout_marginBottom="24dp"
             android:background="@drawable/edit_input"
             android:padding="7dp"
-            android:paddingStart="15dp"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_edit_button"

@@ -8,6 +8,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
 ) : ViewModel() {
+    val myName = MutableStateFlow("손제인")
+    val myStatusMessage = MutableStateFlow("상테메시지 설정해요~")
     val title = MutableStateFlow("앙쥬네 가족")
     val description = MutableStateFlow("모든 그룹과 소식을 공유할 수 있어요")
     val motherTitle = MutableStateFlow("외가")

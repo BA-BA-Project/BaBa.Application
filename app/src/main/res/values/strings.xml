@@ -97,4 +97,16 @@
     <string name="baba_email">baba.service.care@gmail.com</string>
     <string name="delete_warning">계정을 삭제시 모든 데이터가 삭제되며\n 복구되지 않습니다.</string>
     <string name="complete">완료</string>
+    <string name="manage_baby">아이 관리</string>
+    <string name="baby_group">아이 그룹</string>
+    <string name="can_check_group">소식을 확인할 수 있는 아이 그룹입니다.</string>
+    <string name="can_add_20_people">*최대 20명 추가 가능</string>
+    <string name="illust">일러스트</string>
+    <string name="edit_member">멤버 편집</string>
+    <string name="relation_with_baby">아이와 관계</string>
+    <string name="group_in">소속 그룹</string>
+    <string name="mother_family">외가</string>
+    <string name="add">추가하기</string>
+    <string name="babys">아이들</string>
+    <string name="you_can_check_baby">등록된 아이의 소식을 확인할 수 있어요</string>
 </resources>

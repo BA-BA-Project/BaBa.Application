@@ -48,7 +48,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginBottom="70dp"
             android:background="@drawable/button_disable"
-            android:text="추가하기"
+            android:text="@string/add"
             android:textColor="#B4B4B4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -46,7 +46,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginBottom="70dp"
             android:background="@drawable/button_disable"
-            android:text="완료"
+            android:text="@string/complete"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
             android:textStyle="bold"

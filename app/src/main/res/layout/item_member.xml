@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginEnd="20dp">
 
     <ImageView
@@ -19,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="앙쥬"
+        tools:text="앙쥬"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@id/civ_member_profile"
         app:layout_constraintStart_toStartOf="@+id/civ_member_profile"
@@ -32,10 +33,11 @@
         android:layout_marginTop="2dp"
         android:background="@drawable/bg_relation_badge"
         android:paddingHorizontal="5dp"
-        android:text="아이"
+        tools:text="아이"
         android:textColor="@color/black"
         android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="@id/civ_member_profile"
         app:layout_constraintStart_toStartOf="@+id/civ_member_profile"
-        app:layout_constraintTop_toBottomOf="@id/tv_member_name" />
+        app:layout_constraintTop_toBottomOf="@id/tv_member_name"
+        tools:ignore="SmallSp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
