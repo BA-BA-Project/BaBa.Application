@@ -14,6 +14,9 @@
     <color name="text_2">#FF71767C</color>
     <color name="text_3">#FFB4B4B4</color>
     <color name="background">#FFEDEDED</color>
+    <color name="gray_50">#80000000</color>
+
+
     <color name="orange">#FFC107</color>
 
     <color name="grey">#7a7a7a</color>
@@ -22,4 +25,18 @@
     <color name="purple">#7d64e6</color>
     <color name="yellow">#ffee00</color>
     <color name="pink">#E96491</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="system_ui_scrim_light">#E3ffffff</color>
+    <color name="system_ui_scrim_dark">#C3000000</color>
+
+    <color name="status_bar_scrim">@color/system_ui_scrim_dark</color>
+    <color name="nav_bar_scrim">@color/status_bar_scrim</color>
+
+    <color name="inactive_text">#4A4A4A</color>
+    <color name="inactive_shadow">#40000000</color>
+
+    <color name="hint_text">#B3FFFFFF</color>
+
 </resources>

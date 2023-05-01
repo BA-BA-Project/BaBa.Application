@@ -3,13 +3,16 @@ package kids.baba.mobile.data.api
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.*
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Response
+import retrofit2.http.*
 
 interface AlbumApi {
 
@@ -24,12 +27,15 @@ interface AlbumApi {
     ): Response<AlbumResponse>
 
     //성장 앨범 추가
-    @POST("baby/album/{babyId}")
-    suspend fun addArticle(
-        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+    @Multipart
+    @POST("baby/{babyId}/album")
+    suspend fun postAlbum(
+        @Header("Authorization")
+        accessToken: String,
         @Path("babyId") id: String,
-        //@Multipart
-    )
+        @Part photo: MultipartBody.Part,
+        @PartMap bodyDataHashMap: HashMap<String, RequestBody>
+    ): Response<PostAlbumResponse>
 
     @POST("baby/{babyId}/album/{contentId}/like")
     suspend fun likeAlbum(

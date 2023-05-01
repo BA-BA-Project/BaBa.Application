@@ -1,4 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <bool name="use_light_system_bars">true</bool>
+
     <!-- Base application theme. -->
     <style name="Theme.Baba" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -25,5 +28,19 @@
         <item name="postSplashScreenTheme">@style/Theme.Baba</item>
         <item name="windowSplashScreenAnimationDuration">2000</item>
     </style>
+
+
+    <!-- Base application theme. -->
+    <style name="Theme.Baba.Translucent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <item name="android:windowLightStatusBar" >@bool/use_light_system_bars</item>
+        <item name="android:windowLightNavigationBar" >@bool/use_light_system_bars</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+    </style>
+
+    <style name="Baba.Translucent.AppBar" parent="ThemeOverlay.MaterialComponents.Dark" />
 
 </resources>

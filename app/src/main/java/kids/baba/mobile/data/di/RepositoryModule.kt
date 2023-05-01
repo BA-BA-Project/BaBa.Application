@@ -25,4 +25,6 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindBabyRepository(babyRepositoryImpl: BabyRepositoryImpl): BabyRepository
 
+    @Binds
+    abstract fun bindPhotoPickerRepository(photoPickerRepositoryImpl: PhotoPickerRepositoryImpl): PhotoPickerRepository
 }
