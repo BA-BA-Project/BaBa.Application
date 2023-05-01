@@ -58,7 +58,7 @@ android {
         product {
             dimension "app"
             manifestPlaceholders = [
-                    appLabel            : "BABA",
+                    appLabel: "BABA",
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://baba.kids/api/\""
