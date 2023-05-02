@@ -1,9 +1,11 @@
 package kids.baba.mobile.presentation.view.viewall
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewAllPagerAdapter(fragment:Fragment): FragmentStateAdapter(fragment) {
+class ViewAllPagerAdapter(fragmentmanager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentmanager, lifecycle) {
 
 
     private val fragmentList = listOf(

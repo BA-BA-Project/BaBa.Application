@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
 
@@ -14,7 +15,9 @@ class GatheringViewFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    private lateinit var pagerAdapter: ViewAllPagerAdapter
+//    private lateinit var pagerAdapter: ViewAllPagerAdapter
+
+    private val tabTitleArray = arrayOf("월별", "년도별", "전체")
 
 
     override fun onCreateView(
@@ -32,8 +35,13 @@ class GatheringViewFragment : Fragment() {
     }
 
     private fun setViewPager() {
-        pagerAdapter = ViewAllPagerAdapter(this)
-        binding.vpViewAll.adapter = pagerAdapter
+        val viewPager = binding.vpViewAll
+        val tabLayout = binding.tlGatheringView
+        viewPager.adapter = ViewAllPagerAdapter(childFragmentManager, lifecycle)
+
+        TabLayoutMediator(tabLayout, viewPager){tab, position ->
+            tab.text = tabTitleArray[position]
+        }.attach()
     }
 
     override fun onDestroyView() {

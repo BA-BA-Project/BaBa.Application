@@ -7,16 +7,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/texxxxtview"
+
+
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_gathering_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center_horizontal"
-            android:text="월별 년도별 전체"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/vp_view_all"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/vp_view_all"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/black"
+            app:tabIndicator="@color/white"
+            />
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_view_all"
@@ -26,11 +32,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/texxxxtview"
+            app:layout_constraintTop_toBottomOf="@+id/tl_gathering_view"
 
             >
 
         </androidx.viewpager2.widget.ViewPager2>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
