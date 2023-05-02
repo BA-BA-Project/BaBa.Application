@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EEEEEE">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_edit_pen"
+            android:layout_width="14dp"
+            android:layout_height="13dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_edit_pen"
+            app:civ_circle_background_color="#EDEDED"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_my_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_my_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_my_name" />
+
+        <ImageView
+            android:id="@+id/civ_my_profile"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="93dp"
+            android:src="@drawable/my_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_my_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@{viewModel.babyName}"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/civ_my_profile"
+            app:layout_constraintTop_toTopOf="@+id/civ_my_profile" />
+
+        <TextView
+            android:id="@+id/tv_my_status_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{viewModel.babyBirthday}"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/tv_my_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_my_name" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="54dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="@id/civ_my_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="26dp"
+            android:background="@drawable/bg_my_page_delete_button"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="@string/delete_baby"
+            android:textColor="#ff0000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tv_my_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_my_name" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_my_page_card"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/civ_my_profile">
+
+            <include
+                android:id="@+id/family_view"
+                layout="@layout/composable_group_view"
+                bind:description="@{viewModel.familyGroupDesc}"
+                bind:title="@{viewModel.familyGroupTitle}" />
+
+            <include
+                android:id="@+id/my_group_view"
+                layout="@layout/composable_group_view"
+                bind:description="@{viewModel.myGroupDesc}"
+                bind:title="@{viewModel.myGroupTitle}" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

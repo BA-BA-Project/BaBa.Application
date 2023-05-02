@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="57dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="#EDEDED"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_sheet_title" />
+
+            <TextView
+                android:id="@+id/tv_sheet_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/manage_kids"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="25dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/name_view"
+                layout="@layout/composable_name_view"
+                bind:button="@{viewModel.familyButton}"
+                bind:title="@{viewModel.familyName}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/color_view"
+                layout="@layout/composable_color_view"
+                bind:title="@{viewModel.groupColor}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/permission_view"
+                layout="@layout/composable_two_text_view"
+                bind:description="@{viewModel.permissionDesc}"
+                bind:title="@{viewModel.permission}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/delete_view"
+                layout="@layout/composable_delete_view"
+                bind:delete="@{viewModel.deleteDesc}"
+                bind:title="@{viewModel.deleteTitle}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/add_member_view"
+                layout="@layout/composable_addbutton_view"
+                bind:title="@{viewModel.addMemberTitle}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

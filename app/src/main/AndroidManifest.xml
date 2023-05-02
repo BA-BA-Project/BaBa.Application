@@ -27,7 +27,7 @@
 
 
         <activity
-            android:name=".presentation.view.WelcomeActivity"
+            android:name=".presentation.view.activity.WelcomeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.view.film.FilmActivity"
@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.IntroActivity"
+            android:name=".presentation.view.activity.IntroActivity"
             android:exported="true"
             android:theme="@style/Theme.Baba.Starting">
             <intent-filter>
@@ -58,9 +58,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
-            android:name=".presentation.view.MainActivity"
+            android:name=".presentation.view.activity.MainActivity"
             android:exported="false" />
 
         <!-- FileProvider used to share photos with other apps -->
@@ -74,6 +75,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".presentation.view.activity.MyPageActivity" />
     </application>
 
 </manifest>
