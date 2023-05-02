@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.databinding.FragmentCollapseBinding
+import kids.baba.mobile.databinding.FragmentViewAllBinding
 
 @AndroidEntryPoint
-class CollapseFragment : Fragment() {
-    private var _binding: FragmentCollapseBinding? = null
+class ViewAllFragment : Fragment() {
+    private var _binding: FragmentViewAllBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
@@ -19,7 +19,7 @@ class CollapseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCollapseBinding.inflate(inflater, container, false)
+        _binding = FragmentViewAllBinding.inflate(inflater, container, false)
         return binding.root
     }
 
