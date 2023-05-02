@@ -15,6 +15,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name= "BABA.TextStyle.Tab" parent="@style/TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/notosanskr</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="BABA.TextStyle.H1" parent="BABA.TextStyle">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_0</item>

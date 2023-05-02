@@ -8,20 +8,28 @@
         android:layout_height="match_parent">
 
 
-
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_gathering_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/vp_view_all"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabSelectedTextColor="@color/black"
-            app:tabIndicator="@color/white"
-            />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_gathering_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="70dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/shape_tab_layout_bg"
+                android:clipToPadding="true"
+                android:foregroundGravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/selector_tab"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/BABA.TextStyle.Tab"
+                app:tabTextColor="@color/black" />
 
 
         <androidx.viewpager2.widget.ViewPager2
@@ -37,7 +45,6 @@
             >
 
         </androidx.viewpager2.widget.ViewPager2>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- radius should be half of the desired TabLayout height -->
+    <corners android:radius="25dp" />
+    <solid android:color="@color/white" />
+
+
+
+
+</shape>
+
+
+    <!--<vector xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:width="174dp"-->
+    <!--    android:height="42dp"-->
+    <!--    android:viewportWidth="174"-->
+    <!--    android:viewportHeight="42">-->
+    <!--    <group-->
+    <!--        android:scaleX="0.92"-->
+    <!--        android:scaleY="0.90"-->
+    <!--        android:pivotX="87"-->
+    <!--        android:pivotY="21">-->
+    <!--        <path-->
+    <!--            android:pathData="M12,4L162,4A8,8 0,0 1,170 12L170,30A8,8 0,0 1,162 38L12,38A8,8 0,0 1,4 30L4,12A8,8 0,0 1,12 4z"-->
+    <!--            android:fillColor="#ffffff"/>-->
+    <!--    </group>-->
+
+    <!--</vector>-->
+
+
+
