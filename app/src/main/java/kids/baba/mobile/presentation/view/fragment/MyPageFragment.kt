@@ -150,7 +150,8 @@ class MyPageFragment : Fragment() {
                 MemberUiModel(
                     "이윤호",
                     "형",
-                    UserIconUiModel(UserProfileIconUiModel.PROFILE_BABY_1, "red")
+                    userIconUiModel = UserIconUiModel(UserProfileIconUiModel.PROFILE_BABY_1, "red"),
+                    introduction = ""
                 )
             )
         }

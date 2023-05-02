@@ -19,7 +19,7 @@ import kids.baba.mobile.data.network.SafeApiHelperImpl
 import kids.baba.mobile.data.util.LocalDateAdapter
 import kids.baba.mobile.data.util.LocalDateTimeAdapter
 import kids.baba.mobile.domain.model.TokenRefreshRequest
-import kids.baba.mobile.presentation.view.IntroActivity
+import kids.baba.mobile.presentation.view.activity.IntroActivity
 import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
