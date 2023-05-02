@@ -18,8 +18,8 @@
     </fragment>
     <fragment
         android:id="@+id/collapse_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.ViewAllFragment"
+        android:name="kids.baba.mobile.presentation.view.viewall.GatheringViewFragment"
         android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_view_all">
+        tools:layout="@layout/fragment_gathering_view">
     </fragment>
 </navigation>
