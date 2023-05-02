@@ -121,7 +121,7 @@ class GrowthAlbumViewModel @Inject constructor(
                         ?: babyResponse.others.firstOrNull { it.babyId == babyId }?.toPresentation(false)
                         ?: babyResponse.myBaby.first().toPresentation(true)
                 }
-            EncryptedPrefs.putBaby(PrefsKey.BABY_KEY,selectedBaby.toDomain())
+            EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
 
             _growthAlbumState.update { growthAlbumState ->
                 growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
@@ -153,10 +153,6 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun createAlbum() {
-
     }
 
 }

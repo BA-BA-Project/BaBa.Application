@@ -8,9 +8,11 @@ import javax.inject.Inject
 class GetSignTokenUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    operator fun invoke(socialToken: String, termsData: List<TermsDataForSignToken> ) =
-        authRepository.getSignToken(SignTokenRequest(
-            socialToken, termsData
-        ))
+    suspend operator fun invoke(socialToken: String, termsData: List<TermsDataForSignToken>) =
+        authRepository.getSignToken(
+            SignTokenRequest(
+                socialToken, termsData
+            )
+        )
 
 }

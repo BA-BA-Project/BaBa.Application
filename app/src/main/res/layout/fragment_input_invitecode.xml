@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/add_top"
+                layout="@layout/composable_top_layout"
+                bind:title="@{viewModel.title}" />
+
+            <include
+                android:id="@+id/banner_view"
+                layout="@layout/composable_banner_view"
+                bind:description="@{viewModel.bannerDesc}"
+                bind:title="@{viewModel.bannerTitle}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EDEDED" />
+
+            <include
+                android:id="@+id/input_view"
+                layout="@layout/composable_input_view"
+                bind:title="@{viewModel.inputTitle}" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_invite_user"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/button_disable"
+            android:text="@string/add"
+            android:textColor="#B4B4B4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

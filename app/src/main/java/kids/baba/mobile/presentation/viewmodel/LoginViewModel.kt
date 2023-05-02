@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.core.error.NetworkErrorException
 import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.core.error.kakao.KakaoLoginCanceledException
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.LoginUseCase
 import kids.baba.mobile.presentation.event.LoginEvent
@@ -40,16 +40,27 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun loginToBaba(socialToken: String) {
-        loginUseCase.babaLogin(socialToken).onFailure {
-            when (it) {
-                is UserNotFoundException -> _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
-                is NetworkErrorException -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
-                else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
+        when (val result = loginUseCase.babaLogin(socialToken)) {
+            is Result.Success -> {
+                val member = getMemberUseCase.getMe()
+                _eventFlow.emit(LoginEvent.MoveToWelcome(member.name))
             }
-        }.onSuccess { //TODO 앨범 구현중 바뀐 코드가 적용되면 수정해야함
-            val member = getMemberUseCase.getMe()
-            _eventFlow.emit(LoginEvent.MoveToWelcome(member.name))
-        }
 
+            is Result.Failure -> {
+                if (result.throwable is UserNotFoundException) {
+                    _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
+                } else {
+                    _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
+                }
+            }
+
+            is Result.NetworkError -> {
+                _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+
+            else -> {
+                _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_login_failed))
+            }
+        }
     }
 }

@@ -36,6 +36,58 @@
     <string name="essential">[필수]</string>
     <string name="choice">[선택]</string>
     <string name="required_terms_acceptance">필수 약관이 모두 동의 되지 않았습니다.</string>
+
+
+    <!--    카메라-->
+
+    <string name="app_name">BaBa</string>
+    <string name="take_photo">Take Photo</string>
+
+    <string name="android_permission_camera_title">카메라 권한이 필요합니다.</string>
+    <string name="android_permission_camera_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 카메라를 사용하여 아이의 오늘을 기록해보세요 </string>
+    <string name="android_permission_camera_denied_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 설정 - 애플리케이션 정보 에서 권한을 동의하시겠습니까?</string>
+    <string name="android_permission_denied_title">Permission Denied</string>
+    <string name="open_setting">Open Setting</string>
+    <string name="cancel">Cancel</string>
+    <string name="crop_image">사진 자르기</string>
+    <string name="complete">완료</string>
+
+    <string name="btn_capture">사진 촬영, 사진 제목 작성 창으로 이동</string>
+    <string name="btn_toggle">카메라 화면 전환</string>
+    <string name="btn_album"> 앨범으로 이동</string>
+    <string name="btn_crop_complete"> Crop 완료, 사진 제목 작성 창으로 이동</string>
+    <string name="btn_write_title_complete"> 사진 제목 작성 완료, 카드 선택 창으로 이동</string>
+
+    <string name="iv_final_post">마지막 아기 사진</string>
+
+    <string name="can_not_find_date">날짜를 불러올 수 없습니다.</string>
+    <string name="type_title">제목을 입력하세요</string>
+    <string name="write_title_guide">최대 10글자 입력 가능</string>
+
+    <string name="save">저장</string>
+    <string name="select_frame">프레임 선택</string>
+    <string name="today">Today</string>
+
+    <string name="card_basic_1">기본</string>
+    <string name="card_sky_1">하늘</string>
+    <string name="card_cloud_1">구름1</string>
+    <string name="card_cloud_2">구름2</string>
+    <string name="card_toy_1">장난감</string>
+    <string name="card_candy_1">알사탕</string>
+    <string name="card_snowflower_1">눈꽃1</string>
+    <string name="card_snowflower_2">눈꽃2</string>
+    <string name="card_line_1">스트라이프</string>
+    <string name="card_spring_1">스프링</string>
+    <string name="card_check_1">체크1</string>
+    <string name="card_check_2">체크2</string>
+
+    <string name="iv_item_card">카드 선택할 때 아이템 이미지 뷰</string>
+
+
+    <string name="likes_and_comment">좋아요와 댓글을 달아봐요!</string>
+    <string name="iv_select_card_guide">카드 선택 창에서는 가이드용(실제 상호작용 없음)</string>
+    <string name="entity_too_large">사진의 용량이 너무 큽니다.</string>
+
     <string name="create_profile_complete">프로필 생성 완료</string>
     <string name="view_by_date">날짜별 보기</string>
     <string name="album_card_record_image">기록하기를 눌러 사진을 남겨 봐요</string>
@@ -76,9 +128,38 @@
     <string name="collapse">모아보기</string>
     <string name="growth_album">성장 앨범</string>
     <string name="my_page">마이 페이지</string>
-    <string name="today">Today</string>
     <string name="select_baby">성장앨범 보러가기</string>
     <string name="management_babies">아이 추가 및 관리</string>
+    <string name="baby_add_complete">아이가 추가되었어요!</string>
+    <string name="add_baby_title">아이 추가하기</string>
+    <string name="save_your_memories">소중한 추억을 기록해봐요 :)</string>
+    <string name="service_description">바바(BABA)는 \n 양육자를 위한 성장다이어리입니다.\n 아이의 성장을 기록하고, 지인과 소통하며 행 \n 복한 육아를 경험하길 바랍니다.</string>
+    <string name="service_info">서비스 정보</string>
+    <string name="ask">문의하기</string>
+    <string name="delete_member">회원탈퇴</string>
+    <string name="creator">서비스 제작자</string>
+    <string name="add_button">추가하기</string>
+    <string name="manage_kids">아이 관리</string>
+    <string name="copy_invite_code">초대코드 복사하기</string>
+    <string name="invite_kakaotalk">카카오톡으로 초대하기</string>
+    <string name="check">확인</string>
+    <string name="set_profile">프로필 설정</string>
+    <string name="delete_baby">아이 삭제</string>
+    <string name="email_info">문의 이메일 정보</string>
+    <string name="baba_email">baba.service.care@gmail.com</string>
+    <string name="delete_warning">계정을 삭제시 모든 데이터가 삭제되며\n 복구되지 않습니다.</string>
+    <string name="manage_baby">아이 관리</string>
+    <string name="baby_group">아이 그룹</string>
+    <string name="can_check_group">소식을 확인할 수 있는 아이 그룹입니다.</string>
+    <string name="can_add_20_people">*최대 20명 추가 가능</string>
+    <string name="illust">일러스트</string>
+    <string name="edit_member">멤버 편집</string>
+    <string name="relation_with_baby">아이와 관계</string>
+    <string name="group_in">소속 그룹</string>
+    <string name="mother_family">외가</string>
+    <string name="add">추가하기</string>
+    <string name="babys">아이들</string>
+    <string name="you_can_check_baby">등록된 아이의 소식을 확인할 수 있어요</string>
     <string name="record_album">성장을 기록해봐요</string>
     <string name="no_albums_recorded">쉿! 아직 자고있어요</string>
     <string name="add_like_and_comment">좋아요와 댓글을 달아봐요!</string>

@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="kids.baba.mobile.presentation.view.LoginFragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/termsAgreeFragment"
-        android:name="kids.baba.mobile.presentation.view.TermsAgreeFragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.TermsAgreeFragment"
         android:label="TermsAgreeFragment"
         tools:layout="@layout/fragment_terms_agree">
         <action
