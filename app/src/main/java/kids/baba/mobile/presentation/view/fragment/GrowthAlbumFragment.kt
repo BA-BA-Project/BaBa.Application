@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.calendarnew.getWeekPageTitle
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
@@ -38,7 +37,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -60,12 +59,16 @@ class GrowthAlbumFragment : Fragment() {
     private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
 
     private fun connect() {
-        FilmActivity.startActivity(requireContext(), viewModel.growthAlbumState.value.selectedDate.toString())
+        FilmActivity.startActivity(
+            requireContext(),
+            viewModel.growthAlbumState.value.selectedDate.toString()
+        )
     }
 
     private fun noPermission() {
         Log.e("GrowthAlbumFragment", "noPermission()")
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -82,7 +85,7 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
-    private fun showAlbumDetailDialog(){
+    private fun showAlbumDetailDialog() {
         val albumDetailDialog = AlbumDetailDialog()
         val bundle = Bundle()
         bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
@@ -175,11 +178,21 @@ class GrowthAlbumFragment : Fragment() {
             override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
         }
 
+        var currentMonth = YearMonth.now()
+
         binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
-            binding.tvDate.text = getWeekPageTitle(weekDays)
+            val firstDate = weekDays.days.first().date
+            val lastDate = weekDays.days.last().date
+            currentMonth = if (lastDate.month != currentMonth.month) {
+                YearMonth.of(lastDate.year, lastDate.month)
+            } else if (firstDate.month != currentMonth.month) {
+                YearMonth.of(firstDate.year, firstDate.month)
+            } else {
+                currentMonth
+            }
+            binding.tvDate.text = getString(R.string.calendar_date, currentMonth.year, currentMonth.monthValue)
         }
 
-        val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
             LocalDate.now(),
@@ -187,6 +200,8 @@ class GrowthAlbumFragment : Fragment() {
         )
         binding.wcvAlbumCalendar.scrollPaged = false
         binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
+
+
     }
 
 
@@ -244,7 +259,6 @@ class GrowthAlbumFragment : Fragment() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 binding.wcvAlbumCalendar.notifyCalendarChanged()
                 albumAdapter.unregisterAdapterDataObserver(this)
-
             }
         })
     }
@@ -272,7 +286,8 @@ class GrowthAlbumFragment : Fragment() {
         )
         binding.vpBabyPhoto.adapter = albumAdapter
 
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             var isUserScrolling = false
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
