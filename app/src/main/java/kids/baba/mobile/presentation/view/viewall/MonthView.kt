@@ -11,7 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMonthViewBinding
 import kids.baba.mobile.presentation.adapter.MonthViewAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel
 import kids.baba.mobile.presentation.viewmodel.viewall.MonthViewViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,7 +22,8 @@ class MonthView @Inject constructor() : Fragment() {
     private var _binding: FragmentMonthViewBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: MonthViewViewModel by viewModels()
+//    val viewModel: MonthViewViewModel by viewModels()
+    val viewModel: GatheringViewViewModel by viewModels()
 
     private lateinit var adapter: MonthViewAdapter
 
@@ -43,7 +46,7 @@ class MonthView @Inject constructor() : Fragment() {
         binding.rvMonthBabies.layoutManager = manager
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.monthAlbumListState.collect {
+            viewModel.monthAlbumListState.collect{
                 adapter.submitList(it)
             }
         }

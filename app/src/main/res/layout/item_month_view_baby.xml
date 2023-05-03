@@ -7,15 +7,11 @@
 
         <variable
             name="baby"
-            type="kids.baba.mobile.presentation.model.AlbumUiModel" />
+            type="kids.baba.mobile.presentation.model.GatheringAllAlbumUiModel" />
 
         <variable
-            name="formatter"
-            type="java.time.format.DateTimeFormatter" />
-
-        <variable
-            name="date"
-            type="java.time.LocalDate" />
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.viewall.MonthViewViewModel" />
 
     </data>
 
@@ -30,10 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cv_month_baby"

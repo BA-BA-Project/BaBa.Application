@@ -7,10 +7,14 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
+import kids.baba.mobile.presentation.adapter.MonthViewAdapter
+import kids.baba.mobile.presentation.model.GatheringMonthAlbumUiModel
+import kids.baba.mobile.presentation.view.viewall.MonthView
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
