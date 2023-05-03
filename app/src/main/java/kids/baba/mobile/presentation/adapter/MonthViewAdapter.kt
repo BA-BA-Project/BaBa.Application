@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemMonthViewBabyBinding
-import kids.baba.mobile.presentation.model.AlbumUiModel
-import kids.baba.mobile.presentation.model.BabyUiModel
-import kids.baba.mobile.presentation.model.GatheringAllAlbumUiModel
+import kids.baba.mobile.presentation.model.*
 
 
-class MonthViewAdapter : ListAdapter<GatheringAllAlbumUiModel, MonthViewAdapter.MonthViewHolder>(diffUtil) {
+class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapter.MonthViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
         val binding = ItemMonthViewBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +30,7 @@ class MonthViewAdapter : ListAdapter<GatheringAllAlbumUiModel, MonthViewAdapter.
     inner class MonthViewHolder(private val binding: ItemMonthViewBabyBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
-        fun bind(baby: GatheringAllAlbumUiModel) {
+        fun bind(baby: GatheringAlbumCountUiModel) {
             Log.d("MonthViewAdapter", "bind called")
             binding.baby = baby
 
@@ -41,11 +39,11 @@ class MonthViewAdapter : ListAdapter<GatheringAllAlbumUiModel, MonthViewAdapter.
 
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<GatheringAllAlbumUiModel>() {
-            override fun areItemsTheSame(oldItem: GatheringAllAlbumUiModel, newItem: GatheringAllAlbumUiModel) =
-                oldItem.contentId == newItem.contentId
+        val diffUtil = object : DiffUtil.ItemCallback<GatheringAlbumCountUiModel>() {
+            override fun areItemsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
+                oldItem == newItem
 
-            override fun areContentsTheSame(oldItem: GatheringAllAlbumUiModel, newItem: GatheringAllAlbumUiModel) =
+            override fun areContentsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
                 oldItem == newItem
 
         }

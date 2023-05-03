@@ -12,8 +12,6 @@ import kids.baba.mobile.databinding.FragmentMonthViewBinding
 import kids.baba.mobile.presentation.adapter.MonthViewAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel
-import kids.baba.mobile.presentation.viewmodel.viewall.MonthViewViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,7 +44,7 @@ class MonthView @Inject constructor() : Fragment() {
         binding.rvMonthBabies.layoutManager = manager
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.monthAlbumListState.collect{
+            viewModel.recentMonthAlbumListState.collect{
                 adapter.submitList(it)
             }
         }

@@ -94,3 +94,13 @@ fun setDateString(textView: TextView, nowDate: String) {
         textView.text = nowDate
     }
 }
+
+@BindingAdapter("yearAndMonth")
+fun setIntToString(textView: TextView, localDate: LocalDate) {
+    val yearMonth = localDate.year.toString() + "." + localDate.monthValue.toString() + "월"
+    textView.text = yearMonth
+
+}
+
+
+//android:text="@{baby.gatheringAlbumUiModel.date.year}"
