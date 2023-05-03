@@ -20,7 +20,6 @@ class MonthView @Inject constructor() : Fragment() {
     private var _binding: FragmentMonthViewBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-//    val viewModel: MonthViewViewModel by viewModels()
     val viewModel: GatheringViewViewModel by viewModels()
 
     private lateinit var adapter: MonthViewAdapter
@@ -44,7 +43,7 @@ class MonthView @Inject constructor() : Fragment() {
         binding.rvMonthBabies.layoutManager = manager
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.recentMonthAlbumListState.collect{
+            viewModel.recentMonthAlbumListState.collect {
                 adapter.submitList(it)
             }
         }

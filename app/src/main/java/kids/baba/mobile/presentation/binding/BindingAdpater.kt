@@ -7,14 +7,10 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
-import kids.baba.mobile.presentation.adapter.MonthViewAdapter
-import kids.baba.mobile.presentation.model.GatheringMonthAlbumUiModel
-import kids.baba.mobile.presentation.view.viewall.MonthView
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -95,11 +91,16 @@ fun setDateString(textView: TextView, nowDate: String) {
     }
 }
 
-@BindingAdapter("yearAndMonth")
-fun setIntToString(textView: TextView, localDate: LocalDate) {
+@BindingAdapter("showYearAndMonth")
+fun showYearAndMonth(textView: TextView, localDate: LocalDate) {
     val yearMonth = localDate.year.toString() + "." + localDate.monthValue.toString() + "월"
     textView.text = yearMonth
+}
 
+@BindingAdapter("showYear")
+fun showYear(textView: TextView, localDate: LocalDate) {
+    val year = localDate.year.toString() + "년"
+    textView.text = year
 }
 
 

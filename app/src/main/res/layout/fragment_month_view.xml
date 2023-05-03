@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="kids.baba.mobile.presentation.viewmodel.viewall.MonthViewViewModel" />-->
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel" />
