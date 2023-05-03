@@ -9,14 +9,14 @@ import kids.baba.mobile.databinding.ItemMonthViewBabyBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 
 
-class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapter.YeaerViewHolder>(diffUtil) {
+class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapter.YearViewHolder>(diffUtil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YeaerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
         val binding = ItemMonthViewBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return YeaerViewHolder(binding)
+        return YearViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: YeaerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: YearViewHolder, position: Int) {
         val content = getItem(position)
         holder.bind(content)
     }
@@ -26,7 +26,7 @@ class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapte
     }
 
 
-    class YeaerViewHolder(private val binding: ItemMonthViewBabyBinding) : RecyclerView.ViewHolder(
+    class YearViewHolder(private val binding: ItemMonthViewBabyBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
         fun bind(baby: GatheringAlbumCountUiModel) {

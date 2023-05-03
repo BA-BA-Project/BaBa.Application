@@ -102,6 +102,3 @@ fun showYear(textView: TextView, localDate: LocalDate) {
     val year = localDate.year.toString() + "년"
     textView.text = year
 }
-
-
-//android:text="@{baby.gatheringAlbumUiModel.date.year}"

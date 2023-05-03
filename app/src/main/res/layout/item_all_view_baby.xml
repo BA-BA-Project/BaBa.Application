@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="baby"
+            type="kids.baba.mobile.presentation.model.GatheringAlbumUiModel" />
+
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
+
+        <import type="java.util.List" />
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp">
+
+        <ImageView
+            android:id="@+id/iv_all_baby"
+            imageFromUrl="@{baby.photo}"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/item_all_baby_img"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="W, 1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/dummy_baby_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:text="@{baby.date.toString()}"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_all_baby"
+            app:layout_constraintStart_toStartOf="@+id/iv_all_baby"
+            tools:text="@string/item_all_baby_text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
