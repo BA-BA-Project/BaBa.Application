@@ -43,6 +43,8 @@ import java.util.*
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
+    //TODO 다이얼로그를 매번 재생성 해야 하는가?
+    // 달력에서 중앙에 위치한 날짜의 달
     private var _binding: FragmentGrowthalbumBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -64,7 +66,6 @@ class GrowthAlbumFragment : Fragment() {
     private fun noPermission() {
         Log.e("GrowthAlbumFragment", "noPermission()")
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
@@ -77,12 +78,16 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun setAlbumDialog() {
         binding.cvBabyAlbum.setOnClickListener {
-            val albumDetailDialog = AlbumDetailDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
-            albumDetailDialog.arguments = bundle
-            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+            showAlbumDetailDialog()
         }
+    }
+
+    private fun showAlbumDetailDialog(){
+        val albumDetailDialog = AlbumDetailDialog()
+        val bundle = Bundle()
+        bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
+        albumDetailDialog.arguments = bundle
+        albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
     }
 
     private fun setBinding() {
@@ -260,6 +265,9 @@ class GrowthAlbumFragment : Fragment() {
             createAlbum = {
                 // 권한 허용
                 permissionRequester.checkPermissions(requireContext())
+            },
+            albumClick = {
+                showAlbumDetailDialog()
             }
         )
         binding.vpBabyPhoto.adapter = albumAdapter
