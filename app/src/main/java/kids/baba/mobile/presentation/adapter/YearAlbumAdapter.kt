@@ -5,13 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kids.baba.mobile.databinding.ItemYearViewBabyBinding
+import kids.baba.mobile.databinding.ItemYearAlbumBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
+import java.time.format.DateTimeFormatter
 
-class YearViewAdapter : ListAdapter<GatheringAlbumCountUiModel, YearViewAdapter.YearViewHolder>(diffUtil) {
+class YearAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
-        val binding = ItemYearViewBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemYearAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy" + "년")
         return YearViewHolder(binding)
     }
 
@@ -24,27 +26,21 @@ class YearViewAdapter : ListAdapter<GatheringAlbumCountUiModel, YearViewAdapter.
         return position.toLong()
     }
 
-
-    class YearViewHolder(private val binding: ItemYearViewBabyBinding) : RecyclerView.ViewHolder(
+    class YearViewHolder(private val binding: ItemYearAlbumBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
         fun bind(baby: GatheringAlbumCountUiModel) {
             binding.baby = baby
-
         }
     }
-
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<GatheringAlbumCountUiModel>() {
             override fun areItemsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
-                oldItem == newItem
+                oldItem.albumUiModel == newItem.albumUiModel
 
             override fun areContentsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
                 oldItem == newItem
-
         }
     }
-
-
 }

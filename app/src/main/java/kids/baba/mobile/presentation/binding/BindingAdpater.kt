@@ -90,15 +90,3 @@ fun setDateString(textView: TextView, nowDate: String) {
         textView.text = nowDate
     }
 }
-
-@BindingAdapter("showYearAndMonth")
-fun showYearAndMonth(textView: TextView, localDate: LocalDate) {
-    val yearMonth = localDate.year.toString() + "." + localDate.monthValue.toString() + "월"
-    textView.text = yearMonth
-}
-
-@BindingAdapter("showYear")
-fun showYear(textView: TextView, localDate: LocalDate) {
-    val year = localDate.year.toString() + "년"
-    textView.text = year
-}

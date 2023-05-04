@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel" />
+            type="kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,8 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="@dimen/margin_medium"
-            tools:listitem="@layout/item_month_view_baby" />
+            tools:listitem="@layout/item_month_album" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

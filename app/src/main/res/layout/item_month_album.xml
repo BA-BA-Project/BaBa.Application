@@ -9,7 +9,9 @@
             name="baby"
             type="kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel" />
 
-        <import type="android.view.View" />
+        <variable
+            name="dateTimeFormatter"
+            type="java.time.format.DateTimeFormatter" />
 
     </data>
 
@@ -39,13 +41,12 @@
 
                 <ImageView
                     android:id="@+id/iv_month_baby"
-                    imageFromUrl="@{baby.gatheringAlbumUiModel.photo}"
+                    imageFromUrl="@{baby.albumUiModel.photo}"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:contentDescription="@string/item_month_baby_img"
                     android:scaleType="fitXY"
                     app:layout_constraintBottom_toTopOf="@+id/tv_month_baby_label"
-                    app:layout_constraintDimensionRatio="W, 1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -55,12 +56,14 @@
                     android:id="@+id/tv_month_baby_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="2dp"
+                    android:layout_marginVertical="10dp"
                     android:layout_marginStart="14dp"
-                    android:fontFamily="@font/notosanskr"
-                    app:showYearAndMonth="@{baby.gatheringAlbumUiModel.date}"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/black"
                     android:textSize="14sp"
+                    app:date="@{baby.albumUiModel.date}"
+                    app:formatter="@{dateTimeFormatter}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_month_baby"
@@ -71,14 +74,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
-                    android:fontFamily="@font/notosanskr"
-                    android:text="@{baby.albumCounts.toString()}"
+                    android:includeFontPadding="false"
+                    android:text="@{String.format(@string/unit_of_count, baby.albumCounts)}"
+                    android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/text_2"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_month_baby_label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_month_baby_label"
-                    tools:text="30장" />
+                    tools:text="@string/unit_of_count" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

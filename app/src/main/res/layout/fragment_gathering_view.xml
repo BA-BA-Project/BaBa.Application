@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="viewModel"
-            type="kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel" />
+            type="kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel" />
     </data>
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_gathering_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="70dp"
-                android:layout_marginTop="22dp"
-                android:background="@drawable/shape_tab_layout_bg"
-                android:clipToPadding="true"
-                android:foregroundGravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tabBackground="@drawable/selector_tab"
-                app:tabGravity="fill"
-                app:tabIndicatorColor="@android:color/transparent"
-                app:tabIndicatorGravity="center"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="fixed"
-                app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/black"
-                app:tabTextAppearance="@style/BABA.TextStyle.Tab"
-                app:tabTextColor="@color/black" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_gathering_view"
+            style="@style/BABA.TextStyle.Tab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/shape_tab_layout_bg"
+            android:clipToPadding="true"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabBackground="@drawable/selector_tab"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/black" />
 
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_view_all"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

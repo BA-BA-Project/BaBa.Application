@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view.viewall
+package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,27 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.databinding.FragmentMonthViewBinding
-import kids.baba.mobile.presentation.adapter.MonthViewAdapter
+import kids.baba.mobile.databinding.FragmentAllAlbumBinding
+import kids.baba.mobile.presentation.adapter.AllAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel
+import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MonthView @Inject constructor() : Fragment() {
+class AllAlbumFragment @Inject constructor() : Fragment() {
 
-    private var _binding: FragmentMonthViewBinding? = null
+    private var _binding: FragmentAllAlbumBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: GatheringViewViewModel by viewModels()
-
-    private lateinit var adapter: MonthViewAdapter
+    val viewModel: GatheringAlbumViewModel by viewModels()
+    private lateinit var adapter: AllAlbumAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentMonthViewBinding.inflate(inflater, container, false)
+        _binding = FragmentAllAlbumBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,18 +34,16 @@ class MonthView @Inject constructor() : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
-        adapter = MonthViewAdapter()
-        binding.rvMonthBabies.adapter = adapter
-        val manager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-        binding.rvMonthBabies.layoutManager = manager
+        adapter = AllAlbumAdapter()
+        binding.rvAllBabies.adapter = adapter
+        val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
+        binding.rvAllBabies.layoutManager = manager
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.recentMonthAlbumListState.collect {
-                adapter.submitList(it)
+            viewModel.allAlbumListState.collect {
+                adapter.submitList(it.reversed())
             }
         }
-
     }
 
     override fun onDestroyView() {

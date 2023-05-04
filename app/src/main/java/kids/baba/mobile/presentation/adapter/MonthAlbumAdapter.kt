@@ -5,14 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kids.baba.mobile.databinding.ItemMonthViewBabyBinding
+import kids.baba.mobile.databinding.ItemMonthAlbumBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
+import java.time.format.DateTimeFormatter
 
 
-class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapter.YearViewHolder>(diffUtil) {
+class MonthAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.YearViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
-        val binding = ItemMonthViewBabyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemMonthAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM" + "월")
         return YearViewHolder(binding)
     }
 
@@ -25,27 +27,21 @@ class MonthViewAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthViewAdapte
         return position.toLong()
     }
 
-
-    class YearViewHolder(private val binding: ItemMonthViewBabyBinding) : RecyclerView.ViewHolder(
+    class YearViewHolder(private val binding: ItemMonthAlbumBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
         fun bind(baby: GatheringAlbumCountUiModel) {
             binding.baby = baby
-
         }
     }
-
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<GatheringAlbumCountUiModel>() {
             override fun areItemsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
-                oldItem == newItem
+                oldItem.albumUiModel == newItem.albumUiModel
 
             override fun areContentsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
                 oldItem == newItem
-
         }
     }
-
-
 }

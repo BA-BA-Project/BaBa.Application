@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view.viewall
+package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,21 +9,19 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
-import kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel
-import kids.baba.mobile.presentation.viewmodel.viewall.MonthViewViewModel
+import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class GatheringViewFragment @Inject constructor() : Fragment() {
+
     private var _binding: FragmentGatheringViewBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-//    private lateinit var pagerAdapter: ViewAllPagerAdapter
-
     private val tabTitleArray = arrayOf("월별", "년도별", "전체")
 
-    val viewModel: GatheringViewViewModel by viewModels()
+    val viewModel: GatheringAlbumViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +46,7 @@ class GatheringViewFragment @Inject constructor() : Fragment() {
         val tabLayout = binding.tlGatheringView
         viewPager.adapter = ViewAllPagerAdapter(childFragmentManager, lifecycle)
 
-        TabLayoutMediator(tabLayout, viewPager){tab, position ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
     }

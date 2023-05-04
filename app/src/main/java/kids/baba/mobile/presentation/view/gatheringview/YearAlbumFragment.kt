@@ -1,4 +1,4 @@
-package kids.baba.mobile.presentation.view.viewall
+package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,23 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.databinding.FragmentAllViewBinding
-import kids.baba.mobile.presentation.adapter.AllViewAdapter
+import kids.baba.mobile.databinding.FragmentClassifiedAlbumBinding
+import kids.baba.mobile.presentation.adapter.YearAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.viewmodel.viewall.GatheringViewViewModel
+import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AllView @Inject constructor() : Fragment() {
+class YearAlbumFragment @Inject constructor() : Fragment() {
 
-    private var _binding: FragmentAllViewBinding? = null
+    private var _binding: FragmentClassifiedAlbumBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: GatheringViewViewModel by viewModels()
-    private lateinit var adapter: AllViewAdapter
+    val viewModel: GatheringAlbumViewModel by viewModels()
+
+    private lateinit var adapter: YearAlbumAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentAllViewBinding.inflate(inflater, container, false)
+        _binding = FragmentClassifiedAlbumBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,20 +36,25 @@ class AllView @Inject constructor() : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        adapter = AllViewAdapter()
-        binding.rvAllBabies.adapter = adapter
-        val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
-        binding.rvAllBabies.layoutManager = manager
+        initAdapter()
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.allAlbumListState.collect {
+            viewModel.recentYearAlbumListState.collect {
                 adapter.submitList(it)
             }
         }
+    }
+
+    private fun initAdapter() {
+        adapter = YearAlbumAdapter()
+        binding.rvMonthBabies.adapter = adapter
+        val manager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+        binding.rvMonthBabies.layoutManager = manager
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
+
 }
