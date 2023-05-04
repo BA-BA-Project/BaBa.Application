@@ -1,11 +1,9 @@
 package kids.baba.mobile.presentation.view.film
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,18 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
-import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
 import kids.baba.mobile.presentation.event.PostAlbumEvent
 import kids.baba.mobile.presentation.extension.CardDetailsLookup
 import kids.baba.mobile.presentation.extension.RecyclerViewIdKeyProvider
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.PostAlbumState
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -93,8 +87,8 @@ class SelectCardFragment @Inject constructor(
         }
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event ->
-                when(event){
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is PostAlbumEvent.ShowSnackBar -> showSnackBar(event.text)
                     is PostAlbumEvent.MoveToMain -> activityViewModel.isPostAlbum()
                 }

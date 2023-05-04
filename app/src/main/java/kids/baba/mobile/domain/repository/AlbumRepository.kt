@@ -14,7 +14,7 @@ interface AlbumRepository {
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Result<PostAlbumResponse>/*Flow<PostAlbumResponse>*/
+    ): Result<PostAlbumResponse>
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
 

@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class FileUtil @Inject constructor(
     @ApplicationContext private val context: Context
-){
+) {
     private val TAG = "FileUtil"
 
     fun optimizeBitmap(uri: Uri): String {
@@ -31,7 +31,7 @@ class FileUtil @Inject constructor(
             val fos = FileOutputStream(tempFile)
 
             decodeBitmapFromUri(uri, context)?.apply {
-                compress(Bitmap.CompressFormat.JPEG, /*60*/100, fos)
+                compress(Bitmap.CompressFormat.JPEG, 100, fos)
                 recycle()
             } ?: throw NullPointerException()
 

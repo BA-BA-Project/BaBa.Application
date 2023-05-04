@@ -1,12 +1,10 @@
 package kids.baba.mobile.data.datasource.album
 
-import kids.baba.mobile.core.error.EntityTooLargeException
 import android.util.Log
-import kids.baba.mobile.core.error.NetworkErrorException
+import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
-import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -35,7 +33,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Result<PostAlbumResponse> /*= flow*/ {
+    ): Result<PostAlbumResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.postAlbum(accessToken, id, photo, bodyDataHashMap)
@@ -44,29 +42,15 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        Log.e("AlbumRemoteDataSourceImpl", "result: $result")
         return if (result is Result.Failure) {
-            Result.Failure(result.code, result.message, EntityTooLargeException("사진 용량이 너무 큽니다"))
+            if (result.code == 413) {
+                Result.Failure(result.code, result.message, EntityTooLargeException())
+            } else {
+                result
+            }
         } else {
             result
         }
-
-        /////
-        /*runCatching { api.postAlbum(accessToken, id, photo, bodyDataHashMap) }
-            .onSuccess { resp ->
-                when (resp.code()) {
-                    201 -> {
-                        val data = resp.body() ?: throw Throwable("data is null")
-                        emit(data)
-                    }
-                    413 -> {
-                        throw EntityTooLargeException("사진의 용량이 너무 큽니다.")
-                    }
-                }
-            }
-            .onFailure {
-                throw it
-            }*/
     }
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {
