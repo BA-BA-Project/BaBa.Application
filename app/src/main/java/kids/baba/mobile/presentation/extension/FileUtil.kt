@@ -31,7 +31,7 @@ class FileUtil @Inject constructor(
             val fos = FileOutputStream(tempFile)
 
             decodeBitmapFromUri(uri, context)?.apply {
-                compress(Bitmap.CompressFormat.JPEG, 60, fos)
+                compress(Bitmap.CompressFormat.JPEG, /*60*/100, fos)
                 recycle()
             } ?: throw NullPointerException()
 

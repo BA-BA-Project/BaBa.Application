@@ -6,16 +6,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.MediaData
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
+import kids.baba.mobile.presentation.event.PostAlbumEvent
 import kids.baba.mobile.presentation.extension.FileUtil
 import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.state.PostAlbumState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -46,8 +49,8 @@ class SelectCardViewModel @Inject constructor(
     private var _cardPosition: MutableStateFlow<Int> = MutableStateFlow(0)
     val cardPosition = _cardPosition.asStateFlow()
 
-    private val _postAlbumState = MutableStateFlow<PostAlbumState>(PostAlbumState.UnInitialized)
-    val postAlbumState = _postAlbumState.asStateFlow()
+    private val _eventFlow = MutableEventFlow<PostAlbumEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
 
     val nowDate: MutableStateFlow<String> = MutableStateFlow("")
 
@@ -88,29 +91,28 @@ class SelectCardViewModel @Inject constructor(
 
         when(val result = postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap)){
             is Result.Success -> {
-                _postAlbumState.value = PostAlbumState.Success
+                _eventFlow.emit(PostAlbumEvent.MoveToMain)
             }
             is Result.Failure -> {
                 if (result.throwable is EntityTooLargeException) {
-                    _postAlbumState.value = PostAlbumState.Error(t = Throwable())
+                    // 사진 업로드에 실패했습니다
+                    _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.post_album_failed))
                 } else {
                     Log.e(TAG, "Result.Failure (not EntityTooLargeException)")
                 }
             }
             is Result.NetworkError -> {
                 Log.e(TAG, "NetworkError")
+                // 네트워크 연결을 확인해주세요
+                _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
                 Log.e(TAG, "Unexpected Error")
+                // 알 수 없는 오류로 사진 업로드에 실패했습니다.
+                _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.post_album_unexpected_result))
             }
 
         }
-
-        /*postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
-            _postAlbumState.value = PostAlbumState.Error(it)
-        }.collect {
-            _postAlbumState.value = PostAlbumState.Success
-        }*/
     }
 
     private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())

@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.network
 
+import android.util.Log
 import com.google.gson.Gson
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.domain.model.ErrorResponse
@@ -27,12 +28,18 @@ class SafeApiHelperImpl @Inject constructor(
                         Result.Unexpected(NullBodyException("Body가 null임"))
                     }
                 } else {
-                    var errorMessage = gson.fromJson(
-                        it.errorBody()?.string(),
-                        ErrorResponse::class.java
-                    ).message
+                    Log.e("SafeApiHelperImpl", "Respone: $it \n ErrorBody: ${it.errorBody()?.string()!!}")
+                    var errorMessage = try {
+                        gson.fromJson(
+                            it.errorBody()?.string(),
+                            ErrorResponse::class.java
+                        )?.message
+                    } catch (e: Exception) {
+                        null
+                    }
 
-                    if (errorMessage.isBlank()) {
+
+                    if (errorMessage.isNullOrBlank()) {
                         errorMessage = "Unknown Error"
                     }
                     result = Result.Failure(it.code(), errorMessage,null)

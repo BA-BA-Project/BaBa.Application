@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,17 +16,20 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.databinding.FragmentSelectCardBinding
 import kids.baba.mobile.presentation.adapter.CardStyleAdapter
+import kids.baba.mobile.presentation.event.PostAlbumEvent
 import kids.baba.mobile.presentation.extension.CardDetailsLookup
 import kids.baba.mobile.presentation.extension.RecyclerViewIdKeyProvider
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.PostAlbumState
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kids.baba.mobile.presentation.viewmodel.SelectCardViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -88,19 +92,12 @@ class SelectCardFragment @Inject constructor(
             }
         }
 
-        repeatOnStarted {
-            viewModel.postAlbumState.collect { event ->
-                when (event) {
-                    is PostAlbumState.UnInitialized -> Log.d(tag, "PostAlbumState UnInitialized")
-                    is PostAlbumState.Success -> activityViewModel.isPostAlbum()
-                    is PostAlbumState.Error -> {
-                        if (event.t is EntityTooLargeException) {
-                            Toast.makeText(requireContext(), R.string.entity_too_large, Toast.LENGTH_SHORT).show()
-                        }
-                        Log.e(tag, "PostAlbum Error")
-                    }
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{event ->
+                when(event){
+                    is PostAlbumEvent.ShowSnackBar -> showSnackBar(event.text)
+                    is PostAlbumEvent.MoveToMain -> activityViewModel.isPostAlbum()
                 }
-
             }
         }
     }
@@ -115,5 +112,8 @@ class SelectCardFragment @Inject constructor(
         viewModel.onCardSelected(position)
     }
 
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
 
 }

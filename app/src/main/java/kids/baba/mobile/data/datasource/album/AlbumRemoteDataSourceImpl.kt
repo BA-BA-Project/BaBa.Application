@@ -44,6 +44,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
+        Log.e("AlbumRemoteDataSourceImpl", "result: $result")
         return if (result is Result.Failure) {
             Result.Failure(result.code, result.message, EntityTooLargeException("사진 용량이 너무 큽니다"))
         } else {
