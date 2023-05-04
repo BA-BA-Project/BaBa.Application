@@ -1,6 +1,7 @@
 package kids.baba.mobile.domain.repository
 
 import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -13,7 +14,7 @@ interface AlbumRepository {
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Flow<PostAlbumResponse>
+    ): Result<PostAlbumResponse>/*Flow<PostAlbumResponse>*/
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
 

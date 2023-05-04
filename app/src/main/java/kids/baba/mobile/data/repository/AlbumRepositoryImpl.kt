@@ -23,13 +23,14 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ) = flow {
+    ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
+    /*= flow {
         dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap).catch {
             throw it
         }.collect {
             emit(it)
         }
-    }
+    }*/
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> =
         dataSource.likeAlbum(id, contentId)

@@ -2,8 +2,11 @@ package kids.baba.mobile.data.datasource.album
 
 import kids.baba.mobile.core.error.EntityTooLargeException
 import android.util.Log
+import kids.baba.mobile.core.error.NetworkErrorException
 import kids.baba.mobile.data.api.AlbumApi
+import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -11,7 +14,8 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class AlbumRemoteDataSourceImpl @Inject constructor(
-    private val api: AlbumApi
+    private val api: AlbumApi,
+    private val safeApiHelper: SafeApiHelper
 ) : AlbumRemoteDataSource {
 
     override suspend fun getAlbum(
@@ -31,8 +35,23 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ) = flow {
-        runCatching { api.postAlbum(accessToken, id, photo, bodyDataHashMap) }
+    ): Result<PostAlbumResponse> /*= flow*/ {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.postAlbum(accessToken, id, photo, bodyDataHashMap)
+            },
+            mapping = {
+                it
+            }
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, EntityTooLargeException("사진 용량이 너무 큽니다"))
+        } else {
+            result
+        }
+
+        /////
+        /*runCatching { api.postAlbum(accessToken, id, photo, bodyDataHashMap) }
             .onSuccess { resp ->
                 when (resp.code()) {
                     201 -> {
@@ -46,7 +65,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
             .onFailure {
                 throw it
-            }
+            }*/
     }
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {

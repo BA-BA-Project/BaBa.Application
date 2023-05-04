@@ -7,12 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.MediaData
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
 import kids.baba.mobile.presentation.extension.FileUtil
 import kids.baba.mobile.presentation.model.CardStyleUiModel
 import kids.baba.mobile.presentation.state.PostAlbumState
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,6 +25,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.w3c.dom.Entity
 import java.io.File
 import javax.inject.Inject
 
@@ -82,11 +86,31 @@ class SelectCardViewModel @Inject constructor(
         requestHashMap["title"] = currentTakenMedia.value.mediaName.toPlainRequestBody()
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
-        postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
+        when(val result = postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap)){
+            is Result.Success -> {
+                _postAlbumState.value = PostAlbumState.Success
+            }
+            is Result.Failure -> {
+                if (result.throwable is EntityTooLargeException) {
+                    _postAlbumState.value = PostAlbumState.Error(t = Throwable())
+                } else {
+                    Log.e(TAG, "Result.Failure (not EntityTooLargeException)")
+                }
+            }
+            is Result.NetworkError -> {
+                Log.e(TAG, "NetworkError")
+            }
+            else -> {
+                Log.e(TAG, "Unexpected Error")
+            }
+
+        }
+
+        /*postBabyAlbumUseCase.postAlbum(babyId, photoFile, requestHashMap).catch {
             _postAlbumState.value = PostAlbumState.Error(it)
         }.collect {
             _postAlbumState.value = PostAlbumState.Success
-        }
+        }*/
     }
 
     private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
