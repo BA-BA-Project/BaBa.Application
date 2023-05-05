@@ -41,7 +41,7 @@
 
                 <ImageView
                     android:id="@+id/iv_month_baby"
-                    imageFromUrl="@{baby.albumUiModel.photo}"
+                    imageFromUrl="@{baby.representativeAlbumUiModel.photo}"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:contentDescription="@string/item_month_baby_img"
@@ -62,7 +62,7 @@
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    app:date="@{baby.albumUiModel.date}"
+                    app:date="@{baby.representativeAlbumUiModel.date}"
                     app:formatter="@{dateTimeFormatter}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

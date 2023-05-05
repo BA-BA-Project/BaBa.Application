@@ -19,7 +19,9 @@ class GatheringViewFragment @Inject constructor() : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    private val tabTitleArray = arrayOf("월별", "년도별", "전체")
+    private val fragmentArray = arrayOf(
+        ViewAllPagerAdapter.MONTH_CATEGORY, ViewAllPagerAdapter.YEAR_CATEGORY, ViewAllPagerAdapter.ALL_CATEGORY
+    )
 
     val viewModel: GatheringAlbumViewModel by viewModels()
 
@@ -36,7 +38,7 @@ class GatheringViewFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         setViewPager()
     }
@@ -44,10 +46,10 @@ class GatheringViewFragment @Inject constructor() : Fragment() {
     private fun setViewPager() {
         val viewPager = binding.vpViewAll
         val tabLayout = binding.tlGatheringView
-        viewPager.adapter = ViewAllPagerAdapter(childFragmentManager, lifecycle)
+        viewPager.adapter = ViewAllPagerAdapter(this, fragmentArray = fragmentArray)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = tabTitleArray[position]
+            tab.text = fragmentArray[position]
         }.attach()
     }
 

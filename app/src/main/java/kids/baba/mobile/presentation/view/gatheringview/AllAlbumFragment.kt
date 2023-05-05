@@ -20,7 +20,10 @@ class AllAlbumFragment @Inject constructor() : Fragment() {
     private var _binding: FragmentAllAlbumBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: GatheringAlbumViewModel by viewModels()
+    val viewModel: GatheringAlbumViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
+
     private lateinit var adapter: AllAlbumAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -32,7 +35,7 @@ class AllAlbumFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         adapter = AllAlbumAdapter()
         binding.rvAllBabies.adapter = adapter

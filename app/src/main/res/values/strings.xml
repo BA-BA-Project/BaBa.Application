@@ -170,5 +170,9 @@
     <string name="item_all_baby_text" tools:ignore="TypographyDashes">23-01-30</string>
     <string name="unit_of_count">%d장</string>
 
+    <string name="classified_with_month">월별</string>
+    <string name="classified_with_year">년도별</string>
+    <string name="all">전체</string>
+
 
 </resources>

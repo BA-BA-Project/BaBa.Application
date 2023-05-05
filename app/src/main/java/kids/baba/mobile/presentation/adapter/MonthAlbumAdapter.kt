@@ -38,7 +38,7 @@ class MonthAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdap
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<GatheringAlbumCountUiModel>() {
             override fun areItemsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
-                oldItem.albumUiModel == newItem.albumUiModel
+                oldItem.representativeAlbumUiModel == newItem.representativeAlbumUiModel
 
             override fun areContentsTheSame(oldItem: GatheringAlbumCountUiModel, newItem: GatheringAlbumCountUiModel) =
                 oldItem == newItem

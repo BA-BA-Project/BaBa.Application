@@ -20,7 +20,9 @@ class YearAlbumFragment @Inject constructor() : Fragment() {
     private var _binding: FragmentClassifiedAlbumBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-    val viewModel: GatheringAlbumViewModel by viewModels()
+    val viewModel: GatheringAlbumViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     private lateinit var adapter: YearAlbumAdapter
 
@@ -34,7 +36,7 @@ class YearAlbumFragment @Inject constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initAdapter()
 
