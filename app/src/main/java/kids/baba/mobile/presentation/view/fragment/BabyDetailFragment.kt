@@ -35,10 +35,6 @@ class BabyDetailFragment : Fragment() {
         initializeRecyclerView()
         Log.e("bundle", "${this.arguments?.getParcelable<MemberUiModel>(SELECTED_BABY_KEY)}")
         setBottomSheet()
-        binding.familyView.tvGroupTitle.text = "가족 그룹 이름"
-        binding.familyView.tvGroupDesc.text = "모든 그룹과 소식을 공유할 수 있어요"
-        binding.myGroupView.tvGroupTitle.text = "내가 속한 그룹 이름"
-        binding.myGroupView.tvGroupDesc.text = "[가족 그룹], [내가 속한 그룹]의 소식만 볼 수 있어요"
     }
 
     override fun onDestroyView() {
