@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_page_nav_graph">
+    <fragment
+        android:id="@+id/my_page_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_my_page_fragment_to_baby_detail_fragment2"
+            app:destination="@id/baby_detail_fragment" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_baby_edit_bottom_sheet"
+            app:destination="@id/baby_edit_bottom_sheet" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_group_edit_bottom_sheet"
+            app:destination="@id/group_edit_bottom_sheet" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_member_edit_profile_bottom_sheet"
+            app:destination="@id/member_edit_profile_bottom_sheet" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_edit_member_dialog"
+            app:destination="@id/edit_member_dialog" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_add_group_fragment"
+            app:destination="@id/add_group_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/baby_detail_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.BabyDetailFragment"
+        android:label="BabyDetailFragment"
+        tools:layout="@layout/fragment_babydetail">
+        <action
+            android:id="@+id/action_BabyDetailFragmentt_to_MyPageFragment"
+            app:destination="@id/my_page_fragment" />
+        <action
+            android:id="@+id/action_baby_detail_fragment_to_baby_edit_profile_bottom_sheet"
+            app:destination="@id/baby_edit_profile_bottom_sheet" />
+    </fragment>
+    <fragment
+        android:id="@+id/input_invite_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment"
+        android:label="InputInviteCodeFragment"
+        tools:layout="@layout/fragment_input_invitecode">
+        <action
+            android:id="@+id/action_input_invite_fragment_to_input_invite_result_fragment"
+            app:destination="@id/input_invite_result_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_invite_result_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.InviteResultFragment"
+        android:label="InviteResultFragment"
+        tools:layout="@layout/fragment_invite_result">
+    </fragment>
+
+    <fragment
+        android:id="@+id/invite_member_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.InviteMemberFragment"
+        android:label="InviteMemberFragment"
+        tools:layout="@layout/fragment_invite_member">
+        <action
+            android:id="@+id/action_invite_member_fragment_to_invite_member_result_fragment"
+            app:destination="@id/invite_member_result_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/invite_member_result_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.InviteMemberResultFragment"
+        android:label="InviteMemberResultFragment"
+        tools:layout="@layout/fragment_member_invite_result">
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_group_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.AddGroupFragment"
+        android:label="AddGroupFragment"
+        tools:layout="@layout/fragment_add_group">
+    </fragment>
+
+    <fragment
+        android:id="@+id/setting_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.FragmentSetting"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_setting_fragment_to_ask_fragment"
+            app:destination="@id/ask_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_service_info_fragment"
+            app:destination="@id/service_info_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_delete_member_fragment"
+            app:destination="@id/delete_member_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_creator_fragment2"
+            app:destination="@id/creator_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ask_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.FragmentAsk"
+        android:label="FragmentAsk"
+        tools:layout="@layout/fragment_ask">
+        <action
+            android:id="@+id/action_ask_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/service_info_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.FragmentServiceInfo"
+        android:label="FragmentServiceInfo"
+        tools:layout="@layout/fragment_service_info">
+        <action
+            android:id="@+id/action_service_info_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/delete_member_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.FragmentDeleteMember"
+        android:label="FragmentDeleteMember"
+        tools:layout="@layout/fragment_delete_user">
+        <action
+            android:id="@+id/action_delete_member_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/creator_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.FragmentCreator"
+        android:label="FragmentCreator"
+        tools:layout="@layout/fragment_creator">
+        <action
+            android:id="@+id/action_creator_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/baby_edit_bottom_sheet"
+        android:name="kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet"
+        android:label="BabyEditBottomSheet"
+        tools:layout="@layout/bottom_sheet_edit_baby">
+        <action
+            android:id="@+id/action_baby_edit_bottom_sheet_to_input_invite_fragment"
+            app:destination="@id/input_invite_fragment" />
+        <action
+            android:id="@+id/action_baby_edit_bottom_sheet_to_invite_member_fragment"
+            app:destination="@id/invite_member_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/baby_edit_profile_bottom_sheet"
+        android:name="kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet"
+        android:label="BabyEditProfileBottomSheet"
+        tools:layout="@layout/bottom_sheet_edit_baby_profile">
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_edit_bottom_sheet"
+        android:name="kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet"
+        android:label="GroupEditBottomSheet"
+        tools:layout="@layout/bottom_sheet_edit_group">
+    </fragment>
+
+    <fragment
+        android:id="@+id/member_edit_profile_bottom_sheet"
+        android:name="kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet"
+        android:label="MemberEditProfileBottomSheet"
+        tools:layout="@layout/bottom_sheet_edit_profile">
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_member_dialog"
+        android:name="kids.baba.mobile.presentation.view.dialog.EditMemberDialog"
+        android:label="EditMemberDialog"
+        tools:layout="@layout/dialog_fragment_edit_member">
+    </fragment>
+</navigation>
