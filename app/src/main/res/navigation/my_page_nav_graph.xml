@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/my_page_nav_graph">
+    android:id="@+id/my_page_nav_graph"
+    app:startDestination="@id/my_page_fragment">
     <fragment
         android:id="@+id/my_page_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
@@ -29,6 +30,9 @@
         <action
             android:id="@+id/action_my_page_fragment_to_add_group_fragment"
             app:destination="@id/add_group_fragment" />
+        <action
+            android:id="@+id/action_my_page_fragment_to_add_baby_fragment"
+            app:destination="@id/add_baby_fragment" />
     </fragment>
     <fragment
         android:id="@+id/baby_detail_fragment"
@@ -57,6 +61,23 @@
         android:name="kids.baba.mobile.presentation.view.fragment.InviteResultFragment"
         android:label="InviteResultFragment"
         tools:layout="@layout/fragment_invite_result">
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_baby_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.AddBabyFragment"
+        android:label="AddBabyFragment"
+        tools:layout="@layout/fragment_addbaby">
+        <action
+            android:id="@+id/action_add_baby_fragment_to_add_complete_fragment"
+            app:destination="@id/add_complete_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_complete_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.AddCompleteFragment"
+        android:label="AddCompleteFragment"
+        tools:layout="@layout/fragment_add_complete">
     </fragment>
 
     <fragment

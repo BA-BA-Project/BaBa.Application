@@ -1,31 +1,43 @@
 package kids.baba.mobile.presentation.view.activity
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
-import kids.baba.mobile.databinding.ActivityAddbabyBinding
+import kids.baba.mobile.databinding.ActivityMyPageBinding
 import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
-import kids.baba.mobile.presentation.view.fragment.*
+import kids.baba.mobile.presentation.view.fragment.AddBabyFragment
+import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment
+import kids.baba.mobile.presentation.view.fragment.FragmentSetting
+import kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment
+import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAddbabyBinding
+
+    private lateinit var navController: NavController
+    private lateinit var binding: ActivityMyPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddbabyBinding.inflate(layoutInflater)
+        binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setNavController()
         when (intent.getStringExtra("next")) {
-            "addBaby" -> showFragment(AddBabyFragment())
+            "addBaby" -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
             "invite" -> showFragment(InputInviteCodeFragment())
             "babyDetail" -> showFragment(BabyDetailFragment())
             "member" -> showFragment(InviteMemberFragment())
-            "setting" -> showFragment(FragmentSetting())
+            "setting" -> navController.navigate(R.id.action_my_page_fragment_to_setting_fragment)
         }
+    }
+
+    private fun setNavController() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
     }
 
     private fun showFragment(fragment: Fragment): Boolean {
