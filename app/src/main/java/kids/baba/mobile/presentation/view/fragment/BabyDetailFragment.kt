@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
@@ -28,11 +31,16 @@ class BabyDetailFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: BabyDetailViewModel by viewModels()
+    private lateinit var navController: NavController
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
+        setNavController()
+        binding.ivBack.setOnClickListener {
+            navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
+        }
         Log.e("bundle", "${this.arguments?.getParcelable<MemberUiModel>(SELECTED_BABY_KEY)}")
         setBottomSheet()
     }
@@ -110,5 +118,11 @@ class BabyDetailFragment : Fragment() {
     companion object {
         const val TAG = "BabyDetailFragment"
         const val SELECTED_BABY_KEY = "SELECTED_BABY_KEY"
+    }
+
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
     }
 }

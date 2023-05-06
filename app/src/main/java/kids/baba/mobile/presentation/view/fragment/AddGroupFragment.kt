@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
 import kids.baba.mobile.presentation.view.activity.MainActivity
 import kids.baba.mobile.presentation.viewmodel.AddGroupViewModel
@@ -18,6 +21,7 @@ class AddGroupFragment : Fragment() {
     private var _binding: FragmentAddGroupBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: AddGroupViewModel by viewModels()
+    private lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,6 +39,10 @@ class AddGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavController()
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            navController.navigate(R.id.action_add_group_fragment_to_my_page_fragment)
+        }
         binding.btnAdd.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -47,4 +55,9 @@ class AddGroupFragment : Fragment() {
         }
     }
 
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
+    }
 }

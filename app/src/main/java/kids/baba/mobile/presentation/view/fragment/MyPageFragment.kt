@@ -57,11 +57,12 @@ class MyPageFragment : Fragment() {
     private fun initView() {
         binding.viewmodel = viewModel
         binding.tvAddGroup.setOnClickListener {
-            val fragment = AddGroupFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            requireActivity().startActivity(
+                Intent(
+                    requireContext(),
+                    MyPageActivity::class.java
+                ).putExtra("next", "addGroup")
+            )
         }
         binding.ivSetting.setOnClickListener {
             requireActivity().startActivity(

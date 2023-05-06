@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/add_top"
+            android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
             binds:title="@{viewModel.title}" />
 
@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_complete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_top" />
+            app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
 
         <TextView
             android:id="@+id/tv_added_desc"

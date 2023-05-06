@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
@@ -18,6 +20,7 @@ class InputInviteCodeFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: InputInviteCodeViewModel by viewModels()
+    private lateinit var navController: NavController
 
 
     override fun onCreateView(
@@ -37,13 +40,18 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavController()
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            navController.navigate(R.id.action_input_invite_fragment_to_my_page_fragment)
+        }
         binding.btnAddInviteUser.setOnClickListener {
-            val fragment = InviteResultFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            navController.navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
         }
     }
 
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
+    }
 }

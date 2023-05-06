@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentSettingBinding
@@ -14,6 +16,7 @@ import kids.baba.mobile.presentation.viewmodel.MyPageSettingViewModel
 @AndroidEntryPoint
 class FragmentSetting : Fragment() {
     private var _binding: FragmentSettingBinding? = null
+    private lateinit var navController: NavController
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: MyPageSettingViewModel by viewModels()
@@ -34,24 +37,27 @@ class FragmentSetting : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavController()
         binding.tvServiceInfo.setOnClickListener {
-            showFragment(FragmentServiceInfo())
+            navController.navigate(R.id.action_setting_fragment_to_service_info_fragment)
         }
         binding.tvDeleteMember.setOnClickListener {
-            showFragment(FragmentDeleteMember())
+            navController.navigate(R.id.action_setting_fragment_to_delete_member_fragment)
         }
         binding.tvAsk.setOnClickListener {
-            showFragment(FragmentAsk())
+            navController.navigate(R.id.action_setting_fragment_to_ask_fragment)
         }
         binding.tvCreator.setOnClickListener {
-            showFragment(FragmentCreator())
+            navController.navigate(R.id.action_setting_fragment_to_creator_fragment)
+        }
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            navController.navigate(R.id.action_setting_fragment_to_my_page_fragment)
         }
     }
 
-    private fun showFragment(fragment: Fragment) {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
     }
 }

@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/add_top"
+                android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
                 bind:title="@{viewModel.addBabyTitle}" />
 
