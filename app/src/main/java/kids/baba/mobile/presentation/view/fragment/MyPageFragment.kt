@@ -53,6 +53,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun collectState() {
+        initializeRecyclerView()
         lifecycleScope.launchWhenCreated {
             viewModel.uiState.collect {
                 when (it) {
@@ -94,7 +95,6 @@ class MyPageFragment : Fragment() {
                 ).putExtra("next", "setting")
             )
         }
-        initializeRecyclerView()
     }
 
     private fun initializeRecyclerView() {
