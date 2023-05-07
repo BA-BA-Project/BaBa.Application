@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,12 +17,14 @@ import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.state.MyPageUiState
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
@@ -47,6 +50,7 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         setBottomSheet()
+        viewModel.loadGroups()
     }
 
     override fun onDestroyView() {
@@ -71,6 +75,20 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).putExtra("next", "setting")
             )
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.title.collect { binding.familyView.tvGroupTitle.text = it }
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.collect {
+                when (it) {
+                    is MyPageUiState.Idle -> {}
+                    is MyPageUiState.LoadMember -> {
+                        familyAdapter.submitList(it.data)
+                    }
+                    else -> {}
+                }
+            }
         }
         initializeRecyclerView()
     }
@@ -136,12 +154,6 @@ class MyPageFragment : Fragment() {
         binding.rvFriends.adapter = friendsAdapter
         binding.rvFriends.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
-
-        babyAdapter.submitList(getDummy())
-        familyAdapter.submitList(getDummy())
-        motherFamilyAdapter.submitList(getDummy())
-        fatherFamilyAdapter.submitList(getDummy())
-        friendsAdapter.submitList(getDummy())
     }
 
     private fun getDummy(): List<MemberUiModel> {

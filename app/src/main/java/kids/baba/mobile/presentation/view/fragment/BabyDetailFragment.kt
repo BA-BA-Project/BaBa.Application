@@ -96,8 +96,6 @@ class BabyDetailFragment : Fragment() {
         binding.myGroupView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        familyAdapter.submitList(getDummy())
-        myGroupAdapter.submitList(getDummy())
     }
 
     private fun getDummy(): List<MemberUiModel> {
