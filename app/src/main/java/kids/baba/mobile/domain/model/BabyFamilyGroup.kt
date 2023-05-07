@@ -1,7 +1,7 @@
 package kids.baba.mobile.domain.model
 
-data class Group(
+data class BabyFamilyGroup(
     val groupName: String,
-    val family: Boolean,
+    val babies: List<Baby>,
     val members: List<Member>
 )

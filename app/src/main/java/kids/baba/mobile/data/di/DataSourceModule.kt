@@ -12,6 +12,8 @@ import kids.baba.mobile.data.datasource.baby.BabyRemoteDataSource
 import kids.baba.mobile.data.datasource.baby.BabyRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSource
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSourceImpl
+import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSource
+import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -27,4 +29,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindBabyRemoteDataSource(babyRemoteDataSourceImpl: BabyRemoteDataSourceImpl): BabyRemoteDataSource
+
+    @Binds
+    abstract fun bindMyPageRemoteDataSource(myPageRemoteDataSourceImpl: MyPageRemoteDataSourceImpl): MyPageRemoteDataSource
 }
