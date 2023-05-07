@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
@@ -33,10 +34,7 @@ class MyPageFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: MyPageViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
-    private lateinit var familyAdapter: MemberAdapter
-    private lateinit var motherFamilyAdapter: MemberAdapter
-    private lateinit var fatherFamilyAdapter: MemberAdapter
-    private lateinit var friendsAdapter: MemberAdapter
+    private lateinit var myPageGroupAdapter :MyPageGroupAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,15 +75,13 @@ class MyPageFragment : Fragment() {
             )
         }
         lifecycleScope.launchWhenCreated {
-            viewModel.title.collect { binding.familyView.tvGroupTitle.text = it }
-        }
-        lifecycleScope.launchWhenCreated {
             viewModel.uiState.collect {
                 when (it) {
                     is MyPageUiState.Idle -> {}
                     is MyPageUiState.LoadMember -> {
-                        familyAdapter.submitList(it.data)
+                        myPageGroupAdapter.submitList(it.data)
                     }
+
                     else -> {}
                 }
             }
@@ -104,56 +100,13 @@ class MyPageFragment : Fragment() {
                     putExtra("baby", it)
                 })
         }
-        familyAdapter = MemberAdapter {
-            val editMemberDialog = EditMemberDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-            editMemberDialog.arguments = bundle
-            editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-        }
-
-        motherFamilyAdapter = MemberAdapter {
-            val editMemberDialog = EditMemberDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-            editMemberDialog.arguments = bundle
-            editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-        }
-
-        fatherFamilyAdapter = MemberAdapter {
-            val editMemberDialog = EditMemberDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-            editMemberDialog.arguments = bundle
-            editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-        }
-
-        friendsAdapter = MemberAdapter {
-            val editMemberDialog = EditMemberDialog()
-            val bundle = Bundle()
-            bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-            editMemberDialog.arguments = bundle
-            editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-        }
         binding.rvKids.adapter = babyAdapter
         binding.rvKids.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        myPageGroupAdapter = MyPageGroupAdapter(requireContext(), childFragmentManager)
+        binding.groupContainer.layoutManager = LinearLayoutManager(requireContext())
+        binding.groupContainer.adapter = myPageGroupAdapter
 
-        binding.familyView.rvGroupMembers.adapter = familyAdapter
-        binding.familyView.rvGroupMembers.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.motherFamilyView.rvGroupMembers.adapter = motherFamilyAdapter
-        binding.motherFamilyView.rvGroupMembers.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.fatherFamilyView.rvGroupMembers.adapter = fatherFamilyAdapter
-        binding.fatherFamilyView.rvGroupMembers.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.rvFriends.adapter = friendsAdapter
-        binding.rvFriends.layoutManager =
-            GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
     }
 
     private fun getDummy(): List<MemberUiModel> {
@@ -184,30 +137,6 @@ class MyPageFragment : Fragment() {
             val bottomSheet = MemberEditProfileBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
-        }
-        binding.familyView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-        }
-        binding.motherFamilyView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-        }
-        binding.fatherFamilyView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-        }
-        binding.ivEditFriends.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
     }
 }

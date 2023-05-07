@@ -33,7 +33,7 @@ class MyPageViewModel @Inject constructor(
         getMyPageGroupUseCase.get().catch {
 
         }.collect {
-            _uiState.value = MyPageUiState.LoadMember(it.groups[0].members)
+            _uiState.value = MyPageUiState.LoadMember(it.groups)
             title.value = it.groups[0].groupName
 
             Log.e("group","$it")
