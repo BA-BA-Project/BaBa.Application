@@ -12,10 +12,9 @@ import kids.baba.mobile.databinding.FragmentClassifiedAlbumBinding
 import kids.baba.mobile.presentation.adapter.YearAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class YearAlbumFragment @Inject constructor() : Fragment() {
+class YearAlbumFragment : Fragment() {
 
     private var _binding: FragmentClassifiedAlbumBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }

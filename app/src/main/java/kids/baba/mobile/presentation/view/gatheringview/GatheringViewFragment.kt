@@ -10,10 +10,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
 import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class GatheringViewFragment @Inject constructor() : Fragment() {
+class GatheringViewFragment : Fragment() {
 
     private var _binding: FragmentGatheringViewBinding? = null
     private val binding
