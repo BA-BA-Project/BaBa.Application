@@ -15,6 +15,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
+import kids.baba.mobile.presentation.mapper.toMember
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
@@ -34,7 +35,7 @@ class MyPageFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: MyPageViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
-    private lateinit var myPageGroupAdapter :MyPageGroupAdapter
+    private lateinit var myPageGroupAdapter: MyPageGroupAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,9 +47,28 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectState()
         initView()
         setBottomSheet()
-        viewModel.loadGroups()
+    }
+
+    private fun collectState() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.collect {
+                when (it) {
+                    is MyPageUiState.Idle -> {}
+                    is MyPageUiState.LoadMember -> {
+                        myPageGroupAdapter.submitList(it.data)
+                    }
+
+                    is MyPageUiState.LoadBabies -> {
+                        babyAdapter.submitList(it.data.map { baby -> baby.toMember() })
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -73,18 +93,6 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).putExtra("next", "setting")
             )
-        }
-        lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect {
-                when (it) {
-                    is MyPageUiState.Idle -> {}
-                    is MyPageUiState.LoadMember -> {
-                        myPageGroupAdapter.submitList(it.data)
-                    }
-
-                    else -> {}
-                }
-            }
         }
         initializeRecyclerView()
     }

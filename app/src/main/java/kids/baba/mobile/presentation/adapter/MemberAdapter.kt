@@ -22,7 +22,7 @@ class MemberAdapter(private val itemClick: (MemberUiModel) -> Unit) :
         fun bind(member: MemberUiModel) {
             binding.tvMemberName.text = member.name
             binding.tvMemberRelation.text = member.introduction
-            binding.civMemberProfile.setImageResource(member.userIconUiModel.userProfileIconUiModel.iconRes)
+                    binding.civMemberProfile.setImageResource(member.userIconUiModel.userProfileIconUiModel.iconRes)
             binding.civMemberProfile.circleBackgroundColor =
                 Color.parseColor(member.userIconUiModel.iconColor)
             binding.root.setOnClickListener {
