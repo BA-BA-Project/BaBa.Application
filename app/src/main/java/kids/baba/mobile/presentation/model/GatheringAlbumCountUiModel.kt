@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GatheringAlbumCountUiModel(
-//    val albumUiModel: AlbumUiModel,
     val representativeAlbumUiModel: RepresentativeAlbumUiModel,
     val albumCounts: Int? = null
 ) : Parcelable
