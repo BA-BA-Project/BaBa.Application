@@ -85,17 +85,17 @@ interface MyPageApi {
         @Query("groupName") groupName: String
     )
 
-    @PATCH("members/groups/{memberId}")
+    @PATCH("members/groups/{groupMemberId}")
     suspend fun patchMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("memberId") memberId: String,
-        @Body relation: GroupMemberInfo
+        @Path("groupMemberId") memberId: String,
+        @Body relationName: GroupMemberInfo
     )
 
-    @DELETE("members/groups/{memberId}")
+    @DELETE("members/groups/{groupMemberId}")
     suspend fun deleteGroupMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("memberId") memberId: String
+        @Path("groupMemberId") memberId: String
     )
 
 }

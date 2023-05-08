@@ -30,7 +30,7 @@ class BabyDetailFragment : Fragment() {
 
     private lateinit var familyAdapter: MemberAdapter
     private lateinit var myGroupAdapter: MemberAdapter
-
+    private var baby: MemberUiModel? = null
     private var _binding: FragmentBabydetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -51,11 +51,13 @@ class BabyDetailFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
         }
-        val baby = arguments?.getParcelable<MemberUiModel>("baby")!!
-        viewModel.babyName.value = baby.name
-        binding.civMyProfile.setImageResource(baby.userIconUiModel.userProfileIconUiModel.iconRes)
-        binding.civMyProfile.circleBackgroundColor = Color.parseColor(baby.userIconUiModel.iconColor)
-        viewModel.load(baby.memberId)
+        baby = arguments?.getParcelable("baby")!!
+        Log.e("baby", "$baby")
+        viewModel.babyName.value = baby!!.name
+        binding.civMyProfile.setImageResource(baby!!.userIconUiModel.userProfileIconUiModel.iconRes)
+        binding.civMyProfile.circleBackgroundColor =
+            Color.parseColor(baby!!.userIconUiModel.iconColor)
+        viewModel.load(baby!!.memberId)
     }
 
     private fun collectState() {
@@ -67,6 +69,10 @@ class BabyDetailFragment : Fragment() {
                         Log.e("detail", "${it.data}")
                         viewModel.familyGroupTitle.value = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members)
+                        binding.btnDeleteBaby.setOnClickListener {
+                            viewModel.delete(baby!!.memberId)
+                            navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
+                        }
                     }
 
                     else -> {}

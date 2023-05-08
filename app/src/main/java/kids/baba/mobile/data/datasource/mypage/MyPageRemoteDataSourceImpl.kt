@@ -14,7 +14,6 @@ import kids.baba.mobile.domain.model.Profile
 import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 import javax.inject.Inject
 
 class MyPageRemoteDataSourceImpl @Inject constructor(
@@ -78,7 +77,7 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun patchMember(memberId: String, relation: GroupMemberInfo) {
-        api.patchMember(memberId = memberId, relation = relation)
+        api.patchMember(memberId = memberId, relationName = relation)
     }
 
     override suspend fun deleteGroupMember(memberId: String) {

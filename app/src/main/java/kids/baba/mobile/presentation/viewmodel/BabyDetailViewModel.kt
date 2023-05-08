@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.domain.usecase.DeleteOneBabyUseCase
 import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BabyDetailViewModel @Inject constructor(
-    private val getBabyProfileUseCase: GetBabyProfileUseCase
+    private val getBabyProfileUseCase: GetBabyProfileUseCase,
+    private val deleteOneBabyUseCase: DeleteOneBabyUseCase
 ) : ViewModel() {
     val babyName = MutableStateFlow("손제인")
     val babyBirthday = MutableStateFlow("2023.4.10")
@@ -32,5 +34,9 @@ class BabyDetailViewModel @Inject constructor(
         }.collect {
             _uiState.value = BabyDetailUiState.Success(it)
         }
+    }
+
+    fun delete(babyId: String) = viewModelScope.launch {
+        deleteOneBabyUseCase.delete(babyId)
     }
 }
