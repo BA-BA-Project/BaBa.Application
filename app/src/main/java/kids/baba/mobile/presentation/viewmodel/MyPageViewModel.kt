@@ -24,17 +24,11 @@ class MyPageViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<MyPageUiState>(MyPageUiState.Idle)
     val uiState = _uiState
 
-    init {
-        loadGroups()
-        loadBabies()
-    }
-
     fun loadGroups() = viewModelScope.launch {
         getMyPageGroupUseCase.get().catch {
 
         }.collect {
             _uiState.value = MyPageUiState.LoadMember(it.groups)
-            Log.e("group", "$it")
         }
     }
 

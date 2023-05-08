@@ -13,6 +13,7 @@ import kids.baba.mobile.databinding.ComposableGroupViewBinding
 import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.domain.model.Member
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
+import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 
 class MyPageGroupAdapter(
     private val context: Context,
@@ -25,7 +26,11 @@ class MyPageGroupAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) {
             val adapter = MemberAdapter() {
-
+                val editMemberDialog = EditMemberDialog()
+                val bundle = Bundle()
+                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
+                editMemberDialog.arguments = bundle
+                editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
             }
             binding.title = group.groupName
             binding.description = group.groupName

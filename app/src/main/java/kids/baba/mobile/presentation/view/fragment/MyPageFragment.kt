@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,8 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadGroups()
+        viewModel.loadBabies()
         collectState()
         initView()
         setBottomSheet()
@@ -115,21 +118,6 @@ class MyPageFragment : Fragment() {
         binding.groupContainer.layoutManager = LinearLayoutManager(requireContext())
         binding.groupContainer.adapter = myPageGroupAdapter
 
-    }
-
-    private fun getDummy(): List<MemberUiModel> {
-        val list = mutableListOf<MemberUiModel>()
-        repeat(5) {
-            list.add(
-                MemberUiModel(
-                    "이윤호",
-                    "형",
-                    userIconUiModel = UserIconUiModel(UserProfileIconUiModel.PROFILE_BABY_1, "red"),
-                    introduction = ""
-                )
-            )
-        }
-        return list
     }
 
     private fun setBottomSheet() {
