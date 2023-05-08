@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_BabyDetailFragmentt_to_MyPageFragment"
             app:destination="@id/my_page_fragment" />
+        <argument
+            android:name="baby"
+            app:argType="kids.baba.mobile.presentation.model.MemberUiModel" />
     </fragment>
     <fragment
         android:id="@+id/input_invite_fragment"

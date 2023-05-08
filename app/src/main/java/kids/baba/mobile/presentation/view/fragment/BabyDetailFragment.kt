@@ -14,12 +14,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
@@ -41,8 +44,26 @@ class BabyDetailFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
         }
-        Log.e("bundle", "${this.arguments?.getParcelable<MemberUiModel>(SELECTED_BABY_KEY)}")
+        val baby = arguments?.getParcelable<MemberUiModel>("baby")
+        viewModel.load(baby!!.memberId)
+        collectState()
+        Log.e("bundle", "$baby")
         setBottomSheet()
+    }
+
+    private fun collectState() {
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                when (it) {
+                    is BabyDetailUiState.Idle -> {}
+                    is BabyDetailUiState.Success -> {
+                        Log.e("detail", "${it.data}")
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -96,21 +117,6 @@ class BabyDetailFragment : Fragment() {
         binding.myGroupView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-    }
-
-    private fun getDummy(): List<MemberUiModel> {
-        val list = mutableListOf<MemberUiModel>()
-        repeat(3) {
-            list.add(
-                MemberUiModel(
-                    "이윤호",
-                    "형",
-                    userIconUiModel = UserIconUiModel(UserProfileIconUiModel.PROFILE_BABY_1, "red"),
-                    introduction = ""
-                )
-            )
-        }
-        return list
     }
 
     companion object {

@@ -1,12 +1,16 @@
 package kids.baba.mobile.presentation.view.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMyPageBinding
+import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment
+import kids.baba.mobile.presentation.view.fragment.MyPageFragmentDirections
 
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
@@ -21,7 +25,12 @@ class MyPageActivity : AppCompatActivity() {
         when (intent.getStringExtra("next")) {
             "addBaby" -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
             "invite" -> navController.navigate(R.id.action_my_page_fragment_to_input_invite_fragment)
-            "babyDetail" -> navController.navigate(R.id.action_my_page_fragment_to_baby_detail_fragment)
+            "babyDetail" -> {
+                val key = intent.getParcelableExtra<MemberUiModel>("baby")
+                Log.e("baby","${intent.getParcelableExtra<MemberUiModel>("baby")}")
+                val action = MyPageFragmentDirections.actionMyPageFragmentToBabyDetailFragment(key!!)
+                navController.navigate(action)
+            }
             "member" -> navController.navigate(R.id.action_my_page_fragment_to_invite_member_fragment)
             "setting" -> navController.navigate(R.id.action_my_page_fragment_to_setting_fragment)
             "addGroup" -> navController.navigate(R.id.action_my_page_fragment_to_add_group_fragment)
