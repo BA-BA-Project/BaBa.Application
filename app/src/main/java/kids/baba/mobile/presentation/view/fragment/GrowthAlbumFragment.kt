@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -221,7 +220,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
-        binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
         @StringRes
         val toDoMessage = if (album.contentId != null) {
             R.string.add_like_and_comment
@@ -250,16 +248,12 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun setViewPagerItem(growthAlbumList: List<AlbumUiModel>) {
-        albumAdapter.submitList(growthAlbumList)
-
-
-        albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.wcvAlbumCalendar.notifyCalendarChanged()
-                binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-                albumAdapter.unregisterAdapterDataObserver(this)
-            }
-        })
+        albumAdapter.submitListWithCallback(
+            growthAlbumList
+        ) {
+            binding.wcvAlbumCalendar.notifyCalendarChanged()
+            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+        }
     }
 
 

@@ -24,6 +24,12 @@ class AlbumAdapter(
         holder.bind(getItem(position))
     }
 
+    fun submitListWithCallback(list: List<AlbumUiModel>, submitCallback: () -> Unit){
+        super.submitList(list) {
+            submitCallback()
+        }
+    }
+
     class AlbumViewHolder(
         private val binding: ItemAlbumBinding,
         likeClick: (AlbumUiModel) -> Unit,
