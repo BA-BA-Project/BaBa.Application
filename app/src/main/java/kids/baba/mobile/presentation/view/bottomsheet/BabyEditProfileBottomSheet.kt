@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyProfileBinding
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel
 
 @AndroidEntryPoint
@@ -20,6 +22,13 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val baby = arguments?.getParcelable<MemberUiModel>(SELECTED_BABY_KEY)
+        binding.nameView.tvEditButton.setOnClickListener {
+            val name = binding.nameView.tvEdit.text.toString()
+            viewModel.edit(babyId = baby!!.memberId, name = name)
+            dismiss()
+        }
+        Log.e("baby", "$baby")
     }
 
     override fun onCreateView(
