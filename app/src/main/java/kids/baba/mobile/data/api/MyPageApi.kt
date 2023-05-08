@@ -29,70 +29,70 @@ interface MyPageApi {
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
     ): Response<GroupResponse>
 
-    @GET("/members/baby-page/{babyId}")
+    @GET("members/baby-page/{babyId}")
     suspend fun loadBabyProfile(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
     ): Response<BabyProfileResponse>
 
-    @POST("/members/groups")
+    @POST("members/groups")
     suspend fun addGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body myPageGroup: MyPageGroup
     )
 
-    @PUT("/members")
+    @PUT("members")
     suspend fun editProfile(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body profile: Profile
     )
 
-    @PATCH("/baby/{babyId}")
+    @PATCH("baby/{babyId}")
     suspend fun editBabyName(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String,
         @Body babyEdit: BabyEdit
     )
 
-    @POST("/baby")
+    @POST("baby")
     suspend fun addMyBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body baby: MyBaby
     )
 
-    @POST("/baby/code")
+    @POST("baby/code")
     suspend fun addBabyWithInviteCode(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body inviteCode: InviteCode
     )
 
-    @DELETE("/baby/{babyId}")
+    @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
     )
 
-    @PATCH("/members/groups")
+    @PATCH("members/groups")
     suspend fun patchGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String,
         @Body group: GroupInfo
     )
 
-    @DELETE("/members/groups")
+    @DELETE("members/groups")
     suspend fun deleteGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String
     )
 
-    @PATCH("/members/groups/{memberId}")
+    @PATCH("members/groups/{memberId}")
     suspend fun patchMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("memberId") memberId: String,
         @Body relation: GroupMemberInfo
     )
 
-    @DELETE("/members/groups/{memberId}")
+    @DELETE("members/groups/{memberId}")
     suspend fun deleteGroupMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("memberId") memberId: String
