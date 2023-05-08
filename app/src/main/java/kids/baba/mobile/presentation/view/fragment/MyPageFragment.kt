@@ -16,6 +16,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMember
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
@@ -57,7 +58,7 @@ class MyPageFragment : Fragment() {
 
     private fun collectState() {
         initializeRecyclerView()
-        lifecycleScope.launchWhenCreated {
+        repeatOnStarted {
             viewModel.uiState.collect {
                 when (it) {
                     is MyPageUiState.Idle -> {}

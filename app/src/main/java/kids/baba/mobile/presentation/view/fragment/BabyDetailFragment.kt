@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,14 +42,20 @@ class BabyDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
         setNavController()
+        initView()
+        collectState()
+        setBottomSheet()
+    }
+
+    private fun initView() {
         binding.ivBack.setOnClickListener {
             navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
         }
-        val baby = arguments?.getParcelable<MemberUiModel>("baby")
-        viewModel.load(baby!!.memberId)
-        collectState()
-        Log.e("bundle", "$baby")
-        setBottomSheet()
+        val baby = arguments?.getParcelable<MemberUiModel>("baby")!!
+        viewModel.babyName.value = baby.name
+        binding.civMyProfile.setImageResource(baby.userIconUiModel.userProfileIconUiModel.iconRes)
+        binding.civMyProfile.circleBackgroundColor = Color.parseColor(baby.userIconUiModel.iconColor)
+        viewModel.load(baby.memberId)
     }
 
     private fun collectState() {
@@ -58,6 +65,8 @@ class BabyDetailFragment : Fragment() {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
                         Log.e("detail", "${it.data}")
+                        viewModel.familyGroupTitle.value = it.data.familyGroup.groupName
+                        familyAdapter.submitList(it.data.familyGroup.members)
                     }
 
                     else -> {}

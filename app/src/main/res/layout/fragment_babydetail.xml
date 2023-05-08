@@ -26,7 +26,7 @@
             app:layout_constraintStart_toEndOf="@+id/tv_my_name"
             app:layout_constraintTop_toTopOf="@+id/tv_my_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_my_profile"
             android:layout_width="65dp"
             android:layout_height="65dp"
