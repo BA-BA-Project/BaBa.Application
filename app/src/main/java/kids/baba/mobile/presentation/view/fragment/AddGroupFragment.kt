@@ -44,6 +44,8 @@ class AddGroupFragment : Fragment() {
             navController.navigate(R.id.action_add_group_fragment_to_my_page_fragment)
         }
         binding.btnAdd.setOnClickListener {
+            val name = binding.nameView.etInput.text.toString()
+            viewModel.addGroup(name,"FFAEBA")
             requireActivity().startActivity(
                 Intent(
                     requireContext(),

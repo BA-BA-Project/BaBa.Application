@@ -142,26 +142,27 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="900dp">
+                    android:layout_height="wrap_content">
 
                     <View
                         android:id="@+id/relation_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-
-                        android:background="@drawable/bg_my_page_card" />
+                        android:layout_marginEnd="20dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/group_container"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="@id/relation_container"
                         app:layout_constraintBottom_toBottomOf="@id/relation_container"
                         app:layout_constraintEnd_toEndOf="@+id/relation_container"
                         app:layout_constraintStart_toStartOf="@+id/relation_container"
-                        bind:listitem="@layout/composable_group_view" />
+                        bind:listitem="@layout/composable_group_view"
+                        android:background="@drawable/bg_my_page_card"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMypageBinding
+import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
@@ -63,7 +64,7 @@ class MyPageFragment : Fragment() {
                 when (it) {
                     is MyPageUiState.Idle -> {}
                     is MyPageUiState.LoadMember -> {
-                        myPageGroupAdapter.submitList(it.data)
+                        myPageGroupAdapter.submitList(it.data + listOf(Group("test0", false, null),Group("test1", false, null),Group("test2", false, null)))
                     }
 
                     is MyPageUiState.LoadBabies -> {
