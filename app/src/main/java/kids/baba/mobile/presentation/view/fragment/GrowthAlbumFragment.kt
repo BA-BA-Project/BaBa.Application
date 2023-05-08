@@ -85,11 +85,13 @@ class GrowthAlbumFragment : Fragment() {
     }
 
     private fun showAlbumDetailDialog() {
-        val albumDetailDialog = AlbumDetailDialog()
-        val bundle = Bundle()
-        bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
-        albumDetailDialog.arguments = bundle
-        albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+        val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
+        if(nowAlbum.contentId != null){
+            val albumDetailDialog = AlbumDetailDialog()
+            val bundle = Bundle()
+            bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
+            albumDetailDialog.arguments = bundle
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)        }
     }
 
     private fun setBinding() {
