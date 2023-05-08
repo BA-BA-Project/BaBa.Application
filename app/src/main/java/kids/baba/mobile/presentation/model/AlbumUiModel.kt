@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 @Parcelize
-data class AlbumUiModel (
+data class AlbumUiModel(
     val contentId: Int? = null,
     val name: String = "",
     val relation: String = "",
@@ -15,7 +15,9 @@ data class AlbumUiModel (
     val photo: String = "",
     val cardStyle: String = "",
     val isMyBaby: Boolean = false
-) : Parcelable
+) : Parcelable {
+    fun toRepresentativeAlbum() = RepresentativeAlbumUiModel(photo, date)
+}
 
 
 //val contentId: Int? = null,

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,7 +66,8 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
         // 현재 year 에서부터 1년 씩 줄이면서 앨범 필터링
         while (thisYear >= LAUNCHING_YEAR) {
-            val tempRecentYearAlbum = allAlbumListState.value.lastOrNull { it.date.year == thisYear }?.toPresentation()
+            val tempRecentYearAlbum =
+                allAlbumListState.value.lastOrNull { it.date.year == thisYear }?.toRepresentativeAlbum()
 
             val yearAlbumCount = allAlbumListState.value.count { it.date.year == thisYear }
 
@@ -79,7 +79,7 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
             while (thisMonth >= 1) {
                 val tempRecentMonthAlbum = allAlbumListState.value.lastOrNull {
                     it.date.year == thisYear && it.date.monthValue == thisMonth
-                }?.toPresentation()
+                }?.toRepresentativeAlbum()
 
                 val monthAlbumCount =
                     allAlbumListState.value.count { it.date.year == thisYear && it.date.monthValue == thisMonth }
