@@ -155,9 +155,13 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/group_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        bind:listitem="@layout/composable_group_view"/>
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintTop_toTopOf="@id/relation_container"
+                        app:layout_constraintBottom_toBottomOf="@id/relation_container"
+                        app:layout_constraintEnd_toEndOf="@+id/relation_container"
+                        app:layout_constraintStart_toStartOf="@+id/relation_container"
+                        bind:listitem="@layout/composable_group_view" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

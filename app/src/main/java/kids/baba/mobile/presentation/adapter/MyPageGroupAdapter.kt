@@ -33,7 +33,7 @@ class MyPageGroupAdapter(
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
             }
             binding.title = group.groupName
-            binding.description = group.groupName
+            binding.description = "[${group.groupName}]그룹과 소식을 공유할 수 있어요"
             binding.rvGroupMembers.adapter = adapter
             binding.rvGroupMembers.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
