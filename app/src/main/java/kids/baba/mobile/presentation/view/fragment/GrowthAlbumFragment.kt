@@ -42,8 +42,6 @@ import java.util.Calendar
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
 
-    //TODO 다이얼로그를 매번 재생성 해야 하는가?
-    // 달력에서 중앙에 위치한 날짜의 달
     private var _binding: FragmentGrowthalbumBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -59,10 +57,12 @@ class GrowthAlbumFragment : Fragment() {
     private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
 
     private fun connect() {
-        FilmActivity.startActivity(
-            requireContext(),
-            viewModel.growthAlbumState.value.selectedDate.toString()
-        )
+        FilmActivity.startActivity(requireContext(), viewModel.growthAlbumState.value.selectedDate.toString())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadBaby()
     }
 
     private fun noPermission() {
