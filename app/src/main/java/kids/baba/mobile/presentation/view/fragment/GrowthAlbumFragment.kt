@@ -62,7 +62,7 @@ class GrowthAlbumFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadBaby()
+        viewModel.initBabyAndAlbum(selectedDate)
     }
 
     private fun noPermission() {
