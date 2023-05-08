@@ -33,6 +33,7 @@ import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SEL
 import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
@@ -207,47 +208,45 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun collectUiState() {
         repeatOnStarted {
-            viewModel.growthAlbumState.collect { state ->
+            viewModel.growthAlbumState.collectLatest { state ->
                 val growthAlbumList = state.growthAlbumList
                 val selectedDate = state.selectedDate
                 val selectedAlbum = state.selectedAlbum
                 val selectedBaby = state.selectedBaby
 
+                setViewPagerItem(growthAlbumList)
                 setAlbum(selectedBaby, selectedAlbum)
                 setSelectedDate(selectedDate)
-                setViewPagerItem(growthAlbumList)
             }
         }
     }
 
     private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
-        binding.vpBabyPhoto.doOnPreDraw {
-            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-            @StringRes
-            val toDoMessage = if (album.contentId != null) {
-                R.string.add_like_and_comment
-            } else {
-                if (album.isMyBaby) {
-                    R.string.record_album
-                } else {
-                    R.string.no_albums_recorded
-                }
-            }
-            binding.tvDoSome.setText(toDoMessage)
 
-            if (album.date == LocalDate.now()) {
-                binding.tvAlbumDate.setText(R.string.today)
+        @StringRes
+        val toDoMessage = if (album.contentId != null) {
+            R.string.add_like_and_comment
+        } else {
+            if (album.isMyBaby) {
+                R.string.record_album
             } else {
-                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+                R.string.no_albums_recorded
             }
+        }
+        binding.tvDoSome.setText(toDoMessage)
 
-            binding.tvAlbumTitle.text = if (album.contentId != null) {
-                album.title
-            } else if (album.date == LocalDate.now()) {
-                String.format(getString(R.string.today_album_title), baby.name)
-            } else {
-                String.format(getString(R.string.past_album_title), baby.name)
-            }
+        if (album.date == LocalDate.now()) {
+            binding.tvAlbumDate.setText(R.string.today)
+        } else {
+            binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+        }
+
+        binding.tvAlbumTitle.text = if (album.contentId != null) {
+            album.title
+        } else if (album.date == LocalDate.now()) {
+            String.format(getString(R.string.today_album_title), baby.name)
+        } else {
+            String.format(getString(R.string.past_album_title), baby.name)
         }
     }
 
@@ -258,6 +257,7 @@ class GrowthAlbumFragment : Fragment() {
         albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 binding.wcvAlbumCalendar.notifyCalendarChanged()
+                binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 albumAdapter.unregisterAdapterDataObserver(this)
             }
         })
