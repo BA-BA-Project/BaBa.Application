@@ -35,6 +35,7 @@ interface MyPageApi {
         @Path("babyId") babyId: String
     ): Response<BabyProfileResponse>
 
+    //TODO
     @POST("members/groups")
     suspend fun addGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
@@ -60,18 +61,21 @@ interface MyPageApi {
         @Body baby: MyBaby
     )
 
+    //TODO
     @POST("baby/code")
     suspend fun addBabyWithInviteCode(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body inviteCode: InviteCode
     )
 
+    //TODO
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
     )
 
+    //TODO
     @PATCH("members/groups")
     suspend fun patchGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
@@ -79,6 +83,7 @@ interface MyPageApi {
         @Body group: GroupInfo
     )
 
+    //TODO
     @DELETE("members/groups")
     suspend fun deleteGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
@@ -92,6 +97,7 @@ interface MyPageApi {
         @Body relationName: GroupMemberInfo
     )
 
+    //TODO FIX
     @DELETE("members/groups/{groupMemberId}")
     suspend fun deleteGroupMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),

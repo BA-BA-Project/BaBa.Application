@@ -19,6 +19,17 @@ class MemberEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.introView.tvInputButton.setOnClickListener {
+            val name = binding.nameView.tvEdit.text.toString()
+            val intro = binding.introView.etInput.text.toString()
+            viewModel.edit(
+                name = name,
+                introduction = intro,
+                iconName = "PROFILE_M_3",
+                iconColor = "#FFE3C8"
+            )
+            dismiss()
+        }
     }
 
     override fun onCreateView(
