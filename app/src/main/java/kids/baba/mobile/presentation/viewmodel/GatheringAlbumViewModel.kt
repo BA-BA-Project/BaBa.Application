@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
+import kids.baba.mobile.presentation.model.RepresentativeAlbumUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -119,6 +120,13 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
                     "2023-2 : ${monthAlbumListState.value[3]}-------------\n\n" +
                     "2023-1 : ${monthAlbumListState.value[4]}-------------\n\n"
         )
+
+    }
+
+    fun showClassifiedDetailAlbums(baby: GatheringAlbumCountUiModel) = viewModelScope.launch {
+        Log.e(TAG, "representativeAlbum: $baby")
+
+
 
     }
 
