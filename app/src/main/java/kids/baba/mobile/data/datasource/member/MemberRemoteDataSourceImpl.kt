@@ -1,6 +1,7 @@
 package kids.baba.mobile.data.datasource.member
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import kids.baba.mobile.data.api.MemberApi
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode

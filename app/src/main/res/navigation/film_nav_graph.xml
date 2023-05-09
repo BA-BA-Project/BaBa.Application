@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/film_nav_graph"
+    app:startDestination="@id/cameraFragment">
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="kids.baba.mobile.presentation.view.film.CameraFragment"
+        android:label="CameraFragment"
+        tools:layout="@layout/fragment_camera">
+        <action
+            android:id="@+id/action_cameraFragment_to_writeTitleFragment"
+            app:destination="@+id/writeTitleFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_cropFragment"
+            app:destination="@id/cropFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cropFragment"
+        android:name="kids.baba.mobile.presentation.view.film.CropFragment"
+        android:label="CropFragment"
+        tools:layout="@layout/fragment_crop">
+        <action
+            android:id="@+id/action_cropFragment_to_writeTitleFragment"
+            app:destination="@+id/writeTitleFragment" />
+        <argument
+            android:name="mediaData"
+            app:argType="kids.baba.mobile.domain.model.MediaData" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/writeTitleFragment"
+        android:name="kids.baba.mobile.presentation.view.film.WriteTitleFragment"
+        android:label="WriteTitleFragment"
+        tools:layout="@layout/fragment_write_title">
+        <action
+            android:id="@+id/action_writeTitleFragment_to_selectCardFragment"
+            app:destination="@id/selectCardFragment" />
+        <argument
+            android:name="mediaData"
+            app:argType="kids.baba.mobile.domain.model.MediaData" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectCardFragment"
+        android:name="kids.baba.mobile.presentation.view.film.SelectCardFragment"
+        android:label="SelectCardFragment"
+        tools:layout="@layout/fragment_select_card">
+        <argument
+            android:name="mediaData"
+            app:argType="kids.baba.mobile.domain.model.MediaData" />
+    </fragment>
+
+</navigation>

@@ -7,7 +7,7 @@ import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.core.utils.EncryptedPrefs
 
 @HiltAndroidApp
-class MainApplication: Application() {
+class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         EncryptedPrefs.initSharedPreferences(applicationContext)

@@ -6,19 +6,19 @@
     app:startDestination="@id/growth_album_fragment">
     <fragment
         android:id="@+id/growth_album_fragment"
-        android:name="kids.baba.mobile.presentation.view.GrowthAlbumFragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
         android:label="fragment_GrowthAlbumFragment"
         tools:layout="@layout/fragment_growthalbum">
     </fragment>
     <fragment
         android:id="@+id/my_page_fragment"
-        android:name="kids.baba.mobile.presentation.view.MyPageFragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
         android:label="fragment_GrowthAlbumFragment"
         tools:layout="@layout/fragment_mypage">
     </fragment>
     <fragment
         android:id="@+id/collapse_fragment"
-        android:name="kids.baba.mobile.presentation.view.CollapseFragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
         android:label="fragment_GrowthAlbumFragment"
         tools:layout="@layout/fragment_collapse">
     </fragment>
