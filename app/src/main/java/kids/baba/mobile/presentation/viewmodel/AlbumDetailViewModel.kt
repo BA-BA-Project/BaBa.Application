@@ -20,7 +20,7 @@ import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
+import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

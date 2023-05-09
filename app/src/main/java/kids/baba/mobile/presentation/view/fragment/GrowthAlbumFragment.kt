@@ -29,12 +29,10 @@ import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.HorizontalMarginItemDecoration
 import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.film.FilmActivity
-import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment.Companion.SELECTED_BABY_KEY
-import kids.baba.mobile.presentation.view.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
-import kids.baba.mobile.presentation.view.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import java.time.LocalDate
 import java.time.YearMonth
