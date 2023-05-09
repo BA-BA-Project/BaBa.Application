@@ -52,6 +52,7 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadGroups()
         viewModel.loadBabies()
+        viewModel.getMyInfo()
         collectState()
         initView()
         setBottomSheet()
