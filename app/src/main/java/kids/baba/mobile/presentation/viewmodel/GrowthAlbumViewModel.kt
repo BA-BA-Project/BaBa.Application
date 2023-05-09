@@ -29,9 +29,6 @@ class GrowthAlbumViewModel @Inject constructor(
     private val _growthAlbumState = MutableStateFlow(GrowthAlbumState())
     val growthAlbumState = _growthAlbumState.asStateFlow()
 
-    init {
-        loadBaby()
-    }
 
     private fun loadAlbum(date: LocalDate) = viewModelScope.launch {
         val nowYear = date.year
@@ -110,7 +107,7 @@ class GrowthAlbumViewModel @Inject constructor(
     }
 
 
-    private fun loadBaby() = viewModelScope.launch {
+    fun initBabyAndAlbum(date: LocalDate) = viewModelScope.launch {
         val babyId = runCatching { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }.getOrNull()
         getBabiesUseCase.getBabies().collect { babyResponse ->
             val selectedBaby =
@@ -127,7 +124,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
             }
         }
-        loadAlbum(LocalDate.now())
+        loadAlbum(date)
     }
 
     fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
