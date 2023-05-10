@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,12 +10,19 @@ import kids.baba.mobile.databinding.ItemYearAlbumBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import java.time.format.DateTimeFormatter
 
-class YearAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
+class YearAlbumAdapter(
+    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+) : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
+
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
         val binding = ItemYearAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy" + "년")
-        return YearViewHolder(binding)
+        return YearViewHolder(binding, albumClick)
     }
 
     override fun onBindViewHolder(holder: YearViewHolder, position: Int) {
@@ -26,10 +34,23 @@ class YearAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapte
         return position.toLong()
     }
 
-    class YearViewHolder(private val binding: ItemYearAlbumBinding) : RecyclerView.ViewHolder(
+    class YearViewHolder(
+        private val binding: ItemYearAlbumBinding,
+        albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+    ) : RecyclerView.ViewHolder(
         binding.root
     ) {
+        private lateinit var baby: GatheringAlbumCountUiModel
+
+        init {
+            binding.ivMonthBaby.setOnClickListener{
+                Log.e("YearAlbumAdapter", "itemId: $itemId")
+                albumClick(baby, itemId.toInt())
+            }
+        }
+
         fun bind(baby: GatheringAlbumCountUiModel) {
+            this.baby = baby
             binding.baby = baby
         }
     }

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel" />
+            type="kids.baba.mobile.presentation.viewmodel.ClassifiedAlbumDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

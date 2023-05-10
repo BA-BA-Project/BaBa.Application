@@ -12,20 +12,20 @@ import java.time.format.DateTimeFormatter
 
 
 class MonthAlbumAdapter(
-    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit,
-) : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.YearViewHolder>(diffUtil) {
+    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+) : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.MonthViewHolder>(diffUtil) {
 
     init {
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
         val binding = ItemMonthAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM" + "월")
-        return YearViewHolder(binding, albumClick)
+        return MonthViewHolder(binding, albumClick)
     }
 
-    override fun onBindViewHolder(holder: YearViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
         val content = getItem(position)
         holder.bind(content)
     }
@@ -34,7 +34,7 @@ class MonthAlbumAdapter(
         return position.toLong()
     }
 
-    class YearViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (GatheringAlbumCountUiModel, Int) -> Unit) :
+    class MonthViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (GatheringAlbumCountUiModel, Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         private lateinit var baby: GatheringAlbumCountUiModel
 

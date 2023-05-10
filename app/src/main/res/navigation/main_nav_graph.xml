@@ -31,5 +31,8 @@
         <argument
             android:name="itemId"
             app:argType="integer" />
+        <argument
+            android:name="classified_album_list"
+            app:argType="kids.baba.mobile.presentation.model.ClassifiedAlbumList" />
     </fragment>
 </navigation>

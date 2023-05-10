@@ -62,13 +62,20 @@ class GatheringViewFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is GatheringEvent.Initialized -> Log.d("GatheringViewFragment", "GatheringEvent is Uninitialized")
-                    is GatheringEvent.GoToClassified -> {
+                    is GatheringEvent.GoToClassifiedByMonth -> {
+                        Log.d("GatheringViewFrag", "Classified By Month")
                         val action =
                             GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
-                                event.itemId
+                                event.itemId, event.classifiedAlbumList
                             )
                         findNavController().navigate(action)
-
+                    }
+                    is GatheringEvent.GoToClassifiedByYear -> {
+                        Log.d("GatheringViewFrag", "Classified By Year")
+                        val action = GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
+                            event.itemId, event.classifiedAlbumList
+                        )
+                        findNavController().navigate(action)
                     }
                 }
             }

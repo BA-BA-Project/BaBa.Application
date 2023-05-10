@@ -14,20 +14,14 @@ import kids.baba.mobile.presentation.adapter.AllAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.ClassifiedAlbumDetailViewModel
 import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ClassifiedAlbumDetailFragment : Fragment() {
     private var _binding: FragmentClassifiedAlbumDetailBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
-
-    // requireParentFragment?
-    val viewModel: GatheringAlbumViewModel by viewModels(
-        ownerProducer = {requireParentFragment()}
-    )
-
-    val viewModel2: ClassifiedAlbumDetailViewModel by viewModels()
-
+    val viewModel: ClassifiedAlbumDetailViewModel by viewModels()
 
     private lateinit var adapter: AllAlbumAdapter
 
@@ -48,15 +42,11 @@ class ClassifiedAlbumDetailFragment : Fragment() {
         binding.rvClassifiedAllBabies.layoutManager = manager
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.monthAlbumListState.collect {
-                Log.e("ClassifiedAlbumDetailFrag", "itemId: ${viewModel2.itemId}")
-                adapter.submitList(it[viewModel2.itemId])
+            viewModel.albumList.collect{
+                adapter.submitList(it.classifiedAlbumList)
             }
         }
-
-
     }
-
 
     override fun onDestroyView() {
         _binding = null

@@ -47,7 +47,11 @@ class YearAlbumFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = YearAlbumAdapter()
+        adapter = YearAlbumAdapter(
+            albumClick = {baby, itemId ->
+                viewModel.showClassifiedDetailAlbumsbyYear(baby, itemId)
+            }
+        )
         binding.rvMonthBabies.adapter = adapter
         val manager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         binding.rvMonthBabies.layoutManager = manager

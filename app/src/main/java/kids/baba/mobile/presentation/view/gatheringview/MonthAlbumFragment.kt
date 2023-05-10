@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentClassifiedAlbumBinding
 import kids.baba.mobile.presentation.adapter.MonthAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
@@ -51,7 +49,7 @@ class MonthAlbumFragment : Fragment() {
     private fun initAdapter() {
         adapter = MonthAlbumAdapter(
             albumClick = {baby, itemId ->
-                viewModel.showClassifiedDetailAlbums(baby, itemId)
+                viewModel.showClassifiedDetailAlbumsbyMonth(baby, itemId)
 
             }
         )
