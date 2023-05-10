@@ -51,7 +51,7 @@ class MyPageFragment : Fragment() {
 
     private fun collectState() {
         initializeRecyclerView()
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.uiState.collect {
                 when (it) {
                     is MyPageUiState.Idle -> {}

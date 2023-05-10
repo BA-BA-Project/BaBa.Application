@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +27,17 @@ class MyPageActivity : AppCompatActivity() {
             "addBaby" -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
             "invite" -> navController.navigate(R.id.action_my_page_fragment_to_input_invite_fragment)
             "babyDetail" -> {
-                val key = intent.getParcelableExtra<MemberUiModel>("baby")
-                Log.e("baby","${intent.getParcelableExtra<MemberUiModel>("baby")}")
-                val action = MyPageFragmentDirections.actionMyPageFragmentToBabyDetailFragment(key!!)
-                navController.navigate(action)
+                val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra("baby", MemberUiModel::class.java)
+                } else {
+                    intent.getParcelableExtra("baby")
+                }
+                key?.let {
+                    val action = MyPageFragmentDirections.actionMyPageFragmentToBabyDetailFragment(it)
+                    navController.navigate(action)
+                }
             }
+
             "member" -> navController.navigate(R.id.action_my_page_fragment_to_invite_member_fragment)
             "setting" -> navController.navigate(R.id.action_my_page_fragment_to_setting_fragment)
             "addGroup" -> navController.navigate(R.id.action_my_page_fragment_to_add_group_fragment)

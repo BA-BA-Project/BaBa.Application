@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,14 +17,12 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.mapper.toMemberUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
@@ -51,13 +50,19 @@ class BabyDetailFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
         }
-        baby = arguments?.getParcelable("baby")!!
+        baby = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("baby", MemberUiModel::class.java)
+        } else {
+            arguments?.getParcelable("baby")
+        }
         Log.e("baby", "$baby")
-        viewModel.babyName.value = baby!!.name
-        binding.civMyProfile.setImageResource(baby!!.userIconUiModel.userProfileIconUiModel.iconRes)
-        binding.civMyProfile.circleBackgroundColor =
-            Color.parseColor(baby!!.userIconUiModel.iconColor)
-        viewModel.load(baby!!.memberId)
+        baby?.let {
+            viewModel.babyName.value = it.name
+            binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
+            binding.civMyProfile.circleBackgroundColor =
+                Color.parseColor(it.userIconUiModel.iconColor)
+            viewModel.load(it.memberId)
+        }
     }
 
     private fun collectState() {
@@ -68,9 +73,9 @@ class BabyDetailFragment : Fragment() {
                     is BabyDetailUiState.Success -> {
                         Log.e("detail", "${it.data}")
                         viewModel.familyGroupTitle.value = it.data.familyGroup.groupName
-                        familyAdapter.submitList(it.data.familyGroup.members)
+                        familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
-                            viewModel.delete(baby!!.memberId)
+                            viewModel.delete(baby?.memberId ?: "")
                             navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
                         }
                     }
@@ -89,7 +94,7 @@ class BabyDetailFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY,baby)
+            bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, baby)
             val bottomSheet = BabyEditProfileBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)

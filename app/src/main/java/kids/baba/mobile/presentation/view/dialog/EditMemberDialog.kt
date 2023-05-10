@@ -44,11 +44,11 @@ class EditMemberDialog : DialogFragment() {
         }
         binding.tvEditComplete.setOnClickListener {
             val relation = binding.etInput.text.toString()
-            viewModel.patch(member!!.memberId, relation)
+            viewModel.patch(member?.memberId ?: "", relation)
             dismiss()
         }
         binding.deleteView.tvDeleteDesc.setOnClickListener {
-            viewModel.delete(member!!.memberId)
+            viewModel.delete(member?.memberId ?: "")
             dismiss()
         }
     }
