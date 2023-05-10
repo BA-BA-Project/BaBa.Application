@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.view.dialog
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,11 +31,14 @@ class EditMemberDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        member = this.arguments?.getParcelable<MemberUiModel>(SELECTED_MEMBER_KEY)
-        relation = this.arguments?.getString(SELECTED_MEMBER_RELATION)
+        member = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(SELECTED_MEMBER_KEY, MemberUiModel::class.java)
+        } else {
+            arguments?.getParcelable(SELECTED_MEMBER_KEY)
+        }
+        relation = arguments?.getString(SELECTED_MEMBER_RELATION)
         viewModel.name.value = member?.name ?: ""
         binding.tvRelation.text = relation
-        Log.e("member","$member")
         binding.ivCloseEdit.setOnClickListener {
             dismiss()
         }

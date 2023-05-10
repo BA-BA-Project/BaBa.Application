@@ -45,6 +45,8 @@ class InputInviteCodeFragment : Fragment() {
             navController.navigate(R.id.action_input_invite_fragment_to_my_page_fragment)
         }
         binding.btnAddInviteUser.setOnClickListener {
+            val inviteCode = binding.inputView.etInput.text.toString()
+            viewModel.add(inviteCode)
             navController.navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
         }
     }

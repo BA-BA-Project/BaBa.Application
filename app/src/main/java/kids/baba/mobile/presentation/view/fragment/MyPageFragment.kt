@@ -2,26 +2,18 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMypageBinding
-import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.mapper.toMember
-import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.model.UserIconUiModel
-import kids.baba.mobile.presentation.model.UserProfileIconUiModel
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
@@ -29,7 +21,6 @@ import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
@@ -69,7 +60,7 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageUiState.LoadBabies -> {
-                        babyAdapter.submitList(it.data.map { baby -> baby.toMember() })
+                        babyAdapter.submitList(it.data.map { baby -> baby.toMember().toPresentation() })
                     }
 
                     else -> {}
@@ -117,7 +108,23 @@ class MyPageFragment : Fragment() {
         binding.rvKids.adapter = babyAdapter
         binding.rvKids.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        myPageGroupAdapter = MyPageGroupAdapter(requireContext(), childFragmentManager)
+        myPageGroupAdapter = MyPageGroupAdapter(
+            showMemberInfo = { group, member ->
+                val editMemberDialog = EditMemberDialog()
+                val bundle = Bundle()
+                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
+                bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
+                editMemberDialog.arguments = bundle
+                editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
+            }, editGroup = { group ->
+                val bundle = Bundle()
+                bundle.putBoolean("family", group.family)
+                bundle.putString("groupName", group.groupName)
+                val bottomSheet = GroupEditBottomSheet()
+                bottomSheet.arguments = bundle
+                bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+            }
+        )
         binding.groupContainer.layoutManager = LinearLayoutManager(requireContext())
         binding.groupContainer.adapter = myPageGroupAdapter
 

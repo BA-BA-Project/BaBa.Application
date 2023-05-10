@@ -1,53 +1,49 @@
 package kids.baba.mobile.presentation.adapter
 
-import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import kids.baba.mobile.databinding.ComposableGroupViewBinding
 import kids.baba.mobile.domain.model.Group
-import kids.baba.mobile.domain.model.Member
-import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
-import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
+import kids.baba.mobile.presentation.mapper.toMemberUiModel
+import kids.baba.mobile.presentation.model.MemberUiModel
 
 class MyPageGroupAdapter(
-    private val context: Context,
-    private val childFragmentManager: FragmentManager
+    private val showMemberInfo: (Group, MemberUiModel) -> Unit,
+    private val editGroup: (Group) -> Unit
 ) :
-    androidx.recyclerview.widget.ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(
+    ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(
         diffUtil
     ) {
-    inner class ViewHolder(private val binding: ComposableGroupViewBinding) :
+
+    class ViewHolder(
+        private val binding: ComposableGroupViewBinding,
+        private val showMemberInfo: (Group, MemberUiModel) -> Unit,
+        private val editGroup: (Group) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(group: Group) {
-            val adapter = MemberAdapter() {
-                val editMemberDialog = EditMemberDialog()
-                val bundle = Bundle()
-                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-                bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
-                editMemberDialog.arguments = bundle
-                editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-            }
-            binding.title = group.groupName
+            val adapter = MemberAdapter { member -> showMemberInfo(group, member) }
+            binding.groupName = group.groupName
             binding.description = "[${group.groupName}]그룹과 소식을 공유할 수 있어요"
             binding.rvGroupMembers.adapter = adapter
-            binding.rvGroupMembers.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter.submitList(group.members)
+            adapter.submitList(group.members?.map { it.toMemberUiModel() })
             binding.ivEditButton.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putBoolean("family", group.family)
-                bundle.putString("groupName", group.groupName)
-                val bottomSheet = GroupEditBottomSheet()
-                bottomSheet.arguments = bundle
-                bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+                editGroup(group)
             }
         }
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            ComposableGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(view, showMemberInfo, editGroup)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     companion object {
@@ -55,20 +51,9 @@ class MyPageGroupAdapter(
             override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean =
                 oldItem.groupName == newItem.groupName
 
-
             override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean =
-                oldItem.groupName == newItem.groupName
+                oldItem == newItem
 
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            ComposableGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
     }
 }

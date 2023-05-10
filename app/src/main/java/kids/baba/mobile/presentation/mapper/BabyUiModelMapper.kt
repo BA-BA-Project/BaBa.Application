@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.mapper
 
 import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.BabyResponse
-import kids.baba.mobile.domain.model.Member
 import kids.baba.mobile.presentation.model.BabiesUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 
@@ -27,11 +26,3 @@ fun BabyUiModel.toDomain() =
         groupColor = this.groupColor,
         name = this.name,
     )
-
-fun Baby.toMember() = Member(
-    memberId = babyId,
-    name = name,
-    relationName = name,
-    iconName = "PROFILE_BABY_1",
-    iconColor = groupColor
-)

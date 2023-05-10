@@ -98,13 +98,13 @@
                 android:id="@+id/family_view"
                 layout="@layout/composable_group_view"
                 bind:description="@{viewModel.familyGroupDesc}"
-                bind:title="@{viewModel.familyGroupTitle}" />
+                bind:groupName="@{viewModel.familyGroupTitle}" />
 
             <include
                 android:id="@+id/my_group_view"
                 layout="@layout/composable_group_view"
                 bind:description="@{viewModel.myGroupDesc}"
-                bind:title="@{viewModel.myGroupTitle}" />
+                bind:groupName="@{viewModel.myGroupTitle}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
