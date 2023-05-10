@@ -39,11 +39,16 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
         }
         val isFamily = arguments?.getBoolean("family") ?: false
         val groupName = arguments?.getString("groupName") ?: ""
+        viewModel.query.value = groupName
         Log.e("bundle", "$isFamily $groupName")
         viewModel.permissionDesc.value = if (isFamily) "있음" else "없음"
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
-            viewModel.patch(name = name, query = groupName)
+            viewModel.patch(name = name)
+            dismiss()
+        }
+        binding.deleteView.tvDeleteDesc.setOnClickListener {
+            viewModel.delete()
             dismiss()
         }
     }
