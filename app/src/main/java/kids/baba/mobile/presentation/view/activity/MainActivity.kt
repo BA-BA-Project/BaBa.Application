@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMainBinding
 import kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment
+import kids.baba.mobile.presentation.view.gatheringview.ClassifiedAlbumDetailFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,14 +33,18 @@ class MainActivity : AppCompatActivity() {
         binding.btvMenu.setupWithNavController(navController)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            val fragment = supportFragmentManager.findFragmentById(R.id.container)
-            if (fragment is GrowthAlbumFragment) fragment.onKeyDown()
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            val fragment = supportFragmentManager.findFragmentById(R.id.container)
+//            if (fragment is GrowthAlbumFragment) fragment.onKeyDown()
+//            return true
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     companion object {
         fun startActivity(context: Context) {

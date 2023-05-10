@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,12 +8,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ItemMonthAlbumBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
-import kids.baba.mobile.presentation.model.RepresentativeAlbumUiModel
 import java.time.format.DateTimeFormatter
 
 
-class MonthAlbumAdapter(private val albumClick: (GatheringAlbumCountUiModel) -> Unit) :
-    ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.YearViewHolder>(diffUtil) {
+class MonthAlbumAdapter(
+    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit,
+) : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.YearViewHolder>(diffUtil) {
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
         val binding = ItemMonthAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,13 +34,14 @@ class MonthAlbumAdapter(private val albumClick: (GatheringAlbumCountUiModel) -> 
         return position.toLong()
     }
 
-    class YearViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (GatheringAlbumCountUiModel) -> Unit) :
+    class YearViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (GatheringAlbumCountUiModel, Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         private lateinit var baby: GatheringAlbumCountUiModel
 
         init {
-            binding.ivMonthBaby.setOnClickListener{
-                albumClick(baby)
+            binding.ivMonthBaby.setOnClickListener {
+                Log.e("MonthAlbumAdapter", "itemId: $itemId")
+                albumClick(baby, itemId.toInt())
             }
         }
 
@@ -54,4 +60,6 @@ class MonthAlbumAdapter(private val albumClick: (GatheringAlbumCountUiModel) -> 
                 oldItem == newItem
         }
     }
+
+
 }

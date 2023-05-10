@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.presentation.event.GatheringEvent
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import kids.baba.mobile.presentation.model.RepresentativeAlbumUiModel
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,6 +20,9 @@ import javax.inject.Inject
 class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
     val TAG = "GatheringViewModel"
+
+    private val _eventFlow = MutableEventFlow<GatheringEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
 
     // 전체 앨범
     private val _allAlbumListState: MutableStateFlow<List<AlbumUiModel>> = MutableStateFlow(listOf())
@@ -123,12 +129,12 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    fun showClassifiedDetailAlbums(baby: GatheringAlbumCountUiModel) = viewModelScope.launch {
-        Log.e(TAG, "representativeAlbum: $baby")
-
-
+    fun showClassifiedDetailAlbums(baby: GatheringAlbumCountUiModel, itemId: Int) = viewModelScope.launch {
+        Log.e(TAG, "representativeAlbum: $baby itemId: $itemId")
+        _eventFlow.emit(GatheringEvent.GoToClassified(itemId))
 
     }
+
 
     // 더미 데이터 - 굳이 읽어보실 필요 없습니다.
     private fun getAlbum() {

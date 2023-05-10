@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,7 +16,7 @@
             android:id="@+id/ab_classified_album_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
+            android:background="@color/white"
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -29,6 +31,7 @@
                 app:buttonGravity="center_vertical"
                 app:navigationIcon="@drawable/ic_back"
                 app:titleCentered="true"
+                app:title="2023-05"
                 tools:title="2023-01">
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -45,16 +48,30 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fcv_classified_album_detail"
-            android:name="kids.baba.mobile.presentation.view.gatheringview.AllAlbumFragment"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_classified_all_babies"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="1dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ab_classified_album_detail"
-            tools:layout="@layout/fragment_all_album" />
+            app:spanCount="3"
+            tools:listitem="@layout/item_all_album" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+
+<!--<androidx.fragment.app.FragmentContainerView-->
+<!--android:id="@+id/fcv_classified_album_detail"-->
+<!--android:name="kids.baba.mobile.presentation.view.gatheringview.AllAlbumFragment"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="0dp"-->
+<!--app:layout_constraintEnd_toEndOf="parent"-->
+<!--app:layout_constraintStart_toStartOf="parent"-->
+<!--app:layout_constraintTop_toBottomOf="@+id/ab_classified_album_detail"-->
+<!--app:layout_constraintBottom_toBottomOf="parent"-->
+<!--tools:layout="@layout/fragment_all_album" />-->
