@@ -11,9 +11,8 @@ import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import java.time.format.DateTimeFormatter
 
 class YearAlbumAdapter(
-    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+    private val albumClick: (Int) -> Unit
 ) : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
-
 
     init {
         setHasStableIds(true)
@@ -36,7 +35,7 @@ class YearAlbumAdapter(
 
     class YearViewHolder(
         private val binding: ItemYearAlbumBinding,
-        albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+        albumClick: (Int) -> Unit
     ) : RecyclerView.ViewHolder(
         binding.root
     ) {
@@ -45,7 +44,7 @@ class YearAlbumAdapter(
         init {
             binding.ivMonthBaby.setOnClickListener{
                 Log.e("YearAlbumAdapter", "itemId: $itemId")
-                albumClick(baby, itemId.toInt())
+                albumClick(itemId.toInt())
             }
         }
 

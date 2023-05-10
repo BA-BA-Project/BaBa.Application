@@ -40,23 +40,21 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
     )
     val recentMonthAlbumListState = _recentMonthAlbumListState.asStateFlow()
 
-
     // 년도별로 저장한 앨범 list
-    private val _yearAlbumListState: MutableStateFlow<List<ClassifiedAlbumList/*List<AlbumUiModel>*/>> = MutableStateFlow(listOf())
-    val yearAlbumListState = _yearAlbumListState.asStateFlow()
+    private val _yearAlbumListState: MutableStateFlow<List<ClassifiedAlbumList>> =
+        MutableStateFlow(listOf())
+    private val yearAlbumListState = _yearAlbumListState.asStateFlow()
 
     // 월별로 저장한 앨범 list
-    private val _monthAlbumListState: MutableStateFlow<List<ClassifiedAlbumList/*List<AlbumUiModel>*/>> = MutableStateFlow(listOf())
-    val monthAlbumListState = _monthAlbumListState.asStateFlow()
-
+    private val _monthAlbumListState: MutableStateFlow<List<ClassifiedAlbumList>> =
+        MutableStateFlow(listOf())
+    private val monthAlbumListState = _monthAlbumListState.asStateFlow()
 
     private var thisYear = LocalDate.now().year
     private var thisMonth = LocalDate.now().monthValue
 
     private var tempYearAlbumList: MutableList<ClassifiedAlbumList> = mutableListOf()
     private var tempMonthAlbumList: MutableList<ClassifiedAlbumList> = mutableListOf()
-//    private var tempYearAlbumList: MutableList<List<AlbumUiModel>> = mutableListOf()
-//    private var tempMonthAlbumList: MutableList<List<AlbumUiModel>> = mutableListOf()
 
     private var tempYearAlbumCountList: MutableList<GatheringAlbumCountUiModel> =
         mutableListOf()
@@ -83,7 +81,6 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
             val tempYearAlbums = allAlbumListState.value.filter { it.date.year == thisYear }
             if (tempRecentYearAlbum != null) {
                 tempYearAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentYearAlbum, yearAlbumCount))
-//                tempYearAlbumList.add(tempYearAlbums)
                 tempYearAlbumList.add(ClassifiedAlbumList(tempYearAlbums))
             }
             while (thisMonth >= 1) {
@@ -98,7 +95,6 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
                     allAlbumListState.value.filter { it.date.year == thisYear && it.date.monthValue == thisMonth }
                 if (tempRecentMonthAlbum != null) {
                     tempMonthAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentMonthAlbum, monthAlbumCount))
-//                    tempMonthAlbumList.add(tempMonthAlbums)
                     tempMonthAlbumList.add(ClassifiedAlbumList(tempMonthAlbums))
 
                 }
@@ -136,15 +132,24 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun showClassifiedDetailAlbumsbyMonth(baby: GatheringAlbumCountUiModel, itemId: Int) = viewModelScope.launch {
-        Log.e(TAG, "Detail by Month representativeAlbum: $baby itemId: $itemId")
-        _eventFlow.emit(GatheringEvent.GoToClassifiedByMonth(itemId = itemId, classifiedAlbumList = monthAlbumListState.value[itemId]))
-
+    fun showClassifiedDetailAlbumsByMonth(itemId: Int) = viewModelScope.launch {
+        _eventFlow.emit(
+            GatheringEvent.GoToClassifiedByMonth(
+                itemId = itemId,
+                classifiedAlbumList = monthAlbumListState.value[itemId],
+                fromMonth = true
+            )
+        )
     }
 
-    fun showClassifiedDetailAlbumsbyYear(baby: GatheringAlbumCountUiModel, itemId: Int) = viewModelScope.launch {
-        Log.e(TAG, "Detail by Year representativeAlbum: $baby itemId: $itemId")
-        _eventFlow.emit(GatheringEvent.GoToClassifiedByYear(itemId = itemId, classifiedAlbumList = yearAlbumListState.value[itemId]))
+    fun showClassifiedDetailAlbumsByYear(itemId: Int) = viewModelScope.launch {
+        _eventFlow.emit(
+            GatheringEvent.GoToClassifiedByYear(
+                itemId = itemId,
+                classifiedAlbumList = yearAlbumListState.value[itemId],
+                fromMonth = false
+            )
+        )
     }
 
     // 더미 데이터 - 굳이 읽어보실 필요 없습니다.
@@ -496,7 +501,6 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
             )
     }
-
 
     companion object {
         const val LAUNCHING_YEAR = 2022

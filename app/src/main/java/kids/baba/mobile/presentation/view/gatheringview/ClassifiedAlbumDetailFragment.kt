@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import kids.baba.mobile.databinding.FragmentClassifiedAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AllAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.ClassifiedAlbumDetailViewModel
-import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ClassifiedAlbumDetailFragment : Fragment() {
@@ -36,16 +33,20 @@ class ClassifiedAlbumDetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        initAdapter()
+
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.albumList.collect {
+                adapter.submitList(it.classifiedAlbumList)
+            }
+        }
+    }
+
+    private fun initAdapter() {
         adapter = AllAlbumAdapter()
         binding.rvClassifiedAllBabies.adapter = adapter
         val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
         binding.rvClassifiedAllBabies.layoutManager = manager
-
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.albumList.collect{
-                adapter.submitList(it.classifiedAlbumList)
-            }
-        }
     }
 
     override fun onDestroyView() {

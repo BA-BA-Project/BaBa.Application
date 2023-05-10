@@ -36,16 +36,20 @@ class AllAlbumFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        adapter = AllAlbumAdapter()
-        binding.rvAllBabies.adapter = adapter
-        val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
-        binding.rvAllBabies.layoutManager = manager
+        initAdapter()
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.allAlbumListState.collect {
                 adapter.submitList(it.reversed())
             }
         }
+    }
+
+    private fun initAdapter() {
+        adapter = AllAlbumAdapter()
+        binding.rvAllBabies.adapter = adapter
+        val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
+        binding.rvAllBabies.layoutManager = manager
     }
 
     override fun onDestroyView() {

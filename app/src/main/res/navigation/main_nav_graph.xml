@@ -34,5 +34,8 @@
         <argument
             android:name="classified_album_list"
             app:argType="kids.baba.mobile.presentation.model.ClassifiedAlbumList" />
+        <argument
+            android:name="fromMonth"
+            app:argType="boolean" />
     </fragment>
 </navigation>

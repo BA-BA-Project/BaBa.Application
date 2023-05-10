@@ -43,14 +43,12 @@ class MonthAlbumFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
-
     }
 
     private fun initAdapter() {
         adapter = MonthAlbumAdapter(
-            albumClick = {baby, itemId ->
-                viewModel.showClassifiedDetailAlbumsbyMonth(baby, itemId)
-
+            albumClick = { itemId ->
+                viewModel.showClassifiedDetailAlbumsByMonth(itemId)
             }
         )
         binding.rvMonthBabies.adapter = adapter
@@ -62,5 +60,4 @@ class MonthAlbumFragment : Fragment() {
         _binding = null
         super.onDestroyView()
     }
-
 }

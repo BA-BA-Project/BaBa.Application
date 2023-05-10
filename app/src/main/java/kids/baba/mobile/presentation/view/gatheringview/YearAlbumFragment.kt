@@ -25,7 +25,6 @@ class YearAlbumFragment : Fragment() {
 
     private lateinit var adapter: YearAlbumAdapter
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentClassifiedAlbumBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,8 +47,8 @@ class YearAlbumFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = YearAlbumAdapter(
-            albumClick = {baby, itemId ->
-                viewModel.showClassifiedDetailAlbumsbyYear(baby, itemId)
+            albumClick = {itemId ->
+                viewModel.showClassifiedDetailAlbumsByYear(itemId)
             }
         )
         binding.rvMonthBabies.adapter = adapter
@@ -61,5 +60,4 @@ class YearAlbumFragment : Fragment() {
         _binding = null
         super.onDestroyView()
     }
-
 }

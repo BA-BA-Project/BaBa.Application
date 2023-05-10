@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 
 class MonthAlbumAdapter(
-    private val albumClick: (GatheringAlbumCountUiModel, Int) -> Unit
+    private val albumClick: (Int) -> Unit
 ) : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.MonthViewHolder>(diffUtil) {
 
     init {
@@ -34,14 +34,13 @@ class MonthAlbumAdapter(
         return position.toLong()
     }
 
-    class MonthViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (GatheringAlbumCountUiModel, Int) -> Unit) :
+    class MonthViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         private lateinit var baby: GatheringAlbumCountUiModel
 
         init {
             binding.ivMonthBaby.setOnClickListener {
-                Log.e("MonthAlbumAdapter", "itemId: $itemId")
-                albumClick(baby, itemId.toInt())
+                albumClick(itemId.toInt())
             }
         }
 

@@ -66,15 +66,16 @@ class GatheringViewFragment : Fragment() {
                         Log.d("GatheringViewFrag", "Classified By Month")
                         val action =
                             GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
-                                event.itemId, event.classifiedAlbumList
+                                event.itemId, event.classifiedAlbumList, event.fromMonth
                             )
                         findNavController().navigate(action)
                     }
                     is GatheringEvent.GoToClassifiedByYear -> {
                         Log.d("GatheringViewFrag", "Classified By Year")
-                        val action = GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
-                            event.itemId, event.classifiedAlbumList
-                        )
+                        val action =
+                            GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
+                                event.itemId, event.classifiedAlbumList, event.fromMonth
+                            )
                         findNavController().navigate(action)
                     }
                 }
