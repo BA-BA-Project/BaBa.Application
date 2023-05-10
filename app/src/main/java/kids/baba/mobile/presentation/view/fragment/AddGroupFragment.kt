@@ -45,7 +45,7 @@ class AddGroupFragment : Fragment() {
         }
         binding.btnAdd.setOnClickListener {
             val name = binding.nameView.etInput.text.toString()
-            viewModel.addGroup(name,"FFAEBA")
+            viewModel.addGroup(name,"#FFAEBA")
             requireActivity().startActivity(
                 Intent(
                     requireContext(),

@@ -65,7 +65,7 @@ class MyPageFragment : Fragment() {
                 when (it) {
                     is MyPageUiState.Idle -> {}
                     is MyPageUiState.LoadMember -> {
-                        myPageGroupAdapter.submitList(it.data + listOf(Group("test0", false, null),Group("test1", false, null),Group("test2", false, null)))
+                        myPageGroupAdapter.submitList(it.data)
                     }
 
                     is MyPageUiState.LoadBabies -> {
