@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,15 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
                     MyPageActivity::class.java
                 ).putExtra("next", "member")
             )
+        }
+        val isFamily = arguments?.getBoolean("family") ?: false
+        val groupName = arguments?.getString("groupName") ?: ""
+        Log.e("bundle", "$isFamily $groupName")
+        viewModel.permissionDesc.value = if (isFamily) "있음" else "없음"
+        binding.nameView.tvEditButton.setOnClickListener {
+            val name = binding.nameView.tvEdit.text.toString()
+            viewModel.patch(name = name, query = groupName)
+            dismiss()
         }
     }
 

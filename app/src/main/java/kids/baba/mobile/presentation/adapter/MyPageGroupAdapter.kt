@@ -29,7 +29,7 @@ class MyPageGroupAdapter(
                 val editMemberDialog = EditMemberDialog()
                 val bundle = Bundle()
                 bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, it)
-                bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION,group.groupName)
+                bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
                 editMemberDialog.arguments = bundle
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
             }
@@ -41,6 +41,8 @@ class MyPageGroupAdapter(
             adapter.submitList(group.members)
             binding.ivEditButton.setOnClickListener {
                 val bundle = Bundle()
+                bundle.putBoolean("family", group.family)
+                bundle.putString("groupName", group.groupName)
                 val bottomSheet = GroupEditBottomSheet()
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
