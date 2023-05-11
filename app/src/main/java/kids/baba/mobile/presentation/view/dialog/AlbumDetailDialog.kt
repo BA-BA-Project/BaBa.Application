@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.fragment.app.DialogFragment
@@ -18,7 +19,6 @@ import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
 
@@ -68,7 +68,6 @@ class AlbumDetailDialog : DialogFragment() {
     }
 
 
-
     private fun collectAlbumDetail() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.albumDetailUiState.collect {
@@ -85,11 +84,21 @@ class AlbumDetailDialog : DialogFragment() {
             itemClick = { comment ->
                 viewModel.setTag(comment.name, comment.memberId)
             },
-            itemLongClick = { comment ->
-                viewModel.checkMyComment(comment)
-            },
-            deleteComment = { comment ->
-                viewModel.deleteComment(comment)
+            itemLongClick = { comment, itemView ->
+                if (viewModel.checkMyComment(comment)) {
+                    val popupMenu = PopupMenu(requireContext(), itemView)
+                    popupMenu.inflate(R.menu.comment_menu)
+                    popupMenu.setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.comment_delete -> {
+                                viewModel.deleteComment(comment)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                }
             }
         )
         val layoutManager = LinearLayoutManager(requireContext())
@@ -116,18 +125,18 @@ class AlbumDetailDialog : DialogFragment() {
         }
     }
 
-    private fun setLikeUsersRecyclerView(){
+    private fun setLikeUsersRecyclerView() {
         likeUsersAdapter = LikeUsersAdapter()
         binding.rvLikeUsers.adapter = likeUsersAdapter
         val overlapWidth = resources.getDimensionPixelSize(R.dimen.overlap_width)
-        binding.rvLikeUsers.addItemDecoration(object : RecyclerView.ItemDecoration(){
+        binding.rvLikeUsers.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,
                 parent: RecyclerView,
                 state: RecyclerView.State
             ) {
-                if(parent.getChildAdapterPosition(view) == 0){
+                if (parent.getChildAdapterPosition(view) == 0) {
                     return
                 }
                 outRect.left = -overlapWidth

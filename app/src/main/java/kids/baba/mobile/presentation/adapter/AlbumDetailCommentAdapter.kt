@@ -13,13 +13,12 @@ import kids.baba.mobile.presentation.model.CommentUiModel
 
 class AlbumDetailCommentAdapter(
     val itemClick: (CommentUiModel) -> Unit,
-    val itemLongClick: (CommentUiModel) -> Boolean,
-    val deleteComment: (CommentUiModel) -> Unit,
+    val itemLongClick: (CommentUiModel, View) -> Unit,
 ) : ListAdapter<CommentUiModel, AlbumDetailCommentAdapter.CommentViewHolder>(diffUtil) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        CommentViewHolder(itemClick, itemLongClick,deleteComment, parent)
+        CommentViewHolder(itemClick, itemLongClick, parent)
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -27,8 +26,7 @@ class AlbumDetailCommentAdapter(
 
     class CommentViewHolder(
         itemClick: (CommentUiModel) -> Unit,
-        itemLongClick: (CommentUiModel) -> Boolean,
-        deleteComment: (CommentUiModel) -> Unit,
+        itemLongClick: (CommentUiModel, View) -> Unit,
         parent: ViewGroup
     ) :
         RecyclerView.ViewHolder(
@@ -44,15 +42,8 @@ class AlbumDetailCommentAdapter(
             binding.tvCommentRelation.setOnClickListener {
                 itemClick(comment)
             }
-            binding.btnDeleteComment.setOnClickListener {
-                deleteComment(comment)
-            }
             itemView.setOnLongClickListener {
-                binding.btnDeleteComment.visibility = if(itemLongClick(comment)){
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+                itemLongClick(comment, itemView)
                 true
             }
         }
