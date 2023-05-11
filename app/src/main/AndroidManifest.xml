@@ -9,7 +9,7 @@
 
     <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
 
     <application
@@ -31,8 +31,8 @@
             android:exported="false" />
         <activity
             android:name=".presentation.view.film.FilmActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -62,7 +62,9 @@
         </activity>
         <activity
             android:name=".presentation.view.activity.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!-- FileProvider used to share photos with other apps -->
         <provider

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.presentation.event.GatheringEvent
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.model.ClassifiedAlbumList
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow

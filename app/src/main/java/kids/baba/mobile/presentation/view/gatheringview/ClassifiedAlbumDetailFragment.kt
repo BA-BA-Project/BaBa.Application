@@ -12,6 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentClassifiedAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AllAlbumAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
 import kids.baba.mobile.presentation.viewmodel.ClassifiedAlbumDetailViewModel
 
 @AndroidEntryPoint
@@ -49,10 +51,22 @@ class ClassifiedAlbumDetailFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = AllAlbumAdapter()
+        adapter = AllAlbumAdapter(
+            albumClick = { album ->
+                showAlbumDialog(album)
+            }
+        )
         binding.rvClassifiedAllBabies.adapter = adapter
         val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
         binding.rvClassifiedAllBabies.layoutManager = manager
+    }
+
+    private fun showAlbumDialog(album: AlbumUiModel) {
+        val albumDetailDialog = AlbumDetailDialog()
+        val bundle = Bundle()
+        bundle.putParcelable(SELECTED_ALBUM_KEY, album)
+        albumDetailDialog.arguments = bundle
+        albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
     }
 
     private fun collectList() {
@@ -68,4 +82,7 @@ class ClassifiedAlbumDetailFragment : Fragment() {
         super.onDestroyView()
     }
 
+    companion object {
+        const val SELECTED_ALBUM_KEY = "SELECTED_ALBUM_KEY"
+    }
 }
