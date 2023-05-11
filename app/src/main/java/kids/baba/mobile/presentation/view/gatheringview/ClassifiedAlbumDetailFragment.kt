@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentClassifiedAlbumDetailBinding
@@ -30,16 +31,21 @@ class ClassifiedAlbumDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initNavigation()
+        initBinding()
+        initAdapter()
+        collectList()
+    }
+
+    private fun initNavigation() {
+        binding.tbClassifiedAlbumDetail.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun initBinding() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        initAdapter()
-
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.albumList.collect {
-                adapter.submitList(it.classifiedAlbumList)
-            }
-        }
     }
 
     private fun initAdapter() {
@@ -47,6 +53,14 @@ class ClassifiedAlbumDetailFragment : Fragment() {
         binding.rvClassifiedAllBabies.adapter = adapter
         val manager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
         binding.rvClassifiedAllBabies.layoutManager = manager
+    }
+
+    private fun collectList() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.albumList.collect {
+                adapter.submitList(it.classifiedAlbumList)
+            }
+        }
     }
 
     override fun onDestroyView() {
