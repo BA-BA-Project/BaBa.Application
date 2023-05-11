@@ -29,9 +29,7 @@ class AllAlbumAdapter(
         private lateinit var baby: AlbumUiModel
 
         init {
-            binding.ivAllBaby.setOnClickListener{
-                albumClick(baby)
-            }
+            binding.ivAllBaby.setOnClickListener { albumClick(baby) }
         }
 
         fun bind(baby: AlbumUiModel) {

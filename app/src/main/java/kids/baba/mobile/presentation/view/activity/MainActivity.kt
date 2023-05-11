@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         binding.btvMenu.setupWithNavController(navController)
     }
 
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             val fragment = supportFragmentManager.findFragmentById(R.id.container)
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
     companion object {
         fun startActivity(context: Context) {

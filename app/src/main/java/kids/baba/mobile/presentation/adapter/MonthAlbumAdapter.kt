@@ -38,9 +38,7 @@ class MonthAlbumAdapter(
         private lateinit var baby: GatheringAlbumCountUiModel
 
         init {
-            binding.ivMonthBaby.setOnClickListener {
-                albumClick(itemId.toInt())
-            }
+            binding.ivMonthBaby.setOnClickListener { albumClick(itemId.toInt()) }
         }
 
         fun bind(baby: GatheringAlbumCountUiModel) {
@@ -58,6 +56,4 @@ class MonthAlbumAdapter(
                 oldItem == newItem
         }
     }
-
-
 }

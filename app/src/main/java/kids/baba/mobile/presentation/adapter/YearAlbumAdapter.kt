@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -42,10 +41,7 @@ class YearAlbumAdapter(
         private lateinit var baby: GatheringAlbumCountUiModel
 
         init {
-            binding.ivMonthBaby.setOnClickListener{
-                Log.e("YearAlbumAdapter", "itemId: $itemId")
-                albumClick(itemId.toInt())
-            }
+            binding.ivMonthBaby.setOnClickListener { albumClick(itemId.toInt()) }
         }
 
         fun bind(baby: GatheringAlbumCountUiModel) {
