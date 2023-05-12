@@ -207,7 +207,7 @@ class GrowthAlbumFragment : Fragment() {
 
 
     private fun collectUiState() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.growthAlbumState.collectLatest { state ->
                 val growthAlbumList = state.growthAlbumList
                 val selectedDate = state.selectedDate
