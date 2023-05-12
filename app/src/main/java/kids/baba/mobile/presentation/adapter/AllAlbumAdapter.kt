@@ -26,15 +26,15 @@ class AllAlbumAdapter(
 
     class AllViewHolder(private val binding: ItemAllAlbumBinding, albumClick: (AlbumUiModel) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        private lateinit var baby: AlbumUiModel
+        private lateinit var album: AlbumUiModel
 
         init {
-            binding.ivAllBaby.setOnClickListener { albumClick(baby) }
+            binding.ivAllBaby.setOnClickListener { albumClick(album) }
         }
 
-        fun bind(baby: AlbumUiModel) {
-            this.baby = baby
-            binding.baby = baby
+        fun bind(album: AlbumUiModel) {
+            this.album = album
+            binding.album = album
         }
     }
 

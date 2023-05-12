@@ -47,8 +47,8 @@ class YearAlbumFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = YearAlbumAdapter(
-            albumClick = {itemId ->
-                viewModel.showClassifiedDetailAlbumsByYear(itemId)
+            albumClick = { itemId ->
+                viewModel.showClassifiedAllAlbumsByYear(itemId)
             }
         )
         binding.rvMonthBabies.adapter = adapter

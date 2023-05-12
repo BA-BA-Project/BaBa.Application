@@ -35,15 +35,13 @@ class MonthAlbumAdapter(
 
     class MonthViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        private lateinit var baby: GatheringAlbumCountUiModel
 
         init {
             binding.ivMonthBaby.setOnClickListener { albumClick(itemId.toInt()) }
         }
 
-        fun bind(baby: GatheringAlbumCountUiModel) {
-            this.baby = baby
-            binding.baby = baby
+        fun bind(albumAndCount: GatheringAlbumCountUiModel) {
+            binding.albumAndCount = albumAndCount
         }
     }
 

@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
-import kids.baba.mobile.presentation.event.GatheringEvent
+import kids.baba.mobile.presentation.event.GatheringAlbumEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
 
@@ -61,17 +60,8 @@ class GatheringViewFragment : Fragment() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is GatheringEvent.Initialized -> Log.d("GatheringViewFragment", "GatheringEvent is Uninitialized")
-                    is GatheringEvent.GoToClassifiedByMonth -> {
-                        Log.d("GatheringViewFrag", "Classified By Month")
-                        val action =
-                            GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
-                                event.itemId, event.classifiedAlbumList, event.fromMonth
-                            )
-                        findNavController().navigate(action)
-                    }
-                    is GatheringEvent.GoToClassifiedByYear -> {
-                        Log.d("GatheringViewFrag", "Classified By Year")
+                    is GatheringAlbumEvent.Initialized -> Unit
+                    is GatheringAlbumEvent.GoToClassifiedAllAlbum -> {
                         val action =
                             GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
                                 event.itemId, event.classifiedAlbumList, event.fromMonth

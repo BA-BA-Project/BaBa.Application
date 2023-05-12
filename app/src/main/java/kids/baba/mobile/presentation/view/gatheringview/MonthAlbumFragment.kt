@@ -48,7 +48,7 @@ class MonthAlbumFragment : Fragment() {
     private fun initAdapter() {
         adapter = MonthAlbumAdapter(
             albumClick = { itemId ->
-                viewModel.showClassifiedDetailAlbumsByMonth(itemId)
+                viewModel.showClassifiedAllAlbumsByMonth(itemId)
             }
         )
         binding.rvMonthBabies.adapter = adapter

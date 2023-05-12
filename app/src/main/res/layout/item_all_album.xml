@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="baby"
+            name="album"
             type="kids.baba.mobile.presentation.model.AlbumUiModel" />
 
         <variable
@@ -23,7 +23,7 @@
 
         <ImageView
             android:id="@+id/iv_all_baby"
-            imageFromUrl="@{baby.photo}"
+            imageFromUrl="@{album.photo}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/item_all_baby_img"
@@ -43,7 +43,7 @@
             android:textAppearance="@style/BABA.TextStyle"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:date="@{baby.date}"
+            app:date="@{album.date}"
             app:formatter="@{dateTimeFormatter}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_all_baby"
             app:layout_constraintStart_toStartOf="@+id/iv_all_baby"
