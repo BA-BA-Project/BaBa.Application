@@ -18,7 +18,6 @@ import kids.baba.mobile.presentation.viewmodel.EditMemberViewModel
 class EditMemberDialog : DialogFragment() {
 
     private var _binding: DialogFragmentEditMemberBinding? = null
-    private var member: MemberUiModel? = null
     private var relation: String? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -31,24 +30,16 @@ class EditMemberDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        member = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(SELECTED_MEMBER_KEY, MemberUiModel::class.java)
-        } else {
-            arguments?.getParcelable(SELECTED_MEMBER_KEY)
-        }
-        relation = arguments?.getString(SELECTED_MEMBER_RELATION)
-        viewModel.name.value = member?.name ?: ""
-        binding.tvRelation.text = relation
         binding.ivCloseEdit.setOnClickListener {
             dismiss()
         }
         binding.tvEditComplete.setOnClickListener {
             val relation = binding.etInput.text.toString()
-            viewModel.patch(member?.memberId ?: "", relation)
+            viewModel.patch(relation)
             dismiss()
         }
         binding.deleteView.tvDeleteDesc.setOnClickListener {
-            viewModel.delete(member?.memberId ?: "")
+            viewModel.delete()
             dismiss()
         }
     }

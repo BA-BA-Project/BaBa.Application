@@ -12,16 +12,13 @@ class MyPageGroupAdapter(
     private val showMemberInfo: (Group, MemberUiModel) -> Unit,
     private val editGroup: (Group) -> Unit
 ) :
-    ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(
-        diffUtil
-    ) {
+    ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(diffUtil) {
 
     class ViewHolder(
         private val binding: ComposableGroupViewBinding,
         private val showMemberInfo: (Group, MemberUiModel) -> Unit,
         private val editGroup: (Group) -> Unit
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(group: Group) {
             val adapter = MemberAdapter { member -> showMemberInfo(group, member) }
@@ -37,8 +34,7 @@ class MyPageGroupAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            ComposableGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ComposableGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view, showMemberInfo, editGroup)
     }
 

@@ -106,8 +106,6 @@ class MyPageFragment : Fragment() {
                 })
         }
         binding.rvKids.adapter = babyAdapter
-        binding.rvKids.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         myPageGroupAdapter = MyPageGroupAdapter(
             showMemberInfo = { group, member ->
                 val editMemberDialog = EditMemberDialog()
@@ -125,7 +123,6 @@ class MyPageFragment : Fragment() {
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
             }
         )
-        binding.groupContainer.layoutManager = LinearLayoutManager(requireContext())
         binding.groupContainer.adapter = myPageGroupAdapter
 
     }

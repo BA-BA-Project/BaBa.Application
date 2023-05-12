@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,15 +15,12 @@ class MemberAdapter(private val itemClick: (MemberUiModel) -> Unit) :
     class ViewHolder(
         private val binding: ItemMemberBinding,
         private val itemClick: (MemberUiModel) -> Unit
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SuspiciousIndentation")
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(member: MemberUiModel) {
             binding.tvMemberName.text = member.name
             binding.tvMemberRelation.text = member.introduction
-                    binding.civMemberProfile.setImageResource(member.userIconUiModel.userProfileIconUiModel.iconRes)
-            binding.civMemberProfile.circleBackgroundColor =
-                Color.parseColor(member.userIconUiModel.iconColor)
+            binding.civMemberProfile.setImageResource(member.userIconUiModel.userProfileIconUiModel.iconRes)
+            binding.civMemberProfile.circleBackgroundColor = Color.parseColor(member.userIconUiModel.iconColor)
             binding.root.setOnClickListener {
                 itemClick(member)
             }

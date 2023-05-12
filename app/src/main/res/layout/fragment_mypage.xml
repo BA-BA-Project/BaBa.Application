@@ -157,6 +157,7 @@
                         android:id="@+id/group_container"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toTopOf="@id/relation_container"
                         app:layout_constraintBottom_toBottomOf="@id/relation_container"
                         app:layout_constraintEnd_toEndOf="@+id/relation_container"
