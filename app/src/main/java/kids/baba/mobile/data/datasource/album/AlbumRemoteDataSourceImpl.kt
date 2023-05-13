@@ -75,4 +75,11 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
         }
 
+    override suspend fun getAllAlbum(id: String): Flow<AlbumResponse> = flow {
+        val response = api.getAllAlbum(id = id)
+        Log.e("AllAlbum","response.body: ${response.body()?.album} response.code: ${response.code()}")
+        response.body()?.let {
+            emit(it)
+        }
+    }
 }

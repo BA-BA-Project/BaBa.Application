@@ -4,7 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
+import kids.baba.mobile.domain.usecase.GetAllAlbumsUseCase
 import kids.baba.mobile.presentation.event.GatheringAlbumEvent
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.ClassifiedAlbumList
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
@@ -12,12 +16,16 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
+class GatheringAlbumViewModel @Inject constructor(
+    private val getAllAlbumsUseCase: GetAllAlbumsUseCase
+) : ViewModel() {
 
     val TAG = "GatheringViewModel"
 
@@ -109,7 +117,7 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
-        testLog()
+//        testLog()
 
     }
 
@@ -151,8 +159,20 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
     }
 
     // 더미 데이터 - 굳이 읽어보실 필요 없습니다.
-    private fun getAlbum() {
-        _allAlbumListState.value = listOf(
+    private suspend fun getAlbum() {
+        val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
+        val tempList: MutableList<AlbumUiModel> = mutableListOf()
+        // TODO: AlbumUiModel 이 아닌 Album 으로 해야 함.
+
+        getAllAlbumsUseCase.getAllAlbumsFromBabyId(baby.babyId).collect{albumList ->
+            albumList.album.forEach{
+                tempList.add(it.toPresentation(false))
+            }
+            _allAlbumListState.value = tempList
+        }
+
+
+/*        _allAlbumListState.value = listOf(
             // 2022 년
             AlbumUiModel(
                 100,
@@ -497,7 +517,7 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
                 false
             ),
 
-            )
+            )*/
     }
 
     companion object {

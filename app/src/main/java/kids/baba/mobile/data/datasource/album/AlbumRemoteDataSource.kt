@@ -19,8 +19,9 @@ interface AlbumRemoteDataSource {
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 
-
     suspend fun getComment(id: String, contentId: String): Flow<CommentResponse>
 
     suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse>
+
+    suspend fun getAllAlbum(id: String): Flow<AlbumResponse>
 }
