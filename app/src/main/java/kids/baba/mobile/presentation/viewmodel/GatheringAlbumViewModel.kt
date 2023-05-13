@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetAllAlbumsUseCase
 import kids.baba.mobile.presentation.event.GatheringAlbumEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
@@ -24,8 +26,6 @@ import javax.inject.Inject
 class GatheringAlbumViewModel @Inject constructor(
     private val getAllAlbumsUseCase: GetAllAlbumsUseCase
 ) : ViewModel() {
-
-    val TAG = "GatheringViewModel"
 
     private val _eventFlow = MutableEventFlow<GatheringAlbumEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -69,13 +69,19 @@ class GatheringAlbumViewModel @Inject constructor(
 
     init {
         initAlbum()
+        Log.e("GatheringViewModel", "initCalled")
     }
 
     private fun initAlbum() = viewModelScope.launch {
         // 아기 더미 데이터
 
-        getAlbum()
-        val oldestAlbumYear = allAlbumListState.value[0].date.year
+        getAllAbums()
+        val oldestAlbumYear = if (allAlbumListState.value.isNotEmpty()) {
+            allAlbumListState.value[0].date.year
+        } else {
+            thisYear
+        }
+
         // 현재 year 에서부터 1년 씩 줄이면서 앨범 필터링
         while (thisYear >= oldestAlbumYear) {
             val tempRecentYearAlbum =
@@ -137,16 +143,26 @@ class GatheringAlbumViewModel @Inject constructor(
         )
     }
 
-    private suspend fun getAlbum() {
+    private suspend fun getAllAbums() {
         val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
         val tempList: MutableList<AlbumUiModel> = mutableListOf()
 
-        getAllAlbumsUseCase.getAllAlbumsFromBabyId(baby.babyId).collect{albumList ->
-            albumList.album.forEach{
-                tempList.add(it.toPresentation(false)) // false is meaningless value.
+        when (val result = getAllAlbumsUseCase(id = baby.babyId)) {
+            is Result.Success -> {
+                result.data.forEach {
+                    tempList.add(it.toPresentation(false)) // false is meaningless value
+                }
+                _allAlbumListState.value = tempList
             }
-            _allAlbumListState.value = tempList
+            is Result.NetworkError -> {
+                _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+            else -> {
+                _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
         }
+
+
     }
 
 }

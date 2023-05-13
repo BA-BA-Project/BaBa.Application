@@ -3,6 +3,7 @@ package kids.baba.mobile.data.datasource.album
 import kids.baba.mobile.core.error.EntityTooLargeException
 import android.util.Log
 import kids.baba.mobile.data.api.AlbumApi
+import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,7 +12,8 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class AlbumRemoteDataSourceImpl @Inject constructor(
-    private val api: AlbumApi
+    private val api: AlbumApi,
+    private val safeApiHelper: SafeApiHelper
 ) : AlbumRemoteDataSource {
 
     override suspend fun getAlbum(
@@ -75,11 +77,12 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
         }
 
-    override suspend fun getAllAlbum(id: String): Flow<AlbumResponse> = flow {
-        val response = api.getAllAlbum(id = id)
-        Log.e("AllAlbum","response.body: ${response.body()?.album} response.code: ${response.code()}")
-        response.body()?.let {
-            emit(it)
-        }
-    }
+    override suspend fun getAllAlbum(id: String) =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.getAllAlbum(id = id)
+            },
+            mapping = { it.album }
+        )
+
 }

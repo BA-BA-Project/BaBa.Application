@@ -23,6 +23,6 @@ interface AlbumRepository {
 
     suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse>
 
-    suspend fun getAllAlbum(id: String): Flow<AlbumResponse>
+    suspend fun getAllAlbum(id: String): Result<List<Album>>
 
 }
