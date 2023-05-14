@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
@@ -20,6 +21,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
+import kids.baba.mobile.presentation.event.GrowthAlbumEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.model.AlbumUiModel
@@ -76,6 +78,21 @@ class GrowthAlbumFragment : Fragment() {
         setAlbumDialog()
         setBottomSheet()
         collectUiState()
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{event->
+                when(event) {
+                   is GrowthAlbumEvent.ShowSnackBar -> showSnackBar(event.message)
+                }
+            }
+        }
+    }
+
+    private fun showSnackBar(@StringRes message : Int){
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun setAlbumDialog() {

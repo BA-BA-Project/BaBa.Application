@@ -119,23 +119,32 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun initBabyAndAlbum(date: LocalDate) = viewModelScope.launch {
         val babyId = runCatching { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }.getOrNull()
-        getBabiesUseCase.getBabies().collect { babyResponse ->
-            val selectedBaby =
-                if (babyId == null) {
-                    babyResponse.myBaby.first().toPresentation(true)
-                } else {
-                    babyResponse.myBaby.firstOrNull { it.babyId == babyId }?.toPresentation(true)
-                        ?: babyResponse.others.firstOrNull { it.babyId == babyId }
-                            ?.toPresentation(false)
-                        ?: babyResponse.myBaby.first().toPresentation(true)
-                }
-            EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
+        when (val result = getBabiesUseCase()) {
+            is Result.Success -> {
+                val myBaby = result.data.myBaby
+                val others = result.data.others
 
-            _growthAlbumState.update { growthAlbumState ->
-                growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
+                val selectedBaby =
+                    if (babyId == null) {
+                        myBaby.first().toPresentation(true)
+                    } else {
+                        myBaby.firstOrNull { it.babyId == babyId }?.toPresentation(true)
+                            ?: others.firstOrNull { it.babyId == babyId }
+                                ?.toPresentation(false)
+                            ?: myBaby.first().toPresentation(true)
+                    }
+                EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
+
+                _growthAlbumState.update { growthAlbumState ->
+                    growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
+                }
+
+                loadAlbum(date)
             }
+
+            is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+            else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_babies_failed))
         }
-        loadAlbum(date)
     }
 
     fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
