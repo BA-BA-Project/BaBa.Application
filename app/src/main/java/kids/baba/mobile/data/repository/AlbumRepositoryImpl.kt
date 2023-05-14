@@ -16,7 +16,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         id: String,
         year: Int,
         month: Int,
-    ): Flow<AlbumResponse> = dataSource.getAlbum(id, year, month)
+    ): Result<List<Album>> = dataSource.getAlbum(id, year, month)
 
     override suspend fun postAlbum(
         accessToken: String,
