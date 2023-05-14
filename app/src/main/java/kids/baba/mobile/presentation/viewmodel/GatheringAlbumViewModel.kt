@@ -67,15 +67,12 @@ class GatheringAlbumViewModel @Inject constructor(
     private var tempMonthAlbumCountList: MutableList<GatheringAlbumCountUiModel> =
         mutableListOf()
 
-    init {
-        initAlbum()
-        Log.e("GatheringViewModel", "initCalled")
-    }
 
-    private fun initAlbum() = viewModelScope.launch {
+    fun initAlbum() = viewModelScope.launch {
         // 아기 더미 데이터
+        Log.e("GatheringViewModel", "initCalled")
 
-        getAllAbums()
+        getAllAlbums()
         val oldestAlbumYear = if (allAlbumListState.value.isNotEmpty()) {
             allAlbumListState.value[0].date.year
         } else {
@@ -143,7 +140,7 @@ class GatheringAlbumViewModel @Inject constructor(
         )
     }
 
-    private suspend fun getAllAbums() {
+    private suspend fun getAllAlbums() {
         val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
         val tempList: MutableList<AlbumUiModel> = mutableListOf()
 
