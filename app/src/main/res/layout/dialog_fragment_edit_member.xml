@@ -71,8 +71,8 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewModel.member.name}"
-                    bind:title="@{viewModel.nameTitle}" />
+                    bind:description="@{viewModel.uiModel.member.name}"
+                    bind:title="@{viewModel.uiModel.nameTitle}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:text="@{viewModel.relation}"
+                        android:text="@{viewModel.uiModel.relation}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -188,8 +188,8 @@
                 <include
                     android:id="@+id/delete_view"
                     layout="@layout/composable_delete_view"
-                    bind:delete="@{viewModel.delete}"
-                    bind:title="@{viewModel.deleteTitle}" />
+                    bind:delete="@{viewModel.uiModel.delete}"
+                    bind:title="@{viewModel.uiModel.deleteTitle}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.cardview.widget.CardView>

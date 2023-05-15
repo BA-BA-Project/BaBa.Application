@@ -40,7 +40,7 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
-                bind:title="@{viewmodel.name}" />
+                bind:title="@{viewmodel.uiModel.name}" />
 
             <View
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewmodel.bgColor}" />
+                bind:title="@{viewmodel.uiModel.bgColor}" />
 
             <View
                 android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             <include
                 android:id="@+id/intro_view"
                 layout="@layout/composable_input_view"
-                bind:title="@{viewmodel.intro}"
-                bind:button="@{viewmodel.button}"/>
+                bind:title="@{viewmodel.uiModel.intro}"
+                bind:button="@{viewmodel.uiModel.button}"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
