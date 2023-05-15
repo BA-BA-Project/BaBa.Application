@@ -23,15 +23,15 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.topAppBarTitle}"
+                bind:title="@{viewmodel.uiModel.topAppBarTitle}"
 
                 />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.bannerDesc}"
-                bind:title="@{viewmodel.bannerTitle}" />
+                bind:description="@{viewmodel.uiModel.bannerDesc}"
+                bind:title="@{viewmodel.uiModel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -54,27 +54,27 @@
                 <include
                     android:id="@+id/for_data_delete"
                     layout="@layout/composable_check"
-                    bind:content="@{viewmodel.forDataDeleteContent}" />
+                    bind:content="@{viewmodel.uiModel.forDataDeleteContent}" />
 
                 <include
                     android:id="@+id/uncomfortable"
                     layout="@layout/composable_check"
-                    bind:content="@{viewmodel.uncomfortableContent}" />
+                    bind:content="@{viewmodel.uiModel.uncomfortableContent}" />
 
                 <include
                     android:id="@+id/frequent_errors"
                     layout="@layout/composable_check"
-                    bind:content="@{viewmodel.frequentErrorsContent}" />
+                    bind:content="@{viewmodel.uiModel.frequentErrorsContent}" />
 
                 <include
                     android:id="@+id/not_use"
                     layout="@layout/composable_check"
-                    bind:content="@{viewmodel.notUseContent}" />
+                    bind:content="@{viewmodel.uiModel.notUseContent}" />
 
                 <include
                     android:id="@+id/etc"
                     layout="@layout/composable_check"
-                    bind:content="@{viewmodel.etcContent}" />
+                    bind:content="@{viewmodel.uiModel.etcContent}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

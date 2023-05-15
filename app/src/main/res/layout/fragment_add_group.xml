@@ -23,13 +23,13 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.topAppBarTitle}" />
+                bind:title="@{viewmodel.uiModel.title}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.bannerDesc}"
-                bind:title="@{viewmodel.bannerTitle}" />
+                bind:description="@{viewmodel.uiModel.bannerDescription}"
+                bind:title="@{viewmodel.uiModel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -54,8 +54,8 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:description="@{viewmodel.nameViewDesc}"
-                    bind:title="@{viewmodel.nameViewTitle}" />
+                    bind:description="@{viewmodel.uiModel.nameViewDesc}"
+                    bind:title="@{viewmodel.uiModel.nameViewTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                 <include
                     android:id="@+id/color_view"
                     layout="@layout/composable_color_view"
-                    bind:title="@{viewmodel.colorViewTitle}" />
+                    bind:title="@{viewmodel.uiModel.colorViewTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -75,8 +75,8 @@
                 <include
                     android:id="@+id/permission_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewmodel.permissionViewDesc}"
-                    bind:title="@{viewmodel.permissionViewTitle}" />
+                    bind:description="@{viewmodel.uiModel.permissionViewDesc}"
+                    bind:title="@{viewmodel.uiModel.permissionViewTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
