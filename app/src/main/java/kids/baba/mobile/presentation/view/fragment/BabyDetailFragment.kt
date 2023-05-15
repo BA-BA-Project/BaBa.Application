@@ -57,7 +57,7 @@ class BabyDetailFragment : Fragment() {
         }
         Log.e("baby", "$baby")
         baby?.let {
-            viewModel.babyName.value = it.name
+            viewModel.uiModel.value.babyName = it.name
             binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
             binding.civMyProfile.circleBackgroundColor =
                 Color.parseColor(it.userIconUiModel.iconColor)
@@ -72,7 +72,7 @@ class BabyDetailFragment : Fragment() {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
                         Log.e("detail", "${it.data}")
-                        viewModel.familyGroupTitle.value = it.data.familyGroup.groupName
+                        viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
                             viewModel.delete(baby?.memberId ?: "")
