@@ -13,7 +13,7 @@ interface AlbumRemoteDataSource {
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Flow<PostAlbumResponse>
+    ): Result<PostAlbumResponse>
 
     suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
 

@@ -1,7 +1,7 @@
 package kids.baba.mobile.data.datasource.album
 
-import kids.baba.mobile.core.error.EntityTooLargeException
 import android.util.Log
+import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
@@ -33,22 +33,24 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ) = flow {
-        runCatching { api.postAlbum(accessToken, id, photo, bodyDataHashMap) }
-            .onSuccess { resp ->
-                when (resp.code()) {
-                    201 -> {
-                        val data = resp.body() ?: throw Throwable("data is null")
-                        emit(data)
-                    }
-                    413 -> {
-                        throw EntityTooLargeException("사진의 용량이 너무 큽니다.")
-                    }
-                }
+    ): Result<PostAlbumResponse> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.postAlbum(accessToken, id, photo, bodyDataHashMap)
+            },
+            mapping = {
+                it
             }
-            .onFailure {
-                throw it
+        )
+        return if (result is Result.Failure) {
+            if (result.code == 413) {
+                Result.Failure(result.code, result.message, EntityTooLargeException())
+            } else {
+                result
             }
+        } else {
+            result
+        }
     }
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {
