@@ -22,13 +22,13 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.title}" />
+                bind:title="@{viewModel.uiModel.title}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewModel.bannerDesc}"
-                bind:title="@{viewModel.bannerTitle}" />
+                bind:description="@{viewModel.uiModel.bannerDesc}"
+                bind:title="@{viewModel.uiModel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
             <include
                 android:id="@+id/input_view"
                 layout="@layout/composable_input_view"
-                bind:title="@{viewModel.inputTitle}" />
+                bind:title="@{viewModel.uiModel.inputTitle}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
