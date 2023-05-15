@@ -30,12 +30,19 @@ class GatheringViewFragment : Fragment() {
 
     val viewModel: GatheringAlbumViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("GatheringViewFragment","onCreated called. savedInstanceState:Bundle = $savedInstanceState")
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGatheringViewBinding.inflate(inflater, container, false)
+        Log.e("GatheringViewFragment","onCreateView called. savedInstanceState: Bundle = $savedInstanceState")
         return binding.root
     }
 
@@ -43,12 +50,41 @@ class GatheringViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         viewModel.initAlbum()
         setViewPager()
         collectEvent()
+        Log.e("GatheringViewFragment","onViewCreated called. savedInstanceState: Bundle = $savedInstanceState")
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        Log.e("GatheringViewFragment","onViewStateRestored called. savedInstanceState: Bundle = $savedInstanceState")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("GatheringViewFragment","onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("GatheringViewFragment","onResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("GatheringViewFragment","onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("GatheringViewFragment","onStop called")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.e("GatheringViewFragment","onSaveInstanceState called outState: Bundle = $outState")
+    }
 
     private fun setViewPager() {
         val viewPager = binding.vpViewAll
@@ -85,5 +121,11 @@ class GatheringViewFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+        Log.e("GatheringViewFragment","onDestroyView called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("GatheringViewFragment","onDestroy called")
     }
 }
