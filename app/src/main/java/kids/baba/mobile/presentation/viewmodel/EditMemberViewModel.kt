@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,14 +26,22 @@ class EditMemberViewModel @Inject constructor(
     val delete = MutableStateFlow("삭제")
     val member = MutableStateFlow<MemberUiModel?>(savedStateHandle[EditMemberDialog.SELECTED_MEMBER_KEY])
     val relation = MutableStateFlow<String?>(savedStateHandle[EditMemberDialog.SELECTED_MEMBER_RELATION])
-    fun patch(relation: String) = viewModelScope.launch {
+    val input = MutableStateFlow("")
+    val dismiss = MutableStateFlow {}
+    fun patch() = viewModelScope.launch {
         patchOneMemberUseCase.patch(
             memberId = member.value?.memberId ?: "",
-            relation = GroupMemberInfo(relationName = relation)
+            relation = GroupMemberInfo(relationName = input.value)
         )
+        dismiss()
     }
 
     fun delete() = viewModelScope.launch {
-        deleteOneGroupMemberUseCase.delete(member.value?.memberId ?: "")
+        //deleteOneGroupMemberUseCase.delete(member.value?.memberId ?: "")
+        Log.e("123","delete")
+        dismiss()
+    }
+    fun dismiss() = viewModelScope.launch {
+        dismiss.value()
     }
 }
