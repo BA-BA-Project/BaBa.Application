@@ -23,13 +23,13 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.topAppBarTitle}" />
+                bind:title="@{viewmodel.uiModel.topAppBarTitle}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.bannerDesc}"
-                bind:title="@{viewmodel.bannerTitle}" />
+                bind:description="@{viewmodel.uiModel.bannerDesc}"
+                bind:title="@{viewmodel.uiModel.bannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -51,8 +51,8 @@
                 <include
                     android:id="@+id/input_group_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:description="@{viewmodel.inputGroupDesc}"
-                    bind:title="@{viewmodel.inputGroupTitle}" />
+                    bind:description="@{viewmodel.uiModel.inputGroupDesc}"
+                    bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -62,9 +62,9 @@
                 <include
                     android:id="@+id/input_relation_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:button="@{viewmodel.inputRelationButton}"
-                    bind:description="@{viewmodel.inputRelationDesc}"
-                    bind:title="@{viewmodel.inputRelationTitle}" />
+                    bind:button="@{viewmodel.uiModel.inputRelationButton}"
+                    bind:description="@{viewmodel.uiModel.inputRelationDesc}"
+                    bind:title="@{viewmodel.uiModel.inputRelationTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
