@@ -16,13 +16,13 @@
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
-            binds:title="@{viewModel.title}" />
+            binds:title="@{viewModel.uiModel.title}" />
 
         <TextView
             android:id="@+id/tv_added"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.bannerTitle}"
+            android:text="@{viewModel.uiModel.bannerTitle}"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{viewModel.bannerDescription}"
+            android:text="@{viewModel.uiModel.bannerDescription}"
             android:textColor="#B4B4B4"
             android:textSize="15sp"
             android:textStyle="bold"

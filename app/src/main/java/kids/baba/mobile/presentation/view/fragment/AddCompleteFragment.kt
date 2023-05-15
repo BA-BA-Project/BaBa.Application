@@ -30,7 +30,6 @@ class AddCompleteFragment : Fragment() {
         binding.topAppBar.ivBackButton.setOnClickListener {
             navController.navigate(R.id.action_add_complete_fragment_to_add_baby_fragment)
         }
-        viewModel.bind(requireContext())
         binding.btnComplete.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
