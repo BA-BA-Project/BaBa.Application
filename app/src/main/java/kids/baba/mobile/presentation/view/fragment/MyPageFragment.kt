@@ -20,6 +20,7 @@ import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
+import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 
 @AndroidEntryPoint
@@ -28,6 +29,7 @@ class MyPageFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: MyPageViewModel by viewModels()
+    val activityViewModel: MyPageActivityViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
     override fun onCreateView(
