@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
+import kids.baba.mobile.presentation.event.GatheringAlbumEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.GatheringAlbumViewModel
 
 @AndroidEntryPoint
@@ -40,6 +43,7 @@ class GatheringViewFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         setViewPager()
+        collectEvent()
     }
 
     private fun setViewPager() {
@@ -50,6 +54,23 @@ class GatheringViewFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = fragmentArray[position]
         }.attach()
+    }
+
+    private fun collectEvent() {
+        repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is GatheringAlbumEvent.Initialized -> Unit
+                    is GatheringAlbumEvent.GoToClassifiedAllAlbum -> {
+                        val action =
+                            GatheringViewFragmentDirections.actionGatheringViewFragmentToClassifiedAlbumDetailFragment(
+                                event.itemId, event.classifiedAlbumList, event.fromMonth
+                            )
+                        findNavController().navigate(action)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

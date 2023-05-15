@@ -175,5 +175,6 @@
     <string name="classified_with_year">년도별</string>
     <string name="all">전체</string>
 
+    <string name="classified_album_detail_title" tools:ignore="ExtraTranslation">2023–01</string>
 
 </resources>

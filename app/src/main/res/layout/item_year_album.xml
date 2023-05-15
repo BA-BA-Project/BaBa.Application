@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="baby"
+            name="albumAndCount"
             type="kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel" />
 
         <variable
@@ -36,7 +36,7 @@
 
             <ImageView
                 android:id="@+id/iv_month_baby"
-                imageFromUrl="@{baby.representativeAlbumUiModel.photo}"
+                imageFromUrl="@{albumAndCount.representativeAlbumUiModel.photo}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:contentDescription="@string/item_month_baby_img"
@@ -57,7 +57,7 @@
                 android:fontFamily="@font/notosanskr"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:date="@{baby.representativeAlbumUiModel.date}"
+                app:date="@{albumAndCount.representativeAlbumUiModel.date}"
                 app:formatter="@{dateTimeFormatter}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/notosanskr"
-                android:text="@{String.format(@string/unit_of_count, baby.albumCounts)}"
+                android:text="@{String.format(@string/unit_of_count, albumAndCount.albumCounts)}"
                 android:textColor="@color/text_2"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_month_baby_label"

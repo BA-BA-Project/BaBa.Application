@@ -43,11 +43,14 @@ class MonthAlbumFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
-
     }
 
     private fun initAdapter() {
-        adapter = MonthAlbumAdapter()
+        adapter = MonthAlbumAdapter(
+            albumClick = { itemId ->
+                viewModel.showClassifiedAllAlbumsByMonth(itemId)
+            }
+        )
         binding.rvMonthBabies.adapter = adapter
         val manager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         binding.rvMonthBabies.layoutManager = manager

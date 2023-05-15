@@ -4,8 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.presentation.event.GatheringAlbumEvent
 import kids.baba.mobile.presentation.model.AlbumUiModel
+import kids.baba.mobile.presentation.model.ClassifiedAlbumList
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,37 +21,40 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
     val TAG = "GatheringViewModel"
 
+    private val _eventFlow = MutableEventFlow<GatheringAlbumEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
+
     // 전체 앨범
-    private val _allAlbumListState: MutableStateFlow<List<AlbumUiModel>> = MutableStateFlow(listOf())
+    private val _allAlbumListState: MutableStateFlow<List<AlbumUiModel>> = MutableStateFlow(emptyList())
     val allAlbumListState = _allAlbumListState.asStateFlow()
 
     // 년도별 가장 최근 Album 과 해당 년도의 앨범 수 - RepresentativeAlbumUiModel 은 photo 와 date 만.
     private val _recentYearAlbumListState: MutableStateFlow<List<GatheringAlbumCountUiModel>> = MutableStateFlow(
-        listOf()
+        emptyList()
     )
     val recentYearAlbumListState = _recentYearAlbumListState.asStateFlow()
 
     // 월별 가장 최근 Album 과 해당 월의 앨범 수 - RepresentativeAlbumUiModel 은 photo 와 date 만.
     private val _recentMonthAlbumListState: MutableStateFlow<List<GatheringAlbumCountUiModel>> = MutableStateFlow(
-        listOf()
+        emptyList()
     )
     val recentMonthAlbumListState = _recentMonthAlbumListState.asStateFlow()
 
+    // 년도별로 분류한 모든 앨범 list
+    private val _yearAlbumListState: MutableStateFlow<List<ClassifiedAlbumList>> =
+        MutableStateFlow(emptyList())
+    private val yearAlbumListState = _yearAlbumListState.asStateFlow()
 
-    // 년도별로 저장한 앨범 list
-    private val _yearAlbumListState: MutableStateFlow<List<List<AlbumUiModel>>> = MutableStateFlow(listOf())
-    val yearAlbumListState = _yearAlbumListState.asStateFlow()
-
-    // 월별로 저장한 앨범 list
-    private val _monthAlbumListState: MutableStateFlow<List<List<AlbumUiModel>>> = MutableStateFlow(listOf())
-    val monthAlbumListState = _monthAlbumListState.asStateFlow()
-
+    // 월별로 분류한 모든 album list
+    private val _monthAlbumListState: MutableStateFlow<List<ClassifiedAlbumList>> =
+        MutableStateFlow(emptyList())
+    private val monthAlbumListState = _monthAlbumListState.asStateFlow()
 
     private var thisYear = LocalDate.now().year
     private var thisMonth = LocalDate.now().monthValue
 
-    private var tempYearAlbumList: MutableList<List<AlbumUiModel>> = mutableListOf()
-    private var tempMonthAlbumList: MutableList<List<AlbumUiModel>> = mutableListOf()
+    private var tempYearAlbumList: MutableList<ClassifiedAlbumList> = mutableListOf()
+    private var tempMonthAlbumList: MutableList<ClassifiedAlbumList> = mutableListOf()
 
     private var tempYearAlbumCountList: MutableList<GatheringAlbumCountUiModel> =
         mutableListOf()
@@ -56,7 +63,6 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
     init {
         initAlbum()
-        Log.e(TAG, "initAlbum Called")
     }
 
     private fun initAlbum() = viewModelScope.launch {
@@ -74,7 +80,7 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
             val tempYearAlbums = allAlbumListState.value.filter { it.date.year == thisYear }
             if (tempRecentYearAlbum != null) {
                 tempYearAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentYearAlbum, yearAlbumCount))
-                tempYearAlbumList.add(tempYearAlbums)
+                tempYearAlbumList.add(ClassifiedAlbumList(tempYearAlbums))
             }
             while (thisMonth >= 1) {
                 val tempRecentMonthAlbum = allAlbumListState.value.lastOrNull {
@@ -88,7 +94,8 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
                     allAlbumListState.value.filter { it.date.year == thisYear && it.date.monthValue == thisMonth }
                 if (tempRecentMonthAlbum != null) {
                     tempMonthAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentMonthAlbum, monthAlbumCount))
-                    tempMonthAlbumList.add(tempMonthAlbums)
+                    tempMonthAlbumList.add(ClassifiedAlbumList(tempMonthAlbums))
+
                 }
                 thisMonth -= 1
             }
@@ -99,19 +106,21 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
         _recentYearAlbumListState.value = tempYearAlbumCountList
         _recentMonthAlbumListState.value = tempMonthAlbumCountList
 
-        Log.e(TAG, "recentYearAlbumList : ${recentYearAlbumListState.value} \n\n")
-        Log.e(TAG, "recentMonthAlbumList: ${recentMonthAlbumListState.value} \n\n")
-
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
+        testLog()
 
+    }
 
+    // 머지 허가되면 바로 지울 testLog. PR 확인하는 팀원들을 위한 확인용
+    private fun testLog() {
+        Log.e(TAG, "recentYearAlbumList : ${recentYearAlbumListState.value} \n\n")
+        Log.e(TAG, "recentMonthAlbumList: ${recentMonthAlbumListState.value} \n\n")
         Log.e(
             TAG, "yearAlbumList - 2023: ${yearAlbumListState.value[0]} \n\n" +
                     "2022: ${yearAlbumListState.value[1]}  \n\n"
         )
-
         Log.e(
             TAG, "monthAlbumList - 2023-5 ${monthAlbumListState.value[0]}------------- \n\n" +
                     "2023-4 : ${monthAlbumListState.value[1]}-------------\n\n" +
@@ -119,7 +128,26 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
                     "2023-2 : ${monthAlbumListState.value[3]}-------------\n\n" +
                     "2023-1 : ${monthAlbumListState.value[4]}-------------\n\n"
         )
+    }
 
+    fun showClassifiedAllAlbumsByMonth(itemId: Int) = viewModelScope.launch {
+        _eventFlow.emit(
+            GatheringAlbumEvent.GoToClassifiedAllAlbum(
+                itemId = itemId,
+                classifiedAlbumList = monthAlbumListState.value[itemId],
+                fromMonth = true
+            )
+        )
+    }
+
+    fun showClassifiedAllAlbumsByYear(itemId: Int) = viewModelScope.launch {
+        _eventFlow.emit(
+            GatheringAlbumEvent.GoToClassifiedAllAlbum(
+                itemId = itemId,
+                classifiedAlbumList = yearAlbumListState.value[itemId],
+                fromMonth = false
+            )
+        )
     }
 
     // 더미 데이터 - 굳이 읽어보실 필요 없습니다.
@@ -471,7 +499,6 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
 
             )
     }
-
 
     companion object {
         const val LAUNCHING_YEAR = 2022

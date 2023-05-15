@@ -9,12 +9,18 @@ import kids.baba.mobile.databinding.ItemYearAlbumBinding
 import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import java.time.format.DateTimeFormatter
 
-class YearAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
+class YearAlbumAdapter(
+    private val albumClick: (Int) -> Unit
+) : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapter.YearViewHolder>(diffUtil) {
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
         val binding = ItemYearAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy" + "년")
-        return YearViewHolder(binding)
+        return YearViewHolder(binding, albumClick)
     }
 
     override fun onBindViewHolder(holder: YearViewHolder, position: Int) {
@@ -26,11 +32,19 @@ class YearAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, YearAlbumAdapte
         return position.toLong()
     }
 
-    class YearViewHolder(private val binding: ItemYearAlbumBinding) : RecyclerView.ViewHolder(
+    class YearViewHolder(
+        private val binding: ItemYearAlbumBinding,
+        albumClick: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(
         binding.root
     ) {
-        fun bind(baby: GatheringAlbumCountUiModel) {
-            binding.baby = baby
+
+        init {
+            binding.ivMonthBaby.setOnClickListener { albumClick(itemId.toInt()) }
+        }
+
+        fun bind(albumAndCount: GatheringAlbumCountUiModel) {
+            binding.albumAndCount = albumAndCount
         }
     }
 

@@ -10,15 +10,21 @@ import kids.baba.mobile.presentation.model.GatheringAlbumCountUiModel
 import java.time.format.DateTimeFormatter
 
 
-class MonthAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.YearViewHolder>(diffUtil) {
+class MonthAlbumAdapter(
+    private val albumClick: (Int) -> Unit
+) : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdapter.MonthViewHolder>(diffUtil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YearViewHolder {
-        val binding = ItemMonthAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM" + "월")
-        return YearViewHolder(binding)
+    init {
+        setHasStableIds(true)
     }
 
-    override fun onBindViewHolder(holder: YearViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
+        val binding = ItemMonthAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM" + "월")
+        return MonthViewHolder(binding, albumClick)
+    }
+
+    override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
         val content = getItem(position)
         holder.bind(content)
     }
@@ -27,11 +33,15 @@ class MonthAlbumAdapter : ListAdapter<GatheringAlbumCountUiModel, MonthAlbumAdap
         return position.toLong()
     }
 
-    class YearViewHolder(private val binding: ItemMonthAlbumBinding) : RecyclerView.ViewHolder(
-        binding.root
-    ) {
-        fun bind(baby: GatheringAlbumCountUiModel) {
-            binding.baby = baby
+    class MonthViewHolder(private val binding: ItemMonthAlbumBinding, albumClick: (Int) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.ivMonthBaby.setOnClickListener { albumClick(itemId.toInt()) }
+        }
+
+        fun bind(albumAndCount: GatheringAlbumCountUiModel) {
+            binding.albumAndCount = albumAndCount
         }
     }
 
