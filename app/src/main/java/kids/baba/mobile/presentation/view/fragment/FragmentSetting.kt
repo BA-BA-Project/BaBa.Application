@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentSettingBinding
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.MyPageSettingViewModel
 
 @AndroidEntryPoint
@@ -51,6 +52,7 @@ class FragmentSetting : Fragment() {
             navController.navigate(R.id.action_setting_fragment_to_creator_fragment)
         }
         binding.topAppBar.ivBackButton.setOnClickListener {
+            MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
         }
     }

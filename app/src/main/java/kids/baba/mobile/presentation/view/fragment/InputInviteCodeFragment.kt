@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel
 
 @AndroidEntryPoint
@@ -42,6 +43,7 @@ class InputInviteCodeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
+            MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
         }
         binding.btnAddInviteUser.setOnClickListener {

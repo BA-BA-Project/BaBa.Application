@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,10 +16,8 @@ import kids.baba.mobile.databinding.ActivityMyPageBinding
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment
 import kids.baba.mobile.presentation.view.fragment.MyPageFragmentDirections
 import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
@@ -32,10 +30,11 @@ class MyPageActivity : AppCompatActivity() {
         binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setNavController()
+        instance = this
         //collectEvent()
         when (intent.getStringExtra("next")) {
-            "addBaby" -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
-            "invite" -> navController.navigate(R.id.action_my_page_fragment_to_input_invite_fragment)
+            "addBaby" -> navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
+            "invite" -> navigate(R.id.action_my_page_fragment_to_input_invite_fragment)
             "babyDetail" -> {
                 val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     intent.getParcelableExtra("baby", MemberUiModel::class.java)
@@ -43,22 +42,33 @@ class MyPageActivity : AppCompatActivity() {
                     intent.getParcelableExtra("baby")
                 }
                 key?.let {
-                    val action =
-                        MyPageFragmentDirections.actionMyPageFragmentToBabyDetailFragment(it)
-                    navController.navigate(action)
+                    val action = MyPageFragmentDirections.actionMyPageFragmentToBabyDetailFragment(it)
+                    navigate(action)
                 }
             }
 
-            "member" -> navController.navigate(R.id.action_my_page_fragment_to_invite_member_fragment)
-            "setting" -> navController.navigate(R.id.action_my_page_fragment_to_setting_fragment)
-            "addGroup" -> navController.navigate(R.id.action_my_page_fragment_to_add_group_fragment)
+            "member" -> navigate(R.id.action_my_page_fragment_to_invite_member_fragment)
+            "setting" -> navigate(R.id.action_my_page_fragment_to_setting_fragment)
+            "addGroup" -> navigate(R.id.action_my_page_fragment_to_add_group_fragment)
         }
+    }
+    private fun navigate(to:Int){
+        binding.btvMenu.visibility = View.GONE
+        navController.navigate(to)
+    }
+
+    private fun navigate(action:NavDirections){
+        binding.btvMenu.visibility = View.GONE
+        navController.navigate(action)
+    }
+
+    fun bottomNavOn() {
+        binding.btvMenu.visibility = View.VISIBLE
     }
 
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect {
-                Log.e("eventFlow","$it")
                 when (it) {
                     is MyPageEvent.MoveToAddBabyPage -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
                     is MyPageEvent.MoveToSettingPage -> navController.navigate(R.id.action_my_page_fragment_to_setting_fragment)
@@ -87,5 +97,9 @@ class MyPageActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
         binding.btvMenu.setupWithNavController(navController)
+    }
+
+    companion object {
+        lateinit var instance: MyPageActivity
     }
 }

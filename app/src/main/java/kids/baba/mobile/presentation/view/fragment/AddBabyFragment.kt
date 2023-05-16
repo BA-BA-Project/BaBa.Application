@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
 
 @AndroidEntryPoint
@@ -41,6 +42,7 @@ class AddBabyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
+            MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
         }
         binding.btnAddBaby.setOnClickListener {

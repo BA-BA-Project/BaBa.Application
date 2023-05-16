@@ -20,6 +20,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
@@ -48,6 +49,7 @@ class BabyDetailFragment : Fragment() {
 
     private fun initView() {
         binding.ivBack.setOnClickListener {
+            MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
         }
         baby = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
