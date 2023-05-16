@@ -99,8 +99,4 @@ object EncryptedPrefs {
     fun clearPrefs() {
         prefs?.edit()?.clear()?.apply()
     }
-
-    fun clearMember() {
-        prefs?.edit()?.remove(MEMBER_KEY)?.apply()
-    }
 }

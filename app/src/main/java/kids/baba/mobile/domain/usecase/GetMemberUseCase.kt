@@ -31,4 +31,5 @@ class GetMemberUseCase @Inject constructor(private val memberRepository: MemberR
                 throw it
             }
         }
+    suspend fun getMeNoPref() = memberRepository.getMe(EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY))
 }

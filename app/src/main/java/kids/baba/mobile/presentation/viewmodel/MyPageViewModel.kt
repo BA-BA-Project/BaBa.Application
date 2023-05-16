@@ -1,16 +1,16 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +20,6 @@ class MyPageViewModel @Inject constructor(
     private val getBabiesUseCase: GetBabiesUseCase,
     private val getMemberUseCase: GetMemberUseCase
 ) : ViewModel() {
-    val myName = MutableStateFlow("")
-    val myStatusMessage = MutableStateFlow("")
     val groupAddButton = MutableStateFlow("+ 그룹만들기")
 
 
@@ -43,10 +41,8 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun getMyInfo() = viewModelScope.launch {
-        EncryptedPrefs.clearMember()
-        val member = getMemberUseCase.getMe()
-        Log.e("me", "$member")
-        myName.value = member.name
-        myStatusMessage.value = member.introduction
+        getMemberUseCase.getMeNoPref().map { it.toPresentation() }.collect {
+            _uiState.value = MyPageUiState.LoadMyInfo(it)
+        }
     }
 }

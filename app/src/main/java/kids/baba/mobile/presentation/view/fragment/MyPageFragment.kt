@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +61,15 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageUiState.LoadBabies -> {
-                        babyAdapter.submitList(it.data.map { baby -> baby.toMember().toPresentation() })
+                        babyAdapter.submitList(it.data.map { baby ->
+                            baby.toMember().toPresentation()
+                        })
+                    }
+
+                    is MyPageUiState.LoadMyInfo -> {
+                        Log.e("LoadMyInfo","${it.data}")
+                        binding.tvMyStatusMessage.text = it.data.name
+                        binding.tvMyName.text = it.data.introduction
                     }
 
                     else -> {}
