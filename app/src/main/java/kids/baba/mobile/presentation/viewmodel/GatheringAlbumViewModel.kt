@@ -83,6 +83,11 @@ class GatheringAlbumViewModel @Inject constructor(
             thisYear
         }
 
+        tempYearAlbumCountList.clear()
+        tempMonthAlbumCountList.clear()
+        tempYearAlbumList.clear()
+        tempMonthAlbumList.clear()
+
         // 현재 year 에서부터 1년 씩 줄이면서 앨범 필터링
         while (thisYear >= oldestAlbumYear) {
             val tempRecentYearAlbum =
@@ -105,11 +110,9 @@ class GatheringAlbumViewModel @Inject constructor(
 
                 val tempMonthAlbums =
                     allAlbumListState.value.filter { it.date.year == thisYear && it.date.monthValue == thisMonth }
-//                Log.e("GatheringAlbumViewModel", "tempMonthAlbums : $tempMonthAlbums")
                 if (tempRecentMonthAlbum != null) {
                     tempMonthAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentMonthAlbum, monthAlbumCount))
                     tempMonthAlbumList.add(ClassifiedAlbumList(tempMonthAlbums))
-//                    Log.e("GatheringAlbumViewModel", "tempMonthAlbums - last : ${tempMonthAlbums.last()}")
 
                 }
                 thisMonth -= 1
@@ -124,7 +127,8 @@ class GatheringAlbumViewModel @Inject constructor(
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
-//        Log.e("GatheringAlbumViewModel", "recentMonthAlbumListState : ${recentMonthAlbumListState.value}")
+        thisYear = LocalDate.now().year
+        thisMonth = LocalDate.now().monthValue
     }
 
     fun showClassifiedAllAlbumsByMonth(itemId: Int) = viewModelScope.launch {
