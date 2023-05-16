@@ -81,7 +81,11 @@ class MyPageFragment : Fragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "addGroup")
+                ).apply {
+                    putExtra("next", "addGroup")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
         binding.ivSetting.setOnClickListener {
@@ -89,7 +93,11 @@ class MyPageFragment : Fragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "setting")
+                ).apply {
+                    putExtra("next", "setting")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
     }
@@ -103,6 +111,8 @@ class MyPageFragment : Fragment() {
                 ).apply {
                     putExtra("next", "babyDetail")
                     putExtra("baby", it)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 })
         }
         binding.rvKids.adapter = babyAdapter

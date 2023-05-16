@@ -29,7 +29,11 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "member")
+                ).apply {
+                    putExtra("next", "member")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
         binding.nameView.tvEditButton.setOnClickListener {
