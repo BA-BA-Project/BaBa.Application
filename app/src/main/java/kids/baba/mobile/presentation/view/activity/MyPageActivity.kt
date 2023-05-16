@@ -3,11 +3,13 @@ package kids.baba.mobile.presentation.view.activity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMyPageBinding
@@ -30,6 +32,7 @@ class MyPageActivity : AppCompatActivity() {
         binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setNavController()
+        //collectEvent()
         when (intent.getStringExtra("next")) {
             "addBaby" -> navController.navigate(R.id.action_my_page_fragment_to_add_baby_fragment)
             "invite" -> navController.navigate(R.id.action_my_page_fragment_to_input_invite_fragment)
@@ -83,5 +86,6 @@ class MyPageActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
+        binding.btvMenu.setupWithNavController(navController)
     }
 }

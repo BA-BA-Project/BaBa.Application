@@ -7,12 +7,14 @@ import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class MyPageActivityViewModel : ViewModel() {
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
+    val stateFlow = MutableStateFlow<MyPageEvent?>(null)
     fun moveToAddBabyPage() = viewModelScope.launch {
         _eventFlow.emit(MyPageEvent.MoveToAddBabyPage)
     }
@@ -34,7 +36,12 @@ class MyPageActivityViewModel : ViewModel() {
     }
 
     fun moveToAddGroupPage() = viewModelScope.launch {
-        Log.e("moveTo","AddGroupPage")
+        Log.e("moveTo", "AddGroupPage")
         _eventFlow.emit(MyPageEvent.MoveToAddGroupPage)
+        stateFlow.value = MyPageEvent.MoveToAddGroupPage
+    }
+
+    fun navigateUp() = viewModelScope.launch {
+        _eventFlow.emit(MyPageEvent.NavigateUp)
     }
 }

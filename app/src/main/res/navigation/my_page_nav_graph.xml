@@ -130,4 +130,17 @@
         android:label="FragmentCreator"
         tools:layout="@layout/fragment_creator"/>
 
+    <fragment
+        android:id="@+id/growth_album_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_growthalbum">
+    </fragment>
+    <fragment
+        android:id="@+id/collapse_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_collapse">
+    </fragment>
+
 </navigation>
