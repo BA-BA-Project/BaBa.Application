@@ -51,7 +51,7 @@ class FragmentSetting : Fragment() {
             navController.navigate(R.id.action_setting_fragment_to_creator_fragment)
         }
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_setting_fragment_to_my_page_fragment)
+            navController.navigateUp()
         }
     }
 

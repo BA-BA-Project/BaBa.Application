@@ -27,7 +27,7 @@ class InviteMemberFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_invite_member_fragment_to_my_page_fragment)
+            navController.navigateUp()
         }
         binding.btnInvite.setOnClickListener {
             navController.navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)

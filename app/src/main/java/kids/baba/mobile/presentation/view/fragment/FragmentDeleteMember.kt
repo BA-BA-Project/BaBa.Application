@@ -42,7 +42,7 @@ class FragmentDeleteMember : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_delete_member_fragment_to_setting_fragment)
+            navController.navigateUp()
         }
     }
 

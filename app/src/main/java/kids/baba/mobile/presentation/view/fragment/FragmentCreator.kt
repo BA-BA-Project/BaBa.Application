@@ -46,7 +46,7 @@ class FragmentCreator : Fragment() {
         binding.helper = "도움주신 분"
         binding.helperName = "서종환"
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_creator_fragment_to_setting_fragment)
+            navController.navigateUp()
         }
     }
 

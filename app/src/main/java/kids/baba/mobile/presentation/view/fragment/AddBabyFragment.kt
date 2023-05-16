@@ -41,7 +41,7 @@ class AddBabyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_add_baby_fragment_to_my_page_fragment)
+            navController.navigateUp()
         }
         binding.btnAddBaby.setOnClickListener {
             val name = binding.nameView.etInput.text.toString()

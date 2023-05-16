@@ -42,7 +42,7 @@ class InputInviteCodeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_input_invite_fragment_to_my_page_fragment)
+            navController.navigateUp()
         }
         binding.btnAddInviteUser.setOnClickListener {
             val inviteCode = binding.inputView.etInput.text.toString()

@@ -48,7 +48,7 @@ class BabyDetailFragment : Fragment() {
 
     private fun initView() {
         binding.ivBack.setOnClickListener {
-            navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
+            navController.navigateUp()
         }
         baby = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("baby", MemberUiModel::class.java)
@@ -76,7 +76,7 @@ class BabyDetailFragment : Fragment() {
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
                             viewModel.delete(baby?.memberId ?: "")
-                            navController.navigate(R.id.action_BabyDetailFragmentt_to_MyPageFragment)
+                            navController.navigateUp()
                         }
                     }
 

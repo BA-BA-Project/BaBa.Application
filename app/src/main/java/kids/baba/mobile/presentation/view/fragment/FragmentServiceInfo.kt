@@ -38,7 +38,7 @@ class FragmentServiceInfo : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_service_info_fragment_to_setting_fragment)
+            navController.navigateUp()
         }
     }
 

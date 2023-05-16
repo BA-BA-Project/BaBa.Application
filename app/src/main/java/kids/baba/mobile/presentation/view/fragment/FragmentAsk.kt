@@ -38,7 +38,7 @@ class FragmentAsk : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_ask_fragment_to_setting_fragment)
+            navController.navigateUp()
         }
     }
 

@@ -28,7 +28,7 @@ class AddCompleteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_add_complete_fragment_to_add_baby_fragment)
+            navController.navigateUp()
         }
         binding.btnComplete.setOnClickListener {
             requireActivity().startActivity(

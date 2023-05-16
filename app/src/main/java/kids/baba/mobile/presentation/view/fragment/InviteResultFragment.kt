@@ -41,7 +41,7 @@ class InviteResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
         binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigate(R.id.action_input_invite_result_fragment_to_input_invite_fragment)
+            navController.navigateUp()
         }
         binding.btnComplete.setOnClickListener {
             requireActivity().startActivity(
