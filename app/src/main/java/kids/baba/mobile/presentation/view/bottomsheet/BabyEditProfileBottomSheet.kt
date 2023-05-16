@@ -23,17 +23,11 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val baby = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(SELECTED_BABY_KEY, MemberUiModel::class.java)
-        } else {
-            arguments?.getParcelable(SELECTED_BABY_KEY)
-        }
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
-            viewModel.edit(babyId = baby?.memberId ?: "", name = name)
+            viewModel.edit(babyId = viewModel.baby.value?.memberId ?: "", name = name)
             dismiss()
         }
-        Log.e("baby", "$baby")
     }
 
     override fun onCreateView(

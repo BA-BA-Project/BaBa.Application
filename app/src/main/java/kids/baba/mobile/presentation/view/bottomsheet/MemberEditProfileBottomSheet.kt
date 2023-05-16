@@ -22,8 +22,8 @@ class MemberEditProfileBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.introView.tvInputButton.setOnClickListener {
-            val intro = binding.nameView.tvEdit.text.toString()
-            val name = binding.introView.etInput.text.toString()
+            val name = binding.nameView.tvEdit.text.toString()
+            val intro = binding.introView.etInput.text.toString()
             itemClick(Profile(name = name, introduction = intro, "PROFILE_M_3", "#FFE3C8"))
             dismiss()
         }

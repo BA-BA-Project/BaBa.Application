@@ -29,7 +29,6 @@ class BabyDetailFragment : Fragment() {
 
     private lateinit var familyAdapter: MemberAdapter
     private lateinit var myGroupAdapter: MemberAdapter
-    private var baby: MemberUiModel? = null
     private var _binding: FragmentBabydetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -51,12 +50,7 @@ class BabyDetailFragment : Fragment() {
             MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
         }
-        baby = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable("baby", MemberUiModel::class.java)
-        } else {
-            arguments?.getParcelable("baby")
-        }
-        baby?.let {
+        viewModel.baby.value?.let {
             viewModel.uiModel.value.babyName = it.name
             binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
             binding.civMyProfile.circleBackgroundColor =
@@ -74,7 +68,7 @@ class BabyDetailFragment : Fragment() {
                         viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
-                            viewModel.delete(baby?.memberId ?: "")
+                            viewModel.delete(viewModel.baby.value?.memberId ?: "")
                             navController.navigateUp()
                         }
                     }
@@ -93,7 +87,7 @@ class BabyDetailFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, baby)
+            bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, viewModel.baby.value)
             val bottomSheet = BabyEditProfileBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
