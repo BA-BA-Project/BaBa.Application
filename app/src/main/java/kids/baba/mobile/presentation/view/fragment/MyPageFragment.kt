@@ -2,12 +2,12 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
@@ -20,7 +20,9 @@ import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
+import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
@@ -28,7 +30,7 @@ class MyPageFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     val viewModel: MyPageViewModel by viewModels()
-
+    private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
     override fun onCreateView(
@@ -67,7 +69,6 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageUiState.LoadMyInfo -> {
-                        Log.e("LoadMyInfo","${it.data}")
                         binding.tvMyStatusMessage.text = it.data.name
                         binding.tvMyName.text = it.data.introduction
                     }
@@ -156,7 +157,12 @@ class MyPageFragment : Fragment() {
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = MemberEditProfileBottomSheet()
+            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
+                lifecycleScope.launch{
+                    editMemberProfileBottomSheetViewModel.edit(profile).join()
+                    viewModel.getMyInfo()
+                }
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
