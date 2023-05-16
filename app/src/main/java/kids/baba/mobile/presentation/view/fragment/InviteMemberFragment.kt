@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,6 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
-import kids.baba.mobile.databinding.FragmentInviteResultBinding
-import kids.baba.mobile.presentation.view.activity.MainActivity
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
 

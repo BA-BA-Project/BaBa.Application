@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,8 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
-import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
-import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
-import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
 @AndroidEntryPoint

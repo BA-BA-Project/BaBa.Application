@@ -1,8 +1,6 @@
 package kids.baba.mobile.presentation.view.dialog
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +9,6 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
-import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberViewModel
 
 @AndroidEntryPoint

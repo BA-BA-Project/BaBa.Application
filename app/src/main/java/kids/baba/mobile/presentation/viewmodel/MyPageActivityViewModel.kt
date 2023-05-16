@@ -7,7 +7,6 @@ import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class MyPageActivityViewModel : ViewModel() {

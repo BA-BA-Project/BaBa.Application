@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentServiceInfoBinding
-import kids.baba.mobile.databinding.FragmentSettingBinding
 
 @AndroidEntryPoint
 class FragmentServiceInfo : Fragment() {

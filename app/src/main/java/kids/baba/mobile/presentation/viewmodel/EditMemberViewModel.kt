@@ -9,7 +9,6 @@ import kids.baba.mobile.domain.model.GroupMemberInfo
 import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberUseCase
 import kids.baba.mobile.presentation.model.EditMemberUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

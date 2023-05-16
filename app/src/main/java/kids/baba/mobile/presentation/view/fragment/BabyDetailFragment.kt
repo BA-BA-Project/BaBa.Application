@@ -3,7 +3,6 @@ package kids.baba.mobile.presentation.view.fragment
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class BabyDetailFragment : Fragment() {
         } else {
             arguments?.getParcelable("baby")
         }
-        Log.e("baby", "$baby")
         baby?.let {
             viewModel.uiModel.value.babyName = it.name
             binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
@@ -73,7 +71,6 @@ class BabyDetailFragment : Fragment() {
                 when (it) {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
-                        Log.e("detail", "${it.data}")
                         viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {

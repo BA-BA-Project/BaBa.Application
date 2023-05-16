@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAskBinding
-import kids.baba.mobile.databinding.FragmentDeleteUserBinding
 
 @AndroidEntryPoint
 class FragmentAsk : Fragment() {
