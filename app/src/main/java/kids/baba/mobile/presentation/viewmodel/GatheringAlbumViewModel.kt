@@ -71,8 +71,12 @@ class GatheringAlbumViewModel @Inject constructor(
     fun initAlbum() = viewModelScope.launch {
         // 아기 더미 데이터
         Log.e("GatheringViewModel", "initCalled")
-
         getAllAlbums()
+        classifyAlbums()
+
+    }
+
+    private fun classifyAlbums() {
         val oldestAlbumYear = if (allAlbumListState.value.isNotEmpty()) {
             allAlbumListState.value[0].date.year
         } else {
@@ -101,9 +105,11 @@ class GatheringAlbumViewModel @Inject constructor(
 
                 val tempMonthAlbums =
                     allAlbumListState.value.filter { it.date.year == thisYear && it.date.monthValue == thisMonth }
+//                Log.e("GatheringAlbumViewModel", "tempMonthAlbums : $tempMonthAlbums")
                 if (tempRecentMonthAlbum != null) {
                     tempMonthAlbumCountList.add(GatheringAlbumCountUiModel(tempRecentMonthAlbum, monthAlbumCount))
                     tempMonthAlbumList.add(ClassifiedAlbumList(tempMonthAlbums))
+//                    Log.e("GatheringAlbumViewModel", "tempMonthAlbums - last : ${tempMonthAlbums.last()}")
 
                 }
                 thisMonth -= 1
@@ -118,6 +124,7 @@ class GatheringAlbumViewModel @Inject constructor(
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
+//        Log.e("GatheringAlbumViewModel", "recentMonthAlbumListState : ${recentMonthAlbumListState.value}")
     }
 
     fun showClassifiedAllAlbumsByMonth(itemId: Int) = viewModelScope.launch {
