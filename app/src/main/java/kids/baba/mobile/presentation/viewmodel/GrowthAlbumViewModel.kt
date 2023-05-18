@@ -38,7 +38,7 @@ class GrowthAlbumViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
 
-    private fun loadAlbum(date: LocalDate) = viewModelScope.launch {
+    private suspend fun loadAlbum(selectedBaby: BabyUiModel, date: LocalDate) {
         val nowYear = date.year
         val nowMonth = date.monthValue
         val startDate = LocalDate.of(nowYear, nowMonth, 1)
@@ -47,7 +47,6 @@ class GrowthAlbumViewModel @Inject constructor(
         } else {
             date.lengthOfMonth()
         }
-        val selectedBaby = growthAlbumState.value.selectedBaby
         val thisMonthAlbumList = MutableList(size) { idx ->
             AlbumUiModel(date = startDate.plusDays(idx.toLong()), isMyBaby = selectedBaby.isMyBaby)
         }
@@ -61,6 +60,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
                 _growthAlbumState.update {
                     it.copy(
+                        selectedBaby = selectedBaby,
                         growthAlbumList = thisMonthAlbumList,
                         selectedDate = date,
                         selectedAlbum = thisMonthAlbumList[date.dayOfMonth - 1]
@@ -83,7 +83,9 @@ class GrowthAlbumViewModel @Inject constructor(
     fun selectDate(date: LocalDate) {
         val albumState = growthAlbumState.value
         if (albumState.selectedDate.month != date.month) {
-            loadAlbum(date)
+            viewModelScope.launch {
+                loadAlbum(growthAlbumState.value.selectedBaby,date)
+            }
         } else {
             var selectedAlbum = albumState.selectedAlbum
             if (albumState.growthAlbumList.isNotEmpty()) {
@@ -107,14 +109,14 @@ class GrowthAlbumViewModel @Inject constructor(
         }
     }
 
-    fun selectBaby(baby: BabyUiModel, selectedDate: LocalDate) {
+    fun selectBaby(baby: BabyUiModel, selectedDate: LocalDate) = viewModelScope.launch {
+        loadAlbum(baby, selectedDate)
         _growthAlbumState.update {
             it.copy(
                 selectedBaby = baby.copy(selected = true)
             )
         }
         EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, baby.toDomain())
-        loadAlbum(selectedDate)
     }
 
 
@@ -135,12 +137,7 @@ class GrowthAlbumViewModel @Inject constructor(
                             ?: myBaby.first().toPresentation(true)
                     }
                 EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
-
-                _growthAlbumState.update { growthAlbumState ->
-                    growthAlbumState.copy(selectedBaby = selectedBaby.copy(selected = true))
-                }
-
-                loadAlbum(date)
+                loadAlbum(selectedBaby.copy(selected = true), date)
             }
 
             is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
