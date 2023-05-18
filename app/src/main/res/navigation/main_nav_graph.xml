@@ -8,18 +8,34 @@
         android:id="@+id/growth_album_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
         android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_growthalbum">
-    </fragment>
+        tools:layout="@layout/fragment_growthalbum" />
     <fragment
         android:id="@+id/my_page_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
         android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_mypage">
+        tools:layout="@layout/fragment_mypage" />
+    <fragment
+        android:id="@+id/gathering_view_fragment"
+        android:name="kids.baba.mobile.presentation.view.gatheringview.GatheringViewFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_gathering_view">
+        <action
+            android:id="@+id/action_gathering_view_fragment_to_classified_album_detail_fragment"
+            app:destination="@id/classified_album_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/collapse_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
-        android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_collapse">
+        android:id="@+id/classified_album_detail_fragment"
+        android:name="kids.baba.mobile.presentation.view.gatheringview.ClassifiedAlbumDetailFragment"
+        android:label="fragment_ClassifiedAlbumDetailFragment"
+        tools:layout="@layout/fragment_classified_album_detail">
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
+        <argument
+            android:name="classified_album_list"
+            app:argType="kids.baba.mobile.presentation.model.ClassifiedAlbumList" />
+        <argument
+            android:name="fromMonth"
+            app:argType="boolean" />
     </fragment>
 </navigation>
