@@ -40,6 +40,7 @@ class FragmentCreator : Fragment() {
         binding.backEndDev = "김준형\n박성우"
         binding.helper = "도움주신 분"
         binding.helperName = "서종환"
+
         binding.topAppBar.ivBackButton.setOnClickListener {
             findNavController().navigateUp()
         }

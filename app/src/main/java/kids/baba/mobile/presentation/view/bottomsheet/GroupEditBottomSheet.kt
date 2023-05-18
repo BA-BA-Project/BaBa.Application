@@ -31,8 +31,8 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "member")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }

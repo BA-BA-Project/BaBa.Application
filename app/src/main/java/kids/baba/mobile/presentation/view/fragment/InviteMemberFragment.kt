@@ -22,7 +22,7 @@ class InviteMemberFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().finish()
         }
         binding.btnInvite.setOnClickListener {
             findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)

@@ -38,7 +38,7 @@ class AddBabyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().finish()
         }
         binding.btnAddBaby.setOnClickListener {
             val name = binding.nameView.etInput.text.toString()

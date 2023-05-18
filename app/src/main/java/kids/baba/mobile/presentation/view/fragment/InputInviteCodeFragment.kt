@@ -39,8 +39,9 @@ class InputInviteCodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().finish()
         }
+
         binding.btnAddInviteUser.setOnClickListener {
             val inviteCode = binding.inputView.etInput.text.toString()
             viewModel.add(inviteCode)

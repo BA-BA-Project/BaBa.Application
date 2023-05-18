@@ -18,6 +18,7 @@ class FragmentSetting : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: MyPageSettingViewModel by viewModels()
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,6 +36,7 @@ class FragmentSetting : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.tvServiceInfo.setOnClickListener {
             findNavController().navigate(R.id.action_setting_fragment_to_service_info_fragment)
         }
@@ -48,7 +50,7 @@ class FragmentSetting : Fragment() {
             findNavController().navigate(R.id.action_setting_fragment_to_creator_fragment)
         }
         binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().finish()
         }
     }
 }

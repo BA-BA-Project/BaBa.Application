@@ -40,7 +40,7 @@ class BabyDetailFragment : Fragment() {
 
     private fun initView() {
         binding.ivBack.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().finish()
         }
         viewModel.baby.value?.let {
             viewModel.uiModel.value.babyName = it.name

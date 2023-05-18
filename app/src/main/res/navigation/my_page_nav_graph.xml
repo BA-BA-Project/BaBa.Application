@@ -8,26 +8,7 @@
         android:id="@+id/my_page_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
         android:label="MyPageFragment"
-        tools:layout="@layout/fragment_mypage">
-        <action
-            android:id="@+id/action_my_page_fragment_to_baby_detail_fragment"
-            app:destination="@id/baby_detail_fragment" />
-        <action
-            android:id="@+id/action_my_page_fragment_to_setting_fragment"
-            app:destination="@id/setting_fragment" />
-        <action
-            android:id="@+id/action_my_page_fragment_to_add_baby_fragment"
-            app:destination="@id/add_baby_fragment" />
-        <action
-            android:id="@+id/action_my_page_fragment_to_input_invite_fragment"
-            app:destination="@id/input_invite_fragment" />
-        <action
-            android:id="@+id/action_my_page_fragment_to_invite_member_fragment"
-            app:destination="@id/invite_member_fragment" />
-        <action
-            android:id="@+id/action_my_page_fragment_to_add_group_fragment"
-            app:destination="@id/add_group_fragment" />
-    </fragment>
+        tools:layout="@layout/fragment_mypage"></fragment>
     <fragment
         android:id="@+id/baby_detail_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.BabyDetailFragment"
@@ -51,7 +32,7 @@
         android:id="@+id/input_invite_result_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.InviteResultFragment"
         android:label="InviteResultFragment"
-        tools:layout="@layout/fragment_invite_result"/>
+        tools:layout="@layout/fragment_invite_result" />
 
     <fragment
         android:id="@+id/add_baby_fragment"
@@ -67,7 +48,7 @@
         android:id="@+id/add_complete_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.AddCompleteFragment"
         android:label="AddCompleteFragment"
-        tools:layout="@layout/fragment_add_complete"/>
+        tools:layout="@layout/fragment_add_complete" />
 
     <fragment
         android:id="@+id/invite_member_fragment"
@@ -83,13 +64,13 @@
         android:id="@+id/invite_member_result_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.InviteMemberResultFragment"
         android:label="InviteMemberResultFragment"
-        tools:layout="@layout/fragment_member_invite_result"/>
+        tools:layout="@layout/fragment_member_invite_result" />
 
     <fragment
         android:id="@+id/add_group_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.AddGroupFragment"
         android:label="AddGroupFragment"
-        tools:layout="@layout/fragment_add_group"/>
+        tools:layout="@layout/fragment_add_group" />
 
     <fragment
         android:id="@+id/setting_fragment"
@@ -113,34 +94,22 @@
         android:id="@+id/ask_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.FragmentAsk"
         android:label="FragmentAsk"
-        tools:layout="@layout/fragment_ask"/>
+        tools:layout="@layout/fragment_ask" />
     <fragment
         android:id="@+id/service_info_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.FragmentServiceInfo"
         android:label="FragmentServiceInfo"
-        tools:layout="@layout/fragment_service_info"/>
+        tools:layout="@layout/fragment_service_info" />
     <fragment
         android:id="@+id/delete_member_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.FragmentDeleteMember"
         android:label="FragmentDeleteMember"
-        tools:layout="@layout/fragment_delete_user"/>
+        tools:layout="@layout/fragment_delete_user" />
     <fragment
         android:id="@+id/creator_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.FragmentCreator"
         android:label="FragmentCreator"
-        tools:layout="@layout/fragment_creator"/>
+        tools:layout="@layout/fragment_creator" />
 
-    <fragment
-        android:id="@+id/growth_album_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
-        android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_growthalbum">
-    </fragment>
-    <fragment
-        android:id="@+id/collapse_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
-        android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_collapse">
-    </fragment>
 
 </navigation>

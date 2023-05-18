@@ -33,6 +33,7 @@ class MyPageFragment : Fragment() {
     private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -114,16 +115,18 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        babyAdapter = MemberAdapter {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "babyDetail")
-                    putExtra("baby", it)
-                })
-        }
+        babyAdapter = MemberAdapter(
+            itemClick = {
+                requireActivity().startActivity(
+                    Intent(
+                        requireContext(),
+                        MyPageActivity::class.java
+                    ).apply {
+                        putExtra("next", "babyDetail")
+                        putExtra("baby", it)
+                    })
+            })
+
         binding.rvKids.adapter = babyAdapter
         myPageGroupAdapter = MyPageGroupAdapter(
             showMemberInfo = { group, member ->

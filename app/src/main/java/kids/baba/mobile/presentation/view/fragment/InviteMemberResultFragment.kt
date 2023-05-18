@@ -17,20 +17,13 @@ class InviteMemberResultFragment : Fragment() {
     private var _binding: FragmentMemberInviteResultBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: InviteMemberResultViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.ivBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.btnComplete.setOnClickListener {
-//            requireActivity().startActivity(
-//                Intent(
-//                    requireContext(),
-//                    MainActivity::class.java
-//                ).apply {
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                })
             requireActivity().finish()
         }
     }
