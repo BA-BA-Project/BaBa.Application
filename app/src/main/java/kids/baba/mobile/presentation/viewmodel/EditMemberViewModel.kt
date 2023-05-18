@@ -36,7 +36,7 @@ class EditMemberViewModel @Inject constructor(
     }
 
     fun delete() = viewModelScope.launch {
-        //deleteOneGroupMemberUseCase.delete(member.value?.memberId ?: "")
+        deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
         Log.e("123","delete")
         dismiss()
     }

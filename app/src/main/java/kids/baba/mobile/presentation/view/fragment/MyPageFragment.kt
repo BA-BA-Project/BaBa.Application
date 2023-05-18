@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
@@ -86,6 +87,7 @@ class MyPageFragment : Fragment() {
 
     private fun initView() {
         binding.viewmodel = viewModel
+        binding.tvKidsTitle.text = EncryptedPrefs.getString("babyGroupTitle")
         binding.tvAddGroup.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -150,19 +152,22 @@ class MyPageFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
             val bundle = Bundle()
-            //            bundle.putParcelable(BabyListBottomSheet.SELECTED_BABY_KEY, viewModel.selectedBaby.value)
-            val bottomSheet = BabyEditBottomSheet()
+            val bottomSheet = BabyEditBottomSheet {
+                EncryptedPrefs.putString("babyGroupTitle", it)
+                binding.tvKidsTitle.text = it
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch{
-                    editMemberProfileBottomSheetViewModel.edit(profile).join()
-                    viewModel.getMyInfo()
+            val bottomSheet =
+                MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
+                    lifecycleScope.launch {
+                        editMemberProfileBottomSheetViewModel.edit(profile).join()
+                        viewModel.getMyInfo()
+                    }
                 }
-            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
