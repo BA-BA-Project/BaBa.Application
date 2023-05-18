@@ -24,7 +24,7 @@ class MemberEditProfileBottomSheet(
         binding.introView.tvInputButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             val intro = binding.introView.etInput.text.toString()
-            itemClick(Profile(name = name, introduction = intro, "PROFILE_M_3", viewModel.color.value))
+            itemClick(Profile(name = name, introduction = intro, iconName = viewModel.icon.value, iconColor = viewModel.color.value))
             dismiss()
         }
         binding.colorView.pink.setOnClickListener {
@@ -33,7 +33,21 @@ class MemberEditProfileBottomSheet(
         binding.colorView.blue.setOnClickListener {
             viewModel.color.value = "#97BEFF"
         }
+        binding.iconView.w1.setOnClickListener {
+            viewModel.icon.value = trim("W_1")
+        }
+        binding.iconView.w2.setOnClickListener {
+            viewModel.icon.value = trim("W_2")
+        }
+        binding.iconView.w3.setOnClickListener {
+            viewModel.icon.value = trim("W_3")
+        }
+        binding.iconView.w4.setOnClickListener {
+            viewModel.icon.value = trim("W_4")
+        }
     }
+
+    private fun trim(icon: String) = "PROFILE_$icon"
 
     override fun onCreateView(
         inflater: LayoutInflater,
