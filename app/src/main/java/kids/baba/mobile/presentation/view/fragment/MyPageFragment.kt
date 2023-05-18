@@ -44,12 +44,17 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadGroups()
-        viewModel.loadBabies()
-        viewModel.getMyInfo()
+
         collectState()
         initView()
         setBottomSheet()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadGroups()
+        viewModel.loadBabies()
+        viewModel.getMyInfo()
     }
 
     private fun collectState() {
@@ -93,8 +98,6 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "addGroup")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
@@ -105,8 +108,6 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "setting")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
@@ -121,8 +122,6 @@ class MyPageFragment : Fragment() {
                 ).apply {
                     putExtra("next", "babyDetail")
                     putExtra("baby", it)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 })
         }
         binding.rvKids.adapter = babyAdapter
@@ -150,7 +149,6 @@ class MyPageFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
             val bundle = Bundle()
-            //            bundle.putParcelable(BabyListBottomSheet.SELECTED_BABY_KEY, viewModel.selectedBaby.value)
             val bottomSheet = BabyEditBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
@@ -158,7 +156,7 @@ class MyPageFragment : Fragment() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
             val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     editMemberProfileBottomSheetViewModel.edit(profile).join()
                     viewModel.getMyInfo()
                 }

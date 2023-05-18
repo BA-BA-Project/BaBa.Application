@@ -17,7 +17,7 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-    private val viewModel : BabyEditBottomSheetViewModel by viewModels()
+    private val viewModel: BabyEditBottomSheetViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
@@ -28,8 +28,6 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "addBaby")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
@@ -40,8 +38,6 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "invite")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }

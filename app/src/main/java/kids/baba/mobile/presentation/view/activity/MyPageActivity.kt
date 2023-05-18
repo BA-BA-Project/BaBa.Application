@@ -2,7 +2,6 @@ package kids.baba.mobile.presentation.view.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -51,19 +50,15 @@ class MyPageActivity : AppCompatActivity() {
             "addGroup" -> navigate(R.id.action_my_page_fragment_to_add_group_fragment)
         }
     }
-    private fun navigate(to:Int){
-        binding.btvMenu.visibility = View.GONE
+
+    private fun navigate(to: Int) {
         navController.navigate(to)
     }
 
-    private fun navigate(action:NavDirections){
-        binding.btvMenu.visibility = View.GONE
+    private fun navigate(action: NavDirections) {
         navController.navigate(action)
     }
 
-    fun bottomNavOn() {
-        binding.btvMenu.visibility = View.VISIBLE
-    }
 
     private fun collectEvent() {
         repeatOnStarted {
