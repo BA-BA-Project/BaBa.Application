@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ class GatheringViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGatheringViewBinding.inflate(inflater, container, false)
-        Log.e("GatheringViewFragment", "onCreateView called. savedInstanceState: Bundle = $savedInstanceState")
         return binding.root
     }
 
@@ -47,7 +45,6 @@ class GatheringViewFragment : Fragment() {
         viewModel.initAlbum()
         setViewPager()
         collectEvent()
-        Log.e("GatheringViewFragment", "onViewCreated called. savedInstanceState: Bundle = $savedInstanceState")
     }
 
     private fun setViewPager() {
@@ -85,11 +82,5 @@ class GatheringViewFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-        Log.e("GatheringViewFragment", "onDestroyView called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("GatheringViewFragment", "onDestroy called")
     }
 }
