@@ -15,7 +15,7 @@ interface AlbumRemoteDataSource {
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Flow<PostAlbumResponse>
 
-    suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
+    suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 

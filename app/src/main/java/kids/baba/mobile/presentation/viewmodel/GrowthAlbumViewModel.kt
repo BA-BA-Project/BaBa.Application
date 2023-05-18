@@ -52,7 +52,7 @@ class GrowthAlbumViewModel @Inject constructor(
             AlbumUiModel(date = startDate.plusDays(idx.toLong()), isMyBaby = selectedBaby.isMyBaby)
         }
 
-        when (val result = getAlbumsFromBabyIdUseCase(selectedBaby.babyId, nowYear, nowMonth)){
+        when (val result = getAlbumsFromBabyIdUseCase(selectedBaby.babyId, nowYear, nowMonth)) {
             is Result.Success -> {
                 val albumList = result.data
                 albumList.forEach {
@@ -67,6 +67,7 @@ class GrowthAlbumViewModel @Inject constructor(
                     )
                 }
             }
+
             is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_album_failed))
         }
@@ -149,27 +150,31 @@ class GrowthAlbumViewModel @Inject constructor(
 
     fun likeAlbum(album: AlbumUiModel) = viewModelScope.launch {
         if (album.contentId != null) {
-            likeAlbumUseCase.like(
+            when (val result = likeAlbumUseCase(
                 growthAlbumState.value.selectedBaby.babyId,
                 album.contentId.toString()
-            ).collect { likeResponse ->
-                var selectedAlbum = growthAlbumState.value.selectedAlbum
-                val growthAlbumList = growthAlbumState.value.growthAlbumList.map {
-                    if (it == album) {
-                        selectedAlbum = album.copy(like = likeResponse.isLiked)
-                        selectedAlbum
-                    } else {
-                        it
+            )) {
+                is Result.Success -> {
+                    var selectedAlbum = growthAlbumState.value.selectedAlbum
+                    val growthAlbumList = growthAlbumState.value.growthAlbumList.map {
+                        if (it == album) {
+                            selectedAlbum = album.copy(like = result.data)
+                            selectedAlbum
+                        } else {
+                            it
+                        }
+                    }
+                    _growthAlbumState.update {
+                        it.copy(
+                            selectedAlbum = selectedAlbum,
+                            growthAlbumList = growthAlbumList
+                        )
                     }
                 }
-                _growthAlbumState.update {
-                    it.copy(
-                        selectedAlbum = selectedAlbum,
-                        growthAlbumList = growthAlbumList
-                    )
-                }
+
+                is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_like_album_failed))
             }
         }
     }
-
 }

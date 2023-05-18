@@ -166,4 +166,5 @@
     <string name="calendar_date">%d.%d</string>
     <string name="baba_get_album_failed">앨범을 불러오는 것에 실패했습니다.</string>
     <string name="baba_get_babies_failed">아기 리스트를 불러오는 것에 실패했습니다.</string>
+    <string name="baba_like_album_failed">좋아요 요청이 실패했습니다.</string>
 </resources>

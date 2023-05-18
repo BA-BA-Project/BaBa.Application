@@ -11,6 +11,7 @@ import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
 import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
@@ -93,11 +94,12 @@ class AlbumDetailViewModel @Inject constructor(
         val babyId = _baby.value?.babyId ?: return@launch
         val contentId = album.value?.contentId.toString()
         _albumDetailUiState.value = AlbumDetailUiState.Loading
-        likeAlbumUseCase.like(babyId, contentId
-        ).catch {
-            _albumDetailUiState.value = AlbumDetailUiState.Error(it)
-        }.collect {
-            _albumDetailUiState.value = AlbumDetailUiState.Like(it.isLiked)
+
+
+        when(val result =likeAlbumUseCase(babyId, contentId)){
+            is Result.Success -> _albumDetailUiState.value = AlbumDetailUiState.Like(result.data)
+            is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+            else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_like_album_failed))
         }
     }
     fun addComment() =

@@ -7,7 +7,6 @@ import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.CommentResponse
 import kids.baba.mobile.domain.model.LikeDetailResponse
-import kids.baba.mobile.domain.model.LikeResponse
 import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -60,11 +59,16 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {
-        val response = api.likeAlbum(id = id, contentId = contentId)
-        response.body()?.let {
-            emit(it)
-        }
+    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>{
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.likeAlbum(id = id, contentId = contentId)
+            },
+            mapping = {
+                it.isLiked
+            }
+        )
+        return result
     }
 
     override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {

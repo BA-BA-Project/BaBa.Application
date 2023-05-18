@@ -9,5 +9,4 @@ data class GrowthAlbumState(
     val selectedDate: LocalDate = LocalDate.now(),
     val selectedAlbum: AlbumUiModel = AlbumUiModel(date = LocalDate.now()),
     val selectedBaby: BabyUiModel = BabyUiModel()
-) {
-}
+)

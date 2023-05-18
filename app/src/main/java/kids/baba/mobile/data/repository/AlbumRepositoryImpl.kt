@@ -31,7 +31,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> =
+    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> =
         dataSource.likeAlbum(id, contentId)
 
     override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {
