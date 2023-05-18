@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,6 +73,8 @@ class MyPageFragment : Fragment() {
                     is MyPageUiState.LoadMyInfo -> {
                         binding.tvMyStatusMessage.text = it.data.name
                         binding.tvMyName.text = it.data.introduction
+                        binding.civMyProfile.circleBackgroundColor = Color.parseColor(it.data.userIconUiModel.iconColor)
+                        binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
                     }
 
                     else -> {}

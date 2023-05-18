@@ -24,8 +24,14 @@ class MemberEditProfileBottomSheet(
         binding.introView.tvInputButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             val intro = binding.introView.etInput.text.toString()
-            itemClick(Profile(name = name, introduction = intro, "PROFILE_M_3", "#FFE3C8"))
+            itemClick(Profile(name = name, introduction = intro, "PROFILE_M_3", viewModel.color.value))
             dismiss()
+        }
+        binding.colorView.pink.setOnClickListener {
+            viewModel.color.value = "#FFAEBA"
+        }
+        binding.colorView.blue.setOnClickListener {
+            viewModel.color.value = "#97BEFF"
         }
     }
 

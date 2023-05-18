@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view.fragment
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,6 +69,7 @@ class BabyDetailFragment : Fragment() {
                         viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
+                            Log.e("delete","${viewModel.baby.value?.memberId}")
                             viewModel.delete(viewModel.baby.value?.memberId ?: "")
                             navController.navigateUp()
                         }
