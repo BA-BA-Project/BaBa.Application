@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,8 +10,7 @@
             type="kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -39,7 +40,7 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
-                bind:title="@{viewmodel.name}" />
+                bind:title="@{viewmodel.uiModel.name}" />
 
             <View
                 android:layout_width="match_parent"
@@ -50,7 +51,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewmodel.bgColor}" />
+                bind:title="@{viewmodel.uiModel.bgColor}" />
 
             <View
                 android:layout_width="match_parent"
@@ -71,7 +72,8 @@
             <include
                 android:id="@+id/intro_view"
                 layout="@layout/composable_input_view"
-                bind:title="@{viewmodel.intro}" />
+                bind:title="@{viewmodel.uiModel.intro}"
+                bind:button="@{viewmodel.uiModel.button}"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

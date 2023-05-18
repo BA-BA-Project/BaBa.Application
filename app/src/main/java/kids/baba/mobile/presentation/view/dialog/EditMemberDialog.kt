@@ -22,11 +22,13 @@ class EditMemberDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
         isCancelable = true
+        viewModel.dismiss.value = { dismiss() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivCloseEdit.setOnClickListener {
+        binding.deleteView.tvDeleteDesc.setOnClickListener {
+            viewModel.delete()
             dismiss()
         }
     }
@@ -49,5 +51,6 @@ class EditMemberDialog : DialogFragment() {
     companion object {
         const val TAG = "EditDialogFragment"
         const val SELECTED_MEMBER_KEY = "SELECTED_MEMBER_KEY"
+        const val SELECTED_MEMBER_RELATION = "SELECTED_MEMBER_RELATION"
     }
 }

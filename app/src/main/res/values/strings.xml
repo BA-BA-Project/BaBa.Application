@@ -163,6 +163,7 @@
     <string name="record_album">성장을 기록해봐요</string>
     <string name="no_albums_recorded">쉿! 아직 자고있어요</string>
     <string name="add_like_and_comment">좋아요와 댓글을 달아봐요!</string>
+    <string name="group_groupname">[%s]그룹과 소식을 공유할 수 있어요</string>
 
 
     <string name="item_month_baby_img">아기 월별로 모아보기 이미지</string>

@@ -55,8 +55,8 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
-                bind:button="@{viewModel.familyButton}"
-                bind:title="@{viewModel.familyName}" />
+                bind:button="@{viewModel.uiModel.familyButton}"
+                bind:title="@{viewModel.uiModel.familyName}" />
 
             <View
                 android:layout_width="match_parent"
@@ -66,7 +66,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewModel.groupColor}" />
+                bind:title="@{viewModel.uiModel.groupColor}" />
 
             <View
                 android:layout_width="match_parent"
@@ -76,8 +76,8 @@
             <include
                 android:id="@+id/permission_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewModel.permissionDesc}"
-                bind:title="@{viewModel.permission}" />
+                bind:description="@{viewModel.uiModel.permissionDesc}"
+                bind:title="@{viewModel.uiModel.permission}" />
 
             <View
                 android:layout_width="match_parent"
@@ -87,8 +87,8 @@
             <include
                 android:id="@+id/delete_view"
                 layout="@layout/composable_delete_view"
-                bind:delete="@{viewModel.deleteDesc}"
-                bind:title="@{viewModel.deleteTitle}" />
+                bind:delete="@{viewModel.uiModel.deleteDesc}"
+                bind:title="@{viewModel.uiModel.deleteTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -98,7 +98,7 @@
             <include
                 android:id="@+id/add_member_view"
                 layout="@layout/composable_addbutton_view"
-                bind:title="@{viewModel.addMemberTitle}" />
+                bind:title="@{viewModel.uiModel.addMemberTitle}" />
 
             <View
                 android:layout_width="match_parent"

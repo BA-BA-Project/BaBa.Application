@@ -9,12 +9,8 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
-import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
-import kids.baba.mobile.presentation.view.fragment.AddCompleteFragment
-import kids.baba.mobile.presentation.view.fragment.InviteMemberFragment
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
 @AndroidEntryPoint
@@ -33,8 +29,21 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "member")
+                ).apply {
+                    putExtra("next", "member")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
+        }
+        binding.nameView.tvEditButton.setOnClickListener {
+            val name = binding.nameView.tvEdit.text.toString()
+            viewModel.patch(name = name)
+            dismiss()
+        }
+        binding.deleteView.tvDeleteDesc.setOnClickListener {
+            viewModel.delete()
+            dismiss()
         }
     }
 
