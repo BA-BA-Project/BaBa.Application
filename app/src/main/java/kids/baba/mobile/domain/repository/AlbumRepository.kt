@@ -19,8 +19,8 @@ interface AlbumRepository {
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 
-    suspend fun getComment(id: String, contentId: String): Flow<CommentResponse>
+    suspend fun getComment(id: String, contentId: String): Result<List<Comment>>
 
-    suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse>
+    suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse>
 
 }

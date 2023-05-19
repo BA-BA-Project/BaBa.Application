@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
 import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
@@ -24,7 +25,6 @@ import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Compan
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -78,21 +78,30 @@ class AlbumDetailViewModel @Inject constructor(
             if (contentId == null) {
                 _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
             } else {
-                runCatching {
-                    val likeDetail = getLikeDetail(babyId, contentId)
-                    val comments = getComments(babyId, contentId)
-                    _albumDetailUiState.update { uiState ->
-                        uiState.copy(
-                            albumDetail = uiState.albumDetail.copy(
-                                likeDetail = likeDetail,
-                                likeCount = likeDetail.likeUsers.size,
-                                comments = comments
+                val likeDetailResult = getLikeDetailUseCase(babyId, contentId)
+                val commentsResult = getCommentsUseCase(babyId, contentId)
+                when {
+                    likeDetailResult is Result.Success && commentsResult is Result.Success -> {
+                        val likeDetail = likeDetailResult.data
+                        val comments = commentsResult.data
+                        _albumDetailUiState.update { uiState ->
+                            uiState.copy(
+                                albumDetail = uiState.albumDetail.copy(
+                                    likeDetail = likeDetail.toPresentation(),
+                                    likeCount = likeDetail.likeUsers.size,
+                                    comments = comments.map { it.toPresentation() }
+                                )
                             )
-                        )
+                        }
                     }
-                }.onFailure {
-                    _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
+
+                    likeDetailResult is Result.NetworkError || commentsResult is Result.NetworkError -> {
+                        _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                    }
+
+                    else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
                 }
+
             }
         }
     }
@@ -107,12 +116,6 @@ class AlbumDetailViewModel @Inject constructor(
 //            comment.value = ""
     }
 
-    private suspend fun getComments(babyId: String, contentId: String) =
-        getCommentsUseCase.get(babyId, contentId).first().comments.map { it.toPresentation() }
-
-    private suspend fun getLikeDetail(babyId: String, contentId: String) =
-        getLikeDetailUseCase.get(babyId, contentId).first().toPresentation()
-
     fun setExpended(expended: Boolean) {
         if (expended != _isPhotoExpended.value) {
             _isPhotoExpended.value = expended
@@ -120,7 +123,7 @@ class AlbumDetailViewModel @Inject constructor(
     }
 
     fun setTag(memberName: String, memberId: String) {
-        _commentTag.value = CommentTag(memberName,memberId)
+        _commentTag.value = CommentTag(memberName, memberId)
     }
 
     fun deleteComment(comment: CommentUiModel) = viewModelScope.launch {

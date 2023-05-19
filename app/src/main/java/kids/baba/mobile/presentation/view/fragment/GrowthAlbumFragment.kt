@@ -103,10 +103,12 @@ class GrowthAlbumFragment : Fragment() {
 
     private fun showAlbumDetailDialog() {
         val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
+        val selectedBaby = viewModel.growthAlbumState.value.selectedBaby
         if(nowAlbum.contentId != null){
             val albumDetailDialog = AlbumDetailDialog()
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
+            bundle.putString(SELECTED_BABY_ID_KEY, selectedBaby.babyId)
             albumDetailDialog.arguments = bundle
             albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)        }
     }

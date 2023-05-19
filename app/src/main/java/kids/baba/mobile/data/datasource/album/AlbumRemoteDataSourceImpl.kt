@@ -4,11 +4,10 @@ import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
-import kids.baba.mobile.domain.model.CommentResponse
 import kids.baba.mobile.domain.model.LikeDetailResponse
 import kids.baba.mobile.domain.model.Result
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -49,6 +48,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
                         val data = resp.body() ?: throw Throwable("data is null")
                         emit(data)
                     }
+
                     413 -> {
                         throw EntityTooLargeException("사진의 용량이 너무 큽니다.")
                     }
@@ -59,7 +59,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>{
+    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.likeAlbum(id = id, contentId = contentId)
@@ -75,19 +75,22 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         api.addComment(id = id, contentId = contentId, commentInput = commentInput)
     }
 
-    override suspend fun getComment(id: String, contentId: String): Flow<CommentResponse> = flow {
-        val response = api.getComments(id = id, contentId = contentId)
-        response.body()?.let {
-            emit(it)
-        }
-    }
-
-    override suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse> =
-        flow {
-            val response = api.getLikeDetail(contentId = contentId, id = id)
-            response.body()?.let {
-                emit(it)
+    override suspend fun getComment(id: String, contentId: String): Result<List<Comment>> =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.getComments(id = id, contentId = contentId)
+            },
+            mapping = {
+                it.comments
             }
-        }
+        )
+
+    override suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse> =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.getLikeDetail(id = id, contentId = contentId)
+            },
+            mapping = { it }
+        )
 
 }
