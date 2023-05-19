@@ -26,7 +26,11 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "addBaby")
+                ).apply {
+                    putExtra("next", "addBaby")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
         binding.inviteView.ivAddButton.setOnClickListener {
@@ -34,7 +38,11 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                 Intent(
                     requireContext(),
                     MyPageActivity::class.java
-                ).putExtra("next", "invite")
+                ).apply {
+                    putExtra("next", "invite")
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
             )
         }
     }

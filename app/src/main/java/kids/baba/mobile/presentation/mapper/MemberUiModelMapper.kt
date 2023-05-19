@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.mapper
 
+import kids.baba.mobile.domain.model.Member
 import kids.baba.mobile.domain.model.MemberModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
@@ -24,5 +25,14 @@ fun MemberUiModel.toDomain(): MemberModel {
         introduction = introduction,
         iconName = userIconUiModel.userProfileIconUiModel.name,
         iconColor = userIconUiModel.iconColor
+    )
+}
+
+fun Member.toMemberUiModel(): MemberUiModel {
+    return MemberUiModel(
+        name = name,
+        memberId = memberId,
+        introduction = relationName,
+        userIconUiModel = UserIconUiModel(iconColor = iconColor, userProfileIconUiModel = getUserProfileIconUiModel(iconName))
     )
 }

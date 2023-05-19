@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="on_boarding_title1">쑥쑥 크는 우리 아이</string>
     <string name="on_boarding_body1">가족과 함께 하루에 한 장\n아이의 성장을 기록해요!</string>
@@ -167,4 +167,19 @@
     <string name="baba_get_album_failed">앨범을 불러오는 것에 실패했습니다.</string>
     <string name="baba_get_babies_failed">아기 리스트를 불러오는 것에 실패했습니다.</string>
     <string name="baba_like_album_failed">좋아요 요청이 실패했습니다.</string>
+    <string name="group_groupname">[%s]그룹과 소식을 공유할 수 있어요</string>
+
+
+    <string name="item_month_baby_img">아기 월별로 모아보기 이미지</string>
+    <string name="item_year_baby_img">아기 년도별로 모아보기 이미지</string>
+    <string name="item_all_baby_img">아기 전체 모아보기 이미지</string>
+    <string name="item_all_baby_text" tools:ignore="TypographyDashes">23-01-30</string>
+    <string name="unit_of_count">%d장</string>
+
+    <string name="classified_with_month">월별</string>
+    <string name="classified_with_year">년도별</string>
+    <string name="all">전체</string>
+
+    <string name="classified_album_detail_title" tools:ignore="ExtraTranslation">2023–01</string>
+
 </resources>

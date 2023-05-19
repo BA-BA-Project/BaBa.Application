@@ -9,9 +9,11 @@ import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.data.api.MemberApi
+import kids.baba.mobile.data.api.MyPageApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -78,4 +80,9 @@ object ApiModule {
         @BabaRetrofit retrofit: Retrofit
     ): AlbumApi = retrofit.create(AlbumApi::class.java)
 
+    @Singleton
+    @Provides
+    fun provideMyPageApi(
+        @BabaRetrofit retrofit: Retrofit
+    ): MyPageApi = retrofit.create(MyPageApi::class.java)
 }

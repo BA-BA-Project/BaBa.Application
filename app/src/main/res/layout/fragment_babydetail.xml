@@ -26,7 +26,7 @@
             app:layout_constraintStart_toEndOf="@+id/tv_my_name"
             app:layout_constraintTop_toTopOf="@+id/tv_my_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_my_profile"
             android:layout_width="65dp"
             android:layout_height="65dp"
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:text="@{viewModel.babyName}"
+            android:text="@{viewModel.uiModel.babyName}"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{viewModel.babyBirthday}"
+            android:text="@{viewModel.uiModel.babyBirthday}"
             android:textColor="#000000"
             app:layout_constraintStart_toStartOf="@+id/tv_my_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_my_name" />
@@ -68,6 +68,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/btn_delete_baby"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="26dp"
@@ -96,14 +97,14 @@
             <include
                 android:id="@+id/family_view"
                 layout="@layout/composable_group_view"
-                bind:description="@{viewModel.familyGroupDesc}"
-                bind:title="@{viewModel.familyGroupTitle}" />
+                bind:description="@{viewModel.uiModel.familyGroupDesc}"
+                bind:groupName="@{viewModel.uiModel.familyGroupTitle}" />
 
             <include
                 android:id="@+id/my_group_view"
                 layout="@layout/composable_group_view"
-                bind:description="@{viewModel.myGroupDesc}"
-                bind:title="@{viewModel.myGroupTitle}" />
+                bind:description="@{viewModel.uiModel.myGroupDesc}"
+                bind:groupName="@{viewModel.uiModel.myGroupTitle}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
