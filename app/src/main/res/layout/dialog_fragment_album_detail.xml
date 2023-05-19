@@ -10,10 +10,6 @@
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
         <variable
-            name="albumDetail"
-            type="kids.baba.mobile.presentation.model.AlbumDetailUiModel" />
-
-        <variable
             name="dateTimeFormatter"
             type="java.time.format.DateTimeFormatter" />
 
@@ -53,7 +49,7 @@
                     android:textColor="@color/baba_sub_2"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:date="@{albumDetail.album.date}"
+                    app:date="@{viewModel.albumDetailUiState.albumDetail.album.date}"
                     app:formatter="@{dateTimeFormatter}"
                     app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +75,7 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@{albumDetail.album.title}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.title}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -93,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{albumDetail.album.name}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.name}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
@@ -109,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:background="@drawable/bg_album_relation"
-                    android:text="@{albumDetail.album.relation}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.relation}"
                     android:textAppearance="@style/BABA.TextStyle"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_album_title"
                     app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
@@ -135,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageFromUrl="@{albumDetail.album.photo}"
+                        app:imageFromUrl="@{viewModel.albumDetailUiState.albumDetail.album.photo}"
                         tools:src="@mipmap/ic_launcher" />
 
                 </androidx.cardview.widget.CardView>
@@ -148,7 +144,7 @@
                     android:layout_marginBottom="21dp"
                     android:background="@drawable/bg_like"
                     android:button="@null"
-                    android:checked="@{albumDetail.album.like}"
+                    android:checked="@{viewModel.albumDetailUiState.albumDetail.album.like}"
                     android:elevation="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
                     app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
@@ -173,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:includeFontPadding="false"
-                    android:text="@{@string/album_like_count(albumDetail.likeCount)}"
+                    android:text="@{@string/album_like_count(viewModel.albumDetailUiState.albumDetail.likeCount)}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/text_2"
                     app:layout_constraintBottom_toBottomOf="@id/rv_like_users"

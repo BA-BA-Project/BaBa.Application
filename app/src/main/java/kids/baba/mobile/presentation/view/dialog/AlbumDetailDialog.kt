@@ -71,7 +71,6 @@ class AlbumDetailDialog : DialogFragment() {
     private fun collectAlbumDetail() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.albumDetailUiState.collect {
-                binding.albumDetail = it.albumDetail
                 commentAdapter.submitList(it.albumDetail.comments)
                 likeUsersAdapter.submitList(it.albumDetail.likeDetail.likeUsersPreview)
             }
