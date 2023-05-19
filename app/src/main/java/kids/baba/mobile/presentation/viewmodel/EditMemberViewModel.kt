@@ -23,6 +23,7 @@ class EditMemberViewModel @Inject constructor(
     val uiModel = MutableStateFlow(EditMemberUiModel())
     val input = MutableStateFlow("")
     val dismiss = MutableStateFlow {}
+    val patchMember = MutableStateFlow {}
     init {
         uiModel.value.member = savedStateHandle[EditMemberDialog.SELECTED_MEMBER_KEY]
         uiModel.value.relation = savedStateHandle[EditMemberDialog.SELECTED_MEMBER_RELATION]
@@ -32,6 +33,7 @@ class EditMemberViewModel @Inject constructor(
             memberId = uiModel.value.member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = input.value)
         )
+        patchMember.value()
         dismiss()
     }
 
