@@ -1,6 +1,8 @@
 package kids.baba.mobile.presentation.view.fragment
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class AddBabyFragment : Fragment() {
@@ -37,10 +41,32 @@ class AddBabyFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    private fun parseDate(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString) ?: ""
+        return outputFormat.format(date)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                var date = ""
+                date += year
+                date += String.format("%02d", monthOfYear)
+                date += String.format("%02d", dayOfMonth)
+                viewModel.birthDay.value = parseDate(date)
+                binding.birthView.etInput.setText(parseDate(date))
+                Log.e("birth", viewModel.birthDay.value)
+            },
+            2023,
+            1,
+            1
+        )
         binding.topAppBar.ivBackButton.setOnClickListener {
             MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
@@ -48,9 +74,11 @@ class AddBabyFragment : Fragment() {
         binding.btnAddBaby.setOnClickListener {
             val name = binding.nameView.etInput.text.toString()
             val relation = binding.relationView.etInput.text.toString()
-            val birthDay = binding.birthView.etInput.text.toString()
-            viewModel.addBaby(name = name, relationName = relation, birthDay = birthDay)
+            viewModel.addBaby(name = name, relationName = relation)
             navController.navigate(R.id.action_add_baby_fragment_to_add_complete_fragment)
+        }
+        binding.birthView.etInput.setOnClickListener {
+            datePickerDialog.show()
         }
     }
 
