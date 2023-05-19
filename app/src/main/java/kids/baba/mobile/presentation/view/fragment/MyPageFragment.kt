@@ -89,8 +89,9 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() {
+        val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
-        binding.tvKidsTitle.text = EncryptedPrefs.getString("babyGroupTitle")
+        binding.tvKidsTitle.text = if(title != "") title else "아이들"
         binding.tvAddGroup.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -169,6 +170,7 @@ class MyPageFragment : Fragment() {
                     lifecycleScope.launch {
                         editMemberProfileBottomSheetViewModel.edit(profile).join()
                         viewModel.getMyInfo()
+                        viewModel.loadGroups()
                     }
                 }
             bottomSheet.arguments = bundle
