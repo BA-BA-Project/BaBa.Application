@@ -42,7 +42,7 @@ class BabyListViewModel @Inject constructor(
                     val babies = result.data.toPresentation()
                     _babyList.value = babies.myBaby + babies.othersBaby
 
-                    if (selectedBaby == null) {
+                    if (selectedBabyId == null) {
                         _babyList.value.mapIndexed { idx, baby ->
                             if (idx == 0) {
                                 baby.copy(selected = true)
@@ -52,7 +52,7 @@ class BabyListViewModel @Inject constructor(
                         }
                     } else {
                         _babyList.value = _babyList.value.map {
-                            if (it.babyId == selectedBaby.babyId) {
+                            if (it.babyId == selectedBabyId) {
                                 it.copy(selected = true)
                             } else {
                                 it
