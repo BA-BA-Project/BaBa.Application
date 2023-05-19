@@ -56,8 +56,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         api.editBabyName(babyId = babyId, babyEdit = BabyEdit(name))
     }
 
-    override suspend fun addMyBaby(baby: MyBaby) {
-        api.addMyBaby(baby = baby)
+    override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
+        val response = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addMyBaby(baby = baby)
+            },
+            mapping = {}
+        )
+        return if (response is Result.Failure) {
+            Result.Failure(response.code, response.message, Exception(response.message))
+        } else {
+            response
+        }
     }
 
     override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) {

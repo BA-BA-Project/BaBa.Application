@@ -10,7 +10,10 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMyPageBinding
+import kids.baba.mobile.presentation.event.MyPageEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.view.fragment.AddBabyFragmentDirections
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_GROUP_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
@@ -36,7 +39,7 @@ class MyPageActivity : AppCompatActivity() {
         setNavController()
         instance = this
 
-        //collectEvent()
+        collectEvent()
 
         when (intent.getStringExtra(INTENT_PAGE_NAME)) {
             ADD_BABY_PAGE -> navGraph.setStartDestination(R.id.add_baby_fragment)
@@ -66,32 +69,19 @@ class MyPageActivity : AppCompatActivity() {
     }
 
 
-//    private fun collectEvent() {
-//        repeatOnStarted {
-//            viewModel.eventFlow.collect {
-//                when (it) {
-//                    is MyPageEvent.StartAddBabyPage -> navGraph.setStartDestination(R.id.add_baby_fragment)
-//                    is MyPageEvent.StartSettingPage -> navGraph.setStartDestination(R.id.setting_fragment)
-//                    is MyPageEvent.StartAddGroupPage -> navGraph.setStartDestination(R.id.add_group_fragment)
-//                    is MyPageEvent.StartInvitePage -> navGraph.setStartDestination(R.id.input_invite_fragment)
-//                    is MyPageEvent.StartInviteMemberPage -> navGraph.setStartDestination(R.id.invite_member_fragment)
-//                    is MyPageEvent.StartBabyDetailPage -> {
-//                        val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                            intent.getParcelableExtra(BABY_DETAIL_PAGE, MemberUiModel::class.java)
-//                        } else {
-//                            intent.getParcelableExtra(BABY_DETAIL_PAGE)
-//                        }
-//                        key?.let {
-//                            val bundle = Bundle()
-//                            bundle.putParcelable(BABY_DETAIL_PAGE, it)
-//                            navGraph.addInDefaultArgs(bundle)
-//                            navGraph.setStartDestination(R.id.baby_detail_fragment)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun collectEvent() {
+        repeatOnStarted {
+            viewModel.eventFlow.collect {
+                when (it) {
+                    MyPageEvent.CompleteAddBaby -> {
+                        val action = AddBabyFragmentDirections.actionAddBabyFragmentToAddCompleteFragment()
+                        navController.navigate(action)
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
 
     private fun setNavController() {
         val navHostFragment =

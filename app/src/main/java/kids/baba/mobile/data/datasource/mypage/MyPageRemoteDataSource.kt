@@ -8,6 +8,7 @@ import kids.baba.mobile.domain.model.InviteCode
 import kids.baba.mobile.domain.model.MyBaby
 import kids.baba.mobile.domain.model.MyPageGroup
 import kids.baba.mobile.domain.model.Profile
+import kids.baba.mobile.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRemoteDataSource {
@@ -22,7 +23,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun editBabyName(babyId: String, name: String)
 
-    suspend fun addMyBaby(baby: MyBaby)
+    suspend fun addMyBaby(baby: MyBaby): Result<Unit>
 
     suspend fun addBabyWithInviteCode(inviteCode: InviteCode)
 

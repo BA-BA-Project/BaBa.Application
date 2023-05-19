@@ -9,6 +9,7 @@ import kids.baba.mobile.domain.model.InviteCode
 import kids.baba.mobile.domain.model.MyBaby
 import kids.baba.mobile.domain.model.MyPageGroup
 import kids.baba.mobile.domain.model.Profile
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.repository.MyPageRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -32,13 +33,12 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         dataSource.editBabyName(babyId = babyId, name = name)
     }
 
-    override suspend fun addMyBaby(baby: MyBaby) {
-        dataSource.addMyBaby(baby = baby)
+    override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
+        return dataSource.addMyBaby(baby = baby)
     }
 
-    override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) {
+    override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) =
         dataSource.addBabyWithInviteCode(inviteCode = inviteCode)
-    }
 
     override suspend fun deleteBaby(babyId: String) {
         dataSource.deleteBaby(babyId = babyId)
