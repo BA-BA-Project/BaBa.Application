@@ -27,12 +27,11 @@ class MemberEditProfileBottomSheet(
             itemClick(Profile(name = name, introduction = intro, iconName = viewModel.icon.value, iconColor = viewModel.color.value))
             dismiss()
         }
-        binding.colorView.pink.setOnClickListener {
-            viewModel.color.value = "#FFAEBA"
-        }
-        binding.colorView.blue.setOnClickListener {
-            viewModel.color.value = "#97BEFF"
-        }
+        setColorButton()
+        setIconButton()
+    }
+
+    private fun setIconButton() {
         binding.iconView.w1.setOnClickListener {
             viewModel.icon.value = trim("W_1")
         }
@@ -44,6 +43,78 @@ class MemberEditProfileBottomSheet(
         }
         binding.iconView.w4.setOnClickListener {
             viewModel.icon.value = trim("W_4")
+        }
+        binding.iconView.w5.setOnClickListener {
+            viewModel.icon.value = trim("W_5")
+        }
+        binding.iconView.m1.setOnClickListener {
+            viewModel.icon.value = trim("M_1")
+        }
+        binding.iconView.m2.setOnClickListener {
+            viewModel.icon.value = trim("M_2")
+        }
+        binding.iconView.m3.setOnClickListener {
+            viewModel.icon.value = trim("M_3")
+        }
+        binding.iconView.m4.setOnClickListener {
+            viewModel.icon.value = trim("M_4")
+        }
+        binding.iconView.m5.setOnClickListener {
+            viewModel.icon.value = trim("M_5")
+        }
+        binding.iconView.m6.setOnClickListener {
+            viewModel.icon.value = trim("M_6")
+        }
+        binding.iconView.g1.setOnClickListener {
+            viewModel.icon.value = trim("G_1")
+        }
+        binding.iconView.g2.setOnClickListener {
+            viewModel.icon.value = trim("G_2")
+        }
+        binding.iconView.g3.setOnClickListener {
+            viewModel.icon.value = trim("G_3")
+        }
+        binding.iconView.g4.setOnClickListener {
+            viewModel.icon.value = trim("G_4")
+        }
+    }
+
+    private fun setColorButton() {
+        binding.colorView.pink.setOnClickListener {
+            viewModel.color.value = "#FFAEBA"
+        }
+        binding.colorView.red.setOnClickListener {
+            viewModel.color.value = "#FF8698"
+        }
+        binding.colorView.blue.setOnClickListener {
+            viewModel.color.value = "#97BEFF"
+        }
+        binding.colorView.darkGreen.setOnClickListener {
+            viewModel.color.value = "#30BE9B"
+        }
+        binding.colorView.green.setOnClickListener {
+            viewModel.color.value = "#9ED883"
+        }
+        binding.colorView.people.setOnClickListener {
+            viewModel.color.value = "#98A2FF"
+        }
+        binding.colorView.violet.setOnClickListener {
+            viewModel.color.value = "#BFA1FF"
+        }
+        binding.colorView.sky.setOnClickListener {
+            viewModel.color.value = "#5BD2FF"
+        }
+        binding.colorView.mint.setOnClickListener {
+            viewModel.color.value = "#81E0D5"
+        }
+        binding.colorView.skin.setOnClickListener {
+            viewModel.color.value = "#FFD2A7"
+        }
+        binding.colorView.whiteSkin.setOnClickListener {
+            viewModel.color.value = "#FFE3C8"
+        }
+        binding.colorView.yellow.setOnClickListener {
+            viewModel.color.value = "#FFD400"
         }
     }
 
