@@ -81,6 +81,13 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
 
 
     private fun setCommentRecyclerView() {
+        binding.tvSend.setOnClickListener {
+            viewModel.addComment {
+                binding.rvAlbumComment.apply {
+                    postDelayed({ smoothScrollToPosition(commentAdapter.itemCount - 1) }, 500)
+                }
+            }
+        }
         commentAdapter = AlbumDetailCommentAdapter(
             itemClick = { comment ->
                 viewModel.setTag(comment.name, comment.memberId)
@@ -95,6 +102,7 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
                                 viewModel.deleteComment(comment.commentId)
                                 true
                             }
+
                             else -> false
                         }
                     }
@@ -197,8 +205,8 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
         }
     }
 
-    private fun setAlbumLike(){
-        binding.btnAlbumLike.setOnClickListener{
+    private fun setAlbumLike() {
+        binding.btnAlbumLike.setOnClickListener {
             viewModel.likeAlbum()
         }
     }

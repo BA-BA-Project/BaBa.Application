@@ -37,9 +37,9 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
     override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> =
         dataSource.likeAlbum(id, contentId)
 
-    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {
+    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput): Result<Unit> =
         dataSource.addComment(id, contentId, commentInput)
-    }
+
 
     override suspend fun deleteComment(id: String, contentId: String, commentId: String) : Result<Unit> =
         dataSource.deleteComment(id = id, contentId = contentId, commentId = commentId)

@@ -71,9 +71,13 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         return result
     }
 
-    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {
-        api.addComment(id = id, contentId = contentId, commentInput = commentInput)
-    }
+    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput): Result<Unit> =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addComment(id = id, contentId = contentId, commentInput = commentInput)
+            },
+            mapping = {}
+        )
 
     override suspend fun deleteComment(id: String, contentId: String, commentId: String): Result<Unit> =
         safeApiHelper.getSafe(

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.DeleteCommentUseCase
@@ -47,7 +48,8 @@ class AlbumDetailViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<AlbumDetailEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private lateinit var member: MemberUiModel
+    private val _member: MutableStateFlow<MemberUiModel?> = MutableStateFlow(null)
+    val member = _member.asStateFlow()
 
     private val _albumDetailUiState = MutableStateFlow(
         AlbumDetailUiState(
@@ -67,7 +69,7 @@ class AlbumDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            member = getMemberUseCase.getMe()
+            _member.value = getMemberUseCase.getMe()
         }
         getAlbumDetailData()
     }
@@ -108,14 +110,23 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
-    fun addComment() = viewModelScope.launch {
-//        val contentId = albumDetailUiState.value.albumDetail.album.contentId
-//
-//        val commentInput = CommentInput(tag = "", comment = comment.value)
-////            _albumDetailUiState.value = AlbumDetailUiState.Loading
-//            addCommentUseCase.add(babyId, contentId, commentInput)
-////            _albumDetailUiState.value = AlbumDetailUiState.AddComment
-//            comment.value = ""
+    fun addComment(addSuccess : () -> Unit) = viewModelScope.launch {
+        val contentId = albumDetailUiState.value.albumDetail.album.contentId
+
+        if (contentId != null) {
+            val commentInput =
+                CommentInput(tag = commentTag.value?.memberId ?: "", comment = comment.value)
+            when (addCommentUseCase(babyId, contentId, commentInput)) {
+                is Result.Success -> {
+                    getAlbumDetailData()
+                    comment.value = ""
+                    addSuccess()
+                }
+                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
+            }
+        }
+
     }
 
     fun setExpended(expended: Boolean) {
@@ -153,11 +164,12 @@ class AlbumDetailViewModel @Inject constructor(
                         )
                     }
                 }
+
                 is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_like_album_failed))
             }
         }
     }
 
-    fun checkMyComment(comment: CommentUiModel) = member.memberId == comment.memberId
+    fun checkMyComment(comment: CommentUiModel) = member.value?.memberId == comment.memberId
 }

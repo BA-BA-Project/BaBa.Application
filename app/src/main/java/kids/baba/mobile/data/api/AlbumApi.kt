@@ -50,7 +50,7 @@ interface AlbumApi {
         @Path("babyId") id: String,
         @Path("contentId") contentId: String,
         @Body commentInput: CommentInput
-    )
+    ): Response<Unit>
 
     @DELETE("baby/{babyId}/album/{contentId}/comment/{commentId}")
     suspend fun deleteComment(
