@@ -96,13 +96,13 @@ class BabyDetailFragment : Fragment() {
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
+            val bottomSheet = GroupEditBottomSheet{}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
         binding.familyView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
+            val bottomSheet = GroupEditBottomSheet{}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }

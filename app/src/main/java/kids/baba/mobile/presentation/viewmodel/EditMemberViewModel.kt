@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,7 +38,7 @@ class EditMemberViewModel @Inject constructor(
 
     fun delete() = viewModelScope.launch {
         deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
-        Log.e("123","delete")
+        patchMember.value()
         dismiss()
     }
     fun dismiss() = viewModelScope.launch {

@@ -73,7 +73,8 @@ class MyPageFragment : Fragment() {
                     is MyPageUiState.LoadMyInfo -> {
                         binding.tvMyStatusMessage.text = it.data.name
                         binding.tvMyName.text = it.data.introduction
-                        binding.civMyProfile.circleBackgroundColor = Color.parseColor(it.data.userIconUiModel.iconColor)
+                        binding.civMyProfile.circleBackgroundColor =
+                            Color.parseColor(it.data.userIconUiModel.iconColor)
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
                     }
 
@@ -91,7 +92,7 @@ class MyPageFragment : Fragment() {
     private fun initView() {
         val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
-        binding.tvKidsTitle.text = if(title != "") title else "아이들"
+        binding.tvKidsTitle.text = if (title != "") title else "아이들"
         binding.tvAddGroup.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -146,7 +147,9 @@ class MyPageFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean("family", group.family)
                 bundle.putString("groupName", group.groupName)
-                val bottomSheet = GroupEditBottomSheet()
+                val bottomSheet = GroupEditBottomSheet {
+                    viewModel.loadGroups()
+                }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
             }

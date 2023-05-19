@@ -14,7 +14,7 @@ import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
 @AndroidEntryPoint
-class GroupEditBottomSheet : BottomSheetDialogFragment() {
+class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
     private val binding
@@ -23,6 +23,7 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.patchGroup.value = { itemClick() }
         binding.addMemberView.tvAddButtonDesc.isGone = true
         binding.addMemberView.ivAddButton.setOnClickListener {
             requireActivity().startActivity(

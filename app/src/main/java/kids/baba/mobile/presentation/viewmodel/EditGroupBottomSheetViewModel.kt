@@ -22,6 +22,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     val groupName = MutableStateFlow<String?>(savedStateHandle["groupName"])
     private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
     private val query = MutableStateFlow("")
+    val patchGroup = MutableStateFlow {}
 
     init {
         query.value = groupName.value ?: ""
@@ -30,9 +31,11 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     fun patch(name: String) = viewModelScope.launch {
         patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = name), groupName = query.value)
+        patchGroup.value()
     }
 
     fun delete() = viewModelScope.launch {
         deleteOneGroupUseCase.delete(groupName = query.value)
+        patchGroup.value()
     }
 }
