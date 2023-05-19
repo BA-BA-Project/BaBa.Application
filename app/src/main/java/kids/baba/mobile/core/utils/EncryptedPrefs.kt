@@ -1,10 +1,12 @@
 package kids.baba.mobile.core.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.GsonBuilder
+import kids.baba.mobile.core.constant.PrefsKey.MEMBER_KEY
 import kids.baba.mobile.core.error.BabyNotFoundException
 import kids.baba.mobile.core.error.MemberNotFoundException
 import kids.baba.mobile.domain.model.Baby

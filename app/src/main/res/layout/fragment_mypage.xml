@@ -46,7 +46,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="@{viewmodel.myName}"
                         android:textColor="#000000"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -57,7 +56,6 @@
                         android:id="@+id/tv_my_status_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewmodel.myStatusMessage}"
                         android:textColor="#000000"
                         app:layout_constraintStart_toStartOf="@+id/tv_my_name"
                         app:layout_constraintTop_toBottomOf="@+id/tv_my_name" />
@@ -142,96 +140,28 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="900dp">
+                    android:layout_height="wrap_content">
 
                     <View
                         android:id="@+id/relation_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="20dp" />
 
-                        android:background="@drawable/bg_my_page_card" />
-
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/group_container"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="@id/relation_container"
                         app:layout_constraintBottom_toBottomOf="@id/relation_container"
-                        app:layout_constraintEnd_toEndOf="@id/relation_container"
-                        app:layout_constraintStart_toStartOf="@id/relation_container"
-                        app:layout_constraintTop_toTopOf="@id/relation_container">
-
-                        <include
-                            android:id="@+id/family_view"
-                            layout="@layout/composable_group_view"
-                            bind:description="@{viewmodel.description}"
-                            bind:title="@{viewmodel.title}" />
-
-                        <include
-                            android:id="@+id/mother_family_view"
-                            layout="@layout/composable_group_view"
-                            bind:description="@{viewmodel.motherDescription}"
-                            bind:title="@{viewmodel.motherTitle}" />
-
-                        <include
-                            android:id="@+id/father_family_view"
-                            layout="@layout/composable_group_view"
-                            bind:description="@{viewmodel.fatherDescription}"
-                            bind:title="@{viewmodel.fatherTitle}" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="300dp">
-
-                            <TextView
-                                android:id="@+id/tv_friends_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginTop="10dp"
-                                android:text="@{viewmodel.friendsTitle}"
-                                android:textColor="#000000"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="친구" />
-
-                            <TextView
-                                android:id="@+id/tv_friends_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{viewmodel.friendsDescription}"
-                                android:textSize="12sp"
-                                app:layout_constraintStart_toStartOf="@+id/tv_friends_title"
-                                app:layout_constraintTop_toBottomOf="@id/tv_friends_title"
-                                tools:text="앙쥬네 가족, 친구의 소식만 볼 수 있어요" />
-
-                            <ImageView
-                                android:id="@+id/iv_edit_friends"
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:layout_marginEnd="15dp"
-                                android:src="@drawable/ic_edit_my_page"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/tv_friends_title" />
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_friends"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginBottom="15dp"
-                                android:orientation="horizontal"
-                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                                app:layout_constraintEnd_toEndOf="@id/iv_edit_friends"
-                                app:layout_constraintStart_toStartOf="@id/tv_friends_title"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_friends_desc"
-                                app:spanCount="2"
-                                tools:listitem="@layout/item_member" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
+                        app:layout_constraintEnd_toEndOf="@+id/relation_container"
+                        app:layout_constraintStart_toStartOf="@+id/relation_container"
+                        bind:listitem="@layout/composable_group_view"
+                        android:background="@drawable/bg_my_page_card"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

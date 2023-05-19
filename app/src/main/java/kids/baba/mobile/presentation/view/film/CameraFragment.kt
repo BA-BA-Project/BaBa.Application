@@ -20,10 +20,9 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.CameraViewModel
 import kids.baba.mobile.presentation.viewmodel.FilmViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class CameraFragment @Inject constructor() : Fragment() {
+class CameraFragment : Fragment() {
 
     private val TAG = "CameraFragment"
 

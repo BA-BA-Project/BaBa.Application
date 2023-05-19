@@ -15,4 +15,6 @@ data class AlbumUiModel (
     val photo: String = "",
     val cardStyle: CardStyleUiModel = CardStyleUiModel.CARD_BASIC_1,
     val isMyBaby: Boolean = false
-) : Parcelable
+) : Parcelable {
+    fun toRepresentativeAlbum() = RepresentativeAlbumUiModel(photo, date)
+}

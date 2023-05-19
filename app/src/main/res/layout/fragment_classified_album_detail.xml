@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.ClassifiedAlbumDetailViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/ab_classified_album_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_classified_album_detail"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:textSize="16sp"
+                app:buttonGravity="center_vertical"
+                app:dateTitle="@{viewModel.albumList.classifiedAlbumList.get(0).date}"
+                app:formatter="@{viewModel.fromMonth ? viewModel.monthDateTimeFormatter : viewModel.yearDateTimeFormatter}"
+                app:navigationIcon="@drawable/ic_back"
+                app:subtitle="@{String.format(@string/unit_of_count, viewModel.albumList.classifiedAlbumList.size())}"
+                app:subtitleCentered="true"
+                app:titleCentered="true"
+                tools:title="2023-01">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_sort_album"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:onClick="@{_ -> viewModel.sort()}"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_sort_album" />
+
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_classified_all_babies"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="1dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ab_classified_album_detail"
+            app:spanCount="3"
+            tools:listitem="@layout/item_all_album" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+    <!--<androidx.fragment.app.FragmentContainerView-->
+    <!--android:id="@+id/fcv_classified_album_detail"-->
+    <!--android:name="kids.baba.mobile.presentation.view.gatheringview.AllAlbumFragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/ab_classified_album_detail"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--tools:layout="@layout/fragment_all_album" />-->

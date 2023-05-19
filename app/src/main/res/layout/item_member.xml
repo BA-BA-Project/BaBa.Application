@@ -6,11 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginEnd="20dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_member_profile"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:src="@drawable/my_profile"
+        android:src="@drawable/profile_g_1"
+        app:civ_circle_background_color="@color/baba_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

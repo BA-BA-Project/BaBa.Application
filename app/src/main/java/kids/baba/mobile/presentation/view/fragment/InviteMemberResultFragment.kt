@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMemberInviteResultBinding
 import kids.baba.mobile.presentation.view.activity.MainActivity
 import kids.baba.mobile.presentation.viewmodel.InviteMemberResultViewModel
@@ -18,8 +21,13 @@ class InviteMemberResultFragment : Fragment() {
     private var _binding: FragmentMemberInviteResultBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: InviteMemberResultViewModel by viewModels()
+    private lateinit var navController: NavController
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavController()
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            navController.navigateUp()
+        }
         binding.btnComplete.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -45,5 +53,11 @@ class InviteMemberResultFragment : Fragment() {
         _binding = FragmentMemberInviteResultBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         return binding.root
+    }
+
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
     }
 }

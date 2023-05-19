@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentDeleteUserBinding
-import kids.baba.mobile.databinding.FragmentServiceInfoBinding
 import kids.baba.mobile.presentation.viewmodel.DeleteMemberViewModel
 
 @AndroidEntryPoint
 class FragmentDeleteMember : Fragment() {
 
     private var _binding: FragmentDeleteUserBinding? = null
+    private lateinit var navController: NavController
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: DeleteMemberViewModel by viewModels()
@@ -36,6 +39,16 @@ class FragmentDeleteMember : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavController()
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            navController.navigateUp()
+        }
+    }
+
+    private fun setNavController() {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
     }
 
 }

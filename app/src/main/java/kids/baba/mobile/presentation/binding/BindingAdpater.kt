@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
+import com.google.android.material.appbar.MaterialToolbar
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
 import java.text.SimpleDateFormat
@@ -89,4 +90,10 @@ fun setDateString(textView: TextView, nowDate: String) {
     } else {
         textView.text = nowDate
     }
+}
+
+
+@BindingAdapter("dateTitle", "formatter")
+fun setTitleDate(materialToolbar: MaterialToolbar, date: LocalDate, formatter: DateTimeFormatter) {
+    materialToolbar.title = date.format(formatter)
 }

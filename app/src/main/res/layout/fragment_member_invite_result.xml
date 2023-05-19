@@ -23,13 +23,13 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.tvTopTitleText}" />
+                bind:title="@{viewmodel.uiModel.tvTopTitleText}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.tvBannerDescText}"
-                bind:title="@{viewmodel.tvBannerTitleText}" />
+                bind:description="@{viewmodel.uiModel.tvBannerDescText}"
+                bind:title="@{viewmodel.uiModel.tvBannerTitleText}" />
 
             <View
                 android:layout_width="match_parent"
@@ -39,8 +39,8 @@
             <include
                 android:id="@+id/group_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewmodel.tvGroupDescText}"
-                bind:title="@{viewmodel.tvGroupTitleText}" />
+                bind:description="@{viewmodel.uiModel.tvGroupDescText}"
+                bind:title="@{viewmodel.uiModel.tvGroupTitleText}" />
 
             <View
                 android:layout_width="match_parent"
@@ -51,8 +51,8 @@
             <include
                 android:id="@+id/relation_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewmodel.tvRelationDescText}"
-                bind:title="@{viewmodel.tvRelationTitleText}" />
+                bind:description="@{viewmodel.uiModel.tvRelationDescText}"
+                bind:title="@{viewmodel.uiModel.tvRelationTitleText}" />
 
             <View
                 android:layout_width="match_parent"
@@ -63,8 +63,8 @@
             <include
                 android:id="@+id/permission_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewmodel.tvPermissionDescText}"
-                bind:title="@{viewmodel.tvPermissionTitleText}" />
+                bind:description="@{viewmodel.uiModel.tvPermissionDescText}"
+                bind:title="@{viewmodel.uiModel.tvPermissionTitleText}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton

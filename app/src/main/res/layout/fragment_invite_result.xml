@@ -21,15 +21,15 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/add_top"
+                android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.addBabyTitle}" />
+                bind:title="@{viewModel.uiModel.addBabyTitle}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewModel.addBabyBannerDesc}"
-                bind:title="@{viewModel.addBabyBannerTitle}" />
+                bind:description="@{viewModel.uiModel.addBabyBannerDesc}"
+                bind:title="@{viewModel.uiModel.addBabyBannerTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -53,8 +53,8 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewModel.addBabyNameDesc}"
-                    bind:title="@{viewModel.addBabyNameTitle}" />
+                    bind:description="@{viewModel.uiModel.addBabyNameDesc}"
+                    bind:title="@{viewModel.uiModel.addBabyNameTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -64,8 +64,8 @@
                 <include
                     android:id="@+id/group_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewModel.addBabyGroupDesc}"
-                    bind:title="@{viewModel.addBabyGroupTitle}" />
+                    bind:description="@{viewModel.uiModel.addBabyGroupDesc}"
+                    bind:title="@{viewModel.uiModel.addBabyGroupTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -75,8 +75,8 @@
                 <include
                     android:id="@+id/relation_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewModel.addBabyRelationDesc}"
-                    bind:title="@{viewModel.addBabyRelationTitle}" />
+                    bind:description="@{viewModel.uiModel.addBabyRelationDesc}"
+                    bind:title="@{viewModel.uiModel.addBabyRelationTitle}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -86,8 +86,8 @@
                 <include
                     android:id="@+id/permission_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewModel.addBabyPermissionDesc}"
-                    bind:title="@{viewModel.addBabyPermissionTitle}" />
+                    bind:description="@{viewModel.uiModel.addBabyPermissionDesc}"
+                    bind:title="@{viewModel.uiModel.addBabyPermissionTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
