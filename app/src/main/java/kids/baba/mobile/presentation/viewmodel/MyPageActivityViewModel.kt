@@ -14,27 +14,27 @@ class MyPageActivityViewModel : ViewModel() {
     val eventFlow = _eventFlow.asEventFlow()
 
     fun moveToAddBabyPage() = viewModelScope.launch {
-        _eventFlow.emit(MyPageEvent.MoveToAddBabyPage)
+        _eventFlow.emit(MyPageEvent.StartAddBabyPage)
     }
 
     fun moveToInvitePage() = viewModelScope.launch {
-        _eventFlow.emit(MyPageEvent.MoveToInvitePage)
+        _eventFlow.emit(MyPageEvent.StartInvitePage)
     }
 
     fun moveToBabyDetailPage(baby: MemberUiModel) = viewModelScope.launch {
-        _eventFlow.emit(MyPageEvent.MoveToBabyDetailPage(baby))
+        _eventFlow.emit(MyPageEvent.StartBabyDetailPage(baby))
     }
 
     fun moveToInviteMemberPage() = viewModelScope.launch {
-        _eventFlow.emit(MyPageEvent.MoveToInviteMemberPage)
+        _eventFlow.emit(MyPageEvent.StartInviteMemberPage)
     }
 
     fun moveToSettingPage() = viewModelScope.launch {
-        _eventFlow.emit(MyPageEvent.MoveToSettingPage)
+        _eventFlow.emit(MyPageEvent.StartSettingPage)
     }
 
     fun moveToAddGroupPage() = viewModelScope.launch {
         Log.e("moveTo", "AddGroupPage")
-        _eventFlow.emit(MyPageEvent.MoveToAddGroupPage)
+        _eventFlow.emit(MyPageEvent.StartAddGroupPage)
     }
 }

@@ -98,7 +98,7 @@ class MyPageFragment : Fragment() {
                     requireContext(),
                     MyPageActivity::class.java
                 ).apply {
-                    putExtra("next", "addGroup")
+                    putExtra(INTENT_PAGE_NAME, ADD_GROUP_PAGE)
                 }
             )
         }
@@ -108,7 +108,7 @@ class MyPageFragment : Fragment() {
                     requireContext(),
                     MyPageActivity::class.java
                 ).apply {
-                    putExtra("next", "setting")
+                    putExtra(INTENT_PAGE_NAME, SETTING_PAGE)
                 }
             )
         }
@@ -122,8 +122,8 @@ class MyPageFragment : Fragment() {
                         requireContext(),
                         MyPageActivity::class.java
                     ).apply {
-                        putExtra("next", "babyDetail")
-                        putExtra("baby", it)
+                        putExtra(INTENT_PAGE_NAME, BABY_DETAIL_PAGE)
+                        putExtra(BABY_DETAIL_INFO, it)
                     })
             })
 
@@ -167,5 +167,16 @@ class MyPageFragment : Fragment() {
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
+    }
+
+    companion object {
+        const val INTENT_PAGE_NAME = "nextPage"
+        const val ADD_GROUP_PAGE = "addGroupPage"
+        const val SETTING_PAGE = "settingPage"
+        const val BABY_DETAIL_PAGE = "babyDetailPage"
+        const val BABY_DETAIL_INFO = "babyDetailInfo"
+        const val INVITE_WITH_CODE_PAGE = "inviteBabyPage"
+        const val ADD_BABY_PAGE = "addBabyPage"
+        const val INVITE_MEMBER_PAGE = "inviteMemberPage"
     }
 }

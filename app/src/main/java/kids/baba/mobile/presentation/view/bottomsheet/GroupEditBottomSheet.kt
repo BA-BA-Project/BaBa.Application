@@ -11,6 +11,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
 @AndroidEntryPoint
@@ -30,9 +32,7 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
                     requireContext(),
                     MyPageActivity::class.java
                 ).apply {
-                    putExtra("next", "member")
-//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    putExtra(INTENT_PAGE_NAME, INVITE_MEMBER_PAGE)
                 }
             )
         }

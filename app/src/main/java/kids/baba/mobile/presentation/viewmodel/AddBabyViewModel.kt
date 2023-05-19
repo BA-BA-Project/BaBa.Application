@@ -14,6 +14,9 @@ import javax.inject.Inject
 class AddBabyViewModel @Inject constructor(
     private val addOneMyBabyUseCase: AddOneMyBabyUseCase
 ) : ViewModel() {
+
+
+
     val uiModel = MutableStateFlow(AddBabyUiModel())
     fun addBaby(name: String, relationName: String, birthDay: String) = viewModelScope.launch {
         addOneMyBabyUseCase.add(

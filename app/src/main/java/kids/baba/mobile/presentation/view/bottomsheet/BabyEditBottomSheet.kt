@@ -10,6 +10,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
 @AndroidEntryPoint
@@ -27,7 +30,7 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                     requireContext(),
                     MyPageActivity::class.java
                 ).apply {
-                    putExtra("next", "addBaby")
+                    putExtra(INTENT_PAGE_NAME, ADD_BABY_PAGE)
                 }
             )
         }
@@ -37,7 +40,7 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
                     requireContext(),
                     MyPageActivity::class.java
                 ).apply {
-                    putExtra("next", "invite")
+                    putExtra(INTENT_PAGE_NAME, INVITE_WITH_CODE_PAGE)
                 }
             )
         }
@@ -60,5 +63,6 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "BabyEditBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"
+
     }
 }

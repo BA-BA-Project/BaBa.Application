@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
+import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
 
 @AndroidEntryPoint
 class AddBabyFragment : Fragment() {
@@ -18,7 +20,9 @@ class AddBabyFragment : Fragment() {
     private var _binding: FragmentAddbabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+
     private val viewModel: AddBabyViewModel by viewModels()
+    private val activityViewModel: MyPageActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
