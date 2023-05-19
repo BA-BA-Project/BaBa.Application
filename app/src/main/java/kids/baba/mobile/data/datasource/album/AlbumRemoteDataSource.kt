@@ -19,6 +19,7 @@ interface AlbumRemoteDataSource {
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 
+    suspend fun deleteComment(id: String, contentId: String, commentId: String) : Result<Unit>
 
     suspend fun getComment(id: String, contentId: String): Result<List<Comment>>
 

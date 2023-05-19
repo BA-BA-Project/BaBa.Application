@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
+import kids.baba.mobile.domain.usecase.DeleteCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
 import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
@@ -34,6 +35,7 @@ class AlbumDetailViewModel @Inject constructor(
     private val getMemberUseCase: GetMemberUseCase,
     private val likeAlbumUseCase: LikeAlbumUseCase,
     private val addCommentUseCase: AddCommentUseCase,
+    private val deleteCommentUseCase: DeleteCommentUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getLikeDetailUseCase: GetLikeDetailUseCase,
     savedStateHandle: SavedStateHandle
@@ -126,8 +128,15 @@ class AlbumDetailViewModel @Inject constructor(
         _commentTag.value = CommentTag(memberName, memberId)
     }
 
-    fun deleteComment(comment: CommentUiModel) = viewModelScope.launch {
-
+    fun deleteComment(commentId: String) = viewModelScope.launch {
+        val contentId = albumDetailUiState.value.albumDetail.album.contentId
+        if (contentId != null) {
+            when (deleteCommentUseCase(babyId, contentId, commentId)) {
+                is Result.Success -> getAlbumDetailData()
+                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
+            }
+        }
     }
 
     fun checkMyComment(comment: CommentUiModel) = member.memberId == comment.memberId

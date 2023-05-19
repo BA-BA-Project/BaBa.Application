@@ -90,13 +90,13 @@ class AlbumDetailDialog : DialogFragment() {
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when (menuItem.itemId) {
                             R.id.comment_delete -> {
-                                viewModel.deleteComment(comment)
+                                viewModel.deleteComment(comment.commentId)
                                 true
                             }
-
                             else -> false
                         }
                     }
+                    popupMenu.show()
                 }
             }
         )

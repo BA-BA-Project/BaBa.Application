@@ -41,6 +41,9 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         dataSource.addComment(id, contentId, commentInput)
     }
 
+    override suspend fun deleteComment(id: String, contentId: String, commentId: String) : Result<Unit> =
+        dataSource.deleteComment(id = id, contentId = contentId, commentId = commentId)
+
     override suspend fun getComment(id: String, contentId: String): Result<List<Comment>> =
         dataSource.getComment(id = id, contentId = contentId)
 

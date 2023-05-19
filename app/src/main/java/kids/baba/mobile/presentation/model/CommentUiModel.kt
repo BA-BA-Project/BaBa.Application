@@ -3,7 +3,7 @@ package kids.baba.mobile.presentation.model
 import java.time.LocalDateTime
 
 data class CommentUiModel(
-    val commentId: Int,
+    val commentId: String,
     val memberId: String,
     val name: String,
     val relation: String,
