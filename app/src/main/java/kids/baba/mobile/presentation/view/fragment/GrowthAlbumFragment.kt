@@ -26,6 +26,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
+import kids.baba.mobile.presentation.view.HorizontalMarginItemDecoration
 import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
@@ -319,25 +320,25 @@ class GrowthAlbumFragment : Fragment() {
                 }
             }
         })
-//
-//        binding.vpBabyPhoto.offscreenPageLimit = 1
-//
-//        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
-//        val currentItemHorizontalMarginPx =
-//            resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
-//        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
-//        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
-//            page.translationX = -pageTranslationX * position
-//            page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
-//        }
-//
-//        binding.vpBabyPhoto.setPageTransformer(pageTransformer)
-//
-//        val itemDecoration = HorizontalMarginItemDecoration(
-//            requireContext(),
-//            R.dimen.viewpager_current_item_horizontal_margin
-//        )
-//        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
+
+        binding.vpBabyPhoto.offscreenPageLimit = 1
+
+        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
+        val currentItemHorizontalMarginPx =
+            resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
+        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+            page.translationX = -pageTranslationX * position
+            page.scaleY = 1 - (0.25f * kotlin.math.abs(position))
+        }
+
+        binding.vpBabyPhoto.setPageTransformer(pageTransformer)
+
+        val itemDecoration = HorizontalMarginItemDecoration(
+            requireContext(),
+            R.dimen.viewpager_current_item_horizontal_margin
+        )
+        binding.vpBabyPhoto.addItemDecoration(itemDecoration)
     }
 
     private fun setSelectedDate(date: LocalDate) {
