@@ -109,26 +109,9 @@ class GatheringAlbumViewModel @Inject constructor() : ViewModel() {
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
-        testLog()
 
     }
 
-    // 머지 허가되면 바로 지울 testLog. PR 확인하는 팀원들을 위한 확인용
-    private fun testLog() {
-        Log.e(TAG, "recentYearAlbumList : ${recentYearAlbumListState.value} \n\n")
-        Log.e(TAG, "recentMonthAlbumList: ${recentMonthAlbumListState.value} \n\n")
-        Log.e(
-            TAG, "yearAlbumList - 2023: ${yearAlbumListState.value[0]} \n\n" +
-                    "2022: ${yearAlbumListState.value[1]}  \n\n"
-        )
-        Log.e(
-            TAG, "monthAlbumList - 2023-5 ${monthAlbumListState.value[0]}------------- \n\n" +
-                    "2023-4 : ${monthAlbumListState.value[1]}-------------\n\n" +
-                    "2023-3 : ${monthAlbumListState.value[2]}-------------\n\n" +
-                    "2023-2 : ${monthAlbumListState.value[3]}-------------\n\n" +
-                    "2023-1 : ${monthAlbumListState.value[4]}-------------\n\n"
-        )
-    }
 
     fun showClassifiedAllAlbumsByMonth(itemId: Int) = viewModelScope.launch {
         _eventFlow.emit(
