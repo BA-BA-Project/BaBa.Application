@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.animation.ValueAnimator
+import android.content.DialogInterface
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +24,7 @@ import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class AlbumDetailDialog : DialogFragment() {
+class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
@@ -60,10 +61,11 @@ class AlbumDetailDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
         setCloseBtn()
+        setBabyPhoto()
+        setAlbumLike()
         setCommentRecyclerView()
         setLikeUsersRecyclerView()
         setImgScaleAnim()
-        setBabyPhoto()
         collectAlbumDetail()
     }
 
@@ -155,7 +157,7 @@ class AlbumDetailDialog : DialogFragment() {
         }
         scaleUpAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
         scaleUpAnim.doOnEnd {
-            binding.cbAlbumLike.visibility = View.VISIBLE
+            binding.btnAlbumLike.visibility = View.VISIBLE
         }
         val scaleDownAnim = ValueAnimator.ofFloat(1f, 0.25f)
         scaleDownAnim.addUpdateListener { animation ->
@@ -167,7 +169,7 @@ class AlbumDetailDialog : DialogFragment() {
         }
         scaleDownAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
         scaleDownAnim.doOnStart {
-            binding.cbAlbumLike.visibility = View.GONE
+            binding.btnAlbumLike.visibility = View.GONE
         }
 
         viewLifecycleOwner.repeatOnStarted {
@@ -195,6 +197,12 @@ class AlbumDetailDialog : DialogFragment() {
         }
     }
 
+    private fun setAlbumLike(){
+        binding.btnAlbumLike.setOnClickListener{
+            viewModel.likeAlbum()
+        }
+    }
+
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
@@ -204,6 +212,11 @@ class AlbumDetailDialog : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        dismissLister.invoke()
     }
 
     companion object {

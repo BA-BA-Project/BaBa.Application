@@ -139,5 +139,25 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
+    fun likeAlbum() = viewModelScope.launch {
+        val contentId = albumDetailUiState.value.albumDetail.album.contentId
+        if (contentId != null) {
+            when (val result = likeAlbumUseCase(babyId, contentId)) {
+                is Result.Success -> {
+                    getAlbumDetailData()
+                    _albumDetailUiState.update { uiState ->
+                        uiState.copy(
+                            albumDetail = uiState.albumDetail.copy(
+                                album = uiState.albumDetail.album.copy(like = result.data)
+                            )
+                        )
+                    }
+                }
+                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_like_album_failed))
+            }
+        }
+    }
+
     fun checkMyComment(comment: CommentUiModel) = member.memberId == comment.memberId
 }

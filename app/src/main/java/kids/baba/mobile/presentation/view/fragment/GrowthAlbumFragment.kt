@@ -42,7 +42,6 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
-
     private var _binding: FragmentGrowthalbumBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -105,12 +104,16 @@ class GrowthAlbumFragment : Fragment() {
         val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
         val selectedBaby = viewModel.growthAlbumState.value.selectedBaby
         if(nowAlbum.contentId != null){
-            val albumDetailDialog = AlbumDetailDialog()
+            val albumDetailDialog = AlbumDetailDialog{
+                viewModel.initBabyAndAlbum(selectedDate)
+            }
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
             bundle.putString(SELECTED_BABY_ID_KEY, selectedBaby.babyId)
             albumDetailDialog.arguments = bundle
-            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)        }
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+
+        }
     }
 
     private fun setBinding() {

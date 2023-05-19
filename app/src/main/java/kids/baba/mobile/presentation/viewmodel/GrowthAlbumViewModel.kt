@@ -149,7 +149,7 @@ class GrowthAlbumViewModel @Inject constructor(
         if (album.contentId != null) {
             when (val result = likeAlbumUseCase(
                 growthAlbumState.value.selectedBaby.babyId,
-                album.contentId.toString()
+                album.contentId
             )) {
                 is Result.Success -> {
                     var selectedAlbum = growthAlbumState.value.selectedAlbum
