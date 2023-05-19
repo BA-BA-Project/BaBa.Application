@@ -46,7 +46,7 @@ interface MyPageApi {
     suspend fun editProfile(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body profile: Profile
-    )
+    ): Response<Unit>
 
     @PATCH("baby/{babyId}")
     suspend fun editBabyName(

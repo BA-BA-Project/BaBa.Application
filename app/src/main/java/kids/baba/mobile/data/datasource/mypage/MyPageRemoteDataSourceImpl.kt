@@ -48,8 +48,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         api.addGroup(myPageGroup = myPageGroup)
     }
 
-    override suspend fun editProfile(profile: Profile) {
-        api.editProfile(profile = profile)
+    override suspend fun editProfile(profile: Profile): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.editProfile(profile = profile)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun editBabyName(babyId: String, name: String) {
@@ -57,16 +67,16 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
-        val response = safeApiHelper.getSafe(
+        val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.addMyBaby(baby = baby)
             },
             mapping = {}
         )
-        return if (response is Result.Failure) {
-            Result.Failure(response.code, response.message, Exception(response.message))
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
         } else {
-            response
+            result
         }
     }
 

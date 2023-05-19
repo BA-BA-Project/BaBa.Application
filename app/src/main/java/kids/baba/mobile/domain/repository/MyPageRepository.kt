@@ -18,7 +18,7 @@ interface MyPageRepository {
 
     suspend fun addGroup(myPageGroup: MyPageGroup)
 
-    suspend fun editProfile(profile: Profile)
+    suspend fun editProfile(profile: Profile): Result<Unit>
 
     suspend fun editBabyName(babyId: String, name: String)
 

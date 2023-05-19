@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
+import kids.baba.mobile.presentation.event.EditMemberEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
@@ -80,6 +83,19 @@ class MyPageFragment : Fragment() {
                     }
 
                     else -> {}
+                }
+            }
+        }
+
+        viewLifecycleOwner.repeatOnStarted {
+            editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
+                when (event) {
+                    is EditMemberEvent.SuccessEditMember -> {
+                        viewModel.loadBabies()
+                    }
+                    is EditMemberEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
                 }
             }
         }
@@ -158,15 +174,21 @@ class MyPageFragment : Fragment() {
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch {
-                    editMemberProfileBottomSheetViewModel.edit(profile).join()
-                    viewModel.getMyInfo()
-                }
-            }
+            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel,
+                itemClick = { profile ->
+                    // 기존 -> 그냥 lifecycleScope.
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        editMemberProfileBottomSheetViewModel.edit(profile).join()
+                        viewModel.getMyInfo()
+                    }
+                })
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {

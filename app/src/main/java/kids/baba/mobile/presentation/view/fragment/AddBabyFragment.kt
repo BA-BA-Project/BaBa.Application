@@ -60,7 +60,7 @@ class AddBabyFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is AddBabyEvent.ShowSnackBar -> {
-                        showSnackBar(event.text)
+                        showSnackBar(event.message)
                     }
                     is AddBabyEvent.SuccessAddBaby -> {
                         activityViewModel.moveToCompleteAddBaby()
