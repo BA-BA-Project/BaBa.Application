@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
-import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
@@ -26,21 +24,17 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.addMemberView.tvAddButtonDesc.isGone = true
+
         binding.addMemberView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra(INTENT_PAGE_NAME, INVITE_MEMBER_PAGE)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), INVITE_MEMBER_PAGE)
         }
+
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             viewModel.patch(name = name)
             dismiss()
         }
+
         binding.deleteView.tvDeleteDesc.setOnClickListener {
             viewModel.delete()
             dismiss()

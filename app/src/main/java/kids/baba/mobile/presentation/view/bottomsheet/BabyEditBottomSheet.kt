@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
-import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
@@ -25,24 +23,11 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.addBabyView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra(INTENT_PAGE_NAME, ADD_BABY_PAGE)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
         }
+
         binding.inviteView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra(INTENT_PAGE_NAME, INVITE_WITH_CODE_PAGE)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), INVITE_WITH_CODE_PAGE)
         }
     }
 

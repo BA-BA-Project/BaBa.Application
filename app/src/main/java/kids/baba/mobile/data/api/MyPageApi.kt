@@ -68,27 +68,25 @@ interface MyPageApi {
         @Body inviteCode: InviteCode
     )
 
-    //TODO
+    //TODO - Server api is not ready
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
     )
 
-    //TODO
     @PATCH("members/groups")
     suspend fun patchGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String,
         @Body group: GroupInfo
-    )
+    ): Response<Unit>
 
-    //TODO
     @DELETE("members/groups")
     suspend fun deleteGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String
-    )
+    ): Response<Unit>
 
     @PATCH("members/groups/{groupMemberId}")
     suspend fun patchMember(

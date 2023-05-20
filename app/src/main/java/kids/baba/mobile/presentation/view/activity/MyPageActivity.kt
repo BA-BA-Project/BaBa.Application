@@ -1,5 +1,7 @@
 package kids.baba.mobile.presentation.view.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -52,7 +54,6 @@ class MyPageActivity : AppCompatActivity() {
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
             BABY_DETAIL_PAGE -> setNavStartWithArg(R.id.baby_detail_fragment, BABY_DETAIL_INFO)
-
         }
     }
 
@@ -96,7 +97,29 @@ class MyPageActivity : AppCompatActivity() {
         }
     }
 
+
     companion object {
         lateinit var instance: MyPageActivity
+        fun startActivity(context: Context, pageName: String) {
+            val intent = Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_PAGE_NAME, pageName)
+            }
+            context.startActivity(intent)
+        }
+
+        fun startActivityWithMember(
+            context: Context,
+            pageName: String,
+            argumentName: String,
+            memberUiModel: MemberUiModel
+        ) {
+            val intent = Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_PAGE_NAME, pageName)
+                putExtra(argumentName, memberUiModel)
+            }
+            context.startActivity(intent)
+
+        }
+
     }
 }

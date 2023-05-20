@@ -28,9 +28,9 @@ interface MyPageRepository {
 
     suspend fun deleteBaby(babyId: String)
 
-    suspend fun patchGroup(groupName: String, group: GroupInfo)
+    suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit>
 
-    suspend fun deleteGroup(groupName: String)
+    suspend fun deleteGroup(groupName: String): Result<Unit>
 
     suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit>
 

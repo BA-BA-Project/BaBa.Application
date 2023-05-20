@@ -1,15 +1,7 @@
 package kids.baba.mobile.data.repository
 
 import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSource
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import kids.baba.mobile.domain.repository.MyPageRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -43,13 +35,10 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         dataSource.deleteBaby(babyId = babyId)
     }
 
-    override suspend fun patchGroup(groupName: String, group: GroupInfo) {
+    override suspend fun patchGroup(groupName: String, group: GroupInfo) =
         dataSource.patchGroup(groupName = groupName, group = group)
-    }
 
-    override suspend fun deleteGroup(groupName: String) {
-        dataSource.deleteGroup(groupName = groupName)
-    }
+    override suspend fun deleteGroup(groupName: String) = dataSource.deleteGroup(groupName = groupName)
 
     override suspend fun patchMember(memberId: String, relation: GroupMemberInfo) =
         dataSource.patchMember(memberId = memberId, relation = relation)

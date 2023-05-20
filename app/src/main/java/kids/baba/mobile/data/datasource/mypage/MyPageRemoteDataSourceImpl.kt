@@ -2,16 +2,7 @@ package kids.baba.mobile.data.datasource.mypage
 
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
-import kids.baba.mobile.domain.model.BabyEdit
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -98,12 +89,32 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         api.deleteBaby(babyId = babyId)
     }
 
-    override suspend fun patchGroup(groupName: String, group: GroupInfo) {
-        api.patchGroup(groupName = groupName, group = group)
+    override suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.patchGroup(groupName = groupName, group = group)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun deleteGroup(groupName: String) {
-        api.deleteGroup(groupName = groupName)
+    override suspend fun deleteGroup(groupName: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteGroup(groupName = groupName)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit> {

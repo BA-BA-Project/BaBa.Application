@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -109,38 +108,23 @@ class MyPageFragment : Fragment() {
     private fun initView() {
         binding.viewmodel = viewModel
         binding.tvAddGroup.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra(INTENT_PAGE_NAME, ADD_GROUP_PAGE)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
         }
+
         binding.ivSetting.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra(INTENT_PAGE_NAME, SETTING_PAGE)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
         }
     }
 
     private fun initializeRecyclerView() {
         babyAdapter = MemberAdapter(
             itemClick = {
-                requireActivity().startActivity(
-                    Intent(
-                        requireContext(),
-                        MyPageActivity::class.java
-                    ).apply {
-                        putExtra(INTENT_PAGE_NAME, BABY_DETAIL_PAGE)
-                        putExtra(BABY_DETAIL_INFO, it)
-                    })
+                MyPageActivity.startActivityWithMember(
+                    requireContext(),
+                    pageName = BABY_DETAIL_PAGE,
+                    argumentName = BABY_DETAIL_INFO,
+                    memberUiModel = it
+                )
             })
 
         binding.rvKids.adapter = babyAdapter
