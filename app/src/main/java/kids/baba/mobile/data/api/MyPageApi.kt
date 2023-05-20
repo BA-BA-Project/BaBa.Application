@@ -53,7 +53,7 @@ interface MyPageApi {
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String,
         @Body babyEdit: BabyEdit
-    )
+    ): Response<Unit>
 
     @POST("baby")
     suspend fun addMyBaby(

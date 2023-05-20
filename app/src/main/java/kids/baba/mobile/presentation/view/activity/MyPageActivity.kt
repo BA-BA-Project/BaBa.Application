@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
@@ -40,34 +41,20 @@ class MyPageActivity : AppCompatActivity() {
         instance = this
 
         collectEvent()
-
-        when (intent.getStringExtra(INTENT_PAGE_NAME)) {
-            ADD_BABY_PAGE -> navGraph.setStartDestination(R.id.add_baby_fragment)
-
-            INVITE_WITH_CODE_PAGE -> navGraph.setStartDestination(R.id.input_invite_fragment)
-
-            BABY_DETAIL_PAGE -> {
-                val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getParcelableExtra(BABY_DETAIL_INFO, MemberUiModel::class.java)
-                } else {
-                    intent.getParcelableExtra(BABY_DETAIL_INFO)
-                }
-                key?.let {
-                    val bundle = Bundle()
-                    bundle.putParcelable(BABY_DETAIL_INFO, it)
-                    navGraph.addInDefaultArgs(bundle)
-                    navGraph.setStartDestination(R.id.baby_detail_fragment)
-                }
-            }
-
-            INVITE_MEMBER_PAGE -> navGraph.setStartDestination(R.id.invite_member_fragment)
-            SETTING_PAGE -> navGraph.setStartDestination(R.id.setting_fragment)
-            ADD_GROUP_PAGE -> navGraph.setStartDestination(R.id.add_group_fragment)
-        }
-        navController.graph = navGraph
-
+        setStartDestination()
     }
 
+    private fun setStartDestination() {
+        when (intent.getStringExtra(INTENT_PAGE_NAME)) {
+            ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
+            INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
+            INVITE_MEMBER_PAGE -> setNavStart(R.id.invite_member_fragment)
+            SETTING_PAGE -> setNavStart(R.id.setting_fragment)
+            ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
+            BABY_DETAIL_PAGE -> setNavStartWithArg(R.id.baby_detail_fragment, BABY_DETAIL_INFO)
+
+        }
+    }
 
     private fun collectEvent() {
         repeatOnStarted {
@@ -88,6 +75,25 @@ class MyPageActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
         navGraph = navController.navInflater.inflate(R.navigation.my_page_nav_graph)
+    }
+
+    private fun setNavStart(fragment: Int) {
+        navGraph.setStartDestination(fragment)
+        navController.graph = navGraph
+    }
+
+    private fun setNavStartWithArg(fragment: Int, argumentName: String) {
+        val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(argumentName, MemberUiModel::class.java)
+        } else {
+            intent.getParcelableExtra(argumentName)
+        }
+
+        key?.let {
+            val bundle = bundleOf(argumentName to it)
+            navGraph.setStartDestination(fragment)
+            navController.setGraph(navGraph, bundle)
+        }
     }
 
     companion object {

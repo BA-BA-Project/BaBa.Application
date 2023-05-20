@@ -29,9 +29,8 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         return dataSource.editProfile(profile = profile)
     }
 
-    override suspend fun editBabyName(babyId: String, name: String) {
+    override suspend fun editBabyName(babyId: String, name: String) =
         dataSource.editBabyName(babyId = babyId, name = name)
-    }
 
     override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
         return dataSource.addMyBaby(baby = baby)

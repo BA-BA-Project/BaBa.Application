@@ -20,7 +20,7 @@ interface MyPageRepository {
 
     suspend fun editProfile(profile: Profile): Result<Unit>
 
-    suspend fun editBabyName(babyId: String, name: String)
+    suspend fun editBabyName(babyId: String, name: String): Result<Unit>
 
     suspend fun addMyBaby(baby: MyBaby): Result<Unit>
 
