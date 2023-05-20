@@ -27,15 +27,19 @@ class SafeApiHelperImpl @Inject constructor(
                         Result.Unexpected(NullBodyException("Body가 null임"))
                     }
                 } else {
-                    var errorMessage = gson.fromJson(
-                        it.errorBody()?.string(),
-                        ErrorResponse::class.java
-                    ).message
+                    var errorMessage = try {
+                        gson.fromJson(
+                            it.errorBody()?.string(),
+                            ErrorResponse::class.java
+                        )?.message
+                    } catch (e: Exception) {
+                        null
+                    }
 
-                    if (errorMessage.isBlank()) {
+                    if (errorMessage.isNullOrBlank()) {
                         errorMessage = "Unknown Error"
                     }
-                    result = Result.Failure(it.code(), errorMessage,null)
+                    result = Result.Failure(it.code(), errorMessage, null)
                 }
             }
             .onFailure {
