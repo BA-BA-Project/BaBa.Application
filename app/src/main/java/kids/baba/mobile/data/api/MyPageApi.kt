@@ -95,7 +95,7 @@ interface MyPageApi {
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("groupMemberId") memberId: String,
         @Body relationName: GroupMemberInfo
-    )
+    ): Response<Unit>
 
     //TODO FIX
     @DELETE("members/groups/{groupMemberId}")

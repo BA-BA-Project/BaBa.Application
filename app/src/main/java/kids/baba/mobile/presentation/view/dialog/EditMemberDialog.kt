@@ -1,14 +1,19 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentEditMemberBinding
+import kids.baba.mobile.presentation.event.EditGroupMemberEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.EditMemberViewModel
 
 @AndroidEntryPoint
@@ -40,7 +45,25 @@ class EditMemberDialog : DialogFragment() {
     ): View {
         _binding = DialogFragmentEditMemberBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        collectEvent()
         return binding.root
+    }
+
+    private fun collectEvent(){
+        repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when(event){
+                    is EditGroupMemberEvent.SuccessPatchMemberRelation ->  Log.e(TAG, "SuccessPatchMemberRelation")
+                    is EditGroupMemberEvent.SuccessDeleteMember -> Log.e(TAG, "SuccessDeleteMember")
+                    is EditGroupMemberEvent.ShowSnackBar -> {showSnackBar(event.message)}
+                }
+            }
+        }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

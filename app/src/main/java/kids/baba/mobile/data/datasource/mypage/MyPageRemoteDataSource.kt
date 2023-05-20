@@ -33,7 +33,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun deleteGroup(groupName: String)
 
-    suspend fun patchMember(memberId: String, relation: GroupMemberInfo)
+    suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit>
 
     suspend fun deleteGroupMember(memberId: String)
 }

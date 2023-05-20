@@ -106,8 +106,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         api.deleteGroup(groupName = groupName)
     }
 
-    override suspend fun patchMember(memberId: String, relation: GroupMemberInfo) {
-        api.patchMember(memberId = memberId, relationName = relation)
+    override suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.patchMember(memberId = memberId, relationName = relation)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun deleteGroupMember(memberId: String) {

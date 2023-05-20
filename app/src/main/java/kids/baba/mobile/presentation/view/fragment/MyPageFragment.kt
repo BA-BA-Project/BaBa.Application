@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
-import kids.baba.mobile.presentation.event.EditMemberEvent
+import kids.baba.mobile.presentation.event.EditMemberProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
@@ -90,10 +90,10 @@ class MyPageFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
                 when (event) {
-                    is EditMemberEvent.SuccessEditMember -> {
+                    is EditMemberProfileEvent.SuccessEditMemberProfile -> {
                         viewModel.loadBabies()
                     }
-                    is EditMemberEvent.ShowSnackBar -> {
+                    is EditMemberProfileEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }
                 }
