@@ -13,9 +13,9 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
     override suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse> =
         dataSource.loadBabyProfile(babyId = babyId)
 
-    override suspend fun addGroup(myPageGroup: MyPageGroup) {
+    override suspend fun addGroup(myPageGroup: MyPageGroup) =
         dataSource.addGroup(myPageGroup = myPageGroup)
-    }
+
 
     override suspend fun editProfile(profile: Profile): Result<Unit> {
         return dataSource.editProfile(profile = profile)

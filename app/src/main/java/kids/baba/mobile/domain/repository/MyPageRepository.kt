@@ -1,14 +1,6 @@
 package kids.baba.mobile.domain.repository
 
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRepository {
@@ -16,7 +8,7 @@ interface MyPageRepository {
 
     suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse>
 
-    suspend fun addGroup(myPageGroup: MyPageGroup)
+    suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit>
 
     suspend fun editProfile(profile: Profile): Result<Unit>
 

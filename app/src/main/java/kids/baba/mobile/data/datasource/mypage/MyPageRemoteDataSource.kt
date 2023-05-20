@@ -17,7 +17,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse>
 
-    suspend fun addGroup(myPageGroup: MyPageGroup)
+    suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit>
 
     suspend fun editProfile(profile: Profile): Result<Unit>
 

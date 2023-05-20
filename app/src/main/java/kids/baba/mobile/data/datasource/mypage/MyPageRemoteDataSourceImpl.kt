@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.mypage
 
+import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
@@ -35,8 +36,22 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         return if (result is Result.Success) flow { emit(result.data) } else flow {}
     }
 
-    override suspend fun addGroup(myPageGroup: MyPageGroup) {
-        api.addGroup(myPageGroup = myPageGroup)
+    override suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addGroup(myPageGroup = myPageGroup)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            // TODO: 서버에 문제가 있는 것 같음. 테스트용 로그. 서버 문제가 사라지면 제거할 예정.
+            Log.e("MyPageRemoteDataSource", "addGroup - msg: ${result.message}" +
+                    "code: ${result.code}   exception: ${result.throwable}")
+
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun editProfile(profile: Profile): Result<Unit> {

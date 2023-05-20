@@ -35,12 +35,11 @@ interface MyPageApi {
         @Path("babyId") babyId: String
     ): Response<BabyProfileResponse>
 
-    //TODO
     @POST("members/groups")
     suspend fun addGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body myPageGroup: MyPageGroup
-    )
+    ): Response<Unit>
 
     @PUT("members")
     suspend fun editProfile(
