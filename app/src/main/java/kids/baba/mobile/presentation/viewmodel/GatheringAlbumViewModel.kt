@@ -127,9 +127,11 @@ class GatheringAlbumViewModel @Inject constructor(
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList
 
+
         thisYear = LocalDate.now().year
         thisMonth = LocalDate.now().monthValue
     }
+
 
     fun showClassifiedAllAlbumsByMonth(itemId: Int) = viewModelScope.launch {
         _eventFlow.emit(

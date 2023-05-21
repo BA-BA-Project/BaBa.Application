@@ -5,16 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentCreatorBinding
 
 @AndroidEntryPoint
 class FragmentCreator : Fragment() {
     private var _binding: FragmentCreatorBinding? = null
-    private lateinit var navController: NavController
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
@@ -34,7 +31,6 @@ class FragmentCreator : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setNavController()
         binding.title = "서비스 제작자"
         binding.design = "기획 및 디자인"
         binding.designer = "박재희"
@@ -44,14 +40,9 @@ class FragmentCreator : Fragment() {
         binding.backEndDev = "김준형\n박성우"
         binding.helper = "도움주신 분"
         binding.helperName = "서종환"
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            navController.navigateUp()
-        }
-    }
 
-    private fun setNavController() {
-        val navHostFragment =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
-        navController = navHostFragment.navController
+        binding.topAppBar.ivBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 }

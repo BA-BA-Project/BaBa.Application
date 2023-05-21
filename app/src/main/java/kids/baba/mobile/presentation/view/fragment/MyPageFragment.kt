@@ -33,6 +33,7 @@ class MyPageFragment : Fragment() {
     private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,12 +45,17 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadGroups()
-        viewModel.loadBabies()
-        viewModel.getMyInfo()
+
         collectState()
         initView()
         setBottomSheet()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadGroups()
+        viewModel.loadBabies()
+        viewModel.getMyInfo()
     }
 
     private fun collectState() {
@@ -93,8 +99,6 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "addGroup")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
@@ -105,26 +109,24 @@ class MyPageFragment : Fragment() {
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "setting")
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
     }
 
     private fun initializeRecyclerView() {
-        babyAdapter = MemberAdapter {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "babyDetail")
-                    putExtra("baby", it)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                })
-        }
+        babyAdapter = MemberAdapter(
+            itemClick = {
+                requireActivity().startActivity(
+                    Intent(
+                        requireContext(),
+                        MyPageActivity::class.java
+                    ).apply {
+                        putExtra("next", "babyDetail")
+                        putExtra("baby", it)
+                    })
+            })
+
         binding.rvKids.adapter = babyAdapter
         myPageGroupAdapter = MyPageGroupAdapter(
             showMemberInfo = { group, member ->
@@ -150,7 +152,6 @@ class MyPageFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
             val bundle = Bundle()
-            //            bundle.putParcelable(BabyListBottomSheet.SELECTED_BABY_KEY, viewModel.selectedBaby.value)
             val bottomSheet = BabyEditBottomSheet()
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
@@ -158,7 +159,7 @@ class MyPageFragment : Fragment() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
             val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     editMemberProfileBottomSheetViewModel.edit(profile).join()
                     viewModel.getMyInfo()
                 }
