@@ -23,13 +23,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ) = flow {
-        dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap).catch {
-            throw it
-        }.collect {
-            emit(it)
-        }
-    }
+    ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
 
     override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> =
         dataSource.likeAlbum(id, contentId)
@@ -43,5 +37,8 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
 
     override suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse> =
         dataSource.getLikeDetail(id = id, contentId = contentId)
+
+    override suspend fun getAllAlbum(id: String) = dataSource.getAllAlbum(id)
+
 
 }
