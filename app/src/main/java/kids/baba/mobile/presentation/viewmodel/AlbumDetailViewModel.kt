@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.core.constant.PrefsKey
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
@@ -23,7 +25,6 @@ import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,8 +66,7 @@ class AlbumDetailViewModel @Inject constructor(
 
     val comment = MutableStateFlow("")
 
-    private val babyId = savedStateHandle[SELECTED_BABY_ID_KEY] ?: ""
-
+    val babyId = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId
     init {
         viewModelScope.launch {
             _member.value = getMemberUseCase.getMe()
@@ -76,41 +76,38 @@ class AlbumDetailViewModel @Inject constructor(
 
     private fun getAlbumDetailData() = viewModelScope.launch {
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
-        if (babyId.isEmpty()) {
+        if (contentId == null) {
             _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
         } else {
-            if (contentId == null) {
-                _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
-            } else {
-                val likeDetailResult = getLikeDetailUseCase(babyId, contentId)
-                val commentsResult = getCommentsUseCase(babyId, contentId)
-                when {
-                    likeDetailResult is Result.Success && commentsResult is Result.Success -> {
-                        val likeDetail = likeDetailResult.data
-                        val comments = commentsResult.data
-                        _albumDetailUiState.update { uiState ->
-                            uiState.copy(
-                                albumDetail = uiState.albumDetail.copy(
-                                    likeDetail = likeDetail.toPresentation(),
-                                    likeCount = likeDetail.likeUsers.size,
-                                    comments = comments.map { it.toPresentation() }
-                                )
+            val likeDetailResult = getLikeDetailUseCase(babyId, contentId)
+            val commentsResult = getCommentsUseCase(babyId, contentId)
+            when {
+                likeDetailResult is Result.Success && commentsResult is Result.Success -> {
+                    val likeDetail = likeDetailResult.data
+                    val comments = commentsResult.data
+                    _albumDetailUiState.update { uiState ->
+                        uiState.copy(
+                            albumDetail = uiState.albumDetail.copy(
+                                likeDetail = likeDetail.toPresentation(),
+                                likeCount = likeDetail.likeUsers.size,
+                                comments = comments.map { it.toPresentation() }
                             )
-                        }
+                        )
                     }
-
-                    likeDetailResult is Result.NetworkError || commentsResult is Result.NetworkError -> {
-                        _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
-                    }
-
-                    else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
                 }
 
+                likeDetailResult is Result.NetworkError || commentsResult is Result.NetworkError -> {
+                    _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                }
+
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
             }
+
         }
+
     }
 
-    fun addComment(addSuccess : () -> Unit) = viewModelScope.launch {
+    fun addComment(addSuccess: () -> Unit) = viewModelScope.launch {
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
 
         if (contentId != null) {
@@ -122,6 +119,7 @@ class AlbumDetailViewModel @Inject constructor(
                     comment.value = ""
                     addSuccess()
                 }
+
                 is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
             }
