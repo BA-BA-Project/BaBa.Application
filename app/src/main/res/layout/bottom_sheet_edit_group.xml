@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="@string/manage_kids"
+                android:text="@string/family_setting"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"

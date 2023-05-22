@@ -31,13 +31,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/civ_my_profile"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         android:layout_marginStart="19dp"
                         android:layout_marginBottom="19dp"
-                        android:src="@drawable/my_profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentGatheringViewBinding
@@ -38,10 +40,9 @@ class GatheringViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
+        viewModel.initAlbum()
         setViewPager()
         collectEvent()
     }
@@ -68,9 +69,14 @@ class GatheringViewFragment : Fragment() {
                             )
                         findNavController().navigate(action)
                     }
+                    is GatheringAlbumEvent.ShowSnackBar -> showSnackBar(event.text)
                 }
             }
         }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

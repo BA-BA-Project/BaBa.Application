@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class FileUtil @Inject constructor(
     @ApplicationContext private val context: Context
-){
+) {
     private val TAG = "FileUtil"
 
     fun optimizeBitmap(uri: Uri): String {

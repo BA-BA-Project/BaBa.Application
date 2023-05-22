@@ -73,4 +73,24 @@ interface AlbumApi {
         @Path("contentId") contentId: String,
         @Path("babyId") id: String
     ): Response<LikeDetailResponse>
+
+    @GET("baby/{babyId}/album/all")
+    suspend fun getAllAlbum(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") id: String
+    ): Response<AlbumResponse>
+
+    //성장 앨범 좋아요
+
+    //성장 앨범 댓글 추가
+
+    //성장 앨범 자세히 보기
+
+    //성장 앨범 사진 수정
+
+    //성장 앨범 카드 수정
+
+    //성장 앨범 댓글 삭제
+
+    //성장 앨범 날짜별 보기
 }

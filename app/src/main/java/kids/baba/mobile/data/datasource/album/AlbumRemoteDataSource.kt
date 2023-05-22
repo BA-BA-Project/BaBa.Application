@@ -1,7 +1,6 @@
 package kids.baba.mobile.data.datasource.album
 
 import kids.baba.mobile.domain.model.*
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -13,7 +12,7 @@ interface AlbumRemoteDataSource {
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Flow<PostAlbumResponse>
+    ): Result<PostAlbumResponse>
 
     suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
@@ -24,4 +23,6 @@ interface AlbumRemoteDataSource {
     suspend fun getComment(id: String, contentId: String): Result<List<Comment>>
 
     suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse>
+
+    suspend fun getAllAlbum(id: String): Result<List<Album>>
 }
