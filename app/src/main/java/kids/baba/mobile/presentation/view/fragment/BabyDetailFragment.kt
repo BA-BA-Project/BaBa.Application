@@ -65,6 +65,7 @@ class BabyDetailFragment : Fragment() {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
                         binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
+                        binding.tvMyStatusMessage.text = it.data.birthday
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
                             Log.e("delete","${viewModel.baby.value?.memberId}")
