@@ -179,5 +179,6 @@
     <string name="all">전체</string>
 
     <string name="classified_album_detail_title" tools:ignore="ExtraTranslation">2023–01</string>
+    <string name="family_setting">가족 설정</string>
 
 </resources>

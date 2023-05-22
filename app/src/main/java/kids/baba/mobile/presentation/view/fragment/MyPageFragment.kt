@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
@@ -75,8 +77,11 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageUiState.LoadMyInfo -> {
-                        binding.tvMyStatusMessage.text = it.data.name
-                        binding.tvMyName.text = it.data.introduction
+                        binding.tvMyStatusMessage.text = it.data.introduction
+                        binding.tvMyName.text = it.data.name
+                        binding.civMyProfile.circleBackgroundColor =
+                            Color.parseColor(it.data.userIconUiModel.iconColor)
+                        binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
                     }
 
                     else -> {}
@@ -91,7 +96,9 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() {
+        val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
+        binding.tvKidsTitle.text = if (title != "") title else "아이들"
         binding.tvAddGroup.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -130,7 +137,9 @@ class MyPageFragment : Fragment() {
         binding.rvKids.adapter = babyAdapter
         myPageGroupAdapter = MyPageGroupAdapter(
             showMemberInfo = { group, member ->
-                val editMemberDialog = EditMemberDialog()
+                val editMemberDialog = EditMemberDialog {
+                    viewModel.loadGroups()
+                }
                 val bundle = Bundle()
                 bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
                 bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
@@ -140,7 +149,9 @@ class MyPageFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean("family", group.family)
                 bundle.putString("groupName", group.groupName)
-                val bottomSheet = GroupEditBottomSheet()
+                val bottomSheet = GroupEditBottomSheet {
+                    viewModel.loadGroups()
+                }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
             }
@@ -152,18 +163,23 @@ class MyPageFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = BabyEditBottomSheet()
+            val bottomSheet = BabyEditBottomSheet {
+                EncryptedPrefs.putString("babyGroupTitle", it)
+                binding.tvKidsTitle.text = it
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch {
-                    editMemberProfileBottomSheetViewModel.edit(profile).join()
-                    viewModel.getMyInfo()
+            val bottomSheet =
+                MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
+                    lifecycleScope.launch {
+                        editMemberProfileBottomSheetViewModel.edit(profile).join()
+                        viewModel.getMyInfo()
+                        viewModel.loadGroups()
+                    }
                 }
-            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }

@@ -14,7 +14,7 @@ import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel
 
 @AndroidEntryPoint
-class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
+class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditBabyProfileBinding? = null
     private val binding
@@ -25,6 +25,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
+            itemClick(name)
             viewModel.edit(babyId = viewModel.baby.value?.memberId ?: "", name = name)
             dismiss()
         }

@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
 import kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class InputInviteCodeFragment : Fragment() {
@@ -38,6 +40,7 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectState()
         binding.topAppBar.ivBackButton.setOnClickListener {
             requireActivity().finish()
         }
@@ -45,7 +48,24 @@ class InputInviteCodeFragment : Fragment() {
         binding.btnAddInviteUser.setOnClickListener {
             val inviteCode = binding.inputView.etInput.text.toString()
             viewModel.add(inviteCode)
-            findNavController().navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
+        }
+    }
+
+    private fun collectState() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.uiState.collect{
+                when(it){
+                    is InputCodeState.Idle -> {}
+                    is InputCodeState.LoadInfo -> {
+                        val response = it.data
+                        Log.e("response","$response")
+//                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(response)
+//                        navController.navigate(action)
+						  findNavController().navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
+
+                    }
+                }
+            }
         }
     }
 }
