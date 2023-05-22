@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetBabyListBinding
 import kids.baba.mobile.presentation.adapter.BabyAdapter
+import kids.baba.mobile.presentation.event.BabyListEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyListViewModel
@@ -34,6 +37,17 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBabyList()
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{ event ->
+                when(event) {
+                    is BabyListEvent.ShowSnackBar -> showSnackBar(event.message)
+                }
+            }
+        }
     }
 
     private fun setBabyList() {
@@ -49,6 +63,11 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
             }
         }
 
+    }
+
+    private fun showSnackBar(@StringRes message : Int){
+        //TODO 바텀시트에 가려져 스낵바가 보이지 않음
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

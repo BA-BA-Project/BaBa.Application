@@ -63,7 +63,6 @@ class AlbumDetailDialog : DialogFragment() {
         setDetailStateCollecter()
         fetchData()
     }
-
     private fun setDetailStateCollecter() {
         repeatOnStarted {
             viewModel.albumDetailUiState.collect {

@@ -7,7 +7,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface AlbumRepository {
-    suspend fun getAlbum(id: String, year: Int, month: Int): Flow<AlbumResponse>
+    suspend fun getAlbum(id: String, year: Int, month: Int): Result<List<Album>>
 
     suspend fun postAlbum(
         accessToken: String,
@@ -16,7 +16,7 @@ interface AlbumRepository {
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Result<PostAlbumResponse>
 
-    suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse>
+    suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 

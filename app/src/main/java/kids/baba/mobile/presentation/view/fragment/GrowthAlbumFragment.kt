@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.calendarnew.getWeekPageTitle
+import com.google.android.material.snackbar.Snackbar
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
@@ -23,6 +21,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
+import kids.baba.mobile.presentation.event.GrowthAlbumEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.model.AlbumUiModel
@@ -34,11 +33,12 @@ import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SEL
 import kids.baba.mobile.presentation.view.film.FilmActivity
 import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -61,6 +61,11 @@ class GrowthAlbumFragment : Fragment() {
         FilmActivity.startActivity(requireContext(), viewModel.growthAlbumState.value.selectedDate.toString())
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.initBabyAndAlbum(selectedDate)
+    }
+
     private fun noPermission() {
         Log.e("GrowthAlbumFragment", "noPermission()")
     }
@@ -73,16 +78,37 @@ class GrowthAlbumFragment : Fragment() {
         setAlbumDialog()
         setBottomSheet()
         collectUiState()
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{event->
+                when(event) {
+                   is GrowthAlbumEvent.ShowSnackBar -> showSnackBar(event.message)
+                }
+            }
+        }
+    }
+
+    private fun showSnackBar(@StringRes message : Int){
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun setAlbumDialog() {
         binding.cvBabyAlbum.setOnClickListener {
+            showAlbumDetailDialog()
+        }
+    }
+
+    private fun showAlbumDetailDialog() {
+        val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
+        if(nowAlbum.contentId != null){
             val albumDetailDialog = AlbumDetailDialog()
             val bundle = Bundle()
-            bundle.putParcelable(SELECTED_ALBUM_KEY, viewModel.growthAlbumState.value.selectedAlbum)
+            bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
             albumDetailDialog.arguments = bundle
-            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
-        }
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)        }
     }
 
     private fun setBinding() {
@@ -170,11 +196,21 @@ class GrowthAlbumFragment : Fragment() {
             override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
         }
 
+        var currentMonth = YearMonth.now()
+
         binding.wcvAlbumCalendar.weekScrollListener = { weekDays ->
-            binding.tvDate.text = getWeekPageTitle(weekDays)
+            val firstDate = weekDays.days.first().date
+            val lastDate = weekDays.days.last().date
+            currentMonth = if (lastDate.month != currentMonth.month) {
+                YearMonth.of(lastDate.year, lastDate.month)
+            } else if (firstDate.month != currentMonth.month) {
+                YearMonth.of(firstDate.year, firstDate.month)
+            } else {
+                currentMonth
+            }
+            binding.tvDate.text = getString(R.string.calendar_date, currentMonth.year, currentMonth.monthValue)
         }
 
-        val currentMonth = YearMonth.now()
         binding.wcvAlbumCalendar.setup(
             currentMonth.minusMonths(24).atStartOfMonth(),
             LocalDate.now(),
@@ -182,66 +218,61 @@ class GrowthAlbumFragment : Fragment() {
         )
         binding.wcvAlbumCalendar.scrollPaged = false
         binding.wcvAlbumCalendar.scrollToDate(LocalDate.now().minusDays(3))
+
+
     }
 
 
     private fun collectUiState() {
-        repeatOnStarted {
-            viewModel.growthAlbumState.collect { state ->
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.growthAlbumState.collectLatest { state ->
                 val growthAlbumList = state.growthAlbumList
                 val selectedDate = state.selectedDate
                 val selectedAlbum = state.selectedAlbum
                 val selectedBaby = state.selectedBaby
 
+                setViewPagerItem(growthAlbumList)
                 setAlbum(selectedBaby, selectedAlbum)
                 setSelectedDate(selectedDate)
-                setViewPagerItem(growthAlbumList)
             }
         }
     }
 
     private fun setAlbum(baby: BabyUiModel, album: AlbumUiModel) {
-        binding.vpBabyPhoto.doOnPreDraw {
-            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
-            @StringRes
-            val toDoMessage = if (album.contentId != null) {
-                R.string.add_like_and_comment
+        @StringRes
+        val toDoMessage = if (album.contentId != null) {
+            R.string.add_like_and_comment
+        } else {
+            if (album.isMyBaby) {
+                R.string.record_album
             } else {
-                if (album.isMyBaby) {
-                    R.string.record_album
-                } else {
-                    R.string.no_albums_recorded
-                }
+                R.string.no_albums_recorded
             }
-            binding.tvDoSome.setText(toDoMessage)
+        }
+        binding.tvDoSome.setText(toDoMessage)
 
-            if (album.date == LocalDate.now()) {
-                binding.tvAlbumDate.setText(R.string.today)
-            } else {
-                binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
-            }
+        if (album.date == LocalDate.now()) {
+            binding.tvAlbumDate.setText(R.string.today)
+        } else {
+            binding.tvAlbumDate.text = album.date.format(albumDateTimeFormatter)
+        }
 
-            binding.tvAlbumTitle.text = if (album.contentId != null) {
-                album.title
-            } else if (album.date == LocalDate.now()) {
-                String.format(getString(R.string.today_album_title), baby.name)
-            } else {
-                String.format(getString(R.string.past_album_title), baby.name)
-            }
+        binding.tvAlbumTitle.text = if (album.contentId != null) {
+            album.title
+        } else if (album.date == LocalDate.now()) {
+            String.format(getString(R.string.today_album_title), baby.name)
+        } else {
+            String.format(getString(R.string.past_album_title), baby.name)
         }
     }
 
     private fun setViewPagerItem(growthAlbumList: List<AlbumUiModel>) {
-        albumAdapter.submitList(growthAlbumList)
-
-
-        albumAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.wcvAlbumCalendar.notifyCalendarChanged()
-                albumAdapter.unregisterAdapterDataObserver(this)
-
-            }
-        })
+        albumAdapter.submitListWithCallback(
+            growthAlbumList
+        ) {
+            binding.wcvAlbumCalendar.notifyCalendarChanged()
+            binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
+        }
     }
 
 
@@ -260,11 +291,15 @@ class GrowthAlbumFragment : Fragment() {
             createAlbum = {
                 // 권한 허용
                 permissionRequester.checkPermissions(requireContext())
+            },
+            albumClick = {
+                showAlbumDetailDialog()
             }
         )
         binding.vpBabyPhoto.adapter = albumAdapter
 
-        binding.vpBabyPhoto.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpBabyPhoto.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             var isUserScrolling = false
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
@@ -275,6 +310,13 @@ class GrowthAlbumFragment : Fragment() {
                         viewModel.selectDateFromPosition(binding.vpBabyPhoto.currentItem)
                     }
                     isUserScrolling = false
+                }
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(isUserScrolling.not() && viewModel.getAlbumIndex() != position ){
+                    binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 }
             }
         })
