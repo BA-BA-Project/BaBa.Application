@@ -69,8 +69,7 @@ class AddBabyFragment : Fragment() {
         binding.btnAddBaby.setOnClickListener {
             val name = binding.nameView.etInput.text.toString()
             val relation = binding.relationView.etInput.text.toString()
-            val birthDay = binding.birthView.etInput.text.toString()
-            viewModel.addBaby(name = name, relationName = relation, birthDay = birthDay)
+            viewModel.addBaby(name = name, relationName = relation)
             findNavController().navigate(R.id.action_add_baby_fragment_to_add_complete_fragment)
         }
         binding.birthView.etInput.setOnClickListener {
