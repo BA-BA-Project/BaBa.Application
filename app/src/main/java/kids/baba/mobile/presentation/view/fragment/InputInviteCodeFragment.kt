@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
+import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.state.InputCodeState
 import kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel
 import kotlinx.coroutines.flow.collect
 
