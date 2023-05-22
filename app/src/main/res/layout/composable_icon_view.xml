@@ -36,6 +36,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/w_1"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -43,6 +44,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/w_2"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -50,6 +52,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/w_3"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -57,6 +60,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/w_4"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -64,6 +68,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/w_5"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/profile_w_5"
@@ -79,6 +84,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_1"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -86,6 +92,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_2"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -93,6 +100,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_3"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -100,6 +108,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_4"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -107,6 +116,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_5"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/profile_m_5"
@@ -121,6 +131,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/m_6"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -128,6 +139,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/g_1"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -135,6 +147,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/g_2"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -142,6 +155,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/g_3"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
@@ -149,6 +163,7 @@
                 app:civ_circle_background_color="#EDEDED" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/g_4"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/profile_g_4"

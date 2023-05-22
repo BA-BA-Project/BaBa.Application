@@ -86,7 +86,9 @@
 
     <string name="likes_and_comment">좋아요와 댓글을 달아봐요!</string>
     <string name="iv_select_card_guide">카드 선택 창에서는 가이드용(실제 상호작용 없음)</string>
-    <string name="entity_too_large">사진의 용량이 너무 큽니다.</string>
+    <string name="post_album_entity_too_large">사진의 용량이 너무 큽니다.</string>
+    <string name="post_album_failed">사진 업로드에 실패했습니다.</string>
+    <string name="post_album_unexpected_result">알 수 없는 오류로 사진 업로드에 실패했습니다.</string>
 
     <string name="create_profile_complete">프로필 생성 완료</string>
     <string name="view_by_date">날짜별 보기</string>
@@ -181,5 +183,6 @@
     <string name="all">전체</string>
 
     <string name="classified_album_detail_title" tools:ignore="ExtraTranslation">2023–01</string>
+    <string name="family_setting">가족 설정</string>
 
 </resources>

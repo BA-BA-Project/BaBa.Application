@@ -15,12 +15,13 @@ class AddBabyViewModel @Inject constructor(
     private val addOneMyBabyUseCase: AddOneMyBabyUseCase
 ) : ViewModel() {
     val uiModel = MutableStateFlow(AddBabyUiModel())
-    fun addBaby(name: String, relationName: String, birthDay: String) = viewModelScope.launch {
+    val birthDay = MutableStateFlow("")
+    fun addBaby(name: String, relationName: String) = viewModelScope.launch {
         addOneMyBabyUseCase.add(
             baby = MyBaby(
                 name = name,
                 relationName = relationName,
-                birthday = birthDay
+                birthday = birthDay.value
             )
         )
     }

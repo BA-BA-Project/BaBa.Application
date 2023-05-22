@@ -13,14 +13,15 @@ interface AlbumRemoteDataSource {
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Flow<PostAlbumResponse>
+    ): Result<PostAlbumResponse>
 
     suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)
 
-
     suspend fun getComment(id: String, contentId: String): Flow<CommentResponse>
 
     suspend fun getLikeDetail(id: String, contentId: String): Flow<LikeDetailResponse>
+
+    suspend fun getAllAlbum(id: String): Result<List<Album>>
 }
