@@ -24,6 +24,7 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
         binding.inputNameView.tvEditButton.setOnClickListener {
             val name = binding.inputNameView.tvEdit.text.toString()
             itemClick(name)
+            dismiss()
         }
         binding.addBabyView.ivAddButton.setOnClickListener {
             requireActivity().startActivity(
