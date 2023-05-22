@@ -31,7 +31,6 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     fun patch(name: String) = viewModelScope.launch {
         patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = name), groupName = query.value)
-        patchGroup.value()
     }
 
     fun delete() = viewModelScope.launch {

@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment() {
@@ -39,7 +41,10 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
         }
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
-            viewModel.patch(name = name)
+            lifecycleScope.launch {
+                viewModel.patch(name = name).join()
+                viewModel.patchGroup.value()
+            }
             dismiss()
         }
         binding.deleteView.tvDeleteDesc.setOnClickListener {
