@@ -88,7 +88,9 @@ class BabyDetailFragment : Fragment() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, viewModel.baby.value)
-            val bottomSheet = BabyEditProfileBottomSheet()
+            val bottomSheet = BabyEditProfileBottomSheet{
+                binding.tvMyName.text = it
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
         }
