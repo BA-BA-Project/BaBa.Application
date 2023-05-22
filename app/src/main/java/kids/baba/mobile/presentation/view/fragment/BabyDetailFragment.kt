@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
@@ -66,7 +64,7 @@ class BabyDetailFragment : Fragment() {
                 when (it) {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
-                        viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
+                        binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
                             Log.e("delete","${viewModel.baby.value?.memberId}")
