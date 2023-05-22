@@ -1,10 +1,14 @@
 package kids.baba.mobile.data.datasource.album
 
-import android.util.Log
 import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.network.SafeApiHelper
-import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.CommentInput
+import kids.baba.mobile.domain.model.CommentResponse
+import kids.baba.mobile.domain.model.LikeDetailResponse
+import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.PostAlbumResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -20,13 +24,18 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         year: Int,
         month: Int,
-    ): Flow<AlbumResponse> = flow {
-        val response = api.getAlbum(id = id, year = year, month = month)
-        Log.e("Album", "${response.body()?.album} ${response.code()}")
-        response.body()?.let {
-            emit(it)
-        }
+    ): Result<List<Album>> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.getAlbum(id = id, year = year, month = month)
+            },
+            mapping = {
+                it.album
+            }
+        )
+        return result
     }
+
 
     override suspend fun postAlbum(
         accessToken: String,
@@ -53,11 +62,16 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: String): Flow<LikeResponse> = flow {
-        val response = api.likeAlbum(id = id, contentId = contentId)
-        response.body()?.let {
-            emit(it)
-        }
+    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>{
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.likeAlbum(id = id, contentId = contentId)
+            },
+            mapping = {
+                it.isLiked
+            }
+        )
+        return result
     }
 
     override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput) {
