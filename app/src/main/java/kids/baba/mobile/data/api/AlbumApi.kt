@@ -26,6 +26,13 @@ interface AlbumApi {
         @Query("month") month: Int
     ): Response<AlbumResponse>
 
+    @GET("baby/{babyId}/album/{albumId}")
+    suspend fun gatOneAlbum(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") babyId: String,
+        @Path("contentId") contentId: String
+    ): Response<Album>
+
     //성장 앨범 추가
     @Multipart
     @POST("baby/{babyId}/album")

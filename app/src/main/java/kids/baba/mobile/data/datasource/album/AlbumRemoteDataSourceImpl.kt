@@ -7,10 +7,8 @@ import kids.baba.mobile.domain.model.Album
 import kids.baba.mobile.domain.model.Comment
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
-import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.PostAlbumResponse
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kids.baba.mobile.domain.model.Result
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -35,6 +33,14 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         )
         return result
     }
+
+    override suspend fun getOneAlbum(babyId: String, contentId: String): Result<Album> =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.gatOneAlbum(babyId = babyId, contentId = contentId)
+            },
+            mapping = {it}
+        )
 
 
     override suspend fun postAlbum(
@@ -74,7 +80,11 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         return result
     }
 
-    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput): Result<Unit> =
+    override suspend fun addComment(
+        id: String,
+        contentId: String,
+        commentInput: CommentInput
+    ): Result<Unit> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.addComment(id = id, contentId = contentId, commentInput = commentInput)
@@ -82,13 +92,18 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
 
-    override suspend fun deleteComment(id: String, contentId: String, commentId: String): Result<Unit> =
+    override suspend fun deleteComment(
+        id: String,
+        contentId: String,
+        commentId: String
+    ): Result<Unit> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.deleteComment(id = id, contentId = contentId, commentId = commentId)
             },
             mapping = {}
         )
+
     override suspend fun getComment(id: String, contentId: String): Result<List<Comment>> =
         safeApiHelper.getSafe(
             remoteFetch = {

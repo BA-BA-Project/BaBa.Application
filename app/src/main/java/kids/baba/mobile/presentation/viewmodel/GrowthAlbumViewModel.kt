@@ -51,7 +51,7 @@ class GrowthAlbumViewModel @Inject constructor(
             AlbumUiModel(date = startDate.plusDays(idx.toLong()), isMyBaby = selectedBaby.isMyBaby)
         }
 
-        when (val result = getAlbumsFromBabyIdUseCase(selectedBaby.babyId, nowYear, nowMonth)) {
+        when (val result = getAlbumsFromBabyIdUseCase.getMonthAlbum(selectedBaby.babyId, nowYear, nowMonth)) {
             is Result.Success -> {
                 val albumList = result.data
                 albumList.forEach {

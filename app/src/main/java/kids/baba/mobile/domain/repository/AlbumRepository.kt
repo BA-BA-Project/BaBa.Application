@@ -1,13 +1,18 @@
 package kids.baba.mobile.domain.repository
 
-import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.Comment
+import kids.baba.mobile.domain.model.CommentInput
+import kids.baba.mobile.domain.model.LikeDetailResponse
+import kids.baba.mobile.domain.model.PostAlbumResponse
 import kids.baba.mobile.domain.model.Result
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface AlbumRepository {
     suspend fun getAlbum(id: String, year: Int, month: Int): Result<List<Album>>
+
+    suspend fun getOneAlbum(babyId: String, contentId: String): Result<Album>
 
     suspend fun postAlbum(
         accessToken: String,

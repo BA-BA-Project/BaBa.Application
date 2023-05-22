@@ -5,5 +5,7 @@ import javax.inject.Inject
 
 class GetAlbumsFromBabyIdUseCase @Inject constructor(private val repository: AlbumRepository) {
 
-    suspend operator fun invoke(id: String, year: Int, month: Int) = repository.getAlbum(id, year, month)
+    suspend fun getMonthAlbum(id: String, year: Int, month: Int) = repository.getAlbum(id, year, month)
+
+    suspend fun getOneAlbum(babyId: String, contentId: String) = repository.getOneAlbum(babyId, contentId)
 }

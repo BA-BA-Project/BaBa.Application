@@ -7,8 +7,6 @@ import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.LikeDetailResponse
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.repository.AlbumRepository
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -20,6 +18,8 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         year: Int,
         month: Int,
     ): Result<List<Album>> = dataSource.getAlbum(id, year, month)
+
+    override suspend fun getOneAlbum(babyId: String, contentId: String) = dataSource.getOneAlbum(babyId, contentId)
 
     override suspend fun postAlbum(
         accessToken: String,

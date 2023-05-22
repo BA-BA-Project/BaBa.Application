@@ -7,6 +7,8 @@ import okhttp3.RequestBody
 interface AlbumRemoteDataSource {
     suspend fun getAlbum(id: String, year: Int, month: Int): Result<List<Album>>
 
+    suspend fun getOneAlbum(babyId:String, contentId: String): Result<Album>
+
     suspend fun postAlbum(
         accessToken: String,
         id: String,
