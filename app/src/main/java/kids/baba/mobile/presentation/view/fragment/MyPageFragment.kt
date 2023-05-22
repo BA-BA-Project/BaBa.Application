@@ -160,7 +160,6 @@ class MyPageFragment : Fragment() {
             val bundle = Bundle()
             val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel,
                 itemClick = { profile ->
-                    // 기존 -> 그냥 lifecycleScope.
                     viewLifecycleOwner.lifecycleScope.launch {
                         editMemberProfileBottomSheetViewModel.edit(profile).join()
                         viewModel.getMyInfo()

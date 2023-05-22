@@ -67,7 +67,6 @@ interface MyPageApi {
         @Body inviteCode: InviteCode
     )
 
-    //TODO - Server api is not ready
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),

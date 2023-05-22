@@ -69,8 +69,6 @@ class GatheringAlbumViewModel @Inject constructor(
 
 
     fun initAlbum() = viewModelScope.launch {
-        // 아기 더미 데이터
-        Log.e("GatheringViewModel", "initCalled")
         getAllAlbums()
         classifyAlbums()
 
