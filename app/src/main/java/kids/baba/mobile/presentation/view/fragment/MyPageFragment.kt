@@ -71,8 +71,8 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageUiState.LoadMyInfo -> {
-                        binding.tvMyStatusMessage.text = it.data.name
-                        binding.tvMyName.text = it.data.introduction
+                        binding.tvMyStatusMessage.text = it.data.introduction
+                        binding.tvMyName.text = it.data.name
                         binding.civMyProfile.circleBackgroundColor =
                             Color.parseColor(it.data.userIconUiModel.iconColor)
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)

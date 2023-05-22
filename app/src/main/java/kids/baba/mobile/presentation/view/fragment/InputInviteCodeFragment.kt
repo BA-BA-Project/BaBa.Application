@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,11 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
+import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.state.InputCodeState
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class InputInviteCodeFragment : Fragment() {
@@ -42,6 +46,7 @@ class InputInviteCodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setNavController()
+        collectState()
         binding.topAppBar.ivBackButton.setOnClickListener {
             MyPageActivity.instance.bottomNavOn()
             navController.navigateUp()
@@ -49,7 +54,23 @@ class InputInviteCodeFragment : Fragment() {
         binding.btnAddInviteUser.setOnClickListener {
             val inviteCode = binding.inputView.etInput.text.toString()
             viewModel.add(inviteCode)
-            navController.navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
+        }
+    }
+
+    private fun collectState() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.uiState.collect{
+                when(it){
+                    is InputCodeState.Idle -> {}
+                    is InputCodeState.LoadInfo -> {
+                        val response = it.data
+                        Log.e("response","$response")
+//                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(response)
+//                        navController.navigate(action)
+
+                    }
+                }
+            }
         }
     }
 
