@@ -44,7 +44,7 @@ class AddGroupFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             lifecycleScope.launch {
                 val name = binding.nameView.etInput.text.toString()
-                viewModel.addGroup(name, viewModel.color.value).join()
+                viewModel.addGroup(name).join()
                 myPageViewModel.loadGroups()
                 requireActivity().finish()
             }

@@ -17,11 +17,12 @@ class AddGroupViewModel @Inject constructor(
     val uiModel = MutableStateFlow(AddGroupUiModel())
     val color = MutableStateFlow("")
 
-    fun addGroup(relationGroup: String, iconColor: String) = viewModelScope.launch {
+    fun addGroup(relationGroup: String) = viewModelScope.launch {
+        if(relationGroup == "" || color.value == "") return@launch
         addOneGroupUseCase.add(
             myPageGroup = MyPageGroup(
                 relationGroup = relationGroup,
-                iconColor = iconColor
+                iconColor = color.value
             )
         )
     }

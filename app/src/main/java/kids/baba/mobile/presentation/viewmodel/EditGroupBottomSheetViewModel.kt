@@ -30,6 +30,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     }
 
     fun patch(name: String) = viewModelScope.launch {
+        if(name == "") return@launch
         patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = name), groupName = query.value)
     }
 
