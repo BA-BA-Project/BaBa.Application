@@ -44,10 +44,6 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
         return if (result is Result.Failure) {
-            // TODO: 서버에 문제가 있는 것 같음. 테스트용 로그. 서버 문제가 사라지면 제거할 예정.
-            Log.e("MyPageRemoteDataSource", "addGroup - msg: ${result.message}" +
-                    "code: ${result.code}   exception: ${result.throwable}")
-
             Result.Failure(result.code, result.message, Exception(result.message))
         } else {
             result
@@ -148,5 +144,21 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deleteGroupMember(memberId: String) {
         api.deleteGroupMember(memberId = memberId)
+    }
+
+    override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.makeInviteCode(relationInfo = relationInfo)
+            },
+            mapping = {
+                it
+            }
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 }

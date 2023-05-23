@@ -1,14 +1,6 @@
 package kids.baba.mobile.data.datasource.mypage
 
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRemoteDataSource {
@@ -36,4 +28,6 @@ interface MyPageRemoteDataSource {
     suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit>
 
     suspend fun deleteGroupMember(memberId: String)
+
+    suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode>
 }

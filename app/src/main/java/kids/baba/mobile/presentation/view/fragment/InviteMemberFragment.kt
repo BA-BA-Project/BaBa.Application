@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
@@ -18,8 +16,12 @@ import com.kakao.sdk.template.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
-import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.domain.model.RelationInfo
+import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class InviteMemberFragment : Fragment() {

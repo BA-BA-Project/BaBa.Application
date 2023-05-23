@@ -46,4 +46,9 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
     override suspend fun deleteGroupMember(memberId: String) {
         dataSource.deleteGroupMember(memberId = memberId)
     }
+
+    override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> =
+        dataSource.makeInviteCode(relationInfo = relationInfo)
+
+
 }
