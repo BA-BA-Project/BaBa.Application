@@ -15,6 +15,7 @@ class AddGroupViewModel @Inject constructor(
     private val addOneGroupUseCase: AddOneGroupUseCase
 ) : ViewModel() {
     val uiModel = MutableStateFlow(AddGroupUiModel())
+    val color = MutableStateFlow("")
 
     fun addGroup(relationGroup: String, iconColor: String) = viewModelScope.launch {
         addOneGroupUseCase.add(

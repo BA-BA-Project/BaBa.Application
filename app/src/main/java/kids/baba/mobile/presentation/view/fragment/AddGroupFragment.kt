@@ -37,16 +37,56 @@ class AddGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setColorButton()
         binding.topAppBar.ivBackButton.setOnClickListener {
             requireActivity().finish()
         }
         binding.btnAdd.setOnClickListener {
             lifecycleScope.launch {
                 val name = binding.nameView.etInput.text.toString()
-                viewModel.addGroup(name, "#FFAEBA").join()
+                viewModel.addGroup(name, viewModel.color.value).join()
                 myPageViewModel.loadGroups()
                 requireActivity().finish()
             }
+        }
+    }
+
+    private fun setColorButton() {
+        binding.colorView.pink.setOnClickListener {
+            viewModel.color.value = "#FFAEBA"
+        }
+        binding.colorView.red.setOnClickListener {
+            viewModel.color.value = "#FF8698"
+        }
+        binding.colorView.blue.setOnClickListener {
+            viewModel.color.value = "#97BEFF"
+        }
+        binding.colorView.darkGreen.setOnClickListener {
+            viewModel.color.value = "#30BE9B"
+        }
+        binding.colorView.green.setOnClickListener {
+            viewModel.color.value = "#9ED883"
+        }
+        binding.colorView.people.setOnClickListener {
+            viewModel.color.value = "#98A2FF"
+        }
+        binding.colorView.violet.setOnClickListener {
+            viewModel.color.value = "#BFA1FF"
+        }
+        binding.colorView.sky.setOnClickListener {
+            viewModel.color.value = "#5BD2FF"
+        }
+        binding.colorView.mint.setOnClickListener {
+            viewModel.color.value = "#81E0D5"
+        }
+        binding.colorView.skin.setOnClickListener {
+            viewModel.color.value = "#FFD2A7"
+        }
+        binding.colorView.whiteSkin.setOnClickListener {
+            viewModel.color.value = "#FFE3C8"
+        }
+        binding.colorView.yellow.setOnClickListener {
+            viewModel.color.value = "#FFD400"
         }
     }
 
