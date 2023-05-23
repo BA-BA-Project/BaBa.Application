@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ItemAlbumCommentBinding
 import kids.baba.mobile.presentation.model.CommentUiModel
+import java.time.format.DateTimeFormatter
 
 class AlbumDetailCommentAdapter(
     val itemClick: (CommentUiModel) -> Unit,
@@ -34,6 +35,7 @@ class AlbumDetailCommentAdapter(
         ) {
         private val binding = ItemAlbumCommentBinding.bind(itemView)
         private lateinit var comment: CommentUiModel
+        private val commentTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm")
 
         init {
             binding.tvCommentName.setOnClickListener {
@@ -51,6 +53,7 @@ class AlbumDetailCommentAdapter(
         fun bind(comment: CommentUiModel) {
             this.comment = comment
             binding.comment = comment
+            binding.tvCommentDate.text = commentTimeFormatter.format(comment.createAt)
         }
     }
 

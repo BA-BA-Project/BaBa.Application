@@ -13,6 +13,6 @@ fun Comment.toPresentation() =
         iconColor = iconColor,
         tag = tag,
         comment = comment,
-        createdAt = createdAt,
+        createAt = createAt,
         profileIcon = UserProfileIconUiModel.valueOf(iconName)
     )

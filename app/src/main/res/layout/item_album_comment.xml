@@ -61,8 +61,9 @@
 
         <TextView
             android:id="@+id/tv_comment_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:layout_marginEnd="16dp"
             android:includeFontPadding="false"
             android:textAppearance="@style/BABA.TextStyle"

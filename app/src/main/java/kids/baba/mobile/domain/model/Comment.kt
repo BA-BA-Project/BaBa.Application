@@ -11,5 +11,5 @@ data class Comment(
     val iconColor: String,
     val tag: String,
     val comment: String,
-    val createdAt: LocalDateTime
+    val createAt: LocalDateTime
 )
