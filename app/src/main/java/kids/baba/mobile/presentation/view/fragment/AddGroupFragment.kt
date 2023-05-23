@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
 import kids.baba.mobile.presentation.viewmodel.AddGroupViewModel
+import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddGroupFragment : Fragment() {
@@ -17,6 +19,7 @@ class AddGroupFragment : Fragment() {
     private var _binding: FragmentAddGroupBinding? = null
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: AddGroupViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,9 +41,12 @@ class AddGroupFragment : Fragment() {
             requireActivity().finish()
         }
         binding.btnAdd.setOnClickListener {
-            val name = binding.nameView.etInput.text.toString()
-            viewModel.addGroup(name, "#FFAEBA")
-            requireActivity().finish()
+            lifecycleScope.launch {
+                val name = binding.nameView.etInput.text.toString()
+                viewModel.addGroup(name, "#FFAEBA").join()
+                myPageViewModel.loadGroups()
+                requireActivity().finish()
+            }
         }
     }
 
