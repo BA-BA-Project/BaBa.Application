@@ -34,7 +34,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getOneAlbum(babyId: String, contentId: String): Result<Album> =
+    override suspend fun getOneAlbum(babyId: String, contentId: Int): Result<Album> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.gatOneAlbum(babyId = babyId, contentId = contentId)
@@ -68,7 +68,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> {
+    override suspend fun likeAlbum(id: String, contentId: Int): Result<Boolean> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.likeAlbum(id = id, contentId = contentId)
@@ -82,7 +82,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun addComment(
         id: String,
-        contentId: String,
+        contentId: Int,
         commentInput: CommentInput
     ): Result<Unit> =
         safeApiHelper.getSafe(
@@ -94,7 +94,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deleteComment(
         id: String,
-        contentId: String,
+        contentId: Int,
         commentId: String
     ): Result<Unit> =
         safeApiHelper.getSafe(
@@ -104,7 +104,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
 
-    override suspend fun getComment(id: String, contentId: String): Result<List<Comment>> =
+    override suspend fun getComment(id: String, contentId: Int): Result<List<Comment>> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.getComments(id = id, contentId = contentId)
@@ -114,7 +114,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
         )
 
-    override suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse> =
+    override suspend fun getLikeDetail(id: String, contentId: Int): Result<LikeDetailResponse> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.getLikeDetail(id = id, contentId = contentId)

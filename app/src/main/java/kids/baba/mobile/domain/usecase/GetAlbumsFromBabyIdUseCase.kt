@@ -7,5 +7,5 @@ class GetAlbumsFromBabyIdUseCase @Inject constructor(private val repository: Alb
 
     suspend fun getMonthAlbum(id: String, year: Int, month: Int) = repository.getAlbum(id, year, month)
 
-    suspend fun getOneAlbum(babyId: String, contentId: String) = repository.getOneAlbum(babyId, contentId)
+    suspend fun getOneAlbum(babyId: String, contentId: Int) = repository.getOneAlbum(babyId, contentId)
 }

@@ -7,7 +7,7 @@ import okhttp3.RequestBody
 interface AlbumRemoteDataSource {
     suspend fun getAlbum(id: String, year: Int, month: Int): Result<List<Album>>
 
-    suspend fun getOneAlbum(babyId:String, contentId: String): Result<Album>
+    suspend fun getOneAlbum(babyId:String, contentId: Int): Result<Album>
 
     suspend fun postAlbum(
         accessToken: String,
@@ -16,15 +16,15 @@ interface AlbumRemoteDataSource {
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Result<PostAlbumResponse>
 
-    suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
+    suspend fun likeAlbum(id: String, contentId: Int): Result<Boolean>
 
-    suspend fun addComment(id: String, contentId: String, commentInput: CommentInput): Result<Unit>
+    suspend fun addComment(id: String, contentId: Int, commentInput: CommentInput): Result<Unit>
 
-    suspend fun deleteComment(id: String, contentId: String, commentId: String) : Result<Unit>
+    suspend fun deleteComment(id: String, contentId: Int, commentId: String) : Result<Unit>
 
-    suspend fun getComment(id: String, contentId: String): Result<List<Comment>>
+    suspend fun getComment(id: String, contentId: Int): Result<List<Comment>>
 
-    suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse>
+    suspend fun getLikeDetail(id: String, contentId: Int): Result<LikeDetailResponse>
 
     suspend fun getAllAlbum(id: String): Result<List<Album>>
 }

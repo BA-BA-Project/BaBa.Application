@@ -19,7 +19,7 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         month: Int,
     ): Result<List<Album>> = dataSource.getAlbum(id, year, month)
 
-    override suspend fun getOneAlbum(babyId: String, contentId: String) = dataSource.getOneAlbum(babyId, contentId)
+    override suspend fun getOneAlbum(babyId: String, contentId: Int) = dataSource.getOneAlbum(babyId, contentId)
 
     override suspend fun postAlbum(
         accessToken: String,
@@ -28,20 +28,20 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         bodyDataHashMap: HashMap<String, RequestBody>
     ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
 
-    override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> =
+    override suspend fun likeAlbum(id: String, contentId: Int): Result<Boolean> =
         dataSource.likeAlbum(id, contentId)
 
-    override suspend fun addComment(id: String, contentId: String, commentInput: CommentInput): Result<Unit> =
+    override suspend fun addComment(id: String, contentId: Int, commentInput: CommentInput): Result<Unit> =
         dataSource.addComment(id, contentId, commentInput)
 
 
-    override suspend fun deleteComment(id: String, contentId: String, commentId: String) : Result<Unit> =
+    override suspend fun deleteComment(id: String, contentId: Int, commentId: String) : Result<Unit> =
         dataSource.deleteComment(id = id, contentId = contentId, commentId = commentId)
 
-    override suspend fun getComment(id: String, contentId: String): Result<List<Comment>> =
+    override suspend fun getComment(id: String, contentId: Int): Result<List<Comment>> =
         dataSource.getComment(id = id, contentId = contentId)
 
-    override suspend fun getLikeDetail(id: String, contentId: String): Result<LikeDetailResponse> =
+    override suspend fun getLikeDetail(id: String, contentId: Int): Result<LikeDetailResponse> =
         dataSource.getLikeDetail(id = id, contentId = contentId)
 
     override suspend fun getAllAlbum(id: String) = dataSource.getAllAlbum(id)

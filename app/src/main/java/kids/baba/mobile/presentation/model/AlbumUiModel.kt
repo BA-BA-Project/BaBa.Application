@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 @Parcelize
 data class AlbumUiModel (
-    val contentId: String? = null,
+    val contentId: Int? = null,
     val name: String = "",
     val relation: String = "",
     val date: LocalDate = LocalDate.now(),
