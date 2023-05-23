@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
+import kids.baba.mobile.presentation.event.BabyListEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,8 +39,14 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun loadBabies() = viewModelScope.launch {
-        getBabiesUseCase.getBabies().catch { }.collect {
-            _uiState.value = MyPageUiState.LoadBabies(it.myBaby + it.others)
+        when (val result = getBabiesUseCase()) {
+            is Result.Success -> {
+                val babies = result.data
+                _uiState.value = MyPageUiState.LoadBabies(babies.myBaby + babies.others)
+            }
+
+            is Result.NetworkError -> _uiState.value = MyPageUiState.Error(result.throwable)
+            else -> _uiState.value = MyPageUiState.Error(Throwable("error"))
         }
     }
 
