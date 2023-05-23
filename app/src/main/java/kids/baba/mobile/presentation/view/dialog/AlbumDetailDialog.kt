@@ -21,7 +21,6 @@ import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment() {
@@ -214,7 +213,6 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     override fun onDestroyView() {

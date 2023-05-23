@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,7 +67,8 @@ class AlbumDetailViewModel @Inject constructor(
 
     val comment = MutableStateFlow("")
 
-    val babyId = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId
+    val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
+    val albumDateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     init {
         viewModelScope.launch {
             _member.value = getMemberUseCase.getMe()
@@ -79,8 +81,8 @@ class AlbumDetailViewModel @Inject constructor(
         if (contentId == null) {
             _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.album_not_found_error))
         } else {
-            val likeDetailResult = getLikeDetailUseCase(babyId, contentId)
-            val commentsResult = getCommentsUseCase(babyId, contentId)
+            val likeDetailResult = getLikeDetailUseCase(baby.babyId, contentId)
+            val commentsResult = getCommentsUseCase(baby.babyId, contentId)
             when {
                 likeDetailResult is Result.Success && commentsResult is Result.Success -> {
                     val likeDetail = likeDetailResult.data
@@ -113,7 +115,7 @@ class AlbumDetailViewModel @Inject constructor(
         if (contentId != null) {
             val commentInput =
                 CommentInput(tag = commentTag.value?.memberId ?: "", comment = comment.value)
-            when (addCommentUseCase(babyId, contentId, commentInput)) {
+            when (addCommentUseCase(baby.babyId, contentId, commentInput)) {
                 is Result.Success -> {
                     getAlbumDetailData()
                     comment.value = ""
@@ -140,7 +142,7 @@ class AlbumDetailViewModel @Inject constructor(
     fun deleteComment(commentId: String) = viewModelScope.launch {
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (contentId != null) {
-            when (deleteCommentUseCase(babyId, contentId, commentId)) {
+            when (deleteCommentUseCase(baby.babyId, contentId, commentId)) {
                 is Result.Success -> getAlbumDetailData()
                 is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
@@ -151,7 +153,7 @@ class AlbumDetailViewModel @Inject constructor(
     fun likeAlbum() = viewModelScope.launch {
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (contentId != null) {
-            when (val result = likeAlbumUseCase(babyId, contentId)) {
+            when (val result = likeAlbumUseCase(baby.babyId, contentId)) {
                 is Result.Success -> {
                     getAlbumDetailData()
                     _albumDetailUiState.update { uiState ->

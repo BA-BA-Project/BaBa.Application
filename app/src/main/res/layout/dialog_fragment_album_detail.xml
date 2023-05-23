@@ -9,10 +9,6 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
-        <variable
-            name="dateTimeFormatter"
-            type="java.time.format.DateTimeFormatter" />
-
         <import type="java.util.List" />
     </data>
 
@@ -50,7 +46,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:date="@{viewModel.albumDetailUiState.albumDetail.album.date}"
-                    app:formatter="@{dateTimeFormatter}"
+                    app:formatter="@{viewModel.albumDateTimeFormatter}"
                     app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -226,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:background="@drawable/bg_baba_edit_text"
-                    android:hint="@string/add_comment"
+                    android:hint="@{@string/add_comment(viewModel.baby.name)}"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
@@ -235,7 +231,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toStartOf="@id/tv_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
-                    app:layout_constraintTop_toTopOf="@id/civ_my_icon" />
+                    app:layout_constraintTop_toTopOf="@id/civ_my_icon"/>
 
                 <TextView
                     android:id="@+id/tv_send"
