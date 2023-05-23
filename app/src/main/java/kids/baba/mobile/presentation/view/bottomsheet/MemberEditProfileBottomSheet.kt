@@ -32,93 +32,49 @@ class MemberEditProfileBottomSheet(
     }
 
     private fun setIconButton() {
-        binding.iconView.w1.setOnClickListener {
-            viewModel.icon.value = trim("W_1")
-        }
-        binding.iconView.w2.setOnClickListener {
-            viewModel.icon.value = trim("W_2")
-        }
-        binding.iconView.w3.setOnClickListener {
-            viewModel.icon.value = trim("W_3")
-        }
-        binding.iconView.w4.setOnClickListener {
-            viewModel.icon.value = trim("W_4")
-        }
-        binding.iconView.w5.setOnClickListener {
-            viewModel.icon.value = trim("W_5")
-        }
-        binding.iconView.m1.setOnClickListener {
-            viewModel.icon.value = trim("M_1")
-        }
-        binding.iconView.m2.setOnClickListener {
-            viewModel.icon.value = trim("M_2")
-        }
-        binding.iconView.m3.setOnClickListener {
-            viewModel.icon.value = trim("M_3")
-        }
-        binding.iconView.m4.setOnClickListener {
-            viewModel.icon.value = trim("M_4")
-        }
-        binding.iconView.m5.setOnClickListener {
-            viewModel.icon.value = trim("M_5")
-        }
-        binding.iconView.m6.setOnClickListener {
-            viewModel.icon.value = trim("M_6")
-        }
-        binding.iconView.g1.setOnClickListener {
-            viewModel.icon.value = trim("G_1")
-        }
-        binding.iconView.g2.setOnClickListener {
-            viewModel.icon.value = trim("G_2")
-        }
-        binding.iconView.g3.setOnClickListener {
-            viewModel.icon.value = trim("G_3")
-        }
-        binding.iconView.g4.setOnClickListener {
-            viewModel.icon.value = trim("G_4")
+        mapOf(
+            binding.iconView.w1 to "PROFILE_W_1",
+            binding.iconView.w2 to "PROFILE_W_2",
+            binding.iconView.w3 to "PROFILE_W_3",
+            binding.iconView.w4 to "PROFILE_W_4",
+            binding.iconView.w5 to "PROFILE_W_5",
+            binding.iconView.m1 to "PROFILE_M_1",
+            binding.iconView.m2 to "PROFILE_M_2",
+            binding.iconView.m3 to "PROFILE_M_3",
+            binding.iconView.m4 to "PROFILE_M_4",
+            binding.iconView.m5 to "PROFILE_M_5",
+            binding.iconView.m6 to "PROFILE_M_6",
+            binding.iconView.g1 to "PROFILE_G_1",
+            binding.iconView.g2 to "PROFILE_G_2",
+            binding.iconView.g3 to "PROFILE_G_3",
+            binding.iconView.g4 to "PROFILE_G_4"
+        ).forEach { (iconView, icon) ->
+            iconView.setOnClickListener {
+                viewModel.icon.value = icon
+            }
         }
     }
 
     private fun setColorButton() {
-        binding.colorView.pink.setOnClickListener {
-            viewModel.color.value = "#FFAEBA"
-        }
-        binding.colorView.red.setOnClickListener {
-            viewModel.color.value = "#FF8698"
-        }
-        binding.colorView.blue.setOnClickListener {
-            viewModel.color.value = "#97BEFF"
-        }
-        binding.colorView.darkGreen.setOnClickListener {
-            viewModel.color.value = "#30BE9B"
-        }
-        binding.colorView.green.setOnClickListener {
-            viewModel.color.value = "#9ED883"
-        }
-        binding.colorView.people.setOnClickListener {
-            viewModel.color.value = "#98A2FF"
-        }
-        binding.colorView.violet.setOnClickListener {
-            viewModel.color.value = "#BFA1FF"
-        }
-        binding.colorView.sky.setOnClickListener {
-            viewModel.color.value = "#5BD2FF"
-        }
-        binding.colorView.mint.setOnClickListener {
-            viewModel.color.value = "#81E0D5"
-        }
-        binding.colorView.skin.setOnClickListener {
-            viewModel.color.value = "#FFD2A7"
-        }
-        binding.colorView.whiteSkin.setOnClickListener {
-            viewModel.color.value = "#FFE3C8"
-        }
-        binding.colorView.yellow.setOnClickListener {
-            viewModel.color.value = "#FFD400"
+        mapOf(
+            binding.colorView.pink to "#FFAEBA",
+            binding.colorView.red to "#FF8698",
+            binding.colorView.blue to "#97BEFF",
+            binding.colorView.darkGreen to "#30BE9B",
+            binding.colorView.green to "#9ED883",
+            binding.colorView.people to "#98A2FF",
+            binding.colorView.violet to "#BFA1FF",
+            binding.colorView.sky to "#5BD2FF",
+            binding.colorView.mint to "#81E0D5",
+            binding.colorView.skin to "#FFD2A7",
+            binding.colorView.whiteSkin to "#FFE3C8",
+            binding.colorView.yellow to "#FFD400"
+        ).forEach { (colorView, color) ->
+            colorView.setOnClickListener {
+                viewModel.color.value = color
+            }
         }
     }
-
-    private fun trim(icon: String) = "PROFILE_$icon"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -138,5 +94,6 @@ class MemberEditProfileBottomSheet(
     companion object {
         const val TAG = "MemberEditProfileBottomSheet"
         const val SELECTED_MEMBER_KEY = "SELECTED_MEMBER"
+
     }
 }

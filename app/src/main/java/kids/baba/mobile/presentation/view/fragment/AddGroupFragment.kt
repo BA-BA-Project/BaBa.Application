@@ -52,41 +52,23 @@ class AddGroupFragment : Fragment() {
     }
 
     private fun setColorButton() {
-        binding.colorView.pink.setOnClickListener {
-            viewModel.color.value = "#FFAEBA"
-        }
-        binding.colorView.red.setOnClickListener {
-            viewModel.color.value = "#FF8698"
-        }
-        binding.colorView.blue.setOnClickListener {
-            viewModel.color.value = "#97BEFF"
-        }
-        binding.colorView.darkGreen.setOnClickListener {
-            viewModel.color.value = "#30BE9B"
-        }
-        binding.colorView.green.setOnClickListener {
-            viewModel.color.value = "#9ED883"
-        }
-        binding.colorView.people.setOnClickListener {
-            viewModel.color.value = "#98A2FF"
-        }
-        binding.colorView.violet.setOnClickListener {
-            viewModel.color.value = "#BFA1FF"
-        }
-        binding.colorView.sky.setOnClickListener {
-            viewModel.color.value = "#5BD2FF"
-        }
-        binding.colorView.mint.setOnClickListener {
-            viewModel.color.value = "#81E0D5"
-        }
-        binding.colorView.skin.setOnClickListener {
-            viewModel.color.value = "#FFD2A7"
-        }
-        binding.colorView.whiteSkin.setOnClickListener {
-            viewModel.color.value = "#FFE3C8"
-        }
-        binding.colorView.yellow.setOnClickListener {
-            viewModel.color.value = "#FFD400"
+        mapOf(
+            binding.colorView.pink to "#FFAEBA",
+            binding.colorView.red to "#FF8698",
+            binding.colorView.blue to "#97BEFF",
+            binding.colorView.darkGreen to "#30BE9B",
+            binding.colorView.green to "#9ED883",
+            binding.colorView.people to "#98A2FF",
+            binding.colorView.violet to "#BFA1FF",
+            binding.colorView.sky to "#5BD2FF",
+            binding.colorView.mint to "#81E0D5",
+            binding.colorView.skin to "#FFD2A7",
+            binding.colorView.whiteSkin to "#FFE3C8",
+            binding.colorView.yellow to "#FFD400"
+        ).forEach { (colorView, color) ->
+            colorView.setOnClickListener {
+                viewModel.color.value = color
+            }
         }
     }
 
