@@ -20,6 +20,9 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     fun edit(
         profile: Profile
     ) = viewModelScope.launch {
+        if (profile.name == "" || profile.iconName == "" || profile.iconColor == "" || profile.introduction == ""){
+            return@launch
+        }
         editProfileUseCase.edit(
             profile = profile
         )

@@ -44,15 +44,15 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
             lifecycleScope.launch {
                 viewModel.patch(name = name).join()
                 viewModel.patchGroup.value()
+                dismiss()
             }
-            dismiss()
         }
         binding.deleteView.tvDeleteDesc.setOnClickListener {
             lifecycleScope.launch {
                 viewModel.delete().join()
                 viewModel.patchGroup.value()
+                dismiss()
             }
-            dismiss()
         }
     }
 
