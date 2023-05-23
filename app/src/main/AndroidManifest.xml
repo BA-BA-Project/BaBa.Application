@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="kids.baba.mobile" xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="kids.baba.mobile">
+
     <queries>
         <package android:name="com.kakao.talk" />
     </queries>
@@ -80,7 +82,20 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".presentation.view.activity.MyPageActivity" />
+        <activity android:name=".presentation.view.activity.MyPageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
