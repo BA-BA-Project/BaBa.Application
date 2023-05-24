@@ -7,8 +7,11 @@
             name="title"
             type="String" />
         <variable
-            name="callback"
-            type="kids.baba.mobile.presentation.view.DataBindingFunctionHolder" />
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
+        <variable
+            name="navigator"
+            type="androidx.navigation.NavController" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +51,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_back"
-            android:onClick="@{() -> callback.click()}"
+            android:onClick="@{() -> function.navigateUp(navigator)}"
             app:layout_constraintBottom_toTopOf="@+id/line_view_top"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

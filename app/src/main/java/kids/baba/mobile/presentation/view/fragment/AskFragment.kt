@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAskBinding
-import kids.baba.mobile.presentation.view.DataBindingFunctionHolder
+import kids.baba.mobile.presentation.view.FunctionHolder
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
@@ -34,14 +34,7 @@ class AskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.topAppBar.callback = object : DataBindingFunctionHolder {
-            override fun click() {
-                findNavController().navigateUp()
-            }
-
-        }
-//        binding.topAppBar.ivBackButton.setOnClickListener {
-//            findNavController().navigateUp()
-//        }
+        binding.topAppBar.navigator = findNavController()
+        binding.topAppBar.function = object : FunctionHolder {}
     }
 }
