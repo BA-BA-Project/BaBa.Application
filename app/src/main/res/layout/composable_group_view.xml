@@ -11,10 +11,6 @@
         <variable
             name="description"
             type="String" />
-
-        <variable
-            name="function"
-            type="kids.baba.mobile.presentation.view.FunctionHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,7 +48,6 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginEnd="15dp"
-            android:onClick="@{() -> function.click()}"
             android:src="@drawable/ic_edit_my_page"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_group_title" />

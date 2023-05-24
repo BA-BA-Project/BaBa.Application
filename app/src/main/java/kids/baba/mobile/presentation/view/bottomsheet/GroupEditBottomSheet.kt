@@ -26,7 +26,6 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.patchGroup.value = { itemClick() }
-        binding.addMemberView.tvAddButtonDesc.isGone = true
         binding.addMemberView.ivAddButton.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
@@ -34,8 +33,6 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
                     MyPageActivity::class.java
                 ).apply {
                     putExtra("next", "member")
-//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         }
