@@ -13,7 +13,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AlbumConfigViewModel
 
 @AndroidEntryPoint
-class AlbumConfigBottomSheet  : BottomSheetDialogFragment(){
+class AlbumConfigBottomSheet(private val dismissListener: (AlbumConfigEvent) -> Unit) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAlbumConfigBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -38,9 +38,12 @@ class AlbumConfigBottomSheet  : BottomSheetDialogFragment(){
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{ event ->
-                when(event) {
-                    is AlbumConfigEvent.DialogDismiss -> dismiss()
+            viewModel.eventFlow.collect { event ->
+                when (event){
+                    is AlbumConfigEvent.DeleteAlbum -> {
+                        dismiss()
+                        dismissListener(event)
+                    }
                     else -> {}
                 }
             }
@@ -54,7 +57,7 @@ class AlbumConfigBottomSheet  : BottomSheetDialogFragment(){
 
     private fun collectAlbumState() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.album.collect{
+            viewModel.album.collect {
                 binding.btnSavePhoto.visibility = if (it.isMyBaby) View.VISIBLE else View.GONE
                 binding.btnDeleteAlbum.visibility = if (it.isMyBaby) View.VISIBLE else View.GONE
             }

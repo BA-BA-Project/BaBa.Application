@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
+import kids.baba.mobile.presentation.event.AlbumConfigEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
@@ -167,7 +168,13 @@ class AlbumDetailDialog : DialogFragment() {
         binding.btnAlbumConfig.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(AlbumConfigBottomSheet.NOW_ALBUM_KEY, viewModel.album.value)
-            val bottomSheet = AlbumConfigBottomSheet()
+            val bottomSheet = AlbumConfigBottomSheet{ event ->
+                when(event){
+                    is AlbumConfigEvent.DeleteAlbum -> dismiss()
+                    else -> {}
+                }
+
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
         }

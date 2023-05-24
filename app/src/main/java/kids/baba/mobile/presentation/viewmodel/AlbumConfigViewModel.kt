@@ -36,7 +36,7 @@ class AlbumConfigViewModel @Inject constructor(
         val contentId = album.value.contentId
         if(contentId != null) {
             when(albumDeleteUseCase(baby.babyId, contentId)){
-                is Result.Success -> _eventFlow.emit(AlbumConfigEvent.DialogDismiss)
+                is Result.Success -> _eventFlow.emit(AlbumConfigEvent.DeleteAlbum)
                 is Result.NetworkError -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_album_delete_failed))
             }
