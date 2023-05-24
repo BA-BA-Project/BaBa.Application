@@ -17,7 +17,7 @@ interface AlbumRemoteDataSource {
 
     suspend fun deleteAlbum(
         babyId: String,
-        contentId: String
+        contentId: Int
     ): Result<Unit>
 
     suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>

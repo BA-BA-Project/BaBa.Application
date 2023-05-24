@@ -37,11 +37,11 @@ interface AlbumApi {
         @PartMap bodyDataHashMap: HashMap<String, RequestBody>
     ): Response<PostAlbumResponse>
 
-    @DELETE("/baby/{babyId}/album/{albumId}")
+    @DELETE("baby/{babyId}/album/{contentId}")
     suspend fun deleteAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String,
-        @Path("contentId") contentId: String
+        @Path("contentId") contentId: Int
     ): Response<Unit>
 
     @POST("baby/{babyId}/album/{contentId}/like")

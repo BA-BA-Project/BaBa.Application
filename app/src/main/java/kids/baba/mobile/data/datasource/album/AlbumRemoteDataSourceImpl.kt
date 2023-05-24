@@ -62,7 +62,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteAlbum(babyId: String, contentId: String) =
+    override suspend fun deleteAlbum(babyId: String, contentId: Int) =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.deleteAlbum(babyId = babyId, contentId = contentId)

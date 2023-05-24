@@ -16,6 +16,11 @@ interface AlbumRepository {
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Result<PostAlbumResponse>
 
+    suspend fun deleteAlbum(
+        babyId: String,
+        contentId: Int
+    ): Result<Unit>
+
     suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)

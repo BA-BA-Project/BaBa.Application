@@ -1,11 +1,13 @@
 package kids.baba.mobile.data.repository
 
 import kids.baba.mobile.data.datasource.album.AlbumRemoteDataSource
-import kids.baba.mobile.domain.model.*
+import kids.baba.mobile.domain.model.Album
+import kids.baba.mobile.domain.model.CommentInput
+import kids.baba.mobile.domain.model.CommentResponse
+import kids.baba.mobile.domain.model.LikeDetailResponse
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.repository.AlbumRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -24,6 +26,9 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
     ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
+
+    override suspend fun deleteAlbum(babyId: String, contentId: Int) =
+        dataSource.deleteAlbum(babyId, contentId)
 
     override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean> =
         dataSource.likeAlbum(id, contentId)
