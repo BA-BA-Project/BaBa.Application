@@ -53,6 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
+            android:onClick="@{() -> viewModel.checkReportAlbum()}"
             android:text="@string/report_album"
             android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
             android:textColor="@color/baba_sub_9"

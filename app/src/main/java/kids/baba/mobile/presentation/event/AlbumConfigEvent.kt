@@ -7,5 +7,9 @@ sealed class AlbumConfigEvent{
 
     object ShowDeleteCheckDialog: AlbumConfigEvent()
 
+    object ReportAlbum: AlbumConfigEvent()
+
+    object ShowReportCheckDialog: AlbumConfigEvent()
+
     data class ShowSnackBar(@StringRes val message: Int): AlbumConfigEvent()
 }

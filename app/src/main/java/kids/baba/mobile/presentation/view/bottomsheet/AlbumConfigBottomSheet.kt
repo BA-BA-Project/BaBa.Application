@@ -28,14 +28,22 @@ class AlbumConfigBottomSheet(private val dismissListener: (AlbumConfigEvent) -> 
             .setMessage(R.string.delete_album_answer)
             .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.albumDelete()
-            }
-            .setNegativeButton(
-                R.string.cancle
-            ) { dialog, _ -> dialog?.cancel() }
-            .setCancelable(false)
+            }.setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog?.cancel()
+            }.setCancelable(false)
             .create()
     }
 
+    private val reportDialog by lazy {
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.report_album_answer))
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.reportAlbum()
+            }.setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog?.cancel()
+            }.setCancelable(false)
+            .create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +71,14 @@ class AlbumConfigBottomSheet(private val dismissListener: (AlbumConfigEvent) -> 
                     is AlbumConfigEvent.DeleteAlbum -> {
                         dismissListener(event)
                         dismiss()
+                    }
+
+                    is AlbumConfigEvent.ShowReportCheckDialog -> {
+                        reportDialog.show()
+                    }
+
+                    is AlbumConfigEvent.ReportAlbum -> {
+                        //신고 동작 구현 시 적용
                     }
 
                     else -> {}

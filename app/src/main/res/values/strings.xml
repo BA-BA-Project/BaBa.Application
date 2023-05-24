@@ -48,7 +48,6 @@
     <string name="android_permission_camera_denied_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 설정 - 애플리케이션 정보 에서 권한을 동의하시겠습니까?</string>
     <string name="android_permission_denied_title">Permission Denied</string>
     <string name="open_setting">Open Setting</string>
-    <string name="cancel">Cancel</string>
     <string name="crop_image">사진 자르기</string>
     <string name="complete">완료</string>
 
@@ -189,7 +188,9 @@
     <string name="delete_album">게시물 삭제</string>
     <string name="report_album">이미지 신고하기</string>
     <string name="delete_album_answer">게시물을 삭제하시겠습니까?\n사진과 댓글, 좋아요가 삭제됩니다</string>
+    <string name="report_album_answer">이미지를 신고하시겠습니까?</string>
+    <string name="report">신고하기</string>
     <string name="delete">삭제하기</string>
-    <string name="cancle">취소</string>
+    <string name="cancel">취소</string>
 
 </resources>
