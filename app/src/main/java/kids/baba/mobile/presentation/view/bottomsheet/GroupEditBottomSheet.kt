@@ -11,12 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
+import kids.baba.mobile.presentation.event.EditGroupSheetEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment() {
+class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
     private val binding
@@ -25,30 +28,22 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.patchGroup.value = { itemClick() }
-        binding.addMemberView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "member")
+        collectEvent()
+        bindViewModel()
+    }
+
+    private fun bindViewModel() {
+        viewModel.getText = { binding.nameView.tvEdit.text.toString() }
+        viewModel.dismiss = { dismiss() }
+        viewModel.itemClick = { itemClick() }
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is EditGroupSheetEvent.GoToAddMemberPage -> MyPageActivity.startActivity(requireContext(), "member")
                 }
-            )
-        }
-        binding.nameView.tvEditButton.setOnClickListener {
-            val name = binding.nameView.tvEdit.text.toString()
-            lifecycleScope.launch {
-                viewModel.patch(name = name).join()
-                viewModel.patchGroup.value()
-                dismiss()
-            }
-        }
-        binding.deleteView.tvDeleteDesc.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.delete().join()
-                viewModel.patchGroup.value()
-                dismiss()
             }
         }
     }

@@ -7,7 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.GroupInfo
 import kids.baba.mobile.domain.usecase.DeleteOneGroupUseCase
 import kids.baba.mobile.domain.usecase.PatchOneGroupUseCase
+import kids.baba.mobile.presentation.event.EditGroupSheetEvent
 import kids.baba.mobile.presentation.model.EditGroupBottomSheetUiModel
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.view.FunctionHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,21 +23,46 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 ) : ViewModel() {
     val uiModel = MutableStateFlow(EditGroupBottomSheetUiModel())
     val groupName = MutableStateFlow<String?>(savedStateHandle["groupName"])
+    var itemClick = {}
+    var getText: () -> String = { "" }
+    var dismiss: () -> Unit = {}
+
     private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
     private val query = MutableStateFlow("")
-    val patchGroup = MutableStateFlow {}
+    private val _event = MutableEventFlow<EditGroupSheetEvent>()
+    val event = _event
 
     init {
         query.value = groupName.value ?: ""
         uiModel.value.permissionDesc = if (isFamily.value == true) "있음" else "없음"
     }
 
-    fun patch(name: String) = viewModelScope.launch {
-        if(name == "") return@launch
-        patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = name), groupName = query.value)
+    val patch = object : FunctionHolder {
+        override fun click() {
+            viewModelScope.launch {
+                if (getText() == "") return@launch
+                patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = getText()), groupName = query.value)
+                itemClick()
+                dismiss()
+            }
+        }
     }
 
-    fun delete() = viewModelScope.launch {
-        deleteOneGroupUseCase.delete(groupName = query.value)
+    val delete = object : FunctionHolder {
+        override fun click() {
+            viewModelScope.launch {
+                deleteOneGroupUseCase.delete(groupName = query.value)
+                itemClick()
+                dismiss()
+            }
+        }
+    }
+
+    val goToAddMemberPage = object : FunctionHolder {
+        override fun click() {
+            viewModelScope.launch {
+                _event.emit(EditGroupSheetEvent.GoToAddMemberPage)
+            }
+        }
     }
 }
