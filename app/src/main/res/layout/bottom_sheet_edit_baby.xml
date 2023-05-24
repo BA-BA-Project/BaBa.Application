@@ -58,7 +58,8 @@
             android:id="@+id/input_name_view"
             layout="@layout/composable_name_view"
             bind:button="@{viewModel.uiModel.button}"
-            bind:title="@{viewModel.uiModel.title}" />
+            bind:title="@{viewModel.uiModel.title}"
+            bind:function="@{viewModel.editBabyGroupName}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

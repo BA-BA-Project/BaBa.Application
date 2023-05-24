@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="button"
             type="String" />
+
+        <variable
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -18,29 +26,29 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:textColor="#000000"
             android:layout_marginVertical="25dp"
-            tools:text="아이 이름"
+            android:layout_marginStart="20dp"
+            android:text="@{title}"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="@{title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            tools:text="아이 이름" />
 
         <TextView
             android:id="@+id/tv_edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:onClick="@{() -> function.click()}"
             android:text="@{button}"
-            tools:text="편집"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="편집" />
 
         <EditText
             android:id="@+id/tv_edit"

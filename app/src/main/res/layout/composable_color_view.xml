@@ -6,6 +6,10 @@
         <variable
             name="title"
             type="String" />
+
+        <variable
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,9 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:text="@{title}"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:text="@{title}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/color_pink"/>
+                    android:src="@drawable/color_pink" />
 
                 <ImageView
                     android:id="@+id/red"

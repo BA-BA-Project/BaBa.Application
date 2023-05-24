@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
+import kids.baba.mobile.presentation.view.FunctionHolder
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
@@ -21,11 +22,9 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.inputNameView.tvEditButton.setOnClickListener {
-            val name = binding.inputNameView.tvEdit.text.toString()
-            itemClick(name)
-            dismiss()
-        }
+        viewModel.itemClick = itemClick
+        viewModel.dismiss = {dismiss()}
+        viewModel.getText = {binding.inputNameView.tvEdit.text.toString()}
         binding.addBabyView.ivAddButton.setOnClickListener {
             requireActivity().startActivity(
                 Intent(
