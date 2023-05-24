@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/setting_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.FragmentSetting"
+        android:name="kids.baba.mobile.presentation.view.fragment.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting">
         <action
@@ -95,22 +95,22 @@
     </fragment>
     <fragment
         android:id="@+id/ask_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.FragmentAsk"
+        android:name="kids.baba.mobile.presentation.view.fragment.AskFragment"
         android:label="FragmentAsk"
         tools:layout="@layout/fragment_ask" />
     <fragment
         android:id="@+id/service_info_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.FragmentServiceInfo"
+        android:name="kids.baba.mobile.presentation.view.fragment.ServiceInfoFragment"
         android:label="FragmentServiceInfo"
         tools:layout="@layout/fragment_service_info" />
     <fragment
         android:id="@+id/delete_member_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.FragmentDeleteMember"
+        android:name="kids.baba.mobile.presentation.view.fragment.DeleteMemberFragment"
         android:label="FragmentDeleteMember"
         tools:layout="@layout/fragment_delete_user" />
     <fragment
         android:id="@+id/creator_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.FragmentCreator"
+        android:name="kids.baba.mobile.presentation.view.fragment.CreatorFragment"
         android:label="FragmentCreator"
         tools:layout="@layout/fragment_creator" />
 
