@@ -15,6 +15,11 @@ interface AlbumRemoteDataSource {
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Result<PostAlbumResponse>
 
+    suspend fun deleteAlbum(
+        babyId: String,
+        contentId: String
+    ): Result<Unit>
+
     suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
 
     suspend fun addComment(id: String, contentId: String, commentInput: CommentInput)

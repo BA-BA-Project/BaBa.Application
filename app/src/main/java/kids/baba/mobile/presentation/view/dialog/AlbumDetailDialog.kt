@@ -17,6 +17,7 @@ import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
+import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
 
@@ -59,6 +60,7 @@ class AlbumDetailDialog : DialogFragment() {
         setCloseBtn()
         setCommentRecyclerView()
         setImgScaleAnim()
+        setAlbumConfigBtn()
         setBabyPhoto()
         setDetailStateCollecter()
         fetchData()
@@ -160,6 +162,17 @@ class AlbumDetailDialog : DialogFragment() {
             dismiss()
         }
     }
+
+    private fun setAlbumConfigBtn() {
+        binding.btnAlbumConfig.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(AlbumConfigBottomSheet.NOW_ALBUM_KEY, viewModel.album.value)
+            val bottomSheet = AlbumConfigBottomSheet()
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
+        }
+    }
+
 
     private fun setBabyPhoto() {
         binding.cvBabyPhoto.setOnClickListener {

@@ -62,6 +62,14 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteAlbum(babyId: String, contentId: String) =
+        safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteAlbum(babyId = babyId, contentId = contentId)
+            },
+            mapping = {}
+        )
+
     override suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>{
         val result = safeApiHelper.getSafe(
             remoteFetch = {
