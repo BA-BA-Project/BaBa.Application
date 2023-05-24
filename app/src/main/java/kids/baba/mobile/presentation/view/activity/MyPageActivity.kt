@@ -1,5 +1,7 @@
 package kids.baba.mobile.presentation.view.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -94,5 +96,11 @@ class MyPageActivity : AppCompatActivity() {
 
     companion object {
         lateinit var instance: MyPageActivity
+
+        fun startActivity(context: Context, next: String) {
+            context.startActivity(Intent(context, MyPageActivity::class.java).apply {
+                putExtra("next", next)
+            })
+        }
     }
 }

@@ -9,9 +9,12 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
+import kids.baba.mobile.presentation.event.BabyEditSheetEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.FunctionHolder
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
@@ -21,29 +24,25 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     private val viewModel: BabyEditBottomSheetViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
+        collectEvent()
+    }
+
+    private fun bindViewModel() {
         binding.viewModel = viewModel
         viewModel.itemClick = itemClick
-        viewModel.dismiss = {dismiss()}
-        viewModel.getText = {binding.inputNameView.tvEdit.text.toString()}
-        binding.addBabyView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "addBaby")
+        viewModel.dismiss = { dismiss() }
+        viewModel.getText = { binding.inputNameView.tvEdit.text.toString() }
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is BabyEditSheetEvent.GoToAddBabyPage -> MyPageActivity.startActivity(requireContext(),"addBaby")
+                    is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(requireContext(),"invite")
                 }
-            )
-        }
-        binding.inviteView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "invite")
-                }
-            )
+            }
         }
     }
 
