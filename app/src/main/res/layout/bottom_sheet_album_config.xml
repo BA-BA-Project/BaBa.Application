@@ -4,31 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_modify_album_card"
-        style="@style/BABA.AlbumConfigBtnStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:text="@string/modify_album_card"
-        android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_photo_retake"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_photo_retake"
-        style="@style/BABA.AlbumConfigBtnStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:text="@string/photo_retake"
-        android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_modify_album_card"
-        app:layout_constraintBottom_toTopOf="@id/btn_save_photo"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save_photo"
@@ -40,7 +16,7 @@
         android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_photo_retake"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_delete_album"/>
 
     <androidx.appcompat.widget.AppCompatButton
