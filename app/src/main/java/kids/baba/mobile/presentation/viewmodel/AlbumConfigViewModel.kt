@@ -23,7 +23,7 @@ import javax.inject.Inject
 class AlbumConfigViewModel @Inject constructor(
     val albumDeleteUseCase: AlbumDeleteUseCase,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
     private val _album = MutableStateFlow(savedStateHandle[NOW_ALBUM_KEY] ?: AlbumUiModel())
     val album = _album.asStateFlow()
 
@@ -34,12 +34,16 @@ class AlbumConfigViewModel @Inject constructor(
 
     fun albumDelete() = viewModelScope.launch {
         val contentId = album.value.contentId
-        if(contentId != null) {
-            when(albumDeleteUseCase(baby.babyId, contentId)){
+        if (contentId != null) {
+            when (albumDeleteUseCase(baby.babyId, contentId)) {
                 is Result.Success -> _eventFlow.emit(AlbumConfigEvent.DeleteAlbum)
                 is Result.NetworkError -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_album_delete_failed))
             }
         }
+    }
+
+    fun checkDeleteAlbum() = viewModelScope.launch {
+        _eventFlow.emit(AlbumConfigEvent.ShowDeleteCheckDialog)
     }
 }
