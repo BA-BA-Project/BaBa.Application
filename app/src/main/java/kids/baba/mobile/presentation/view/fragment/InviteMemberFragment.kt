@@ -1,14 +1,19 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
@@ -17,11 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.domain.model.RelationInfo
-import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
+import kids.baba.mobile.presentation.event.InviteMemberEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class InviteMemberFragment : Fragment() {
@@ -41,8 +44,8 @@ class InviteMemberFragment : Fragment() {
             // 템플릿 객체.
             val defaultText = TextTemplate(
                 text = """
-        카카오톡 공유는 카카오톡을 실행하여
-        사용자가 선택한 채팅방으로 메시지를 전송합니다.
+        바바를 통해 친구네 아이의 성장을
+        확인하고 친구와 소통해봐요!
     """.trimIndent(),
                 // TODO: Kakao developers 에서 Web 사이트 도메인을 playstore 다운로드 링크로 변경해야 함
                 //  앱이 다운로드되어 있을 때
@@ -79,8 +82,7 @@ class InviteMemberFragment : Fragment() {
 
                 // CustomTabs으로 웹 브라우저 열기
 
-                // 1. CustomTabsServiceConnection 지원 브라우저 열기
-                // ex) Chrome, 삼성 인터넷, FireFox, 웨일 등
+                // 1. CustomTabsServiceConnection 지원 브라우저 열기  ex) Chrome, 삼성 인터넷
                 try {
                     KakaoCustomTabsClient.openWithDefault(requireContext(), sharerUrl)
                 } catch (e: UnsupportedOperationException) {
@@ -88,8 +90,7 @@ class InviteMemberFragment : Fragment() {
                     Log.e("KAKAO Share", "CustomTabs open fail: $e")
                 }
 
-                // 2. CustomTabsServiceConnection 미지원 브라우저 열기
-                // ex) 다음, 네이버 등
+                // 2. CustomTabsServiceConnection 미지원 브라우저 열기 ex) 네이버, 카카오, UC
                 try {
                     KakaoCustomTabsClient.open(requireContext(), sharerUrl)
                 } catch (e: ActivityNotFoundException) {
@@ -99,6 +100,33 @@ class InviteMemberFragment : Fragment() {
             }
 
             findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
+        }
+
+        binding.btnCopyCode.setOnClickListener{
+            val relationGroup = binding.inputGroupView.etInput.text.toString()
+            val relationName = binding.inputRelationView.etInput.text.toString()
+            viewModel.copyCode(relationInfo = RelationInfo(relationGroup, relationName))
+        }
+
+        collectEvent()
+
+    }
+
+    private fun collectEvent(){
+        repeatOnStarted {
+            viewModel.eventFlow.collect{ event ->
+                when(event){
+                    is InviteMemberEvent.ShowSnackBar -> showSnackBar(event.msg)
+                    is InviteMemberEvent.SuccessCopyInviteCode -> {
+                        Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
+
+                        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)
+                        clipboard.setPrimaryClip(clip)
+                    }
+                }
+
+            }
         }
     }
 
@@ -116,4 +144,9 @@ class InviteMemberFragment : Fragment() {
         binding.viewmodel = viewModel
         return binding.root
     }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
 }
