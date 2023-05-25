@@ -25,6 +25,8 @@ class AddBabyViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
     val uiModel = MutableStateFlow(AddBabyUiModel())
+    val birthDay = MutableStateFlow("")
+
     fun addBaby(name: String, relationName: String, birthDay: String) = viewModelScope.launch {
         when (val result = addOneMyBabyUseCase.add(
             baby = MyBaby(

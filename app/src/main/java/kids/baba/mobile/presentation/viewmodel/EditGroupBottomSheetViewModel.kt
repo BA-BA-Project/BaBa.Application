@@ -27,6 +27,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     val groupName = MutableStateFlow<String?>(savedStateHandle["groupName"])
     private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
     private val query = MutableStateFlow("")
+    val patchGroup = MutableStateFlow {}
 
     private val _eventFlow = MutableEventFlow<EditGroupEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -51,7 +52,10 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     fun delete() = viewModelScope.launch {
         when (deleteOneGroupUseCase.delete(groupName = query.value)) {
-            is Result.Success -> _eventFlow.emit(EditGroupEvent.SuccessDeleteGroup)
+            is Result.Success -> {
+                _eventFlow.emit(EditGroupEvent.SuccessDeleteGroup)
+                patchGroup.value()
+            }
             is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
         }

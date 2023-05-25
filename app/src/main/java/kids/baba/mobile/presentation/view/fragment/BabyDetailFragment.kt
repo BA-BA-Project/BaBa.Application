@@ -2,6 +2,7 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,9 +58,11 @@ class BabyDetailFragment : Fragment() {
                 when (it) {
                     is BabyDetailUiState.Idle -> {}
                     is BabyDetailUiState.Success -> {
-                        viewModel.uiModel.value.familyGroupTitle = it.data.familyGroup.groupName
+                        binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
+                        binding.tvMyStatusMessage.text = it.data.birthday
                         familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
                         binding.btnDeleteBaby.setOnClickListener {
+                            Log.e("delete","${viewModel.baby.value?.memberId}")
                             viewModel.delete(viewModel.baby.value?.memberId ?: "")
                             findNavController().navigateUp()
                         }
@@ -80,19 +83,21 @@ class BabyDetailFragment : Fragment() {
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, viewModel.baby.value)
-            val bottomSheet = BabyEditProfileBottomSheet()
+            val bottomSheet = BabyEditProfileBottomSheet{
+                binding.tvMyName.text = it
+            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
+            val bottomSheet = GroupEditBottomSheet{}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
         binding.familyView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet()
+            val bottomSheet = GroupEditBottomSheet{}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }

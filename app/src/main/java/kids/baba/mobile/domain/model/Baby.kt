@@ -8,7 +8,7 @@ data class Baby(
     fun toMember() = MemberModel(
     memberId = babyId,
     name = name,
-    introduction = name,
+    introduction = "아이",
     iconName = "PROFILE_BABY_1",
     iconColor = groupColor
     )

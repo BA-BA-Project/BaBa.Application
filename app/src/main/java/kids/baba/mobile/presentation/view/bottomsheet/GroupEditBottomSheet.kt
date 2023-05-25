@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GroupEditBottomSheet : BottomSheetDialogFragment() {
+class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
     private val binding
@@ -23,6 +25,7 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.patchGroup.value = { itemClick() }
         binding.addMemberView.tvAddButtonDesc.isGone = true
 
         binding.addMemberView.ivAddButton.setOnClickListener {
@@ -31,7 +34,10 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
 
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
-            viewModel.patch(name = name)
+            lifecycleScope.launch {
+                viewModel.patch(name = name).join()
+                viewModel.patchGroup.value()
+            }
             dismiss()
         }
 

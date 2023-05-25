@@ -14,7 +14,7 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVI
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
 @AndroidEntryPoint
-class BabyEditBottomSheet : BottomSheetDialogFragment() {
+class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -22,6 +22,11 @@ class BabyEditBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.inputNameView.tvEditButton.setOnClickListener {
+            val name = binding.inputNameView.tvEdit.text.toString()
+            itemClick(name)
+            dismiss()
+        }
         binding.addBabyView.ivAddButton.setOnClickListener {
             MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
         }

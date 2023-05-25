@@ -23,6 +23,9 @@
         android:name="kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment"
         android:label="InputInviteCodeFragment"
         tools:layout="@layout/fragment_input_invitecode">
+<!--        <argument-->
+<!--            android:name="response"-->
+<!--            app:argType="kids.baba.mobile.domain.model.BabiesInfoResponse" />-->
         <action
             android:id="@+id/action_input_invite_fragment_to_input_invite_result_fragment"
             app:destination="@id/input_invite_result_fragment" />
@@ -111,5 +114,15 @@
         android:label="FragmentCreator"
         tools:layout="@layout/fragment_creator" />
 
+    <fragment
+        android:id="@+id/growth_album_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_growthalbum"></fragment>
+    <fragment
+        android:id="@+id/collapse_fragment"
+        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
+        android:label="fragment_GrowthAlbumFragment"
+        tools:layout="@layout/fragment_collapse"></fragment>
 
 </navigation>

@@ -17,7 +17,7 @@ import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewMod
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
+class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditBabyProfileBinding? = null
     private val binding
@@ -29,6 +29,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             viewLifecycleOwner.lifecycleScope.launch {
+                itemClick(name)
                 viewModel.edit(babyId = viewModel.baby.value?.memberId ?: "", name = name).join()
                 dismiss()
             }

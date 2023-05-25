@@ -25,6 +25,9 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
 
     val uiModel = MutableStateFlow(EditMemberProfileBottomSheetUiModel())
 
+    val color = MutableStateFlow("")
+    val icon = MutableStateFlow("")
+
     fun edit(
         profile: Profile
     ) = viewModelScope.launch {
