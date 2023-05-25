@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:text="@string/save_photo"
+            android:onClick="@{() -> viewModel.savePhoto()}"
             android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
             android:visibility="@{viewModel.album.myBaby ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/btn_delete_album"

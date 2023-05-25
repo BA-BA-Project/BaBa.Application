@@ -10,6 +10,8 @@ import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSource
 import kids.baba.mobile.data.datasource.auth.AuthRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.baby.BabyRemoteDataSource
 import kids.baba.mobile.data.datasource.baby.BabyRemoteDataSourceImpl
+import kids.baba.mobile.data.datasource.file.FileRemoteDataSource
+import kids.baba.mobile.data.datasource.file.FileRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSource
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSource
@@ -32,4 +34,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMyPageRemoteDataSource(myPageRemoteDataSourceImpl: MyPageRemoteDataSourceImpl): MyPageRemoteDataSource
+
+    @Binds
+    abstract fun bindFileRemoteDataSource(fileDataSourceImpl: FileRemoteDataSourceImpl): FileRemoteDataSource
 }

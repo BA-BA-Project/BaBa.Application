@@ -42,6 +42,9 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class AuthClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class FileClient
 
     @Singleton
     @Provides

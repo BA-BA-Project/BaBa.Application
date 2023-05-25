@@ -47,6 +47,10 @@ class AlbumConfigViewModel @Inject constructor(
         // 신고 기능은 UI로만 남기고 미구현
     }
 
+    fun savePhoto(){
+
+    }
+
     fun checkDeleteAlbum() = viewModelScope.launch {
         _eventFlow.emit(AlbumConfigEvent.ShowDeleteCheckDialog)
     }
