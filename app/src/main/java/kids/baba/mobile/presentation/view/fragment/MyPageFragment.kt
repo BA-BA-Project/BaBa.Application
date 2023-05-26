@@ -6,14 +6,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
+import kids.baba.mobile.presentation.event.EditMemberProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageUiState
@@ -88,6 +91,19 @@ class MyPageFragment : Fragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.repeatOnStarted {
+            editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
+                when (event) {
+                    is EditMemberProfileEvent.SuccessEditMemberProfile -> {
+                        viewModel.loadBabies()
+                    }
+                    is EditMemberProfileEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -99,39 +115,25 @@ class MyPageFragment : Fragment() {
         val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
         binding.tvKidsTitle.text = if (title != "") title else "아이들"
+
         binding.tvAddGroup.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "addGroup")
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
         }
+
         binding.ivSetting.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "setting")
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
         }
     }
 
     private fun initializeRecyclerView() {
         babyAdapter = MemberAdapter(
             itemClick = {
-                requireActivity().startActivity(
-                    Intent(
-                        requireContext(),
-                        MyPageActivity::class.java
-                    ).apply {
-                        putExtra("next", "babyDetail")
-                        putExtra("baby", it)
-                    })
+                MyPageActivity.startActivityWithMember(
+                    requireContext(),
+                    pageName = BABY_DETAIL_PAGE,
+                    argumentName = BABY_DETAIL_INFO,
+                    memberUiModel = it
+                )
             })
 
         binding.rvKids.adapter = babyAdapter
@@ -183,5 +185,20 @@ class MyPageFragment : Fragment() {
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        const val INTENT_PAGE_NAME = "nextPage"
+        const val ADD_GROUP_PAGE = "addGroupPage"
+        const val SETTING_PAGE = "settingPage"
+        const val BABY_DETAIL_PAGE = "babyDetailPage"
+        const val BABY_DETAIL_INFO = "babyDetailInfo"
+        const val INVITE_WITH_CODE_PAGE = "inviteBabyPage"
+        const val ADD_BABY_PAGE = "addBabyPage"
+        const val INVITE_MEMBER_PAGE = "inviteMemberPage"
     }
 }

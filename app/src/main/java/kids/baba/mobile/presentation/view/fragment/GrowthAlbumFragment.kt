@@ -31,10 +31,10 @@ import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManag
 import kids.baba.mobile.presentation.view.HorizontalMarginItemDecoration
 import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog.Companion.SELECTED_ALBUM_KEY
 import kids.baba.mobile.presentation.view.film.FilmActivity
-import kids.baba.mobile.presentation.view.fragment.BabyDetailFragment.Companion.SELECTED_BABY_KEY
 import kids.baba.mobile.presentation.viewmodel.GrowthAlbumViewModel
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
@@ -46,7 +46,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
-
     private var _binding: FragmentGrowthalbumBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -132,11 +131,15 @@ class GrowthAlbumFragment : Fragment() {
     private fun showAlbumDetailDialog() {
         val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
         if(nowAlbum.contentId != null){
-            val albumDetailDialog = AlbumDetailDialog()
+            val albumDetailDialog = AlbumDetailDialog{
+                viewModel.initBabyAndAlbum(selectedDate)
+            }
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
             albumDetailDialog.arguments = bundle
-            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)        }
+            albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
+
+        }
     }
 
     private fun setBinding() {
@@ -147,7 +150,7 @@ class GrowthAlbumFragment : Fragment() {
     private fun setBottomSheet() {
         binding.civBabyProfile.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(SELECTED_BABY_KEY, viewModel.growthAlbumState.value.selectedBaby)
+            bundle.putString(SELECTED_BABY_ID_KEY, viewModel.growthAlbumState.value.selectedBaby.babyId)
             val bottomSheet = BabyListBottomSheet { baby ->
                 viewModel.selectBaby(baby, selectedDate)
             }

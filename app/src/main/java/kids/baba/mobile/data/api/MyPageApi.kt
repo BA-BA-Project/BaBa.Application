@@ -35,31 +35,30 @@ interface MyPageApi {
         @Path("babyId") babyId: String
     ): Response<BabyProfileResponse>
 
-    //TODO
     @POST("members/groups")
     suspend fun addGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body myPageGroup: MyPageGroup
-    )
+    ): Response<Unit>
 
     @PUT("members")
     suspend fun editProfile(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body profile: Profile
-    )
+    ): Response<Unit>
 
     @PATCH("baby/{babyId}")
     suspend fun editBabyName(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String,
         @Body babyEdit: BabyEdit
-    )
+    ): Response<Unit>
 
     @POST("baby")
     suspend fun addMyBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body baby: MyBaby
-    )
+    ):Response<Unit>
 
     //TODO
     @POST("baby/code")
@@ -68,34 +67,31 @@ interface MyPageApi {
         @Body inviteCode: InviteCode
     )
 
-    //TODO
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
     )
 
-    //TODO
     @PATCH("members/groups")
     suspend fun patchGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String,
         @Body group: GroupInfo
-    )
+    ): Response<Unit>
 
-    //TODO
     @DELETE("members/groups")
     suspend fun deleteGroup(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Query("groupName") groupName: String
-    )
+    ): Response<Unit>
 
     @PATCH("members/groups/{groupMemberId}")
     suspend fun patchMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("groupMemberId") memberId: String,
         @Body relationName: GroupMemberInfo
-    )
+    ): Response<Unit>
 
     //TODO FIX
     @DELETE("members/groups/{groupMemberId}")

@@ -9,6 +9,7 @@ import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.model.BabyDetailUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,7 +26,7 @@ class BabyDetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<BabyDetailUiState>(BabyDetailUiState.Idle)
     val uiState = _uiState.asStateFlow()
-    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle["baby"])
+    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
 
     fun load(babyId: String) = viewModelScope.launch {
         getBabyProfileUseCase.get(babyId).catch {
