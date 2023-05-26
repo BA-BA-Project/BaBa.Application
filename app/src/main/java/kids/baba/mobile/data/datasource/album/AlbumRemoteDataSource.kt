@@ -22,8 +22,6 @@ interface AlbumRemoteDataSource {
         contentId: Int
     ): Result<Unit>
 
-    suspend fun likeAlbum(id: String, contentId: String): Result<Boolean>
-
     suspend fun addComment(id: String, contentId: Int, commentInput: CommentInput): Result<Unit>
 
     suspend fun deleteComment(id: String, contentId: Int, commentId: String) : Result<Unit>

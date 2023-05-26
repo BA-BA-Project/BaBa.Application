@@ -21,11 +21,9 @@ import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.event.AlbumConfigEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManager
 import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -211,7 +209,7 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
     private fun setAlbumConfigBtn() {
         binding.btnAlbumConfig.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(AlbumConfigBottomSheet.NOW_ALBUM_KEY, viewModel.album.value)
+            bundle.putParcelable(AlbumConfigBottomSheet.NOW_ALBUM_KEY, viewModel.albumDetailUiState.value.albumDetail.album)
             val bottomSheet = AlbumConfigBottomSheet{ event ->
                 when(event){
                     is AlbumConfigEvent.DeleteAlbum -> dismiss()
