@@ -1,19 +1,12 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.animation.ValueAnimator
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +18,11 @@ import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.event.AlbumConfigEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
+import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManager
 import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlbumDetailDialog : DialogFragment() {
@@ -39,6 +34,9 @@ class AlbumDetailDialog : DialogFragment() {
     private val viewModel: AlbumDetailViewModel by viewModels()
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
+
+    @Inject
+    lateinit var downloadNotificationManager: DownLoadNotificationManager
 
     private val imageWidth by lazy {
         binding.cvBabyPhoto.width
@@ -179,7 +177,7 @@ class AlbumDetailDialog : DialogFragment() {
                 when(event){
                     is AlbumConfigEvent.DeleteAlbum -> dismiss()
                     is AlbumConfigEvent.ShowDownSuccessNotification -> {
-                        createNotification(event.uri)
+                        downloadNotificationManager.showNotification(event.uri)
                     }
 
                     else -> {}
@@ -190,27 +188,6 @@ class AlbumDetailDialog : DialogFragment() {
         }
     }
 
-    private fun createNotification(uri: Uri) {
-        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(notificationChannel)
-
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(uri, "image/*")
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val notification = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-            .setContentTitle(getString(R.string.save_photo_noti_title))
-            .setSmallIcon(R.drawable.ic_baba_logo)
-            .setContentText(getString(R.string.save_photo_noti_body))
-            .setContentIntent(pendingIntent)
-            .build()
-        notificationManager.notify(NOTIFICATION_ID, notification)
-    }
 
 
     private fun setBabyPhoto() {
@@ -233,9 +210,5 @@ class AlbumDetailDialog : DialogFragment() {
     companion object {
         const val TAG = "AlbumDetailDialog"
         const val SELECTED_ALBUM_KEY = "SELECTED_ALBUM_KEY"
-        const val CHANNEL_ID = "PHOTO_DOWNLOAD_SUCCESS_ID"
-        const val CHANNEL_NAME = "PHOTO_DOWNLOAD_SUCCESS"
-        const val NOTIFICATION_ID = 1
-
     }
 }
