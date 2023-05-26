@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
 @AndroidEntryPoint
@@ -27,24 +28,11 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
             dismiss()
         }
         binding.addBabyView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "addBaby")
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
         }
+
         binding.inviteView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "invite")
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), INVITE_WITH_CODE_PAGE)
         }
     }
 
@@ -65,5 +53,6 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     companion object {
         const val TAG = "BabyEditBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"
+
     }
 }

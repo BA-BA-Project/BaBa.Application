@@ -1,17 +1,9 @@
 package kids.baba.mobile.data.datasource.mypage
 
+import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
-import kids.baba.mobile.domain.model.BabyEdit
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -44,20 +36,60 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         return if (result is Result.Success) flow { emit(result.data) } else flow {}
     }
 
-    override suspend fun addGroup(myPageGroup: MyPageGroup) {
-        api.addGroup(myPageGroup = myPageGroup)
+    override suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addGroup(myPageGroup = myPageGroup)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun editProfile(profile: Profile) {
-        api.editProfile(profile = profile)
+    override suspend fun editProfile(profile: Profile): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.editProfile(profile = profile)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun editBabyName(babyId: String, name: String) {
-        api.editBabyName(babyId = babyId, babyEdit = BabyEdit(name))
+    override suspend fun editBabyName(babyId: String, name: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.editBabyName(babyId = babyId, babyEdit = BabyEdit(name))
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun addMyBaby(baby: MyBaby) {
-        api.addMyBaby(baby = baby)
+    override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addMyBaby(baby = baby)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) {
@@ -68,16 +100,46 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         api.deleteBaby(babyId = babyId)
     }
 
-    override suspend fun patchGroup(groupName: String, group: GroupInfo) {
-        api.patchGroup(groupName = groupName, group = group)
+    override suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.patchGroup(groupName = groupName, group = group)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun deleteGroup(groupName: String) {
-        api.deleteGroup(groupName = groupName)
+    override suspend fun deleteGroup(groupName: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteGroup(groupName = groupName)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
-    override suspend fun patchMember(memberId: String, relation: GroupMemberInfo) {
-        api.patchMember(memberId = memberId, relationName = relation)
+    override suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.patchMember(memberId = memberId, relationName = relation)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun deleteGroupMember(memberId: String) {

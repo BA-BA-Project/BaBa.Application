@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 import kotlinx.coroutines.launch
 
@@ -27,18 +27,11 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState)
         viewModel.patchGroup.value = { itemClick() }
         binding.addMemberView.tvAddButtonDesc.isGone = true
+
         binding.addMemberView.ivAddButton.setOnClickListener {
-            requireActivity().startActivity(
-                Intent(
-                    requireContext(),
-                    MyPageActivity::class.java
-                ).apply {
-                    putExtra("next", "member")
-//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-            )
+            MyPageActivity.startActivity(requireContext(), INVITE_MEMBER_PAGE)
         }
+
         binding.nameView.tvEditButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             lifecycleScope.launch {
@@ -47,6 +40,7 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
             }
             dismiss()
         }
+
         binding.deleteView.tvDeleteDesc.setOnClickListener {
             viewModel.delete()
             dismiss()
