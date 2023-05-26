@@ -38,6 +38,7 @@ class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetD
     ): View {
         _binding = BottomSheetEditBabyProfileBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

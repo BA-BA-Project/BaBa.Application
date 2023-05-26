@@ -29,6 +29,7 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     }
 
     private fun bindViewModel() {
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         viewModel.itemClick = itemClick
         viewModel.dismiss = { dismiss() }

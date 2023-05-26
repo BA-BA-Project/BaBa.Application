@@ -51,7 +51,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_back"
-            android:onClick="@{() -> function.navigateUp(navigator)}"
+            android:onClick="@{() -> navigator.navigateUp()}"
             app:layout_constraintBottom_toTopOf="@+id/line_view_top"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

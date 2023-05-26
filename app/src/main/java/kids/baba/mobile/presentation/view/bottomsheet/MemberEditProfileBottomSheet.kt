@@ -28,6 +28,7 @@ class MemberEditProfileBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.introView.tvInputButton.setOnClickListener {
             val name = binding.nameView.tvEdit.text.toString()
             val intro = binding.introView.etInput.text.toString()

@@ -8,8 +8,4 @@ interface FunctionHolder {
     fun click() {
         Log.e("function", "not implemented!!")
     }
-
-    fun navigateUp(navController: NavController) {
-        navController.navigateUp()
-    }
 }

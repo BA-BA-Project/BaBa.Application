@@ -33,6 +33,7 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
     }
 
     private fun bindViewModel() {
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.getText = { binding.nameView.tvEdit.text.toString() }
         viewModel.dismiss = { dismiss() }
         viewModel.itemClick = { itemClick() }

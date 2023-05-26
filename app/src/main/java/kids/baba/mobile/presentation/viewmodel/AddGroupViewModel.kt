@@ -7,6 +7,7 @@ import kids.baba.mobile.domain.model.MyPageGroup
 import kids.baba.mobile.domain.usecase.AddOneGroupUseCase
 import kids.baba.mobile.presentation.model.AddGroupUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class AddGroupViewModel @Inject constructor(
     val color = MutableStateFlow("")
 
     fun addGroup(relationGroup: String) = viewModelScope.launch {
-        if(relationGroup == "" || color.value == "") return@launch
+        if(relationGroup.isEmpty() || color.value == "") return@launch
         addOneGroupUseCase.add(
             myPageGroup = MyPageGroup(
                 relationGroup = relationGroup,

@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.presentation.event.BabyEditSheetEvent
 import kids.baba.mobile.presentation.model.BabyEditBottomSheetUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.FunctionHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     var getText: () -> String = { "" }
 
     private val _event = MutableEventFlow<BabyEditSheetEvent>()
-    val event = _event
+    val event = _event.asEventFlow()
 
     val editBabyGroupName = object : FunctionHolder {
         override fun click() {
