@@ -7,6 +7,11 @@
         <variable
             name="description"
             type="String" />
+
+        <variable
+            name="addButtonViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableAddButtonViewData" />
+
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,6 +28,7 @@
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> addButtonViewData.onAddButtonClickEventListener.invoke()}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout

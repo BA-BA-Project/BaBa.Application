@@ -31,7 +31,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyEditEvent.SuccessBabyEdit -> {

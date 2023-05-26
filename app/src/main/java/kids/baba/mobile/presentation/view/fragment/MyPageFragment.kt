@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view.fragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -165,10 +166,12 @@ class MyPageFragment : Fragment() {
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = BabyEditBottomSheet {
-                EncryptedPrefs.putString("babyGroupTitle", it)
-                binding.tvKidsTitle.text = it
-            }
+            val bottomSheet = BabyEditBottomSheet()
+
+//            val bottomSheet = BabyEditBottomSheet {
+//                EncryptedPrefs.putString("babyGroupTitle", it)
+//                binding.tvKidsTitle.text = it
+//            }
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
