@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.event
 
+import android.net.Uri
 import androidx.annotation.StringRes
 
 sealed class AlbumConfigEvent{
@@ -11,7 +12,7 @@ sealed class AlbumConfigEvent{
 
     object ShowReportCheckDialog: AlbumConfigEvent()
 
-    object SavePhoto: AlbumConfigEvent()
+    data class ShowDownSuccessNotification(val uri: Uri): AlbumConfigEvent()
 
     data class ShowSnackBar(@StringRes val message: Int): AlbumConfigEvent()
 }

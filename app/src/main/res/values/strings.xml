@@ -168,7 +168,8 @@
     <string name="baba_get_album_failed">앨범을 불러오는 것에 실패했습니다.</string>
     <string name="baba_get_babies_failed">아기 리스트를 불러오는 것에 실패했습니다.</string>
     <string name="baba_like_album_failed">좋아요 요청이 실패했습니다.</string>
-    <string name="baba_album_delete_failed">"앨범 삭제에 실패했습니다."</string>
+    <string name="baba_album_delete_failed">앨범 삭제에 실패했습니다.</string>
+    <string name="baba_photo_download_failed">사진 다운에 실패했습니다.</string>
     <string name="group_groupname">[%s]그룹과 소식을 공유할 수 있어요</string>
 
 
@@ -192,5 +193,7 @@
     <string name="report">신고하기</string>
     <string name="delete">삭제하기</string>
     <string name="cancel">취소</string>
+    <string name="save_photo_noti_title">다운로드 완료</string>
+    <string name="save_photo_noti_body">사진이 저장 되었습니다.</string>
 
 </resources>

@@ -64,23 +64,22 @@ class AlbumConfigBottomSheet(private val dismissListener: (AlbumConfigEvent) -> 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is AlbumConfigEvent.ShowDeleteCheckDialog -> {
-                        deleteDialog.show()
-                    }
+                    is AlbumConfigEvent.ShowDeleteCheckDialog -> deleteDialog.show()
 
                     is AlbumConfigEvent.DeleteAlbum -> {
                         dismissListener(event)
                         dismiss()
                     }
 
-                    is AlbumConfigEvent.ShowReportCheckDialog -> {
-                        reportDialog.show()
-                    }
+                    is AlbumConfigEvent.ShowReportCheckDialog -> reportDialog.show()
 
                     is AlbumConfigEvent.ReportAlbum -> {
                         //신고 동작 구현 시 적용
                     }
-
+                    is AlbumConfigEvent.ShowDownSuccessNotification -> {
+                        dismissListener(event)
+                        dismiss()
+                    }
                     else -> {}
                 }
             }
