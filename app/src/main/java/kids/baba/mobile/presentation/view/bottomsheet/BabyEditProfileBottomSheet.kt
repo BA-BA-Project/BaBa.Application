@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewMod
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
+class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditBabyProfileBinding? = null
     private val binding
@@ -26,14 +27,6 @@ class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetD
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameView.tvEditButton.setOnClickListener {
-            val name = binding.nameView.tvEdit.text.toString()
-            viewLifecycleOwner.lifecycleScope.launch {
-                itemClick(name)
-                viewModel.edit(babyId = viewModel.baby.value?.memberId ?: "", name = name).join()
-                dismiss()
-            }
-        }
         collectEvent()
     }
 
@@ -41,8 +34,13 @@ class BabyEditProfileBottomSheet(val itemClick: (String) -> Unit) : BottomSheetD
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is BabyEditEvent.SuccessBabyEdit -> {}
+                    is BabyEditEvent.SuccessBabyEdit -> {
+                        Log.e("BabyEditProfileBottomSheet", "SuccessBabyEdit")
+                        dismiss()
+                    }
                     is BabyEditEvent.ShowSnackBar -> {
+                        Log.e("BabyEditProfileBottomSheet", "ShowSnackBar")
+                        dismiss()
                         showSnackBar(event.message)
                     }
                 }
