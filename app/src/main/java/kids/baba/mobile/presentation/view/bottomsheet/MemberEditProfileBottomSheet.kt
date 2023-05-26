@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.domain.model.Profile
 import kids.baba.mobile.presentation.adapter.IconAdapter
 import kids.baba.mobile.presentation.mapper.getUserProfileIconName
+import kids.baba.mobile.presentation.model.ColorModel
+import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
@@ -61,6 +64,15 @@ class MemberEditProfileBottomSheet(
     }
 
     private fun setColorButton() {
+        val colors = mutableListOf<ColorUiModel>().apply {
+            addAll(
+                ColorModel
+                    .values()
+                    .map { ColorUiModel(it.name, it.colorCode) }
+            )
+        }
+        Log.e("colors", colors.toString())
+
         mapOf(
             binding.colorView.pink to "#FFAEBA",
             binding.colorView.red to "#FF8698",
