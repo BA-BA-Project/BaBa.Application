@@ -1,16 +1,14 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import kids.baba.mobile.presentation.adapter.IconAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.domain.model.Profile
+import kids.baba.mobile.presentation.adapter.IconAdapter
 import kids.baba.mobile.presentation.mapper.getUserProfileIconName
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
