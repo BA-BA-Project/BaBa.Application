@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
+import kids.baba.mobile.presentation.adapter.ColorAdapter
+import kids.baba.mobile.presentation.model.ColorModel
+import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.viewmodel.AddGroupViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 import kotlinx.coroutines.launch
@@ -52,24 +56,20 @@ class AddGroupFragment : Fragment() {
     }
 
     private fun setColorButton() {
-        mapOf(
-            binding.colorView.pink to "#FFAEBA",
-            binding.colorView.red to "#FF8698",
-            binding.colorView.blue to "#97BEFF",
-            binding.colorView.darkGreen to "#30BE9B",
-            binding.colorView.green to "#9ED883",
-            binding.colorView.people to "#98A2FF",
-            binding.colorView.violet to "#BFA1FF",
-            binding.colorView.sky to "#5BD2FF",
-            binding.colorView.mint to "#81E0D5",
-            binding.colorView.skin to "#FFD2A7",
-            binding.colorView.whiteSkin to "#FFE3C8",
-            binding.colorView.yellow to "#FFD400"
-        ).forEach { (colorView, color) ->
-            colorView.setOnClickListener {
-                viewModel.color.value = color
-            }
+        val colors = mutableListOf<ColorUiModel>().apply {
+            addAll(
+                ColorModel
+                    .values()
+                    .map { ColorUiModel(it.name, it.colorCode) }
+            )
         }
+        Log.e("colors", colors.toString())
+        val adapter = ColorAdapter { color ->
+            viewModel.color.value = color.value
+            Log.e("colors", color.value)
+        }
+        binding.colorView.colorContainer.adapter = adapter
+        adapter.submitList(colors)
     }
 
 }
