@@ -55,7 +55,7 @@ class AlbumConfigViewModel @Inject constructor(
     fun savePhoto() = viewModelScope.launch{
         withContext(Dispatchers.IO){
             val fileUrl = album.value.photo.substringAfter(BuildConfig.BASE_PHOTO_URL)
-            when(val result = downloadPhotoUseCase(fileUrl, "${album.value.name}_${album.value.title}.jpg")){
+            when(val result = downloadPhotoUseCase(fileUrl, "${baby.name}_${album.value.date}")){
                 is Result.Success -> _eventFlow.emit(AlbumConfigEvent.ShowDownSuccessNotification(result.data))
                 is Result.NetworkError ->_eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_photo_download_failed))
