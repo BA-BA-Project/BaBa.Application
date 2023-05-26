@@ -4,6 +4,7 @@
     <dimen name="on_boarding_bottom">20dp</dimen>
     <dimen name="viewpager_next_item_visible">24dp</dimen>
     <dimen name="viewpager_current_item_horizontal_margin">48dp</dimen>
+    <dimen name="overlap_width">4dp</dimen>
 
 <!---->
 <!--    -->

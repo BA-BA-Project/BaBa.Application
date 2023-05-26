@@ -77,6 +77,6 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
 
     companion object {
         const val TAG = "BabyListBottomSheet"
-        const val SELECTED_BABY_KEY = "SELECTED_BABY"
+        const val SELECTED_BABY_ID_KEY = "SELECTED_BABY"
     }
 }

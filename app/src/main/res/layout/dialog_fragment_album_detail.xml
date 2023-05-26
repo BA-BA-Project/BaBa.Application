@@ -9,10 +9,6 @@
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel" />
 
-        <variable
-            name="dateTimeFormatter"
-            type="java.time.format.DateTimeFormatter" />
-
         <import type="java.util.List" />
     </data>
 
@@ -45,12 +41,12 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:includeFontPadding="false"
-                    app:date="@{viewModel.album.date}"
-                    app:formatter="@{dateTimeFormatter}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/baba_sub_2"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    app:date="@{viewModel.albumDetailUiState.albumDetail.album.date}"
+                    app:formatter="@{viewModel.albumDateTimeFormatter}"
                     app:layout_constraintEnd_toStartOf="@id/btn_album_config"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -75,7 +71,7 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@{viewModel.album.title}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.title}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -89,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{viewModel.album.name}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.name}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_album_title"
@@ -105,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:background="@drawable/bg_album_relation"
-                    android:text="@{viewModel.album.relation}"
+                    android:text="@{viewModel.albumDetailUiState.albumDetail.album.relation}"
                     android:textAppearance="@style/BABA.TextStyle"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_album_title"
                     app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
@@ -118,7 +114,7 @@
                     android:id="@+id/cv_baby_Photo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="8dp"
                     app:cardCornerRadius="15dp"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
@@ -130,102 +126,62 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageFromUrl="@{viewModel.album.photo}"
+                        app:imageFromUrl="@{viewModel.albumDetailUiState.albumDetail.album.photo}"
                         tools:src="@mipmap/ic_launcher" />
 
                 </androidx.cardview.widget.CardView>
 
-                <CheckBox
-                    android:id="@+id/cb_album_like"
+                <ImageButton
+                    android:id="@+id/btn_album_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="21dp"
-                    android:background="@drawable/bg_like"
-                    android:button="@null"
-                    android:checked="@{viewModel.album.like}"
+                    android:src="@{viewModel.albumDetailUiState.albumDetail.album.like ? @drawable/ic_like_checked : @drawable/ic_like_unchecked}"
                     android:elevation="2dp"
+                    android:background="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
-                    app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo" />
+                    app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo"
+                    tools:src="@drawable/ic_like_unchecked"/>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_like_users"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_like_users"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    app:layout_constraintStart_toStartOf="@+id/tv_album_date"
-                    app:layout_constraintTop_toBottomOf="@id/cv_baby_Photo">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_3"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="36dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(2).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(2).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_2"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="18dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(1).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(1).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="@id/civ_like_user_1"
-                        app:layout_constraintStart_toStartOf="@id/civ_like_user_1"
-                        app:layout_constraintTop_toTopOf="@+id/civ_like_user_1"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/civ_like_user_1"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:backGroundColor="@{viewModel.albumDetail.likeUsers.get(0).iconColor}"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:iconRes="@{viewModel.albumDetail.likeUsers.get(0).userProfileIconUiModel.iconRes}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:civ_circle_background_color="@color/baba_main"
-                        tools:src="@drawable/profile_w_5" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
+                    app:layout_constraintEnd_toStartOf="@id/tv_like_count"
+                    app:layout_constraintStart_toStartOf="@+id/cv_baby_Photo"
+                    app:layout_constraintTop_toTopOf="@+id/tv_like_count"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_like_user_preview" />
 
                 <TextView
                     android:id="@+id/tv_like_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
                     android:layout_marginStart="8dp"
                     android:includeFontPadding="false"
-                    android:text="@{@string/album_like_count(viewModel.albumDetail.likeCount)}"
+                    android:text="@{@string/album_like_count(viewModel.albumDetailUiState.albumDetail.likeCount)}"
                     android:textAppearance="@style/BABA.TextStyle"
                     android:textColor="@color/text_2"
-                    app:layout_constraintBottom_toBottomOf="@id/cl_like_users"
+                    app:layout_constraintBottom_toTopOf="@id/dv_comment_start"
                     app:layout_constraintEnd_toEndOf="@id/btn_album_config"
-                    app:layout_constraintStart_toEndOf="@id/cl_like_users"
-                    app:layout_constraintTop_toTopOf="@id/cl_like_users"
+                    app:layout_constraintStart_toEndOf="@id/rv_like_users"
+                    app:layout_constraintTop_toBottomOf="@id/cv_baby_Photo"
                     tools:text="좋아요 3개" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/dv_comment_start"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="@id/tv_like_count"
-                    app:layout_constraintStart_toStartOf="@id/cl_like_users"
+                    app:layout_constraintStart_toStartOf="@id/rv_like_users"
                     app:layout_constraintTop_toBottomOf="@id/tv_like_count" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -234,7 +190,7 @@
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toTopOf="@id/dv_comment_end"
                     app:layout_constraintEnd_toEndOf="@id/btn_album_config"
-                    app:layout_constraintStart_toStartOf="@id/cl_like_users"
+                    app:layout_constraintStart_toStartOf="@id/rv_like_users"
                     app:layout_constraintTop_toBottomOf="@id/dv_comment_start"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_album_comment" />
@@ -266,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:background="@drawable/bg_baba_edit_text"
-                    android:hint="@string/add_comment"
+                    android:hint="@{@string/add_comment(viewModel.baby.name)}"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
@@ -275,7 +231,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toStartOf="@id/tv_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
-                    app:layout_constraintTop_toTopOf="@id/civ_my_icon" />
+                    app:layout_constraintTop_toTopOf="@id/civ_my_icon"/>
 
                 <TextView
                     android:id="@+id/tv_send"
@@ -284,7 +240,6 @@
                     android:background="@color/white"
                     android:paddingHorizontal="10dp"
                     android:text="@string/send"
-                    android:onClick="@{() -> viewModel.addComment()}"
                     android:textAppearance="@style/BABA.TextStyle.Button"
                     android:textColor="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"
@@ -304,7 +259,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="55dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_dialog_close"
             app:layout_constraintBottom_toBottomOf="parent"
