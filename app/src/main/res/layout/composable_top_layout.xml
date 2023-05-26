@@ -6,6 +6,11 @@
         <variable
             name="title"
             type="String" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,6 +49,7 @@
             android:layout_height="26dp"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="20dp"
+            android:onClick="@{ () -> topViewData.onBackButtonClickEventListener.invoke() }"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toTopOf="@+id/line_view_top"
             app:layout_constraintStart_toStartOf="parent" />
