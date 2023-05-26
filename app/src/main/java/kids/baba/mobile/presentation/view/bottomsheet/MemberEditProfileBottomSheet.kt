@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.domain.model.Profile
+import kids.baba.mobile.presentation.mapper.getUserProfileIconName
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
@@ -39,30 +40,26 @@ class MemberEditProfileBottomSheet(
             )
             dismiss()
         }
+        setIconButton()
+        setColorButton()
+    }
+
+    private fun setIconButton() {
+
+        val icons = mutableListOf<UserIconUiModel>().apply {
+            addAll(
+                UserProfileIconUiModel
+                    .values()
+                    .dropLast(1)
+                    .map { UserIconUiModel(it, "#EDEDED") }
+            )
+        }
+
         val adapter = IconAdapter { item ->
-            Log.e("icon","${item.userProfileIconUiModel.iconRes}")
+            viewModel.icon.value = getUserProfileIconName(item.userProfileIconUiModel)
         }
         binding.iconView.iconContainer.adapter = adapter
-        adapter.submitList(
-            mutableListOf(
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_W_1, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_W_2, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_W_3, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_W_4, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_W_5, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_1, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_2, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_3, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_4, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_5, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_M_6, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_1, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_2, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_3, "#EDEDED"),
-                UserIconUiModel(UserProfileIconUiModel.PROFILE_G_4, "#EDEDED")
-            )
-        )
-        setColorButton()
+        adapter.submitList(icons)
     }
 
     private fun setColorButton() {
