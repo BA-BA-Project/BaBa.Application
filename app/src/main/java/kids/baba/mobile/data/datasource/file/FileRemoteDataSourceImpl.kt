@@ -8,11 +8,11 @@ class FileRemoteDataSourceImpl @Inject constructor(
     private val fileApi: FileApi,
     private val safeApiHelper: SafeApiHelper
 ) : FileRemoteDataSource {
-    override suspend fun downloadFile(fileUrl: String)  =
+    override suspend fun downloadFile(fileUrl: String) =
         safeApiHelper.getSafe(
             remoteFetch = {
                 fileApi.downloadFile(fileUrl)
             },
-            mapping = {}
+            mapping = {it}
         )
 }

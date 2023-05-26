@@ -11,5 +11,7 @@ sealed class AlbumConfigEvent{
 
     object ShowReportCheckDialog: AlbumConfigEvent()
 
+    object SavePhoto: AlbumConfigEvent()
+
     data class ShowSnackBar(@StringRes val message: Int): AlbumConfigEvent()
 }

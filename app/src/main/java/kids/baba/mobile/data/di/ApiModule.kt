@@ -63,10 +63,9 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideFileDownRetrofit(
-        @NetworkModule.FileClient
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit = Retrofit.Builder()
-        .baseUrl("https://baba-images-bucket.s3.ap-northeast-2.amazonaws.com/")
+        .baseUrl(BuildConfig.BASE_PHOTO_URL)
         .addConverterFactory(gsonConverterFactory)
         .build()
 

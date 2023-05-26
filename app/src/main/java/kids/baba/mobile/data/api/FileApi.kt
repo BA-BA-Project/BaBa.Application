@@ -9,5 +9,5 @@ import retrofit2.http.Url
 interface FileApi {
     @GET
     @Streaming
-    fun downloadFile(@Url fileUrl: String): Response<ResponseBody>
+    suspend fun downloadFile(@Url fileUrl: String): Response<ResponseBody>
 }
