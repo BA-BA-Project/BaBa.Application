@@ -37,7 +37,7 @@ class AlbumConfigBottomSheet(private val dismissListener: (AlbumConfigEvent) -> 
     private val reportDialog by lazy {
         AlertDialog.Builder(requireContext())
             .setMessage(getString(R.string.report_album_answer))
-            .setPositiveButton(R.string.delete) { _, _ ->
+            .setPositiveButton(R.string.report) { _, _ ->
                 viewModel.reportAlbum()
             }.setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog?.cancel()
