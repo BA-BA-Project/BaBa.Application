@@ -16,7 +16,7 @@ interface MyPageRepository {
 
     suspend fun addMyBaby(baby: MyBaby): Result<Unit>
 
-    suspend fun addBabyWithInviteCode(inviteCode: InviteCode)
+    suspend fun addBabyWithInviteCode(inviteCode: InviteCode): Result<Unit>
 
     suspend fun deleteBaby(babyId: String)
 

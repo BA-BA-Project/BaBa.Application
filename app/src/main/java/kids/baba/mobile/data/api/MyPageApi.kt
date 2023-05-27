@@ -65,7 +65,7 @@ interface MyPageApi {
     suspend fun addBabyWithInviteCode(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body inviteCode: InviteCode
-    )
+    ): Response<Unit>
 
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
