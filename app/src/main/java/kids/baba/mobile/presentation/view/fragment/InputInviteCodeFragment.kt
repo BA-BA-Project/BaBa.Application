@@ -62,11 +62,13 @@ class InputInviteCodeFragment : Fragment() {
             viewModel.eventFlow.collect{event ->
                 when(event){
                     is BabyInviteCodeEvent.SuccessAddBabyWithInviteCode -> {
-                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment()
+                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(event.inviteCode.inviteCode)
                         findNavController().navigate(action)
                     }
                     is BabyInviteCodeEvent.BackButtonClicked -> requireActivity().finish()
-                    is BabyInviteCodeEvent.ShowSnackBar -> showSnackBar(event.message)
+                    is BabyInviteCodeEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
                 }
             }
 

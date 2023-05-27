@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.InviteCode
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
@@ -46,11 +47,18 @@ class InputInviteCodeViewModel @Inject constructor(
 
     fun addBabyWithCode() {
         viewModelScope.launch {
-            when (addOneBabyWithInviteCodeUseCase.add(inviteCode = InviteCode(composableInviteCode.text.value.toString()))) {
-                is kids.baba.mobile.domain.model.Result.Success -> _eventFlow.emit(BabyInviteCodeEvent.SuccessAddBabyWithInviteCode)
-                is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(
-                    R.string.baba_network_failed))
-                else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.unknown_error_msg))
+            when (addOneBabyWithInviteCodeUseCase.add(
+                inviteCode = InviteCode(/*composableInviteCode.text.value.toString()*/inviteCodeLiveData.value.toString())
+            )) {
+                is Result.Success -> _eventFlow.emit(
+                    BabyInviteCodeEvent.SuccessAddBabyWithInviteCode(
+                        inviteCode = InviteCode(
+                            composableInviteCode.text.value.toString()
+                        )
+                    )
+                )
+                is Result.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.unvalid_invite_code))
             }
 
         }

@@ -27,4 +27,6 @@ interface MyPageRepository {
     suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit>
 
     suspend fun deleteGroupMember(memberId: String)
+
+    suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse>
 }

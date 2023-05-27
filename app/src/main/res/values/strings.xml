@@ -184,6 +184,7 @@
 
     <string name="classified_album_detail_title" tools:ignore="ExtraTranslation">2023–01</string>
     <string name="unknown_error_msg">알 수 없는 이유로 실패</string>
+    <string name="unvalid_invite_code">유효하지 않은 초대코드입니다.</string>
     <string name="family_setting">가족 설정</string>
 
 </resources>
