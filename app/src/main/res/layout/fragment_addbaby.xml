@@ -12,14 +12,12 @@
             type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
 
         <variable
-            name="babyViewData"
+            name="inputViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
 
         <variable
-            name="relationViewData"
+            name="inputWithDescViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
-
-
 
     </data>
 
@@ -83,7 +81,7 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_view"
-                    bind:babyViewData="@{viewModel.composableBabyName}"
+                    bind:inputViewData="@{viewModel.composableBabyName}"
                     bind:title="@{viewModel.uiModel.nameTitle}" />
 
                 <View
@@ -95,7 +93,7 @@
                     android:id="@+id/relation_view"
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{viewModel.uiModel.relationDesc}"
-                    bind:relationViewData="@{viewModel.composableRelation}"
+                    bind:inputWithDescViewData="@{viewModel.composableRelation}"
                     bind:title="@{viewModel.uiModel.relationTitle}" />
 
                 <View
@@ -106,7 +104,7 @@
                 <include
                     android:id="@+id/birth_view"
                     layout="@layout/composable_input_view"
-                    bind:babyViewData="@{viewModel.composableBirthDay}"
+                    bind:inputViewData="@{viewModel.composableBirthDay}"
                     bind:title="@{viewModel.uiModel.birthTitle}"
                     />
             </LinearLayout>

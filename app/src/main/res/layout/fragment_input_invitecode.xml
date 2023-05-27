@@ -12,7 +12,7 @@
             type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
 
         <variable
-            name="babyViewData"
+            name="inputViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
 
 
@@ -49,7 +49,7 @@
             <include
                 android:id="@+id/input_view"
                 layout="@layout/composable_input_view"
-                bind:babyViewData="@{viewModel.composableInviteCode}"
+                bind:inputViewData="@{viewModel.composableInviteCode}"
                 bind:title="@{viewModel.uiModel.inputTitle}" />
         </LinearLayout>
 

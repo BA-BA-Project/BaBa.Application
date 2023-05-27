@@ -11,9 +11,8 @@
             name="button"
             type="String" />
 
-
         <variable
-            name="babyViewData"
+            name="inputViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
 
     </data>
@@ -59,7 +58,7 @@
             android:layout_marginBottom="52dp"
             android:background="@drawable/edit_input"
             android:padding="7dp"
-            android:text="@={babyViewData.text}"
+            android:text="@={inputViewData.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_input_button"
             app:layout_constraintStart_toStartOf="parent"
