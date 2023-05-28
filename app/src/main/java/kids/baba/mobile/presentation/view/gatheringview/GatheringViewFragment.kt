@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,13 +39,18 @@ class GatheringViewFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.initAlbum()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.initAlbum()
         setViewPager()
         collectEvent()
+        Log.d("ViewModelTestG", viewModel.toString())
     }
 
     private fun setViewPager() {

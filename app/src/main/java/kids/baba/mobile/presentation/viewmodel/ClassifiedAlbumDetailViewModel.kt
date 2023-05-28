@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.ClassifiedAlbumList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,16 @@ class ClassifiedAlbumDetailViewModel @Inject constructor(
         _albumList.update {
             it.copy(
                 classifiedAlbumList = it.classifiedAlbumList.reversed()
+            )
+        }
+    }
+
+    fun deleteAlbum(album: AlbumUiModel) {
+        _albumList.update {
+            it.copy(
+                classifiedAlbumList = it.classifiedAlbumList.filter { classifiedAlbum ->
+                    classifiedAlbum != album
+                }
             )
         }
     }

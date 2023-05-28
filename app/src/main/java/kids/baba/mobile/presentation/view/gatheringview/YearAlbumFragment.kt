@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +26,11 @@ class YearAlbumFragment : Fragment() {
 
     private lateinit var adapter: YearAlbumAdapter
 
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentClassifiedAlbumBinding.inflate(inflater, container, false)
+        Log.i(TAG, "onCreateView()")
         return binding.root
     }
 
@@ -35,9 +39,14 @@ class YearAlbumFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        Log.i(TAG, "onViewCreated()")
 
         initAdapter()
 
+        Log.d("ViewModelTestY", viewModel.toString())
+
+
+        Log.d("YearFragment value", viewModel.recentYearAlbumListState.value.toString())
         viewLifecycleOwner.repeatOnStarted {
             viewModel.recentYearAlbumListState.collect {
                 adapter.submitList(it)
@@ -58,6 +67,37 @@ class YearAlbumFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+
+        Log.i(TAG, "onDestroyView()")
         super.onDestroyView()
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause()")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy()")
+    }
+
+
+    companion object {
+        const val TAG = "YearFragment"
     }
 }

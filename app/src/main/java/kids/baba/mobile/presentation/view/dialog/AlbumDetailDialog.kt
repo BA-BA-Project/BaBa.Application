@@ -27,7 +27,10 @@ import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment() {
+class AlbumDetailDialog(
+    private val dismissLister: () -> Unit,
+    private val deleteListener: () -> Unit
+) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
@@ -209,10 +212,17 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
     private fun setAlbumConfigBtn() {
         binding.btnAlbumConfig.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(AlbumConfigBottomSheet.NOW_ALBUM_KEY, viewModel.albumDetailUiState.value.albumDetail.album)
-            val bottomSheet = AlbumConfigBottomSheet{ event ->
-                when(event){
-                    is AlbumConfigEvent.DeleteAlbum -> dismiss()
+            bundle.putParcelable(
+                AlbumConfigBottomSheet.NOW_ALBUM_KEY,
+                viewModel.albumDetailUiState.value.albumDetail.album
+            )
+            val bottomSheet = AlbumConfigBottomSheet { event ->
+                when (event) {
+                    is AlbumConfigEvent.DeleteAlbum -> {
+                        dismiss()
+                        deleteListener.invoke()
+                    }
+
                     is AlbumConfigEvent.ShowDownSuccessNotification -> {
                         downloadNotificationManager.showNotification(event.uri)
                     }
@@ -224,7 +234,6 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
             bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
         }
     }
-
 
 
     private fun setBabyPhoto() {

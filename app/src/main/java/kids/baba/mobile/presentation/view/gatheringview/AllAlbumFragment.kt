@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class AllAlbumFragment : Fragment() {
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.allAlbumListState.collect {
+                Log.d("yearAlbum2", it.toString())
                 adapter.submitList(it.reversed())
             }
         }
@@ -59,7 +61,16 @@ class AllAlbumFragment : Fragment() {
     }
 
     private fun showAlbumDialog(album: AlbumUiModel) {
-        val albumDetailDialog = AlbumDetailDialog{}
+        val albumDetailDialog = AlbumDetailDialog(
+            dismissLister = {
+                Log.e("ClassifiedAlbumDetailFragment", "dismissLister")
+            },
+            deleteListener = {
+                Log.e("ClassifiedAlbumDetailFragment", "deleteListener album: $album")
+                viewModel.deleteAlbum(album)
+                adapter.submitList(viewModel.allAlbumListState.value.reversed())
+            }
+        )
         val bundle = Bundle()
         bundle.putParcelable(SELECTED_ALBUM_KEY, album)
         albumDetailDialog.arguments = bundle
