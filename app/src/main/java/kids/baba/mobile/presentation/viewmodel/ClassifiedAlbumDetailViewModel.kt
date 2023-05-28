@@ -20,6 +20,7 @@ class ClassifiedAlbumDetailViewModel @Inject constructor(
     private val _albumList = MutableStateFlow(savedStateHandle[CLASSIFIED_ALBUM_LIST] ?: ClassifiedAlbumList(listOf()))
     val albumList = _albumList.asStateFlow()
     val fromMonth = savedStateHandle.get<Boolean>(FROM_MONTH) ?: true
+    val date = albumList.value.classifiedAlbumList[0].date
 
     val monthDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
     val yearDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy")
