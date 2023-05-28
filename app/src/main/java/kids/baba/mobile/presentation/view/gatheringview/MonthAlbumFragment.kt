@@ -38,7 +38,6 @@ class MonthAlbumFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         initAdapter()
-        Log.d("ViewModelTestM", viewModel.toString())
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.recentMonthAlbumListState.collect {

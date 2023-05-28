@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -121,8 +120,6 @@ class GatheringAlbumViewModel @Inject constructor(
 
         _recentYearAlbumListState.value = tempYearAlbumCountList
         _recentMonthAlbumListState.value = tempMonthAlbumCountList
-
-        Log.d("YearFragment", recentYearAlbumListState.value.toString())
 
         _yearAlbumListState.value = tempYearAlbumList
         _monthAlbumListState.value = tempMonthAlbumList

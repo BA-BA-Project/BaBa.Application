@@ -43,7 +43,6 @@ class AllAlbumFragment : Fragment() {
 
         viewLifecycleOwner.repeatOnStarted {
             viewModel.allAlbumListState.collect {
-                Log.d("yearAlbum2", it.toString())
                 adapter.submitList(it.reversed())
             }
         }
