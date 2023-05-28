@@ -26,6 +26,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     var itemClick = {}
     var getText: () -> String = { "" }
     var dismiss: () -> Unit = {}
+    val color = MutableStateFlow("")
 
     private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
     private val query = MutableStateFlow("")
