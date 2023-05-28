@@ -129,12 +129,12 @@ class GrowthAlbumViewModel @Inject constructor(
 
                 val selectedBaby =
                     if (babyId == null) {
-                        myBaby.first().toPresentation(true)
+                        myBaby.first().toPresentation()
                     } else {
-                        myBaby.firstOrNull { it.babyId == babyId }?.toPresentation(true)
+                        myBaby.firstOrNull { it.babyId == babyId }?.toPresentation()
                             ?: others.firstOrNull { it.babyId == babyId }
-                                ?.toPresentation(false)
-                            ?: myBaby.first().toPresentation(true)
+                                ?.toPresentation()
+                            ?: myBaby.first().toPresentation()
                     }
                 EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
                 loadAlbum(selectedBaby.copy(selected = true), date)

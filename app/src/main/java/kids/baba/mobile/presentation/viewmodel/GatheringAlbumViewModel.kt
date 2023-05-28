@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -158,7 +157,7 @@ class GatheringAlbumViewModel @Inject constructor(
         when (val result = getAllAlbumsUseCase(id = baby.babyId)) {
             is Result.Success -> {
                 result.data.forEach {
-                    tempList.add(it.toPresentation(false)) // false is meaningless value
+                    tempList.add(it.toPresentation(baby.isMyBaby)) // false is meaningless value
                 }
                 _allAlbumListState.value = tempList
             }
