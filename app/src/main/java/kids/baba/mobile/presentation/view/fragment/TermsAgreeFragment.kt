@@ -47,11 +47,16 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        initSignToken()
 
         setNextBtn()
         setTermsCheckBox()
         collectEvent()
         collectSignToken()
+    }
+
+    private fun initSignToken() {
+        viewModel.setSignToken()
     }
 
     private fun collectEvent() {
