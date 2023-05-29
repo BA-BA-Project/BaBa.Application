@@ -98,6 +98,10 @@ class TermsAgreeViewModel @Inject constructor(
         }
     }
 
+    fun setSignToken() {
+        _signToken.value = ""
+    }
+
     companion object {
         const val KEY_SOCIAL_TOKEN = "socialToken"
     }

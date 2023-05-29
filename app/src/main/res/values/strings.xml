@@ -16,6 +16,7 @@
     <string name="baba_login_failed">로그인에 실패했습니다. 다시 한번 확인해 주세요</string>
     <string name="baba_sign_up_failed">회원가입에 실패했습니다.</string>
     <string name="baba_network_failed">네트워크 연결을 확인해주세요</string>
+    <string name="baba_get_member_failed">사용자 정보를 가져오는 데에 실패했습니다.</string>
     <string name="baba_name">바바</string>
     <string name="create_profile">프로필 생성</string>
     <string name="modify">수정</string>
@@ -113,6 +114,7 @@
     <string name="saturday"> 토</string>
     <string name="sunday"> 일</string>
     <string name="baby_info_error">아이의 정보가 잘못 입력되었습니다. 다시 한번 입력해 주세요</string>
+    <string name="invite_code_error">초대코드가 올바르지 않습니다. 다시 확인해 주세요</string>
     <string name="input_more_baby_info">또 기록하고 싶은 아이가 있나요?</string>
     <string name="relation_mom">엄마</string>
     <string name="relation_dad">아빠</string>

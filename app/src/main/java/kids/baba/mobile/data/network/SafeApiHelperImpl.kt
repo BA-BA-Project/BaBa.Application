@@ -2,6 +2,7 @@ package kids.baba.mobile.data.network
 
 import com.google.gson.Gson
 import kids.baba.mobile.core.error.NullBodyException
+import kids.baba.mobile.core.error.UnKnownException
 import kids.baba.mobile.domain.model.ErrorResponse
 import kids.baba.mobile.domain.model.Result
 import retrofit2.Response
@@ -39,7 +40,7 @@ class SafeApiHelperImpl @Inject constructor(
                     if (errorMessage.isNullOrBlank()) {
                         errorMessage = "Unknown Error"
                     }
-                    result = Result.Failure(it.code(), errorMessage, null)
+                    result = Result.Failure(it.code(), errorMessage, UnKnownException())
                 }
             }
             .onFailure {

@@ -3,7 +3,6 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.model.InviteCode
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.presentation.model.InputInviteCodeUiModel
@@ -21,9 +20,9 @@ class InputInviteCodeViewModel @Inject constructor(
     val uiState = MutableStateFlow<InputCodeState>(InputCodeState.Idle)
 
     fun add(inviteCode: String) = viewModelScope.launch {
-        addOneBabyWithInviteCodeUseCase.add(inviteCode = InviteCode(inviteCode = inviteCode))
-        getBabiesInfoByInviteCodeUseCase.invoke(inviteCode).onSuccess {
-            uiState.value = InputCodeState.LoadInfo(it)
-        }
+//        addOneBabyWithInviteCodeUseCase.add(inviteCode = InviteCode(inviteCode = inviteCode))
+//        getBabiesInfoByInviteCodeUseCase.invoke(inviteCode).onSuccess {
+//            uiState.value = InputCodeState.LoadInfo(it)
+//        }
     }
 }
