@@ -2,6 +2,7 @@ package kids.baba.mobile.data.datasource.file
 
 import android.content.ContentValues
 import android.content.Context
+import android.os.Build
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.ResponseBody
@@ -17,7 +18,9 @@ class FileLocalDataSourceImpl @Inject constructor(
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BaBa/DownLoad")
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                    put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BaBa")
+                }
             }
 
             val contentResolver = context.contentResolver
