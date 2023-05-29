@@ -49,13 +49,15 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     val patch = object : FunctionHolder {
         override fun click() {
             viewModelScope.launch {
-                if (getText() == "") return@launch
-                patchOneGroupUseCase.patch(
-                    group = GroupInfo(relationGroup = getText()),
-                    groupName = query.value
-                )
-                itemClick()
-                dismiss()
+                when (patchOneGroupUseCase.patch(
+                    group = GroupInfo(relationGroup = getText()), groupName = query.value
+                )) {
+                    is Result.Success -> _eventFlow.emit(EditGroupEvent.SuccessPatchGroupRelation)
+
+                    is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
+
+                    else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
+                }
             }
         }
     }
@@ -63,9 +65,16 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     val delete = object : FunctionHolder {
         override fun click() {
             viewModelScope.launch {
-                deleteOneGroupUseCase.delete(groupName = query.value)
-                itemClick()
-                dismiss()
+                when (deleteOneGroupUseCase.delete(groupName = query.value)) {
+                    is Result.Success -> {
+                        _eventFlow.emit(EditGroupEvent.SuccessDeleteGroup)
+                        itemClick()
+                        dismiss()
+                    }
+
+                    is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
+                    else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
+                }
             }
         }
     }
@@ -75,31 +84,6 @@ class EditGroupBottomSheetViewModel @Inject constructor(
             viewModelScope.launch {
                 _event.emit(EditGroupSheetEvent.GoToAddMemberPage)
             }
-        }
-    }
-
-    fun patch(name: String) = viewModelScope.launch {
-        when (patchOneGroupUseCase.patch(
-            group = GroupInfo(relationGroup = name), groupName = query.value
-        )) {
-            is Result.Success -> _eventFlow.emit(EditGroupEvent.SuccessPatchGroupRelation)
-
-            is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
-
-            else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
-
-        }
-    }
-
-    fun delete() = viewModelScope.launch {
-        when (deleteOneGroupUseCase.delete(groupName = query.value)) {
-            is Result.Success -> {
-                _eventFlow.emit(EditGroupEvent.SuccessDeleteGroup)
-                itemClick()
-            }
-
-            is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
-            else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
         }
     }
 }
