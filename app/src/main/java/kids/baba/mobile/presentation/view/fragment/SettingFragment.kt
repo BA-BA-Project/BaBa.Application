@@ -13,7 +13,7 @@ import kids.baba.mobile.databinding.FragmentSettingBinding
 import kids.baba.mobile.presentation.viewmodel.MyPageSettingViewModel
 
 @AndroidEntryPoint
-class FragmentSetting : Fragment() {
+class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }

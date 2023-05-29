@@ -56,7 +56,8 @@
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:button="@{viewModel.uiModel.familyButton}"
-                bind:title="@{viewModel.uiModel.familyName}" />
+                bind:title="@{viewModel.uiModel.familyName}"
+                bind:function="@{viewModel.patch}"/>
 
             <View
                 android:layout_width="match_parent"
@@ -88,7 +89,8 @@
                 android:id="@+id/delete_view"
                 layout="@layout/composable_delete_view"
                 bind:delete="@{viewModel.uiModel.deleteDesc}"
-                bind:title="@{viewModel.uiModel.deleteTitle}" />
+                bind:title="@{viewModel.uiModel.deleteTitle}"
+                bind:function="@{viewModel.delete}"/>
 
             <View
                 android:layout_width="match_parent"
@@ -98,7 +100,8 @@
             <include
                 android:id="@+id/add_member_view"
                 layout="@layout/composable_addbutton_view"
-                bind:title="@{viewModel.uiModel.addMemberTitle}" />
+                bind:title="@{viewModel.uiModel.addMemberTitle}"
+                bind:function="@{viewModel.goToAddMemberPage}"/>
 
             <View
                 android:layout_width="match_parent"
