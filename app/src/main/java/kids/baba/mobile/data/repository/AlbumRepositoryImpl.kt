@@ -28,6 +28,9 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
         bodyDataHashMap: HashMap<String, RequestBody>
     ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
 
+    override suspend fun deleteAlbum(babyId: String, contentId: Int) =
+        dataSource.deleteAlbum(babyId, contentId)
+
     override suspend fun likeAlbum(id: String, contentId: Int): Result<Boolean> =
         dataSource.likeAlbum(id, contentId)
 

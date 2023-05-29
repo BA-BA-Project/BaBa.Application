@@ -21,12 +21,15 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentGrowthalbumBinding
 import kids.baba.mobile.databinding.ItemDayBinding
 import kids.baba.mobile.presentation.adapter.AlbumAdapter
+import kids.baba.mobile.presentation.event.AlbumConfigEvent
 import kids.baba.mobile.presentation.event.GrowthAlbumEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.helper.CameraPermissionRequester
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
+import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManager
 import kids.baba.mobile.presentation.view.HorizontalMarginItemDecoration
+import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.BabyListBottomSheet.Companion.SELECTED_BABY_ID_KEY
 import kids.baba.mobile.presentation.view.dialog.AlbumDetailDialog
@@ -39,6 +42,7 @@ import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class GrowthAlbumFragment : Fragment() {
@@ -56,8 +60,14 @@ class GrowthAlbumFragment : Fragment() {
 
     private val permissionRequester = CameraPermissionRequester(this, ::connect, ::noPermission)
 
+    @Inject
+    lateinit var downLoadNotificationManager: DownLoadNotificationManager
+
     private fun connect() {
-        FilmActivity.startActivity(requireContext(), viewModel.growthAlbumState.value.selectedDate.toString())
+        FilmActivity.startActivity(
+            requireContext(),
+            viewModel.growthAlbumState.value.selectedDate.toString()
+        )
     }
 
     override fun onResume() {
@@ -76,21 +86,22 @@ class GrowthAlbumFragment : Fragment() {
         setCalendar()
         setAlbumDialog()
         setBottomSheet()
+        setAlbumConfigBtn()
         collectUiState()
         collectEvent()
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event->
-                when(event) {
-                   is GrowthAlbumEvent.ShowSnackBar -> showSnackBar(event.message)
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is GrowthAlbumEvent.ShowSnackBar -> showSnackBar(event.message)
                 }
             }
         }
     }
 
-    private fun showSnackBar(@StringRes message : Int){
+    private fun showSnackBar(@StringRes message: Int) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
@@ -100,17 +111,42 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
+    private fun setAlbumConfigBtn() {
+        binding.btnAlbumConfig.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(
+                AlbumConfigBottomSheet.NOW_ALBUM_KEY,
+                viewModel.growthAlbumState.value.selectedAlbum
+            )
+            val bottomSheet = AlbumConfigBottomSheet { event ->
+                when (event) {
+                    is AlbumConfigEvent.DeleteAlbum -> viewModel.initBabyAndAlbum(selectedDate)
+                    is AlbumConfigEvent.ShowDownSuccessNotification -> {
+                        downLoadNotificationManager.showNotification(event.uri)
+                    }
+
+                    else -> {}
+                }
+            }
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
+        }
+    }
+
+
     private fun showAlbumDetailDialog() {
         val nowAlbum = viewModel.growthAlbumState.value.selectedAlbum
-        if(nowAlbum.contentId != null){
-            val albumDetailDialog = AlbumDetailDialog{
-                viewModel.initBabyAndAlbum(selectedDate)
-            }
+        if (nowAlbum.contentId != null) {
+            val albumDetailDialog = AlbumDetailDialog(
+                dismissLister = {
+                    viewModel.initBabyAndAlbum(selectedDate)
+                },
+                deleteListener = {}
+            )
             val bundle = Bundle()
             bundle.putParcelable(SELECTED_ALBUM_KEY, nowAlbum)
             albumDetailDialog.arguments = bundle
             albumDetailDialog.show(childFragmentManager, AlbumDetailDialog.TAG)
-
         }
     }
 
@@ -122,7 +158,10 @@ class GrowthAlbumFragment : Fragment() {
     private fun setBottomSheet() {
         binding.civBabyProfile.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString(SELECTED_BABY_ID_KEY, viewModel.growthAlbumState.value.selectedBaby.babyId)
+            bundle.putString(
+                SELECTED_BABY_ID_KEY,
+                viewModel.growthAlbumState.value.selectedBaby.babyId
+            )
             val bottomSheet = BabyListBottomSheet { baby ->
                 viewModel.selectBaby(baby, selectedDate)
             }
@@ -211,7 +250,8 @@ class GrowthAlbumFragment : Fragment() {
             } else {
                 currentMonth
             }
-            binding.tvDate.text = getString(R.string.calendar_date, currentMonth.year, currentMonth.monthValue)
+            binding.tvDate.text =
+                getString(R.string.calendar_date, currentMonth.year, currentMonth.monthValue)
         }
 
         binding.wcvAlbumCalendar.setup(
@@ -318,7 +358,7 @@ class GrowthAlbumFragment : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(isUserScrolling.not() && viewModel.getAlbumIndex() != position ){
+                if (isUserScrolling.not() && viewModel.getAlbumIndex() != position) {
                     binding.vpBabyPhoto.currentItem = viewModel.getAlbumIndex()
                 }
             }

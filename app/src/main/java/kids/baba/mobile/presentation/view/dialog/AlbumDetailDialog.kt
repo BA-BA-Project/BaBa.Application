@@ -19,11 +19,18 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
+import kids.baba.mobile.presentation.event.AlbumConfigEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManager
+import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment() {
+class AlbumDetailDialog(
+    private val dismissLister: () -> Unit,
+    private val deleteListener: () -> Unit
+) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
@@ -33,6 +40,9 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
     private lateinit var likeUsersAdapter: LikeUsersAdapter
+
+    @Inject
+    lateinit var downloadNotificationManager: DownLoadNotificationManager
 
     private val imageWidth by lazy {
         binding.cvBabyPhoto.width
@@ -66,6 +76,7 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
         setLikeUsersRecyclerView()
         setImgScaleAnim()
         collectAlbumDetail()
+        setAlbumConfigBtn()
     }
 
 
@@ -197,6 +208,33 @@ class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment(
             dismiss()
         }
     }
+
+    private fun setAlbumConfigBtn() {
+        binding.btnAlbumConfig.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(
+                AlbumConfigBottomSheet.NOW_ALBUM_KEY,
+                viewModel.albumDetailUiState.value.albumDetail.album
+            )
+            val bottomSheet = AlbumConfigBottomSheet { event ->
+                when (event) {
+                    is AlbumConfigEvent.DeleteAlbum -> {
+                        dismiss()
+                        deleteListener.invoke()
+                    }
+
+                    is AlbumConfigEvent.ShowDownSuccessNotification -> {
+                        downloadNotificationManager.showNotification(event.uri)
+                    }
+
+                    else -> {}
+                }
+            }
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
+        }
+    }
+
 
     private fun setBabyPhoto() {
         binding.cvBabyPhoto.setOnClickListener {

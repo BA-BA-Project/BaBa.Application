@@ -42,7 +42,6 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class AuthClient
 
-
     @Singleton
     @Provides
     fun provideGsonBuilder(): GsonBuilder {

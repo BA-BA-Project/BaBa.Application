@@ -30,4 +30,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindMyPageRepository(myPageRepositoryImpl: MyPageRepositoryImpl): MyPageRepository
+
+    @Binds
+    abstract fun bindFileRemoteRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
 }
