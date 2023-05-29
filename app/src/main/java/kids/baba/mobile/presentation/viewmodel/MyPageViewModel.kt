@@ -42,6 +42,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun loadBabies() = viewModelScope.launch {
+
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data

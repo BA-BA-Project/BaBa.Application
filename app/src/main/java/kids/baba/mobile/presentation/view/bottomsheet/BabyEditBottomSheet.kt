@@ -25,6 +25,12 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
     private val viewModel: BabyEditBottomSheetViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
+        collectEvent()
+    }
+
+    private fun bindViewModel() {
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -48,7 +54,7 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect {event ->
+            viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyGroupEditEvent.SuccessBabyGroupEdit -> {
                         dismiss()
@@ -71,6 +77,5 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
     companion object {
         const val TAG = "BabyEditBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"
-
     }
 }

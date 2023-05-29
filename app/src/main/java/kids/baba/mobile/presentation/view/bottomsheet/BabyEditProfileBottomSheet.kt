@@ -55,6 +55,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
     ): View {
         _binding = BottomSheetEditBabyProfileBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

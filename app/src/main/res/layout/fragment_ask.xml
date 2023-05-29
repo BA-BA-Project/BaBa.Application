@@ -13,7 +13,7 @@
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
-            bind:title="@{title}"/>
+            bind:title="@{title}" />
 
         <TextView
             android:id="@+id/tv_title"

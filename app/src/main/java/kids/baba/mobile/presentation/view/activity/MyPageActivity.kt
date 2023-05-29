@@ -120,6 +120,5 @@ class MyPageActivity : AppCompatActivity() {
             context.startActivity(intent)
 
         }
-
     }
 }
