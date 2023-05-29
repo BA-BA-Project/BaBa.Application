@@ -174,4 +174,16 @@ class GrowthAlbumViewModel @Inject constructor(
             }
         }
     }
+
+    fun showBabyList() = viewModelScope.launch {
+        _eventFlow.emit(GrowthAlbumEvent.ShowBabyList)
+    }
+
+    fun showAlbumDetail() = viewModelScope.launch {
+        _eventFlow.emit(GrowthAlbumEvent.ShowAlbumDetail)
+    }
+
+    fun showAlbumConfig() = viewModelScope.launch {
+        _eventFlow.emit(GrowthAlbumEvent.ShowAlbumConfig)
+    }
 }

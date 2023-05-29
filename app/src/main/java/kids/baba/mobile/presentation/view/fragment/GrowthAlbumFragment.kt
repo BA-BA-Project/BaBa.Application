@@ -84,11 +84,13 @@ class GrowthAlbumFragment : Fragment() {
         setBinding()
         initializeAlbumHolder()
         setCalendar()
-        setAlbumDialog()
-        setBottomSheet()
-        setAlbumConfigBtn()
         collectUiState()
         collectEvent()
+    }
+
+    private fun setBinding() {
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        binding.viewmodel = viewModel
     }
 
     private fun collectEvent() {
@@ -96,6 +98,9 @@ class GrowthAlbumFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is GrowthAlbumEvent.ShowSnackBar -> showSnackBar(event.message)
+                    is GrowthAlbumEvent.ShowBabyList -> showBabyList()
+                    is GrowthAlbumEvent.ShowAlbumConfig -> showAlbumConfig()
+                    is GrowthAlbumEvent.ShowAlbumDetail -> showAlbumDetailDialog()
                 }
             }
         }
@@ -105,32 +110,24 @@ class GrowthAlbumFragment : Fragment() {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun setAlbumDialog() {
-        binding.cvBabyAlbum.setOnClickListener {
-            showAlbumDetailDialog()
-        }
-    }
 
-    private fun setAlbumConfigBtn() {
-        binding.btnAlbumConfig.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(
-                AlbumConfigBottomSheet.NOW_ALBUM_KEY,
-                viewModel.growthAlbumState.value.selectedAlbum
-            )
-            val bottomSheet = AlbumConfigBottomSheet { event ->
-                when (event) {
-                    is AlbumConfigEvent.DeleteAlbum -> viewModel.initBabyAndAlbum(selectedDate)
-                    is AlbumConfigEvent.ShowDownSuccessNotification -> {
-                        downLoadNotificationManager.showNotification(event.uri)
-                    }
-
-                    else -> {}
+    private fun showAlbumConfig() {
+        val bundle = Bundle()
+        bundle.putParcelable(
+            AlbumConfigBottomSheet.NOW_ALBUM_KEY,
+            viewModel.growthAlbumState.value.selectedAlbum
+        )
+        val bottomSheet = AlbumConfigBottomSheet { event ->
+            when (event) {
+                is AlbumConfigEvent.DeleteAlbum -> viewModel.initBabyAndAlbum(selectedDate)
+                is AlbumConfigEvent.ShowDownSuccessNotification -> {
+                    downLoadNotificationManager.showNotification(event.uri)
                 }
+                else -> {}
             }
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
         }
+        bottomSheet.arguments = bundle
+        bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
     }
 
 
@@ -150,24 +147,19 @@ class GrowthAlbumFragment : Fragment() {
         }
     }
 
-    private fun setBinding() {
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = viewModel
-    }
 
-    private fun setBottomSheet() {
-        binding.civBabyProfile.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(
-                SELECTED_BABY_ID_KEY,
-                viewModel.growthAlbumState.value.selectedBaby.babyId
-            )
-            val bottomSheet = BabyListBottomSheet { baby ->
-                viewModel.selectBaby(baby, selectedDate)
-            }
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
+
+    private fun showBabyList() {
+        val bundle = Bundle()
+        bundle.putString(
+            SELECTED_BABY_ID_KEY,
+            viewModel.growthAlbumState.value.selectedBaby.babyId
+        )
+        val bottomSheet = BabyListBottomSheet { baby ->
+            viewModel.selectBaby(baby, selectedDate)
         }
+        bottomSheet.arguments = bundle
+        bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
     }
 
     private fun setCalendar() {
