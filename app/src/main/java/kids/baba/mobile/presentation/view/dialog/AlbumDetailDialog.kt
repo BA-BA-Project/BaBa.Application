@@ -8,18 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.annotation.StringRes
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
 import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.event.AlbumConfigEvent
+import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.util.notification.DownLoadNotificationManager
 import kids.baba.mobile.presentation.view.bottomsheet.AlbumConfigBottomSheet
@@ -69,14 +72,34 @@ class AlbumDetailDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
-        setCloseBtn()
-        setBabyPhoto()
-        setAlbumLike()
         setCommentRecyclerView()
         setLikeUsersRecyclerView()
         setImgScaleAnim()
         collectAlbumDetail()
-        setAlbumConfigBtn()
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{ event ->
+                when(event) {
+                    is AlbumDetailEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                    is AlbumDetailEvent.ShowAlbumConfig -> {
+                        showAlbumConfig()
+                    }
+                    is AlbumDetailEvent.DismissAlbumDetail -> {
+                        dismiss()
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun showSnackBar(@StringRes message: Int) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
 
@@ -203,50 +226,32 @@ class AlbumDetailDialog(
         }
     }
 
-    private fun setCloseBtn() {
-        binding.btnDialogClose.setOnClickListener {
-            dismiss()
-        }
-    }
 
-    private fun setAlbumConfigBtn() {
-        binding.btnAlbumConfig.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(
-                AlbumConfigBottomSheet.NOW_ALBUM_KEY,
-                viewModel.albumDetailUiState.value.albumDetail.album
-            )
-            val bottomSheet = AlbumConfigBottomSheet { event ->
-                when (event) {
-                    is AlbumConfigEvent.DeleteAlbum -> {
-                        dismiss()
-                        deleteListener.invoke()
-                    }
-
-                    is AlbumConfigEvent.ShowDownSuccessNotification -> {
-                        downloadNotificationManager.showNotification(event.uri)
-                    }
-
-                    else -> {}
+    private fun showAlbumConfig() {
+        val bundle = Bundle()
+        bundle.putParcelable(
+            AlbumConfigBottomSheet.NOW_ALBUM_KEY,
+            viewModel.albumDetailUiState.value.albumDetail.album
+        )
+        val bottomSheet = AlbumConfigBottomSheet { event ->
+            when (event) {
+                is AlbumConfigEvent.DeleteAlbum -> {
+                    dismiss()
+                    deleteListener.invoke()
                 }
+
+                is AlbumConfigEvent.ShowDownSuccessNotification -> {
+                    downloadNotificationManager.showNotification(event.uri)
+                }
+
+                else -> {}
             }
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
         }
+        bottomSheet.arguments = bundle
+        bottomSheet.show(childFragmentManager, AlbumConfigBottomSheet.TAG)
     }
 
 
-    private fun setBabyPhoto() {
-        binding.cvBabyPhoto.setOnClickListener {
-            viewModel.setExpended(true)
-        }
-    }
-
-    private fun setAlbumLike() {
-        binding.btnAlbumLike.setOnClickListener {
-            viewModel.likeAlbum()
-        }
-    }
 
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner

@@ -180,4 +180,12 @@ class AlbumDetailViewModel @Inject constructor(
     }
 
     fun checkMyComment(comment: CommentUiModel) = member.value?.memberId == comment.memberId
+
+    fun showAlbumConfig() = viewModelScope.launch {
+        _eventFlow.emit(AlbumDetailEvent.ShowAlbumConfig)
+    }
+
+    fun dismissDialog() = viewModelScope.launch {
+        _eventFlow.emit(AlbumDetailEvent.DismissAlbumDetail)
+    }
 }
