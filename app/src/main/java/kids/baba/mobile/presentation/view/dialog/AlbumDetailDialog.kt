@@ -1,10 +1,13 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.animation.ValueAnimator
+import android.content.DialogInterface
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.fragment.app.DialogFragment
@@ -15,13 +18,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.DialogFragmentAlbumDetailBinding
 import kids.baba.mobile.presentation.adapter.AlbumDetailCommentAdapter
+import kids.baba.mobile.presentation.adapter.LikeUsersAdapter
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.viewmodel.AlbumDetailViewModel
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class AlbumDetailDialog : DialogFragment() {
+class AlbumDetailDialog(private val dismissLister: () -> Unit) : DialogFragment() {
 
     private var _binding: DialogFragmentAlbumDetailBinding? = null
     private val binding
@@ -30,6 +32,7 @@ class AlbumDetailDialog : DialogFragment() {
     private val viewModel: AlbumDetailViewModel by viewModels()
 
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
+    private lateinit var likeUsersAdapter: LikeUsersAdapter
 
     private val imageWidth by lazy {
         binding.cvBabyPhoto.width
@@ -57,33 +60,55 @@ class AlbumDetailDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
         setCloseBtn()
-        setCommentRecyclerView()
-        setImgScaleAnim()
         setBabyPhoto()
-        setDetailStateCollecter()
-        fetchData()
+        setAlbumLike()
+        setCommentRecyclerView()
+        setLikeUsersRecyclerView()
+        setImgScaleAnim()
+        collectAlbumDetail()
     }
-    private fun setDetailStateCollecter() {
-        repeatOnStarted {
+
+
+    private fun collectAlbumDetail() {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.albumDetailUiState.collect {
-                when (it) {
-                    is AlbumDetailUiState.Loading -> {}
-                    is AlbumDetailUiState.Like -> fetchData()
-                    is AlbumDetailUiState.AddComment -> fetchData()
-                    is AlbumDetailUiState.Error -> fetchData()
-                    is AlbumDetailUiState.Failure -> {}
-                    else -> {}
-                }
+                commentAdapter.submitList(it.albumDetail.comments)
+                likeUsersAdapter.submitList(it.albumDetail.likeDetail.likeUsersPreview)
             }
         }
     }
 
-    private fun fetchData() {
-        viewModel.fetch()
-    }
 
     private fun setCommentRecyclerView() {
-        commentAdapter = AlbumDetailCommentAdapter()
+        binding.tvSend.setOnClickListener {
+            viewModel.addComment {
+                binding.rvAlbumComment.apply {
+                    postDelayed({ smoothScrollToPosition(commentAdapter.itemCount - 1) }, 500)
+                }
+            }
+        }
+        commentAdapter = AlbumDetailCommentAdapter(
+            itemClick = { comment ->
+                viewModel.setTag(comment.name, comment.memberId)
+            },
+            itemLongClick = { comment, itemView ->
+                if (viewModel.checkMyComment(comment)) {
+                    val popupMenu = PopupMenu(requireContext(), itemView)
+                    popupMenu.inflate(R.menu.comment_menu)
+                    popupMenu.setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.comment_delete -> {
+                                viewModel.deleteComment(comment.commentId)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                    popupMenu.show()
+                }
+            }
+        )
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvAlbumComment.apply {
             adapter = commentAdapter
@@ -106,13 +131,25 @@ class AlbumDetailDialog : DialogFragment() {
                 }
             })
         }
+    }
 
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.albumDetail.collect {
-                commentAdapter.submitList(it?.comments)
+    private fun setLikeUsersRecyclerView() {
+        likeUsersAdapter = LikeUsersAdapter()
+        binding.rvLikeUsers.adapter = likeUsersAdapter
+        val overlapWidth = resources.getDimensionPixelSize(R.dimen.overlap_width)
+        binding.rvLikeUsers.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    return
+                }
+                outRect.left = -overlapWidth
             }
-        }
-
+        })
     }
 
     private fun setImgScaleAnim() {
@@ -127,7 +164,7 @@ class AlbumDetailDialog : DialogFragment() {
         }
         scaleUpAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
         scaleUpAnim.doOnEnd {
-            binding.cbAlbumLike.visibility = View.VISIBLE
+            binding.btnAlbumLike.visibility = View.VISIBLE
         }
         val scaleDownAnim = ValueAnimator.ofFloat(1f, 0.25f)
         scaleDownAnim.addUpdateListener { animation ->
@@ -139,7 +176,7 @@ class AlbumDetailDialog : DialogFragment() {
         }
         scaleDownAnim.duration = 500 // 애니메이션 지속 시간 설정 (1000ms = 1초)
         scaleDownAnim.doOnStart {
-            binding.cbAlbumLike.visibility = View.GONE
+            binding.btnAlbumLike.visibility = View.GONE
         }
 
         viewLifecycleOwner.repeatOnStarted {
@@ -167,15 +204,25 @@ class AlbumDetailDialog : DialogFragment() {
         }
     }
 
+    private fun setAlbumLike() {
+        binding.btnAlbumLike.setOnClickListener {
+            viewModel.likeAlbum()
+        }
+    }
+
     private fun setBinding() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
-        binding.dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        dismissLister.invoke()
     }
 
     companion object {

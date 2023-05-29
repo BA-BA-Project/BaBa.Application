@@ -15,7 +15,7 @@
         android:label="BabyDetailFragment"
         tools:layout="@layout/fragment_babydetail">
         <argument
-            android:name="baby"
+            android:name="babyDetailInfo"
             app:argType="kids.baba.mobile.presentation.model.MemberUiModel" />
     </fragment>
     <fragment

@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

@@ -1,6 +1,5 @@
 package kids.baba.mobile.domain.usecase
 
-import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.domain.model.GroupInfo
 import kids.baba.mobile.domain.repository.MyPageRepository
 import javax.inject.Inject

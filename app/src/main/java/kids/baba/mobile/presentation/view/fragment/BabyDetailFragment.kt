@@ -110,6 +110,7 @@ class BabyDetailFragment : Fragment() {
     ): View {
         _binding = FragmentBabydetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

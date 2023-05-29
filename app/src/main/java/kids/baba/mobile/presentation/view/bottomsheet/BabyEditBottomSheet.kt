@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,8 @@ import kids.baba.mobile.presentation.event.BabyEditSheetEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.FunctionHolder
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -34,6 +35,18 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
         viewModel.itemClick = itemClick
         viewModel.dismiss = { dismiss() }
         viewModel.getText = { binding.inputNameView.tvEdit.text.toString() }
+        binding.inputNameView.tvEditButton.setOnClickListener {
+            val name = binding.inputNameView.tvEdit.text.toString()
+            itemClick(name)
+            dismiss()
+        }
+        binding.addBabyView.ivAddButton.setOnClickListener {
+            MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
+        }
+
+        binding.inviteView.ivAddButton.setOnClickListener {
+            MyPageActivity.startActivity(requireContext(), INVITE_WITH_CODE_PAGE)
+        }
     }
 
     private fun collectEvent() {
@@ -44,7 +57,6 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
                     is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(requireContext(),"invite")
                 }
             }
-        }
     }
 
     override fun onDestroyView() {
@@ -64,5 +76,6 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     companion object {
         const val TAG = "BabyEditBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"
+
     }
 }

@@ -62,7 +62,7 @@ class ClassifiedAlbumDetailFragment : Fragment() {
     }
 
     private fun showAlbumDialog(album: AlbumUiModel) {
-        val albumDetailDialog = AlbumDetailDialog()
+        val albumDetailDialog = AlbumDetailDialog {}
         val bundle = Bundle()
         bundle.putParcelable(SELECTED_ALBUM_KEY, album)
         albumDetailDialog.arguments = bundle

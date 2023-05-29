@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="likeUser"
+            type="kids.baba.mobile.presentation.model.UserIconUiModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_like_user_1"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            app:backGroundColor="@{likeUser.iconColor}"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp"
+            app:iconRes="@{likeUser.userProfileIconUiModel.iconRes}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:civ_circle_background_color="@color/baba_main"
+            tools:src="@drawable/profile_w_5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

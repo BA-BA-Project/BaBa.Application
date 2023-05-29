@@ -114,7 +114,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
                 android:src="@drawable/ic_meatballs_menu"
-                android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.contentId == -1 ? View.INVISIBLE: View.VISIBLE}"
+                android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.contentId == null ? View.INVISIBLE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_date"
                 app:layout_constraintEnd_toEndOf="@id/cv_baby_album"
                 app:layout_constraintStart_toEndOf="@id/tv_album_date"
