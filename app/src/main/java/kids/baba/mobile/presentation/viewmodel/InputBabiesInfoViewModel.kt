@@ -309,28 +309,46 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            getBabiesInfoByInviteCodeUseCase(inviteCode).onSuccess {
-                val sj = StringJoiner(", ")
-                it.babies.forEach { baby ->
-                    sj.add(baby.babyName)
-                }
-                val babies = sj.toString()
-                val relationName = it.relationName
-                addChat(
-                    ChatItem.BabaFirstChatItem(
-                        String.format(
-                            getStringResource(R.string.babies_info_by_invite_code),
-                            babies,
-                            relationName
+            when(val result = getBabiesInfoByInviteCodeUseCase(inviteCode)){
+                is Result.Success -> {
+                    val sj = StringJoiner(", ")
+                    val babiesList = result.data.babies
+                    val relationName = result.data.relationName
+
+                    babiesList.forEach { baby ->
+                        sj.add(baby.babyName)
+                    }
+                    val babies = sj.toString()
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            String.format(
+                                getStringResource(R.string.babies_info_by_invite_code),
+                                babies,
+                                relationName
+                            )
                         )
                     )
-                )
-                addChat(
-                    ChatItem.BabaFirstChatItem(
-                        getStringResource(R.string.input_end_babies_info)
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.input_end_babies_info)
+                        )
                     )
-                )
-                setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+                    setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+                }
+                is Result.NetworkError -> {
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.baba_network_failed)
+                        )
+                    )
+                }
+                else -> {
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.invite_code_error)
+                        )
+                    )
+                }
             }
 
         }
