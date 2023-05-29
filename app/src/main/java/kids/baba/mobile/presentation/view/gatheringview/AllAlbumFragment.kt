@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.gatheringview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,11 +60,8 @@ class AllAlbumFragment : Fragment() {
 
     private fun showAlbumDialog(album: AlbumUiModel) {
         val albumDetailDialog = AlbumDetailDialog(
-            dismissLister = {
-                Log.e("ClassifiedAlbumDetailFragment", "dismissLister")
-            },
+            dismissLister = {},
             deleteListener = {
-                Log.e("ClassifiedAlbumDetailFragment", "deleteListener album: $album")
                 viewModel.deleteAlbum(album)
                 adapter.submitList(viewModel.allAlbumListState.value.reversed())
             }
