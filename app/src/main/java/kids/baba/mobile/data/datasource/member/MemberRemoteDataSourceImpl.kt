@@ -18,29 +18,14 @@ class MemberRemoteDataSourceImpl @Inject constructor(
         mapping = { it }
     )
 
-    override fun signUpWithBabiesInfo(
+    override suspend fun signUpWithBabiesInfo(
         signToken: String,
-        signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
-    ) = flow {
-        runCatching {
-            memberApi.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
-        }.onSuccess { resp ->
-            when (resp.code()) {
-                201 -> {
-                    val data = resp.body() ?: throw Throwable("data is null")
-                    emit(data)
-                }
+        signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo,
+    ) = safeApiHelper.getSafe(
+        remoteFetch = { memberApi.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo) },
+        mapping = { it }
+    )
 
-                else -> throw Throwable("회원가입 에러")
-            }
-        }.onFailure {
-            if (it is UnknownHostException) {
-                throw NetworkErrorException()
-            } else {
-                throw it
-            }
-        }
-    }
 
     override fun signUpWithInviteCode(
         signToken: String,

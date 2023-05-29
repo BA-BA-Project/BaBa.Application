@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
+import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.SignUpUseCase
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
@@ -337,20 +339,26 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun signUpWithBabiesInfo() {
         if (userProfile != null) {
             viewModelScope.launch {
-                signUpUseCase.signUpWithBabiesInfo(
-                    signToken,
-                    SignUpRequestWithBabiesInfo(
-                        userProfile.name,
-                        userProfile.iconName,
-                        relation,
-                        babiesList.value
-                    )
-                ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
-                }.onFailure {
-                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                when (
+                    val result = signUpUseCase.signUpWithBabiesInfo(
+                        signToken,
+                        SignUpRequestWithBabiesInfo(
+                            userProfile.name,
+                            userProfile.iconName,
+                            relation,
+                            babiesList.value
+                        )
+                    )) {
+                    is Result.Success -> {
+                        setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
+                    }
+                    else -> {
+                        val throwable = result.getThrowableOrNull()
+                        if(throwable != null){
+                            setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
+                        }
+                    }
                 }
-
             }
         }
     }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface MemberRepository {
     suspend fun getMe(accessToken: String): Result<MemberModel>
 
-    fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo): Flow<TokenResponse>
+    suspend fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo): Result<TokenResponse>
 
     fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode): Flow<TokenResponse>
 }
