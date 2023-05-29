@@ -14,6 +14,10 @@
         <variable
             name="editText"
             type="String" />
+
+        <variable
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,9 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="28dp"
+            android:text="@{title}"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="@{title}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
+            android:onClick="@{() -> function.click()}"
             android:text="@{button}"
             android:textColor="#B4B4B4"
             android:textSize="18sp"

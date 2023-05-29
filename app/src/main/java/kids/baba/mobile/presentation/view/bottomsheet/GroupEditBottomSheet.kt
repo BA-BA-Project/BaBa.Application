@@ -10,13 +10,19 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
+import kids.baba.mobile.presentation.adapter.ColorAdapter
+import kids.baba.mobile.presentation.event.EditGroupSheetEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.ColorModel
+import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment() {
+class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditGroupBinding? = null
     private val binding
@@ -25,25 +31,38 @@ class GroupEditBottomSheet(val itemClick:() -> Unit) : BottomSheetDialogFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.patchGroup.value = { itemClick() }
-        binding.addMemberView.tvAddButtonDesc.isGone = true
+        collectEvent()
+        bindViewModel()
+        setColorButton()
+    }
 
-        binding.addMemberView.ivAddButton.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), INVITE_MEMBER_PAGE)
+    private fun bindViewModel() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.getText = { binding.nameView.tvEdit.text.toString() }
+        viewModel.dismiss = { dismiss() }
+        viewModel.itemClick = { itemClick() }
+    }
+
+    private fun setColorButton() {
+        val colors = mutableListOf<ColorUiModel>().apply {
+            addAll(
+                ColorModel
+                    .values()
+                    .map { ColorUiModel(it.name, it.colorCode) }
+            )
         }
+        val adapter = ColorAdapter { color -> viewModel.color.value = color.value }
+        binding.colorView.colorContainer.adapter = adapter
+        adapter.submitList(colors)
+    }
 
-        binding.nameView.tvEditButton.setOnClickListener {
-            val name = binding.nameView.tvEdit.text.toString()
-            lifecycleScope.launch {
-                viewModel.patch(name = name).join()
-                viewModel.patchGroup.value()
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is EditGroupSheetEvent.GoToAddMemberPage -> MyPageActivity.startActivity(requireContext(), "member")
+                }
             }
-            dismiss()
-        }
-
-        binding.deleteView.tvDeleteDesc.setOnClickListener {
-            viewModel.delete()
-            dismiss()
         }
     }
 

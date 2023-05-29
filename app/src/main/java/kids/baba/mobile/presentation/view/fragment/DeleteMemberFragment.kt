@@ -12,7 +12,7 @@ import kids.baba.mobile.databinding.FragmentDeleteUserBinding
 import kids.baba.mobile.presentation.viewmodel.DeleteMemberViewModel
 
 @AndroidEntryPoint
-class FragmentDeleteMember : Fragment() {
+class DeleteMemberFragment : Fragment() {
 
     private var _binding: FragmentDeleteUserBinding? = null
     private val binding
