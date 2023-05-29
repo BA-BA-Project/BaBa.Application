@@ -7,7 +7,6 @@ import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.model.TokenResponse
 import kids.baba.mobile.domain.repository.MemberRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(
@@ -21,9 +20,12 @@ class SignUpUseCase @Inject constructor(
         return result
     }
 
-    suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode) = runCatching {
-        val token = memberRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode).first()
-        setJWTToken(token)
+    suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode): Result<TokenResponse>{
+        val result = memberRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
+        if ( result is Result.Success){
+            setJWTToken(result.data)
+        }
+        return result
     }
 
     private fun setJWTToken(token: TokenResponse) {

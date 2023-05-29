@@ -16,7 +16,7 @@ class MemberRepositoryImpl @Inject constructor(private val memberRemoteDataSourc
     ) = memberRemoteDataSource.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
 
 
-    override fun signUpWithInviteCode(
+    override suspend fun signUpWithInviteCode(
         signToken: String,
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
     ) = memberRemoteDataSource.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)

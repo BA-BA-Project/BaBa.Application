@@ -366,16 +366,23 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun signUpWithInviteCode() {
         if (userProfile != null) {
             viewModelScope.launch {
-                signUpUseCase.signUpWithInviteCode(
-                    signToken, SignUpRequestWithInviteCode(
-                        inviteCode,
-                        userProfile.name,
-                        userProfile.iconName
-                    )
-                ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
-                }.onFailure {
-                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                when (
+                    val result = signUpUseCase.signUpWithInviteCode(
+                        signToken, SignUpRequestWithInviteCode(
+                            inviteCode,
+                            userProfile.name,
+                            userProfile.iconName
+                        )
+                    )) {
+                    is Result.Success -> {
+                        setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
+                    }
+                    else -> {
+                        val throwable = result.getThrowableOrNull()
+                        if(throwable != null){
+                            setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
+                        }
+                    }
                 }
             }
         }
