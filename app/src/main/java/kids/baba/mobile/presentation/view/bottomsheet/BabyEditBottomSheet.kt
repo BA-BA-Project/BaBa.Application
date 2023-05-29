@@ -53,10 +53,18 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
         viewLifecycleOwner.repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is BabyEditSheetEvent.GoToAddBabyPage -> MyPageActivity.startActivity(requireContext(),"addBaby")
-                    is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(requireContext(),"invite")
+                    is BabyEditSheetEvent.GoToAddBabyPage -> MyPageActivity.startActivity(
+                        requireContext(),
+                        "addBaby"
+                    )
+
+                    is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(
+                        requireContext(),
+                        "invite"
+                    )
                 }
             }
+        }
     }
 
     override fun onDestroyView() {
@@ -76,6 +84,5 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     companion object {
         const val TAG = "BabyEditBottomSheet"
         const val SELECTED_BABY_KEY = "SELECTED_BABY"
-
     }
 }

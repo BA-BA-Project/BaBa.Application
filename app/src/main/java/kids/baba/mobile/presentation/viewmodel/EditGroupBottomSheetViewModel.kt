@@ -14,7 +14,6 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.view.FunctionHolder
 import kids.baba.mobile.presentation.event.EditGroupEvent
 import kids.baba.mobile.presentation.model.EditGroupBottomSheetUiModel
-import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -51,7 +50,10 @@ class EditGroupBottomSheetViewModel @Inject constructor(
         override fun click() {
             viewModelScope.launch {
                 if (getText() == "") return@launch
-                patchOneGroupUseCase.patch(group = GroupInfo(relationGroup = getText()), groupName = query.value)
+                patchOneGroupUseCase.patch(
+                    group = GroupInfo(relationGroup = getText()),
+                    groupName = query.value
+                )
                 itemClick()
                 dismiss()
             }
@@ -73,6 +75,9 @@ class EditGroupBottomSheetViewModel @Inject constructor(
             viewModelScope.launch {
                 _event.emit(EditGroupSheetEvent.GoToAddMemberPage)
             }
+        }
+    }
+
     fun patch(name: String) = viewModelScope.launch {
         when (patchOneGroupUseCase.patch(
             group = GroupInfo(relationGroup = name), groupName = query.value
@@ -90,8 +95,9 @@ class EditGroupBottomSheetViewModel @Inject constructor(
         when (deleteOneGroupUseCase.delete(groupName = query.value)) {
             is Result.Success -> {
                 _eventFlow.emit(EditGroupEvent.SuccessDeleteGroup)
-                patchGroup.value()
+                itemClick()
             }
+
             is Result.NetworkError -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(EditGroupEvent.ShowSnackBar(R.string.unknown_error_msg))
         }

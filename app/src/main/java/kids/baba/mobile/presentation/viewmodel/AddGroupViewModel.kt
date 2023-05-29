@@ -25,7 +25,7 @@ class AddGroupViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<AddGroupEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    fun addGroup(relationGroup: String, iconColor: String) = viewModelScope.launch {
+    fun addGroup(relationGroup: String) = viewModelScope.launch {
 
         when (addOneGroupUseCase.add(
             myPageGroup = MyPageGroup(

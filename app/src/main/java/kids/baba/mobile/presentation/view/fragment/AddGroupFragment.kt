@@ -13,9 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.presentation.adapter.ColorAdapter
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
 import kids.baba.mobile.presentation.event.AddGroupEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
