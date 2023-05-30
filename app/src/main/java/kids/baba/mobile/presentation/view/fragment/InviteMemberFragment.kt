@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
+import kids.baba.mobile.presentation.event.InviteMemberEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
 
 @AndroidEntryPoint
@@ -21,11 +23,30 @@ class InviteMemberFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            requireActivity().finish()
-        }
-        binding.btnInvite.setOnClickListener {
-            findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
+        bindViewModel()
+        collectEvent()
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is InviteMemberEvent.GoToBack -> {
+                        requireActivity().finish()
+                    }
+                    is InviteMemberEvent.InviteWithKakao -> {
+                        findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
+                    }
+                    is InviteMemberEvent.CopyInviteCode -> {
+                        findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
+                    }
+                }
+            }
         }
     }
 
