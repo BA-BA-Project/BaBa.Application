@@ -4,7 +4,7 @@ import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRepository {
-    suspend fun loadMyPageGroup(): Flow<GroupResponse>
+    suspend fun loadMyPageGroup(): Result<GroupResponse>
 
     suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse>
 

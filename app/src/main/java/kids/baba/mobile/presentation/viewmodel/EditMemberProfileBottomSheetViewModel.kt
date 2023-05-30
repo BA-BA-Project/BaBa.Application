@@ -47,7 +47,6 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     val composableIntroductionViewData = ComposableInputViewData(
         text = introductionViewState,
         onEditButtonClickEventListener = {
-            viewModelScope.launch {
                 viewModelScope.launch {
                     when (editProfileUseCase.edit(
                         profile = Profile(
@@ -68,7 +67,6 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
                         }
                     }
                 }
-            }
         }
     )
 

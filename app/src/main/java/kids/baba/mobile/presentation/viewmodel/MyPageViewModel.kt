@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
@@ -27,19 +28,28 @@ class MyPageViewModel @Inject constructor(
 ) : ViewModel() {
     val groupAddButton = MutableStateFlow("+ 그룹만들기")
 
-
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     // TODO: 편집이 완료되었을 때 MyPageFragment View 에 갱신해야 함.
-    private val _babyGroupTitle = MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
+    private val _babyGroupTitle = MutableStateFlow(
+        EncryptedPrefs.getString("babyGroupTitle").ifEmpty {
+            "아이들"
+        }
+    )
     val babyGroupTitle = _babyGroupTitle.asStateFlow()
 
     fun loadGroups() = viewModelScope.launch {
-        getMyPageGroupUseCase.get().catch {
-
-        }.collect {
-            _eventFlow.emit(MyPageEvent.LoadMember(it.groups))
+        when (val result = getMyPageGroupUseCase.get()) {
+            is Result.Success -> {
+                _eventFlow.emit(MyPageEvent.LoadMember(result.data.groups))
+            }
+            is Result.NetworkError -> {
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+            else -> {
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.unknown_error_msg))
+            }
         }
     }
 

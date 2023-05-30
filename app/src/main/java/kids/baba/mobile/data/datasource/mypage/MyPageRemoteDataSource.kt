@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MyPageRemoteDataSource {
 
-    suspend fun loadMyPageGroup(): Flow<GroupResponse>
+    suspend fun loadMyPageGroup(): Result<GroupResponse>
 
     suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse>
 

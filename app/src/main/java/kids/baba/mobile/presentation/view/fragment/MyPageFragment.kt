@@ -23,6 +23,7 @@ import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
+import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 
@@ -34,6 +35,7 @@ class MyPageFragment : Fragment() {
 
     val viewModel: MyPageViewModel by viewModels()
     private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
+
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
@@ -119,11 +121,8 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() {
-        val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.tvKidsTitle.text = if (title != "") title else "아이들"
-
     }
 
     private fun initializeRecyclerView() {

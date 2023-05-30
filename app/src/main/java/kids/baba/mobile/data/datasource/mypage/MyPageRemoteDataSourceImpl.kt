@@ -12,7 +12,7 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
     private val api: MyPageApi,
     private val safeApiHelper: SafeApiHelper
 ) : MyPageRemoteDataSource {
-    override suspend fun loadMyPageGroup(): Flow<GroupResponse> {
+    override suspend fun loadMyPageGroup(): Result<GroupResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.loadMyPageGroup()
@@ -21,7 +21,12 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        return if (result is Result.Success) flow { emit(result.data) } else flow {}
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
+//        return if (result is Result.Success) flow { emit(result.data) } else flow {}
     }
 
     override suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse> {

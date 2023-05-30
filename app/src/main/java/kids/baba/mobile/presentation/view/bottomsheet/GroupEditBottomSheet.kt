@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
@@ -18,8 +16,6 @@ import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragment() {
@@ -37,8 +33,8 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
     }
 
     private fun bindViewModel() {
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.getText = { binding.nameView.tvEdit.text.toString() }
         viewModel.dismiss = { dismiss() }
         viewModel.itemClick = { itemClick() }
     }
@@ -51,16 +47,34 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
                     .map { ColorUiModel(it.name, it.colorCode) }
             )
         }
-        val adapter = ColorAdapter { color -> viewModel.color.value = color.value }
+        val adapter = ColorAdapter(
+            itemClick = { color ->
+                viewModel.setColor(color)
+            }
+        )
         binding.colorView.colorContainer.adapter = adapter
         adapter.submitList(colors)
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.event.collect {
-                when (it) {
-                    is EditGroupSheetEvent.GoToAddMemberPage -> MyPageActivity.startActivity(requireContext(), "member")
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is EditGroupSheetEvent.SuccessPatchGroupRelation -> {
+                        viewModel.itemClick()
+                        dismiss()
+                    }
+                    is EditGroupSheetEvent.SuccessDeleteGroup -> {
+                        viewModel.itemClick()
+                        dismiss()
+                    }
+                    is EditGroupSheetEvent.ShowSnackBar -> {
+                        dismiss()
+                    }
+                    is EditGroupSheetEvent.GoToAddMemberPage -> MyPageActivity.startActivity(
+                        requireContext(),
+                        INVITE_MEMBER_PAGE
+                    )
                 }
             }
         }
@@ -72,7 +86,6 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetEditGroupBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
     }
 

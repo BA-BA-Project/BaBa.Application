@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRemoteDataSource) :
     MyPageRepository {
-    override suspend fun loadMyPageGroup(): Flow<GroupResponse> = dataSource.loadMyPageGroup()
+    override suspend fun loadMyPageGroup(): Result<GroupResponse> = dataSource.loadMyPageGroup()
 
     override suspend fun loadBabyProfile(babyId: String) =
         dataSource.loadBabyProfile(babyId = babyId)
