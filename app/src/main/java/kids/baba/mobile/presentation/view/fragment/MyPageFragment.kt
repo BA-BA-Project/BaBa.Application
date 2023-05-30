@@ -5,16 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
-import kids.baba.mobile.presentation.event.EditMemberProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.state.MyPageEvent
@@ -23,8 +19,6 @@ import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
-import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
-import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
 
 @AndroidEntryPoint
@@ -34,12 +28,9 @@ class MyPageFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     val viewModel: MyPageViewModel by viewModels()
-    private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
 
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
-
-    private lateinit var memberEditProfileBottomSheet: MemberEditProfileBottomSheet
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,21 +89,6 @@ class MyPageFragment : Fragment() {
             }
         }
 
-        viewLifecycleOwner.repeatOnStarted {
-            editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
-                when (event) {
-                    is EditMemberProfileEvent.SuccessEditMemberProfile -> {
-                        memberEditProfileBottomSheet.dismiss()
-                        viewModel.getMyInfo()
-                        viewModel.loadGroups()
-
-                    }
-                    is EditMemberProfileEvent.ShowSnackBar -> {
-                        showSnackBar(event.message)
-                    }
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -168,14 +144,16 @@ class MyPageFragment : Fragment() {
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
         binding.ivProfileEditPen.setOnClickListener {
-            memberEditProfileBottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel)
-            memberEditProfileBottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+            val bottomSheet = MemberEditProfileBottomSheet(
+                itemClick = {
+                    viewModel.getMyInfo()
+                    viewModel.loadGroups()
+                }
+            )
+            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
     }
 
-    private fun showSnackBar(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-    }
 
     companion object {
         const val INTENT_PAGE_NAME = "nextPage"

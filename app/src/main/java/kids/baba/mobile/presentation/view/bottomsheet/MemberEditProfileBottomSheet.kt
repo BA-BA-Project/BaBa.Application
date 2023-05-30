@@ -1,33 +1,43 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
 import kids.baba.mobile.domain.model.Profile
 import kids.baba.mobile.presentation.adapter.ColorAdapter
 import kids.baba.mobile.presentation.adapter.IconAdapter
+import kids.baba.mobile.presentation.event.EditMemberProfileEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MemberEditProfileBottomSheet(
-    val viewModel: EditMemberProfileBottomSheetViewModel
+    val itemClick: () -> Unit
 ) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditProfileBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
+    private val viewModel: EditMemberProfileBottomSheetViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setIconButton()
         setColorButton()
+        collectEvent()
     }
 
     private fun setIconButton() {
@@ -74,10 +84,36 @@ class MemberEditProfileBottomSheet(
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetEditProfileBinding.inflate(inflater, container, false)
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        bindViewModel()
 
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.dismiss = { dismiss() }
+        viewModel.itemClick = { itemClick() }
+    }
+
+    private fun collectEvent(){
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect{event ->
+                when (event) {
+                    is EditMemberProfileEvent.SuccessEditMemberProfile -> {
+                        viewModel.itemClick()
+                        dismiss()
+                    }
+                    is EditMemberProfileEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
