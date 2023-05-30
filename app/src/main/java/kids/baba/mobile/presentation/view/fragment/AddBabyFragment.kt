@@ -64,7 +64,7 @@ class AddBabyFragment : Fragment() {
                 date += year
                 date += String.format("%02d", monthOfYear)
                 date += String.format("%02d", dayOfMonth)
-                viewModel.birthDay.value = parseDate(date)
+//                viewModel.birthDay.value = parseDate(date)
                 binding.birthView.etInput.setText(parseDate(date))
 //                Log.e("birth", viewModel.birthDay.value)
             },
@@ -77,7 +77,7 @@ class AddBabyFragment : Fragment() {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is AddBabyEvent.ShowSnackBar -> {

@@ -27,11 +27,10 @@ class AddBabyViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
     val uiModel = MutableStateFlow(AddBabyUiModel())
-    val birthDay = MutableStateFlow("")
 
+    private val birthDay = MutableStateFlow("")
     private val babyName = MutableStateFlow("")
     private val relation = MutableStateFlow("")
-
 
     val composableBabyName = ComposableInputViewData(
         text = babyName,
@@ -47,7 +46,7 @@ class AddBabyViewModel @Inject constructor(
         onEditButtonClickEventListener = {}
     )
 
-    val composableBackButton = ComposableTopViewData(
+    val goToBack = ComposableTopViewData(
         onBackButtonClickEventListener = {
             viewModelScope.launch {
                 _eventFlow.emit(AddBabyEvent.BackButtonClicked)
@@ -59,9 +58,9 @@ class AddBabyViewModel @Inject constructor(
         viewModelScope.launch {
             when (addOneMyBabyUseCase.add(
                 baby = MyBaby(
-                    name = composableBabyName.text.toString(),
-                    relationName = composableRelation.text.value,
-                    birthday = composableBirthDay.text.toString()
+                    name = babyName.value,
+                    relationName = relation.value,
+                    birthday = birthDay.value
                 )
             )) {
                 is Result.Success -> _eventFlow.emit(AddBabyEvent.SuccessAddBaby)

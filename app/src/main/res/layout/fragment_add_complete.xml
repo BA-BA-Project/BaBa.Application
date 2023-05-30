@@ -6,6 +6,11 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AddCompleteViewModel" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +21,8 @@
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
-            binds:title="@{viewModel.uiModel.title}" />
+            binds:title="@{viewModel.uiModel.title}"
+            binds:topViewData="@{viewModel.goToBack}" />
 
         <TextView
             android:id="@+id/tv_added"
@@ -51,6 +57,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:background="@drawable/button_complete"
+            android:onClick="@{() -> viewModel.completeAddBaby()}"
             android:text="@string/check"
             android:textColor="@color/baba_main"
             android:textSize="18sp"

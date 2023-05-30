@@ -38,8 +38,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:topViewData = "@{viewModel.composableBackButton}"
-                bind:title="@{viewModel.uiModel.title}" />
+                bind:title="@{viewModel.uiModel.title}"
+                bind:topViewData="@{viewModel.goToBack}" />
 
             <include
                 android:id="@+id/banner_view"
@@ -105,8 +105,7 @@
                     android:id="@+id/birth_view"
                     layout="@layout/composable_input_view"
                     bind:inputViewData="@{viewModel.composableBirthDay}"
-                    bind:title="@{viewModel.uiModel.birthTitle}"
-                    />
+                    bind:title="@{viewModel.uiModel.birthTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
