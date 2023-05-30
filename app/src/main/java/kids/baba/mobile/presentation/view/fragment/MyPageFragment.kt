@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -156,6 +155,8 @@ class MyPageFragment : Fragment() {
                 }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+            }, goToAddMemberPage = {
+                MyPageActivity.startActivity(requireContext(), pageName = INVITE_MEMBER_PAGE)
             }
         )
         binding.groupContainer.adapter = myPageGroupAdapter
