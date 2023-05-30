@@ -20,7 +20,8 @@
         tools:layout="@layout/fragment_mypage">
         <argument
             android:name="fromBabyList"
-            app:argType="boolean" />
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/gathering_view_fragment"
