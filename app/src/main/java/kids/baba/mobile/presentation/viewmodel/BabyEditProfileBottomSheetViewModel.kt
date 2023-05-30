@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,15 +31,15 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
 
     val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[BabyEditProfileBottomSheet.SELECTED_BABY_KEY])
 
-    private val nameViewLiveData: MutableLiveData<String> = MutableLiveData("")
+    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name?: "")
 
     val composableNameViewData = ComposableNameViewData(
-        text = nameViewLiveData,
+        text = nameViewState,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
                 when (editBabyNameUseCase.edit(
                     babyId = baby.value?.memberId ?: "",
-                    name = nameViewLiveData.value ?: ""
+                    name = nameViewState.value
                 )) {
                     is Result.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit)
                     is Result.NetworkError -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))

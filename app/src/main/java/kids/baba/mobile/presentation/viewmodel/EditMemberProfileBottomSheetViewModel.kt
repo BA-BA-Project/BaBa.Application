@@ -7,11 +7,17 @@ import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.Profile
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.EditProfileUseCase
+import kids.baba.mobile.presentation.binding.ComposableInputViewData
+import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.EditMemberProfileEvent
+import kids.baba.mobile.presentation.mapper.getUserProfileIconName
+import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.model.EditMemberProfileBottomSheetUiModel
+import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,19 +31,55 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
 
     val uiModel = MutableStateFlow(EditMemberProfileBottomSheetUiModel())
 
-    val color = MutableStateFlow("")
-    val icon = MutableStateFlow("")
+    private val _icon = MutableStateFlow("PROFILE_G_1")
+    val icon = _icon.asStateFlow()
+    private val _color = MutableStateFlow("FF3481FF")
+    val color = _color.asStateFlow()
 
-    fun edit(
-        profile: Profile
-    ) = viewModelScope.launch {
-        when (editProfileUseCase.edit(profile = profile)) {
-            is Result.Success -> _eventFlow.emit(EditMemberProfileEvent.SuccessEditMemberProfile)
+    private val nameViewState: MutableStateFlow<String> = MutableStateFlow("")
+    private val introductionViewState: MutableStateFlow<String> = MutableStateFlow("")
 
-            is Result.NetworkError -> _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
+    val composableNameViewData = ComposableNameViewData(
+        text = nameViewState,
+        onEditButtonClickEventListener = {}
+    )
 
-            else -> _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.unknown_error_msg))
-
+    val composableIntroductionViewData = ComposableInputViewData(
+        text = introductionViewState,
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                viewModelScope.launch {
+                    when (editProfileUseCase.edit(
+                        profile = Profile(
+                            name = nameViewState.value,
+                            introduction = introductionViewState.value,
+                            iconName = icon.value,
+                            iconColor = color.value
+                        )
+                    )) {
+                        is Result.Success -> {
+                            _eventFlow.emit(EditMemberProfileEvent.SuccessEditMemberProfile)
+                        }
+                        is Result.NetworkError -> {
+                            _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
+                        }
+                        else -> {
+                            _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.unknown_error_msg))
+                        }
+                    }
+                }
+            }
         }
+    )
+
+
+    fun setIcon(icon: UserIconUiModel) {
+        _icon.value = getUserProfileIconName(icon.userProfileIconUiModel)
     }
+
+    fun setColor(color: ColorUiModel) {
+        _color.value = color.value
+    }
+
+
 }

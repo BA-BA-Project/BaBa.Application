@@ -1,16 +1,13 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.core.utils.EncryptedPrefs
@@ -28,7 +25,6 @@ import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomShe
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
@@ -97,7 +93,8 @@ class MyPageFragment : Fragment() {
             editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
                 when (event) {
                     is EditMemberProfileEvent.SuccessEditMemberProfile -> {
-                        viewModel.loadBabies()
+                        viewModel.getMyInfo()
+                        viewModel.loadGroups()
                     }
                     is EditMemberProfileEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
@@ -177,14 +174,7 @@ class MyPageFragment : Fragment() {
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet =
-                MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                    lifecycleScope.launch {
-                        editMemberProfileBottomSheetViewModel.edit(profile).join()
-                        viewModel.getMyInfo()
-                        viewModel.loadGroups()
-                    }
-                }
+            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel)
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }

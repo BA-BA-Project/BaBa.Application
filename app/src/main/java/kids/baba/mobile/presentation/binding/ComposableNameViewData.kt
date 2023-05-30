@@ -1,8 +1,8 @@
 package kids.baba.mobile.presentation.binding
 
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ComposableNameViewData(
-    val text: MutableLiveData<String>,
+    val text: MutableStateFlow<String>,
     val onEditButtonClickEventListener: () -> Unit
 )

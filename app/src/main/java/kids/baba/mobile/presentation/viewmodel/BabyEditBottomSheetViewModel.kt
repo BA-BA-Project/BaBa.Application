@@ -1,7 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +18,8 @@ import javax.inject.Inject
 class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     val uiModel = MutableStateFlow(BabyEditBottomSheetUiModel())
 
-    private val nameViewLiveData: MutableLiveData<String> = MutableLiveData(EncryptedPrefs.getString("babyGroupTitle"))
+    private val nameViewLiveData: MutableStateFlow/*MutableLiveData*/<String> = /*MutableLiveData*/
+        MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
 
     private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -30,7 +29,7 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
         onEditButtonClickEventListener = {
             viewModelScope.launch {
                 // todo: EditText 가 비어있으면 입력을 하지 않으면 편집 버튼 누르지 못하도록.
-                EncryptedPrefs.putString("babyGroupTitle", nameViewLiveData.value.toString())
+                EncryptedPrefs.putString("babyGroupTitle", nameViewLiveData.value)
                 _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit)
 
             }

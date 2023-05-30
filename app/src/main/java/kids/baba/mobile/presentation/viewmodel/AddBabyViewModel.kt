@@ -1,7 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,14 +27,15 @@ class AddBabyViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
     val uiModel = MutableStateFlow(AddBabyUiModel())
-    val birthDay = MutableLiveData("") // 원래 MutableStateFlow 였음
+    val birthDay = MutableStateFlow("")
 
-    private val babyName = MutableLiveData("")
-    private val relation = MutableLiveData("")
+    private val babyName = MutableStateFlow("")
+    private val relation = MutableStateFlow("")
 
 
     val composableBabyName = ComposableInputViewData(
-        text = babyName
+        text = babyName,
+        onEditButtonClickEventListener = {}
     )
 
     val composableRelation = ComposableInputWithDescViewData(
@@ -44,7 +43,8 @@ class AddBabyViewModel @Inject constructor(
     )
 
     val composableBirthDay = ComposableInputViewData(
-        text = birthDay
+        text = birthDay,
+        onEditButtonClickEventListener = {}
     )
 
     val composableBackButton = ComposableTopViewData(
@@ -55,15 +55,15 @@ class AddBabyViewModel @Inject constructor(
         }
     )
 
-    fun addBaby(){
+    fun addBaby() {
         viewModelScope.launch {
-            when(addOneMyBabyUseCase.add(
+            when (addOneMyBabyUseCase.add(
                 baby = MyBaby(
-                    name = composableBabyName.text.value.toString(),
-                    relationName = composableRelation.text.value.toString(),
-                    birthday = composableBirthDay.text.value.toString()
+                    name = composableBabyName.text.toString(),
+                    relationName = composableRelation.text.value,
+                    birthday = composableBirthDay.text.toString()
                 )
-            )){
+            )) {
                 is Result.Success -> _eventFlow.emit(AddBabyEvent.SuccessAddBaby)
                 is Result.NetworkError -> _eventFlow.emit(AddBabyEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AddBabyEvent.ShowSnackBar(R.string.unknown_error_msg))

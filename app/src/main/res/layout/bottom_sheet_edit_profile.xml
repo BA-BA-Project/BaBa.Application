@@ -8,6 +8,15 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel" />
+
+        <variable
+            name="nameViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
+
+        <variable
+            name="inputViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +49,7 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
+                bind:nameViewData="@{viewmodel.composableNameViewData}"
                 bind:title="@{viewmodel.uiModel.name}" />
 
             <View
@@ -72,8 +82,10 @@
             <include
                 android:id="@+id/intro_view"
                 layout="@layout/composable_input_view"
-                bind:title="@{viewmodel.uiModel.intro}"
-                bind:button="@{viewmodel.uiModel.button}"/>
+                bind:button="@{viewmodel.uiModel.button}"
+                bind:inputViewData="@{viewmodel.composableIntroductionViewData}"
+                bind:title="@{viewmodel.uiModel.intro}" />
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

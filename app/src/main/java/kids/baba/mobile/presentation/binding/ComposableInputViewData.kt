@@ -1,7 +1,8 @@
 package kids.baba.mobile.presentation.binding
 
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ComposableInputViewData(
-    val text: MutableLiveData<String>
+    val text: MutableStateFlow<String>,
+    val onEditButtonClickEventListener: () -> Unit
 )
