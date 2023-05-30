@@ -16,21 +16,25 @@ import kids.baba.mobile.presentation.event.BabyEditEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
+class BabyEditProfileBottomSheet @Inject constructor(
+    val viewModel: BabyEditProfileBottomSheetViewModel
+) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetEditBabyProfileBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
-    private val viewModel: BabyEditProfileBottomSheetViewModel by viewModels()
+//    private val viewModel: BabyEditProfileBottomSheetViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        collectEvent()
+        Log.e("BabyEditProfileBottomSheet", "selected Baby: ${viewModel.baby.value}")
+//        collectEvent()
     }
 
-    private fun collectEvent() {
+/*    private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
@@ -44,7 +48,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
                 }
             }
         }
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +61,7 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    private fun showSnackBar(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

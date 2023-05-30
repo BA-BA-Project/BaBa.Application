@@ -12,7 +12,7 @@ import kids.baba.mobile.presentation.event.BabyEditEvent
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,9 +29,9 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
     val name = MutableStateFlow("아이 이름")
     val button = MutableStateFlow("편집")
 
-    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[BabyEditProfileBottomSheet.SELECTED_BABY_KEY])
+    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[MyPageFragment.BABY_DETAIL_INFO])
 
-    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name?: "")
+    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name ?: "")
 
     val composableNameViewData = ComposableNameViewData(
         text = nameViewState,
@@ -41,7 +41,7 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
                     babyId = baby.value?.memberId ?: "",
                     name = nameViewState.value
                 )) {
-                    is Result.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit)
+                    is Result.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
                     is Result.NetworkError -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
                     else -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.unknown_error_msg))
                 }

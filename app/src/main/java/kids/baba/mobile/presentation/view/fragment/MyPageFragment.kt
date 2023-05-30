@@ -36,7 +36,7 @@ class MyPageFragment : Fragment() {
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
-    lateinit var memberEditProfileBottomSheet: MemberEditProfileBottomSheet
+    private lateinit var memberEditProfileBottomSheet: MemberEditProfileBottomSheet
 
     override fun onCreateView(
         inflater: LayoutInflater,

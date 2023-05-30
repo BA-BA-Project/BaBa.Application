@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.mypage
 
+import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
@@ -71,6 +72,7 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
         return if (result is Result.Failure) {
+            Log.e("editBabyName", "editBabyName: ${result.message}")
             Result.Failure(result.code, result.message, Exception(result.message))
         } else {
             result

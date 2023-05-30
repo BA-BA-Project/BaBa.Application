@@ -6,19 +6,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.event.BabyEditEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
+import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
@@ -29,28 +34,16 @@ class BabyDetailFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: BabyDetailViewModel by viewModels()
+    private val babyEditProfileBottomSheetViewModel: BabyEditProfileBottomSheetViewModel by viewModels()
 
+    private lateinit var babyEditProfileBottomSheet: BabyEditProfileBottomSheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
+        setBottomSheet()
         initView()
         collectState()
-        setBottomSheet()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.e("BabyDetailFragment","onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.e("BabyDetailFragment","onPause")
-    }
-    override fun onStop() {
-        super.onStop()
-        Log.e("BabyDetailFragment","onStop")
     }
 
     private fun initView() {
@@ -86,6 +79,22 @@ class BabyDetailFragment : Fragment() {
                 }
             }
         }
+        viewLifecycleOwner.repeatOnStarted {
+            babyEditProfileBottomSheetViewModel.eventFlow.collect{event ->
+                when (event) {
+                    is BabyEditEvent.SuccessBabyEdit -> {
+                        babyEditProfileBottomSheet.dismiss()
+                        // TODO: 화면 초기화 해주어야 함.
+                        viewModel.refresh(event.babyName)
+                    }
+                    is BabyEditEvent.ShowSnackBar -> {
+                        babyEditProfileBottomSheet.dismiss()
+                        showSnackBar(event.message)
+                    }
+                }
+            }
+        }
+
     }
 
     override fun onDestroyView() {
@@ -95,11 +104,10 @@ class BabyDetailFragment : Fragment() {
 
     private fun setBottomSheet() {
         binding.ivProfileEditPen.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(BabyEditProfileBottomSheet.SELECTED_BABY_KEY, viewModel.baby.value)
-            val bottomSheet = BabyEditProfileBottomSheet()
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
+            Log.e("baby", "${viewModel.baby.value}")
+            babyEditProfileBottomSheet = BabyEditProfileBottomSheet(babyEditProfileBottomSheetViewModel)
+            babyEditProfileBottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
+
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
@@ -141,6 +149,10 @@ class BabyDetailFragment : Fragment() {
         binding.myGroupView.rvGroupMembers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {

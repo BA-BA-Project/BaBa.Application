@@ -7,12 +7,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.usecase.DeleteOneBabyUseCase
 import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.model.BabyDetailUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,5 +40,13 @@ class BabyDetailViewModel @Inject constructor(
 
     fun delete(babyId: String) = viewModelScope.launch {
         deleteOneBabyUseCase.delete(babyId)
+    }
+
+    fun refresh(babyName: String) = viewModelScope.launch {
+        uiModel.update {
+            it.copy(
+                babyName = babyName
+            )
+        }
     }
 }
