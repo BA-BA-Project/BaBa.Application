@@ -9,7 +9,7 @@ import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageUiState
+import kids.baba.mobile.presentation.state.MyPageEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +28,7 @@ class MyPageViewModel @Inject constructor(
     val groupAddButton = MutableStateFlow("+ 그룹만들기")
 
 
-    private val _eventFlow = MutableEventFlow<MyPageUiState>()
+    private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     // TODO: 편집이 완료되었을 때 MyPageFragment View 에 갱신해야 함.
@@ -39,7 +39,7 @@ class MyPageViewModel @Inject constructor(
         getMyPageGroupUseCase.get().catch {
 
         }.collect {
-            _eventFlow.emit(MyPageUiState.LoadMember(it.groups))
+            _eventFlow.emit(MyPageEvent.LoadMember(it.groups))
         }
     }
 
@@ -48,28 +48,28 @@ class MyPageViewModel @Inject constructor(
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data
-                _eventFlow.emit(MyPageUiState.LoadBabies(babies.myBaby + babies.others))
+                _eventFlow.emit(MyPageEvent.LoadBabies(babies.myBaby + babies.others))
             }
             is Result.NetworkError -> {
-                _eventFlow.emit(MyPageUiState.Error(result.throwable))
+                _eventFlow.emit(MyPageEvent.Error(result.throwable))
             }
             else -> {
-                _eventFlow.emit(MyPageUiState.Error(Throwable("error")))
+                _eventFlow.emit(MyPageEvent.Error(Throwable("error")))
             }
         }
     }
 
     fun getMyInfo() = viewModelScope.launch {
         getMemberUseCase.getMeNoPref().map { it.toPresentation() }.collect {
-            _eventFlow.emit(MyPageUiState.LoadMyInfo(it))
+            _eventFlow.emit(MyPageEvent.LoadMyInfo(it))
         }
     }
 
     fun addGroup() = viewModelScope.launch {
-        _eventFlow.emit(MyPageUiState.AddGroup)
+        _eventFlow.emit(MyPageEvent.AddGroup)
     }
 
     fun onClickSetting() = viewModelScope.launch {
-        _eventFlow.emit(MyPageUiState.Setting)
+        _eventFlow.emit(MyPageEvent.Setting)
     }
 }

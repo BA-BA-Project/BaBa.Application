@@ -17,7 +17,7 @@ import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.event.EditMemberProfileEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageUiState
+import kids.baba.mobile.presentation.state.MyPageEvent
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
@@ -68,18 +68,18 @@ class MyPageFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect {
                 when (it) {
-                    is MyPageUiState.Idle -> {}
-                    is MyPageUiState.LoadMember -> {
+                    is MyPageEvent.Idle -> {}
+                    is MyPageEvent.LoadMember -> {
                         myPageGroupAdapter.submitList(it.data)
                     }
 
-                    is MyPageUiState.LoadBabies -> {
+                    is MyPageEvent.LoadBabies -> {
                         babyAdapter.submitList(it.data.map { baby ->
                             baby.toMember().toPresentation()
                         })
                     }
 
-                    is MyPageUiState.LoadMyInfo -> {
+                    is MyPageEvent.LoadMyInfo -> {
                         binding.tvMyStatusMessage.text = it.data.introduction
                         binding.tvMyName.text = it.data.name
                         binding.civMyProfile.circleBackgroundColor =
@@ -87,10 +87,10 @@ class MyPageFragment : Fragment() {
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
                     }
 
-                    is MyPageUiState.AddGroup -> {
+                    is MyPageEvent.AddGroup -> {
                         MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
                     }
-                    is MyPageUiState.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
+                    is MyPageEvent.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
                     else -> {}
                 }
             }

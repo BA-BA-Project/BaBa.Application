@@ -9,5 +9,5 @@ sealed class BabyDetailUiState {
 
     data class Success(val data: BabyProfileResponse) : BabyDetailUiState()
 
-    data class Error(val t: Throwable) : MyPageUiState()
+    data class Error(val t: Throwable) : MyPageEvent()
 }
