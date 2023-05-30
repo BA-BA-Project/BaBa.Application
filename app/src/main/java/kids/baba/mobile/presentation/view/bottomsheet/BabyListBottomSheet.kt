@@ -17,7 +17,10 @@ import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyListViewModel
 
 @AndroidEntryPoint
-class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDialogFragment() {
+class BabyListBottomSheet(
+    val itemClick: (BabyUiModel) -> Unit,
+    val moveBabyManagement: () -> Unit
+) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetBabyListBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -48,9 +51,13 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{ event ->
-                when(event) {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is BabyListEvent.ShowSnackBar -> showSnackBar(event.message)
+                    is BabyListEvent.MoveBabyManagement -> {
+                        dismiss()
+                        moveBabyManagement()
+                    }
                 }
             }
         }
@@ -68,10 +75,9 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
                 babiesAdapter.submitList(it)
             }
         }
-
     }
 
-    private fun showSnackBar(@StringRes message : Int){
+    private fun showSnackBar(@StringRes message: Int) {
         //TODO 바텀시트에 가려져 스낵바가 보이지 않음
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }

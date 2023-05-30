@@ -186,4 +186,8 @@ class GrowthAlbumViewModel @Inject constructor(
     fun showAlbumConfig() = viewModelScope.launch {
         _eventFlow.emit(GrowthAlbumEvent.ShowAlbumConfig)
     }
+
+    fun moveBabyManagement() = viewModelScope.launch{
+        _eventFlow.emit(GrowthAlbumEvent.MoveBabyManagement)
+    }
 }

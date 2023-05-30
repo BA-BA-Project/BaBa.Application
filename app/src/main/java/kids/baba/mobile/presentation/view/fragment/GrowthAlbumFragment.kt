@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.kizitonwose.calendar.core.WeekDay
@@ -101,6 +102,10 @@ class GrowthAlbumFragment : Fragment() {
                     is GrowthAlbumEvent.ShowBabyList -> showBabyList()
                     is GrowthAlbumEvent.ShowAlbumConfig -> showAlbumConfig()
                     is GrowthAlbumEvent.ShowAlbumDetail -> showAlbumDetailDialog()
+                    is GrowthAlbumEvent.MoveBabyManagement -> {
+                        val action = GrowthAlbumFragmentDirections.actionGrowthAlbumFragmentToMyPageFragment(true)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -155,9 +160,14 @@ class GrowthAlbumFragment : Fragment() {
             SELECTED_BABY_ID_KEY,
             viewModel.growthAlbumState.value.selectedBaby.babyId
         )
-        val bottomSheet = BabyListBottomSheet { baby ->
-            viewModel.selectBaby(baby, selectedDate)
-        }
+        val bottomSheet = BabyListBottomSheet(
+            itemClick = { baby ->
+                viewModel.selectBaby(baby, selectedDate)
+            },
+            moveBabyManagement = {
+                viewModel.moveBabyManagement()
+            }
+        )
         bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyListBottomSheet.TAG)
     }

@@ -56,7 +56,7 @@
             android:text="@string/management_babies"
             android:textAppearance="@style/BABA.TextStyle"
             android:textColor="@color/text_0"
-            android:onClick="@{}"
+            android:onClick="@{() -> viewModel.moveBabyManagement()}"
             app:icon="@drawable/ic_add"
             app:iconTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"

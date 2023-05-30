@@ -7,4 +7,5 @@ sealed class GrowthAlbumEvent{
     object ShowBabyList: GrowthAlbumEvent()
     object ShowAlbumConfig: GrowthAlbumEvent()
     object ShowAlbumDetail: GrowthAlbumEvent()
+    object MoveBabyManagement : GrowthAlbumEvent()
 }

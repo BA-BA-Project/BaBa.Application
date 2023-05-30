@@ -8,12 +8,20 @@
         android:id="@+id/growth_album_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
         android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_growthalbum" />
+        tools:layout="@layout/fragment_growthalbum" >
+        <action
+            android:id="@+id/action_growth_album_fragment_to_my_page_fragment"
+            app:destination="@id/my_page_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/my_page_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
         android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_mypage" />
+        tools:layout="@layout/fragment_mypage">
+        <argument
+            android:name="fromBabyList"
+            app:argType="boolean" />
+    </fragment>
     <fragment
         android:id="@+id/gathering_view_fragment"
         android:name="kids.baba.mobile.presentation.view.gatheringview.GatheringViewFragment"
