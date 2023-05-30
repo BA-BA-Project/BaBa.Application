@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:behavior_draggable="false">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_select_baby"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="20dp"
-        android:includeFontPadding="false"
-        android:text="@string/select_baby"
-        android:textAppearance="@style/BABA.TextStyle"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/rv_babies"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintVertical_chainStyle="packed" />
+    <data>
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.BabyListViewModel" />
+    </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_babies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/btn_management_babies"
-        app:layout_constraintEnd_toEndOf="@+id/tv_select_baby"
-        app:layout_constraintStart_toStartOf="@+id/tv_select_baby"
-        app:layout_constraintTop_toBottomOf="@+id/tv_select_baby"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_baby" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_draggable="false">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_management_babies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:includeFontPadding="false"
-        android:text="@string/management_babies"
-        android:textAppearance="@style/BABA.TextStyle"
-        android:textColor="@color/text_0"
-        app:icon="@drawable/ic_add"
-        app:iconTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_babies" />
+        <TextView
+            android:id="@+id/tv_select_baby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="20dp"
+            android:includeFontPadding="false"
+            android:text="@string/select_baby"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/rv_babies"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_babies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/btn_management_babies"
+            app:layout_constraintEnd_toEndOf="@+id/tv_select_baby"
+            app:layout_constraintStart_toStartOf="@+id/tv_select_baby"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_baby"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_baby" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_management_babies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:text="@string/management_babies"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textColor="@color/text_0"
+            android:onClick="@{}"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_babies" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
