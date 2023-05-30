@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,19 +30,15 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 ) : ViewModel() {
     val uiModel = MutableStateFlow(EditGroupBottomSheetUiModel())
     val groupName = MutableStateFlow(savedStateHandle["groupName"] ?: "")
-    var itemClick = {}
-    var dismiss: () -> Unit = {}
+    private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
 
-    private val _color = MutableStateFlow("")
+    private val _color = MutableStateFlow("#81E0D5")
     val color = _color.asStateFlow()
 
     private val nameViewState: MutableStateFlow<String> = MutableStateFlow("")
 
-    private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
-
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
 
     init {
         uiModel.value.permissionDesc = if (isFamily.value == true) "있음" else "없음"
@@ -58,16 +53,12 @@ class EditGroupBottomSheetViewModel @Inject constructor(
                 )) {
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
-                        itemClick()
-                        dismiss()
                     }
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
-                        dismiss()
                     }
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
-                        dismiss()
                     }
                 }
             }
@@ -77,7 +68,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     val goToInviteMember = ComposableAddButtonViewData(
         onAddButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(EditGroupSheetEvent.GoToAddMemberPage)
+                _eventFlow.emit(EditGroupSheetEvent.GoToAddMemberPage(groupName.value))
             }
         }
     )
@@ -90,16 +81,12 @@ class EditGroupBottomSheetViewModel @Inject constructor(
                 )) {
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
-                        Log.e("EditGroupBottomSheetViewModel", "delete success")
-                        dismiss()
                     }
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
-                        dismiss()
                     }
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
-                        dismiss()
                     }
                 }
             }

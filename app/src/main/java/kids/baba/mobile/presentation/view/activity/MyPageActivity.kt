@@ -21,6 +21,7 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_GROUP_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
@@ -50,10 +51,10 @@ class MyPageActivity : AppCompatActivity() {
         when (intent.getStringExtra(INTENT_PAGE_NAME)) {
             ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
             INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
-            INVITE_MEMBER_PAGE -> setNavStart(R.id.invite_member_fragment)
+            INVITE_MEMBER_PAGE -> GROUP_NAME.setNavStartWithString(R.id.invite_member_fragment)
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
-            BABY_DETAIL_PAGE -> setNavStartWithArg(R.id.baby_detail_fragment, BABY_DETAIL_INFO)
+            BABY_DETAIL_PAGE -> BABY_DETAIL_INFO.setNavStartWithMember(R.id.baby_detail_fragment)
         }
     }
 
@@ -83,15 +84,24 @@ class MyPageActivity : AppCompatActivity() {
         navController.graph = navGraph
     }
 
-    private fun setNavStartWithArg(fragment: Int, argumentName: String) {
+    private fun String.setNavStartWithMember(fragment: Int) {
         val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(argumentName, MemberUiModel::class.java)
+            intent.getParcelableExtra(this, MemberUiModel::class.java)
         } else {
-            intent.getParcelableExtra(argumentName)
+            intent.getParcelableExtra(this)
         }
 
         key?.let {
-            val bundle = bundleOf(argumentName to it)
+            val bundle = bundleOf(this to it)
+            navGraph.setStartDestination(fragment)
+            navController.setGraph(navGraph, bundle)
+        }
+    }
+
+    private fun String.setNavStartWithString(fragment: Int) {
+        val key = intent.getStringExtra(this)
+        key?.let {
+            val bundle = bundleOf(this to it)
             navGraph.setStartDestination(fragment)
             navController.setGraph(navGraph, bundle)
         }
@@ -119,7 +129,14 @@ class MyPageActivity : AppCompatActivity() {
                 putExtra(argumentName, memberUiModel)
             }
             context.startActivity(intent)
+        }
 
+        fun startActivityWithGroupName(context: Context, pageName: String, argumentName: String, groupName: String) {
+            val intent = Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_PAGE_NAME, pageName)
+                putExtra(argumentName, groupName)
+            }
+            context.startActivity(intent)
         }
     }
 }

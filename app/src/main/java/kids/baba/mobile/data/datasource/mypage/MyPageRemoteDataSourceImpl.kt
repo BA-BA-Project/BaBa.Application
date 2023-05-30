@@ -181,4 +181,21 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             result
         }
     }
+
+    override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.makeInviteCode(relationInfo = relationInfo)
+            },
+            mapping = {
+                it
+            }
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
+    }
+
 }

@@ -31,4 +31,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse>
 
+    suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode>
+
+
 }

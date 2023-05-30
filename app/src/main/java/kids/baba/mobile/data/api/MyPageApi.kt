@@ -95,4 +95,12 @@ interface MyPageApi {
     @GET("baby/invitation")
     suspend fun getInvitationInfo(
         @Query("code") inviteCode: String): Response<BabiesInfoResponse>
+
+    @POST("baby/invite-code")
+    suspend fun makeInviteCode(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Body relationInfo: RelationInfo
+    ): Response<InviteCode>
+
+
 }
