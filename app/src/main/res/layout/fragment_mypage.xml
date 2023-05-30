@@ -71,6 +71,7 @@
 
                     <ImageView
                         android:id="@+id/iv_setting"
+                        android:onClick="@{() -> viewmodel.onClickSetting()}"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
                         android:layout_marginTop="55dp"
@@ -176,6 +177,7 @@
                         android:text="@{viewmodel.groupAddButton}"
                         android:textColor="#B4B4B4"
                         android:textSize="18sp"
+                        android:onClick="@{() -> viewmodel.addGroup()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

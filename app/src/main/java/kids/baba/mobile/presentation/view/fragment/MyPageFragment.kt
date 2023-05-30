@@ -31,6 +31,7 @@ class MyPageFragment : Fragment() {
     private var _binding: FragmentMypageBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+
     val viewModel: MyPageViewModel by viewModels()
     private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
     private lateinit var babyAdapter: MemberAdapter
@@ -65,7 +66,7 @@ class MyPageFragment : Fragment() {
     private fun collectState() {
         initializeRecyclerView()
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.uiState.collect {
+            viewModel.eventFlow.collect {
                 when (it) {
                     is MyPageUiState.Idle -> {}
                     is MyPageUiState.LoadMember -> {
@@ -86,6 +87,10 @@ class MyPageFragment : Fragment() {
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
                     }
 
+                    is MyPageUiState.AddGroup -> {
+                        MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
+                    }
+                    is MyPageUiState.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
                     else -> {}
                 }
             }
@@ -116,15 +121,9 @@ class MyPageFragment : Fragment() {
     private fun initView() {
         val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.tvKidsTitle.text = if (title != "") title else "아이들"
 
-        binding.tvAddGroup.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
-        }
-
-        binding.ivSetting.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
-        }
     }
 
     private fun initializeRecyclerView() {
@@ -166,20 +165,11 @@ class MyPageFragment : Fragment() {
 
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
-            val bundle = Bundle()
             val bottomSheet = BabyEditBottomSheet()
-
-//            val bottomSheet = BabyEditBottomSheet {
-//                EncryptedPrefs.putString("babyGroupTitle", it)
-//                binding.tvKidsTitle.text = it
-//            }
-            bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
         binding.ivProfileEditPen.setOnClickListener {
-            val bundle = Bundle()
             memberEditProfileBottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel)
-            memberEditProfileBottomSheet.arguments = bundle
             memberEditProfileBottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
     }

@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.event.BabyDetailEvent
 import kids.baba.mobile.presentation.event.BabyEditEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
@@ -47,44 +48,57 @@ class BabyDetailFragment : Fragment() {
     }
 
     private fun initView() {
-        binding.ivBack.setOnClickListener {
-            requireActivity().finish()
-        }
-        viewModel.baby.value?.let {
-            viewModel.uiModel.value.babyName = it.name
-            binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
-            binding.civMyProfile.circleBackgroundColor =
-                Color.parseColor(it.userIconUiModel.iconColor)
-            viewModel.load(it.memberId)
-        }
+
+//        viewModel.baby.value?.let {
+//            viewModel.uiModel.value.babyName = it.name
+//            binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
+//            binding.civMyProfile.circleBackgroundColor =
+//                Color.parseColor(it.userIconUiModel.iconColor)
+//            viewModel.load(it.memberId)
+//        }
     }
 
     private fun collectState() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it) {
-                    is BabyDetailUiState.Idle -> {}
-                    is BabyDetailUiState.Success -> {
-                        binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
-                        binding.tvMyStatusMessage.text = it.data.birthday
-                        familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
-                        binding.btnDeleteBaby.setOnClickListener {
-                            Log.e("delete","${viewModel.baby.value?.memberId}")
-                            viewModel.delete(viewModel.baby.value?.memberId ?: "")
-                            findNavController().navigateUp()
-                        }
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is BabyDetailEvent.SuccessBabyDetail -> {
+                        Log.e("baby", "${viewModel.baby.value}")
+                        familyAdapter.submitList(event.baby.familyGroup.members.map { member ->
+                            member.toMemberUiModel()
+                        })
                     }
-
-                    else -> {}
+                    is BabyDetailEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                    is BabyDetailEvent.BackButtonClicked -> requireActivity().finish()
                 }
             }
         }
+//        viewLifecycleOwner.repeatOnStarted {
+//            viewModel.uiState.collect {
+//                when (it) {
+//                    is BabyDetailUiState.Idle -> {}
+//                    is BabyDetailUiState.Success -> {
+//                        binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
+//                        binding.tvMyStatusMessage.text = it.data.birthday
+//                        familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
+//                        binding.btnDeleteBaby.setOnClickListener {
+//                            Log.e("delete","${viewModel.baby.value?.memberId}")
+//                            viewModel.delete(viewModel.baby.value?.memberId ?: "")
+//                            findNavController().navigateUp()
+//                        }
+//                    }
+//
+//                    else -> {}
+//                }
+//            }
+//        }
         viewLifecycleOwner.repeatOnStarted {
-            babyEditProfileBottomSheetViewModel.eventFlow.collect{event ->
+            babyEditProfileBottomSheetViewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyEditEvent.SuccessBabyEdit -> {
                         babyEditProfileBottomSheet.dismiss()
-                        // TODO: 화면 초기화 해주어야 함.
                         viewModel.refresh(event.babyName)
                     }
                     is BabyEditEvent.ShowSnackBar -> {
@@ -111,13 +125,13 @@ class BabyDetailFragment : Fragment() {
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet{}
+            val bottomSheet = GroupEditBottomSheet {}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
         binding.familyView.ivEditButton.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet{}
+            val bottomSheet = GroupEditBottomSheet {}
             bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }

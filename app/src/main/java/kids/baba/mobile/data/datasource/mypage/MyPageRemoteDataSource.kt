@@ -7,7 +7,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun loadMyPageGroup(): Flow<GroupResponse>
 
-    suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse>
+    suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse>
 
     suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit>
 

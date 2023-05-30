@@ -10,7 +10,7 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
     MyPageRepository {
     override suspend fun loadMyPageGroup(): Flow<GroupResponse> = dataSource.loadMyPageGroup()
 
-    override suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse> =
+    override suspend fun loadBabyProfile(babyId: String) =
         dataSource.loadBabyProfile(babyId = babyId)
 
     override suspend fun addGroup(myPageGroup: MyPageGroup) =

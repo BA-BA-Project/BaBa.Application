@@ -35,6 +35,7 @@ class AddGroupFragment : Fragment() {
     ): View {
         _binding = FragmentAddGroupBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        Log.e("AddGroupFragment", "onCreateView")
         return binding.root
     }
 

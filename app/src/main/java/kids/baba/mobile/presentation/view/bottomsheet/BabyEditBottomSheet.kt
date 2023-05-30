@@ -32,7 +32,6 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
     private fun bindViewModel() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
 
         collectEvent()
 

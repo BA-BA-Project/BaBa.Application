@@ -64,6 +64,7 @@
             android:layout_height="26dp"
             android:layout_marginTop="54dp"
             android:src="@drawable/ic_back"
+            android:onClick="@{() -> viewModel.onBackClick()}"
             app:layout_constraintStart_toStartOf="@id/civ_my_profile"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -16,4 +16,8 @@ sealed class MyPageUiState {
     data class LoadMyInfo(val data: MemberUiModel) : MyPageUiState()
 
     data class Error(val t: Throwable) : MyPageUiState()
+
+    object AddGroup : MyPageUiState()
+
+    object Setting : MyPageUiState()
 }

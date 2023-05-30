@@ -100,6 +100,7 @@ class MyPageActivity : AppCompatActivity() {
 
     companion object {
         lateinit var instance: MyPageActivity
+
         fun startActivity(context: Context, pageName: String) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)
