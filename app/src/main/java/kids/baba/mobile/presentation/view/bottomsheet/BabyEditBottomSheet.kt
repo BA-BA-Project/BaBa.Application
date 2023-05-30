@@ -10,12 +10,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditBabyBinding
 import kids.baba.mobile.presentation.event.BabyEditSheetEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.view.FunctionHolder
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
@@ -40,28 +38,14 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
             itemClick(name)
             dismiss()
         }
-        binding.addBabyView.ivAddButton.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
-        }
-
-        binding.inviteView.ivAddButton.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), INVITE_WITH_CODE_PAGE)
-        }
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is BabyEditSheetEvent.GoToAddBabyPage -> MyPageActivity.startActivity(
-                        requireContext(),
-                        "addBaby"
-                    )
-
-                    is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(
-                        requireContext(),
-                        "invite"
-                    )
+                    is BabyEditSheetEvent.GoToAddBabyPage ->  MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
+                    is BabyEditSheetEvent.GoToInputInviteCodePage -> MyPageActivity.startActivity(requireContext(), INVITE_WITH_CODE_PAGE)
                 }
             }
         }
