@@ -18,7 +18,7 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVI
 import kids.baba.mobile.presentation.viewmodel.BabyEditBottomSheetViewModel
 
 @AndroidEntryPoint
-class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDialogFragment() {
+class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetEditBabyBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -32,9 +32,6 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
     private fun bindViewModel() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
-        collectEvent()
-
     }
 
     override fun onDestroyView() {
@@ -56,6 +53,7 @@ class BabyEditBottomSheet(/*val itemClick: (String) -> Unit*/) : BottomSheetDial
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyGroupEditEvent.SuccessBabyGroupEdit -> {
+                        itemClick(event.babyGroupTitle)
                         dismiss()
                     }
                     is BabyGroupEditEvent.GoToAddBaby -> MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)

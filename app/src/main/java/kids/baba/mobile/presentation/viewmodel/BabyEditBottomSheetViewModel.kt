@@ -18,7 +18,7 @@ import javax.inject.Inject
 class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     val uiModel = MutableStateFlow(BabyEditBottomSheetUiModel())
 
-    private val nameViewLiveData: MutableStateFlow/*MutableLiveData*/<String> = /*MutableLiveData*/
+    private val nameViewLiveData: MutableStateFlow<String> =
         MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
 
     private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
@@ -28,9 +28,8 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
         text = nameViewLiveData,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
-                // todo: EditText 가 비어있으면 입력을 하지 않으면 편집 버튼 누르지 못하도록.
+                _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit(nameViewLiveData.value))
                 EncryptedPrefs.putString("babyGroupTitle", nameViewLiveData.value)
-                _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit)
 
             }
         }

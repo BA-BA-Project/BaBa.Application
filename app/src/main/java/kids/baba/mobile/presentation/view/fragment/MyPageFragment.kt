@@ -140,7 +140,11 @@ class MyPageFragment : Fragment() {
 
     private fun setBottomSheet() {
         binding.ivEditKids.setOnClickListener {
-            val bottomSheet = BabyEditBottomSheet()
+            val bottomSheet = BabyEditBottomSheet(
+                itemClick = {
+                    viewModel.refreshBabyGroupTitle(it)
+                }
+            )
             bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
         binding.ivProfileEditPen.setOnClickListener {

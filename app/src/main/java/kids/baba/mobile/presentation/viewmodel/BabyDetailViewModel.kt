@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,7 +46,6 @@ class BabyDetailViewModel @Inject constructor(
 
         when (val result = getBabyProfileUseCase.get(babyId)) {
             is Result.Success -> {
-                Log.e("BabyDetailViewModel", "load: ${result.data}")
                 _eventFlow.emit(BabyDetailEvent.SuccessBabyDetail(result.data))
                 uiModel.update {
                     it.copy(

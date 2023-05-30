@@ -82,7 +82,6 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
         return if (result is Result.Failure) {
-            Log.e("editBabyName", "editBabyName: ${result.message}")
             Result.Failure(result.code, result.message, Exception(result.message))
         } else {
             result

@@ -26,9 +26,6 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase
 ) : ViewModel() {
 
-    var itemClick = {}
-    var dismiss: () -> Unit = {}
-
     private val _eventFlow = MutableEventFlow<EditMemberProfileEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
@@ -50,30 +47,26 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     val composableIntroductionViewData = ComposableInputViewData(
         text = introductionViewState,
         onEditButtonClickEventListener = {
-                viewModelScope.launch {
-                    when (editProfileUseCase.edit(
-                        profile = Profile(
-                            name = nameViewState.value,
-                            introduction = introductionViewState.value,
-                            iconName = icon.value,
-                            iconColor = color.value
-                        )
-                    )) {
-                        is Result.Success -> {
-                            _eventFlow.emit(EditMemberProfileEvent.SuccessEditMemberProfile)
-                            itemClick()
-                            dismiss()
-                        }
-                        is Result.NetworkError -> {
-                            _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
-                            dismiss()
-                        }
-                        else -> {
-                            _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.unknown_error_msg))
-                            dismiss()
-                        }
+            viewModelScope.launch {
+                when (editProfileUseCase.edit(
+                    profile = Profile(
+                        name = nameViewState.value,
+                        introduction = introductionViewState.value,
+                        iconName = icon.value,
+                        iconColor = color.value
+                    )
+                )) {
+                    is Result.Success -> {
+                        _eventFlow.emit(EditMemberProfileEvent.SuccessEditMemberProfile)
+                    }
+                    is Result.NetworkError -> {
+                        _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
+                    }
+                    else -> {
+                        _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
                 }
+            }
         }
     )
 

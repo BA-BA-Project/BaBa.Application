@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,22 +8,18 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
-import kids.baba.mobile.presentation.event.BabyEditEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
-import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
-import kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
@@ -35,35 +30,21 @@ class BabyDetailFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: BabyDetailViewModel by viewModels()
-    private val babyEditProfileBottomSheetViewModel: BabyEditProfileBottomSheetViewModel by viewModels()
 
-    private lateinit var babyEditProfileBottomSheet: BabyEditProfileBottomSheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeRecyclerView()
         setBottomSheet()
-        initView()
         collectState()
     }
 
-    private fun initView() {
-
-//        viewModel.baby.value?.let {
-//            viewModel.uiModel.value.babyName = it.name
-//            binding.civMyProfile.setImageResource(it.userIconUiModel.userProfileIconUiModel.iconRes)
-//            binding.civMyProfile.circleBackgroundColor =
-//                Color.parseColor(it.userIconUiModel.iconColor)
-//            viewModel.load(it.memberId)
-//        }
-    }
 
     private fun collectState() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyDetailEvent.SuccessBabyDetail -> {
-                        Log.e("baby", "${viewModel.baby.value}")
                         familyAdapter.submitList(event.baby.familyGroup.members.map { member ->
                             member.toMemberUiModel()
                         })
@@ -72,39 +53,6 @@ class BabyDetailFragment : Fragment() {
                         showSnackBar(event.message)
                     }
                     is BabyDetailEvent.BackButtonClicked -> requireActivity().finish()
-                }
-            }
-        }
-//        viewLifecycleOwner.repeatOnStarted {
-//            viewModel.uiState.collect {
-//                when (it) {
-//                    is BabyDetailUiState.Idle -> {}
-//                    is BabyDetailUiState.Success -> {
-//                        binding.familyView.tvGroupTitle.text = it.data.familyGroup.groupName
-//                        binding.tvMyStatusMessage.text = it.data.birthday
-//                        familyAdapter.submitList(it.data.familyGroup.members.map { member -> member.toMemberUiModel() })
-//                        binding.btnDeleteBaby.setOnClickListener {
-//                            Log.e("delete","${viewModel.baby.value?.memberId}")
-//                            viewModel.delete(viewModel.baby.value?.memberId ?: "")
-//                            findNavController().navigateUp()
-//                        }
-//                    }
-//
-//                    else -> {}
-//                }
-//            }
-//        }
-        viewLifecycleOwner.repeatOnStarted {
-            babyEditProfileBottomSheetViewModel.eventFlow.collect { event ->
-                when (event) {
-                    is BabyEditEvent.SuccessBabyEdit -> {
-                        babyEditProfileBottomSheet.dismiss()
-                        viewModel.refresh(event.babyName)
-                    }
-                    is BabyEditEvent.ShowSnackBar -> {
-                        babyEditProfileBottomSheet.dismiss()
-                        showSnackBar(event.message)
-                    }
                 }
             }
         }
@@ -118,9 +66,13 @@ class BabyDetailFragment : Fragment() {
 
     private fun setBottomSheet() {
         binding.ivProfileEditPen.setOnClickListener {
-            Log.e("baby", "${viewModel.baby.value}")
-            babyEditProfileBottomSheet = BabyEditProfileBottomSheet(babyEditProfileBottomSheetViewModel)
-            babyEditProfileBottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
+            val bundle = Bundle()
+            bundle.putParcelable(BABY_DETAIL_INFO, viewModel.baby.value)
+            val bottomSheet = BabyEditProfileBottomSheet(itemClick = {
+                viewModel.refresh(it)
+            })
+            bottomSheet.arguments = bundle
+            bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
 
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
@@ -138,9 +90,7 @@ class BabyDetailFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBabydetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel

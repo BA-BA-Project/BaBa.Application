@@ -15,7 +15,6 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +30,6 @@ class MyPageViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    // TODO: 편집이 완료되었을 때 MyPageFragment View 에 갱신해야 함.
     private val _babyGroupTitle = MutableStateFlow(
         EncryptedPrefs.getString("babyGroupTitle").ifEmpty {
             "아이들"
@@ -54,7 +52,6 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun loadBabies() = viewModelScope.launch {
-
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data
@@ -81,5 +78,9 @@ class MyPageViewModel @Inject constructor(
 
     fun onClickSetting() = viewModelScope.launch {
         _eventFlow.emit(MyPageEvent.Setting)
+    }
+
+    fun refreshBabyGroupTitle(babyGroupTitle: String) = viewModelScope.launch {
+        _babyGroupTitle.value = babyGroupTitle
     }
 }

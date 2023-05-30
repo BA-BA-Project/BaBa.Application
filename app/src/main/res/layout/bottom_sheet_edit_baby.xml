@@ -132,15 +132,15 @@
         <include
             android:id="@+id/add_baby_view"
             layout="@layout/composable_addbutton_view"
-            bind:description="@{viewModel.uiModel.addBabyDescription}"
             bind:addButtonViewData="@{viewModel.goToAddBaby}"
+            bind:description="@{viewModel.uiModel.addBabyDescription}"
             bind:title="@{viewModel.uiModel.addBabyTitle}" />
 
         <include
             android:id="@+id/invite_view"
             layout="@layout/composable_addbutton_view"
-            bind:description="@{viewModel.uiModel.inputInviteCodeDescription}"
             bind:addButtonViewData="@{viewModel.goToInputInviteCode}"
+            bind:description="@{viewModel.uiModel.inputInviteCodeDescription}"
             bind:title="@{viewModel.uiModel.inputInviteCodeTitle}" />
 
         <View

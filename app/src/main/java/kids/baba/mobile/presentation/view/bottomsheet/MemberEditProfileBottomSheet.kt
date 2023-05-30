@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditProfileBinding
-import kids.baba.mobile.domain.model.Profile
 import kids.baba.mobile.presentation.adapter.ColorAdapter
 import kids.baba.mobile.presentation.adapter.IconAdapter
 import kids.baba.mobile.presentation.event.EditMemberProfileEvent
@@ -21,7 +19,6 @@ import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.model.UserIconUiModel
 import kids.baba.mobile.presentation.model.UserProfileIconUiModel
 import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MemberEditProfileBottomSheet(
@@ -92,16 +89,14 @@ class MemberEditProfileBottomSheet(
     private fun bindViewModel() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.dismiss = { dismiss() }
-        viewModel.itemClick = { itemClick() }
     }
 
-    private fun collectEvent(){
+    private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event ->
+            viewModel.eventFlow.collect { event ->
                 when (event) {
                     is EditMemberProfileEvent.SuccessEditMemberProfile -> {
-                        viewModel.itemClick()
+                        itemClick()
                         dismiss()
                     }
                     is EditMemberProfileEvent.ShowSnackBar -> {
