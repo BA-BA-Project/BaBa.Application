@@ -35,11 +35,9 @@ class BabyEditProfileBottomSheet : BottomSheetDialogFragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyEditEvent.SuccessBabyEdit -> {
-                        Log.e("BabyEditProfileBottomSheet", "SuccessBabyEdit")
                         dismiss()
                     }
                     is BabyEditEvent.ShowSnackBar -> {
-                        Log.e("BabyEditProfileBottomSheet", "ShowSnackBar")
                         dismiss()
                         showSnackBar(event.message)
                     }

@@ -39,6 +39,20 @@ class BabyDetailFragment : Fragment() {
         setBottomSheet()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.e("BabyDetailFragment","onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("BabyDetailFragment","onPause")
+    }
+    override fun onStop() {
+        super.onStop()
+        Log.e("BabyDetailFragment","onStop")
+    }
+
     private fun initView() {
         binding.ivBack.setOnClickListener {
             requireActivity().finish()

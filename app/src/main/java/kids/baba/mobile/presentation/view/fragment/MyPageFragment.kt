@@ -36,6 +36,8 @@ class MyPageFragment : Fragment() {
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
+    lateinit var memberEditProfileBottomSheet: MemberEditProfileBottomSheet
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,8 +95,10 @@ class MyPageFragment : Fragment() {
             editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
                 when (event) {
                     is EditMemberProfileEvent.SuccessEditMemberProfile -> {
+                        memberEditProfileBottomSheet.dismiss()
                         viewModel.getMyInfo()
                         viewModel.loadGroups()
+
                     }
                     is EditMemberProfileEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
@@ -174,9 +178,9 @@ class MyPageFragment : Fragment() {
         }
         binding.ivProfileEditPen.setOnClickListener {
             val bundle = Bundle()
-            val bottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel)
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+            memberEditProfileBottomSheet = MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel)
+            memberEditProfileBottomSheet.arguments = bundle
+            memberEditProfileBottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
         }
     }
 
