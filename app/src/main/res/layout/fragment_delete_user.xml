@@ -24,19 +24,8 @@
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
                 bind:title="@{viewmodel.uiModel.topAppBarTitle}"
-
                 />
 
-            <include
-                android:id="@+id/banner_view"
-                layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.uiModel.bannerDesc}"
-                bind:title="@{viewmodel.uiModel.bannerTitle}" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#EDEDED" />
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -50,6 +39,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <include
+                    android:id="@+id/banner_view"
+                    layout="@layout/composable_banner_view"
+                    bind:description="@{viewmodel.uiModel.bannerDesc}"
+                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
 
                 <include
                     android:id="@+id/for_data_delete"

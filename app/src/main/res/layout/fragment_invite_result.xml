@@ -24,17 +24,6 @@
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
                 bind:title="@{viewModel.uiModel.addBabyTitle}" />
-
-            <include
-                android:id="@+id/banner_view"
-                layout="@layout/composable_banner_view"
-                bind:description="@{viewModel.uiModel.addBabyBannerDesc}"
-                bind:title="@{viewModel.uiModel.addBabyBannerTitle}" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#EDEDED" />
         </LinearLayout>
 
 
@@ -49,6 +38,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <include
+                    android:id="@+id/banner_view"
+                    layout="@layout/composable_banner_view"
+                    bind:description="@{viewModel.uiModel.addBabyBannerDesc}"
+                    bind:title="@{viewModel.uiModel.addBabyBannerTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
 
                 <include
                     android:id="@+id/name_view"

@@ -25,12 +25,6 @@
                 layout="@layout/composable_top_layout"
                 bind:title="@{viewmodel.uiModel.title}" />
 
-            <include
-                android:id="@+id/banner_view"
-                layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.uiModel.bannerDescription}"
-                bind:title="@{viewmodel.uiModel.bannerTitle}" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -50,6 +44,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <include
+                    android:id="@+id/banner_view"
+                    layout="@layout/composable_banner_view"
+                    bind:description="@{viewmodel.uiModel.bannerDescription}"
+                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EDEDED" />
 
                 <include
                     android:id="@+id/name_view"
