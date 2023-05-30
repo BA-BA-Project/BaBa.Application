@@ -114,7 +114,7 @@ class AlbumDetailDialog(
 
 
     private fun setCommentRecyclerView() {
-        binding.tvSend.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             viewModel.addComment {
                 binding.rvAlbumComment.apply {
                     postDelayed({ smoothScrollToPosition(commentAdapter.itemCount - 1) }, 500)

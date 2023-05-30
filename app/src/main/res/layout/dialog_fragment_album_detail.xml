@@ -232,24 +232,25 @@
                     android:text="@={viewModel.comment}"
                     android:textColorHint="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
-                    app:layout_constraintEnd_toStartOf="@id/tv_send"
+                    app:layout_constraintEnd_toStartOf="@id/btn_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
                     app:layout_constraintTop_toTopOf="@id/civ_my_icon"/>
 
-                <TextView
-                    android:id="@+id/tv_send"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_send"
+                    style="@style/Baba.SendBtnStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:paddingHorizontal="10dp"
+                    android:enabled="@{!viewModel.comment.empty}"
                     android:text="@string/send"
+                    android:textColor="@{viewModel.comment.empty ? @color/text_3 : @color/baba_main}"
                     android:textAppearance="@style/BABA.TextStyle.Button"
-                    android:textColor="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toEndOf="@id/et_my_comment"
-                    app:layout_constraintTop_toTopOf="@id/et_my_comment" />
+                    app:layout_constraintTop_toTopOf="@id/et_my_comment"
+                    tools:enabled="false"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

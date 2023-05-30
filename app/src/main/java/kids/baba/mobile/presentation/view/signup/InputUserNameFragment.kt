@@ -45,9 +45,9 @@ class InputUserNameFragment : Fragment() {
         focusEditText()
 
         binding.apply {
-            etTextInput.setOnEditorActionListener(getEditorActionListener(tvSend))
+            etTextInput.setOnEditorActionListener(getEditorActionListener(btnSend))
 
-            tvSend.setOnClickListener {
+            btnSend.setOnClickListener {
                 when (val nowState = createProfileViewModel.signUpUiState.value) {
                     is CreateProfileUiState.InputName -> {
                         createProfileViewModel.setUserName(

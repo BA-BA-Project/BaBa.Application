@@ -131,7 +131,7 @@ class AlbumDetailViewModel @Inject constructor(
                 }
 
                 is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
-                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_add_comment_failed))
             }
         }
 

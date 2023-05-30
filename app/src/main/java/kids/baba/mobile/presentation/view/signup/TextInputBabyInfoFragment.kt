@@ -45,9 +45,9 @@ class TextInputBabyInfoFragment : Fragment() {
         focusEditText()
 
         binding.apply {
-            etTextInput.setOnEditorActionListener(getEditorActionListener(tvSend))
+            etTextInput.setOnEditorActionListener(getEditorActionListener(btnSend))
 
-            tvSend.setOnClickListener {
+            btnSend.setOnClickListener {
                 when(val uiState = inputBabiesInfoViewModel.uiState.value) {
                     is InputBabiesInfoUiState.InputBabyName -> {
                         val babyName = etTextInput.text.toString()
