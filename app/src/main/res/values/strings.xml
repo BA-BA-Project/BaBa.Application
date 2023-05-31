@@ -16,6 +16,7 @@
     <string name="baba_login_failed">로그인에 실패했습니다. 다시 한번 확인해 주세요</string>
     <string name="baba_sign_up_failed">회원가입에 실패했습니다.</string>
     <string name="baba_network_failed">네트워크 연결을 확인해주세요</string>
+    <string name="baba_get_member_failed">사용자 정보를 가져오는 데에 실패했습니다.</string>
     <string name="baba_name">바바</string>
     <string name="create_profile">프로필 생성</string>
     <string name="modify">수정</string>
@@ -48,7 +49,6 @@
     <string name="android_permission_camera_denied_description">이 앱은 카메라에 대한 접근 권한이 필요합니다. 설정 - 애플리케이션 정보 에서 권한을 동의하시겠습니까?</string>
     <string name="android_permission_denied_title">Permission Denied</string>
     <string name="open_setting">Open Setting</string>
-    <string name="cancel">Cancel</string>
     <string name="crop_image">사진 자르기</string>
     <string name="complete">완료</string>
 
@@ -114,6 +114,7 @@
     <string name="saturday"> 토</string>
     <string name="sunday"> 일</string>
     <string name="baby_info_error">아이의 정보가 잘못 입력되었습니다. 다시 한번 입력해 주세요</string>
+    <string name="invite_code_error">초대코드가 올바르지 않습니다. 다시 확인해 주세요</string>
     <string name="input_more_baby_info">또 기록하고 싶은 아이가 있나요?</string>
     <string name="relation_mom">엄마</string>
     <string name="relation_dad">아빠</string>
@@ -171,6 +172,8 @@
     <string name="baba_get_album_failed">앨범을 불러오는 것에 실패했습니다.</string>
     <string name="baba_get_babies_failed">아기 리스트를 불러오는 것에 실패했습니다.</string>
     <string name="baba_like_album_failed">좋아요 요청이 실패했습니다.</string>
+    <string name="baba_album_delete_failed">앨범 삭제에 실패했습니다.</string>
+    <string name="baba_photo_download_failed">사진 다운에 실패했습니다.</string>
     <string name="baba_add_comment_failed">댓글추가 요청이 실패했습니다.</string>
     <string name="baba_delete_comment_failed">댓글삭제 요청이 실패했습니다.</string>
     <string name="group_groupname">[%s]그룹과 소식을 공유할 수 있어요</string>
@@ -190,6 +193,16 @@
     <string name="unknown_error_msg">알 수 없는 이유로 실패</string>
     <string name="unvalid_invite_code">유효하지 않은 초대코드입니다.</string>
     <string name="family_setting">가족 설정</string>
+    <string name="save_photo">사진 저장하기</string>
+    <string name="delete_album">게시물 삭제</string>
+    <string name="report_album">이미지 신고하기</string>
+    <string name="delete_album_answer">게시물을 삭제하시겠습니까?\n사진과 댓글, 좋아요가 삭제됩니다</string>
+    <string name="report_album_answer">이미지를 신고하시겠습니까?</string>
+    <string name="report">신고하기</string>
+    <string name="delete">삭제하기</string>
+    <string name="cancel">취소</string>
+    <string name="save_photo_noti_title">다운로드 완료</string>
+    <string name="save_photo_noti_body">사진이 저장 되었습니다.</string>
 
     <string name="comment_delete">댓글 삭제</string>
 </resources>

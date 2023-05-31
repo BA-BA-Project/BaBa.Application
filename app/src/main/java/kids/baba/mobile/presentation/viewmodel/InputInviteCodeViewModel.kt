@@ -63,12 +63,4 @@ class InputInviteCodeViewModel @Inject constructor(
 
         }
     }
-
-
-    fun add(inviteCode: String) = viewModelScope.launch {
-        addOneBabyWithInviteCodeUseCase.add(inviteCode = InviteCode(inviteCode = inviteCode))
-        getBabiesInfoByInviteCodeUseCase.invoke(inviteCode).onSuccess {
-            uiState.value = InputCodeState.LoadInfo(it)
-        }
-    }
 }

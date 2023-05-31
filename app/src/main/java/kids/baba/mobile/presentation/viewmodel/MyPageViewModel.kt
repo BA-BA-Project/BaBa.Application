@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
@@ -15,7 +16,6 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,9 +67,22 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun getMyInfo() = viewModelScope.launch {
-        getMemberUseCase.getMeNoPref().map { it.toPresentation() }.collect {
-            _eventFlow.emit(MyPageEvent.LoadMyInfo(it))
-
+        when (val result = getMemberUseCase.getMeNoPref()) {
+            is Result.Success -> {
+                _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
+//                _uiState.value = MyPageUiState.LoadMyInfo(result.data.toPresentation())
+            }
+            is Result.NetworkError -> {
+                _eventFlow.emit(MyPageEvent.Error(result.throwable))
+//                _uiState.value = MyPageUiState.Error(result.throwable)
+            }
+            else -> {
+                val throwable = result.getThrowableOrNull()
+                if (throwable != null) {
+                    _eventFlow.emit(MyPageEvent.Error(throwable))
+//                    _uiState.value = MyPageUiState.Error(throwable)
+                }
+            }
         }
     }
 

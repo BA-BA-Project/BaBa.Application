@@ -70,10 +70,18 @@ class AlbumDetailViewModel @Inject constructor(
     val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
     val albumDateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd")
     init {
-        viewModelScope.launch {
-            _member.value = getMemberUseCase.getMe()
-        }
+        initModel()
         getAlbumDetailData()
+    }
+
+    private fun initModel() {
+        viewModelScope.launch {
+            when(val result = getMemberUseCase.getMe()){
+                is Result.Success -> _member.value = result.data.toPresentation()
+                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_get_member_failed))
+            }
+        }
     }
 
     private fun getAlbumDetailData() = viewModelScope.launch {

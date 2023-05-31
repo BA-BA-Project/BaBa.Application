@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
@@ -18,7 +19,7 @@ class IntroViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<IntroEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
+    suspend fun checkLogin() = getMemberUseCase.getMe() is Result.Success
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {

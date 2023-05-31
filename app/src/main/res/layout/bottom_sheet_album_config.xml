@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="kids.baba.mobile.presentation.viewmodel.AlbumConfigViewModel" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save_photo"
+            style="@style/BABA.AlbumConfigBtnStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/save_photo"
+            android:onClick="@{() -> viewModel.savePhoto()}"
+            android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
+            android:visibility="@{viewModel.album.myBaby ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_delete_album"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_delete_album"
+            style="@style/BABA.AlbumConfigBtnStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/delete_album"
+            android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
+            android:onClick="@{() -> viewModel.checkDeleteAlbum()}"
+            android:textColor="@color/baba_sub_9"
+            android:visibility="@{viewModel.album.myBaby ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_report_album"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_save_photo" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_report_album"
+            style="@style/BABA.AlbumConfigBtnStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:onClick="@{() -> viewModel.checkReportAlbum()}"
+            android:text="@string/report_album"
+            android:textAppearance="@style/BABA.TextStyle.AlbumConfigBtnStyle"
+            android:textColor="@color/baba_sub_9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_delete_album" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

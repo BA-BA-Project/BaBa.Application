@@ -8,15 +8,15 @@ import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(private val memberRemoteDataSource: MemberRemoteDataSource) :
     MemberRepository {
-    override fun getMe(accessToken: String) = memberRemoteDataSource.getMe(accessToken)
+    override suspend fun getMe(accessToken: String) = memberRemoteDataSource.getMe(accessToken)
 
-    override fun signUpWithBabiesInfo(
+    override suspend fun signUpWithBabiesInfo(
         signToken: String,
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
     ) = memberRemoteDataSource.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
 
 
-    override fun signUpWithInviteCode(
+    override suspend fun signUpWithInviteCode(
         signToken: String,
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
     ) = memberRemoteDataSource.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)

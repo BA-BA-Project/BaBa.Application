@@ -8,12 +8,12 @@ import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.data.api.BabyApi
+import kids.baba.mobile.data.api.FileApi
 import kids.baba.mobile.data.api.MemberApi
 import kids.baba.mobile.data.api.MyPageApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -28,6 +28,10 @@ object ApiModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class AuthRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class FileRetrofit
 
     @BabaRetrofit
     @Singleton
@@ -52,6 +56,16 @@ object ApiModule {
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
+        .addConverterFactory(gsonConverterFactory)
+        .build()
+
+    @FileRetrofit
+    @Singleton
+    @Provides
+    fun provideFileDownRetrofit(
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_PHOTO_URL)
         .addConverterFactory(gsonConverterFactory)
         .build()
 
@@ -85,4 +99,10 @@ object ApiModule {
     fun provideMyPageApi(
         @BabaRetrofit retrofit: Retrofit
     ): MyPageApi = retrofit.create(MyPageApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideFileDownApi(
+        @FileRetrofit retrofit: Retrofit
+    ): FileApi = retrofit.create(FileApi::class.java)
 }

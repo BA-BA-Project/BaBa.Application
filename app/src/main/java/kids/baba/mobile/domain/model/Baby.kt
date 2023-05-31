@@ -3,7 +3,8 @@ package kids.baba.mobile.domain.model
 data class Baby(
     val babyId : String,
     val groupColor: String,
-    val name: String
+    val name: String,
+    val isMyBaby: Boolean
 ){
     fun toMember() = MemberModel(
     memberId = babyId,
