@@ -42,13 +42,6 @@ class InviteResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         collectEvent()
-
-//        binding.topAppBar.ivBackButton.setOnClickListener {
-//            findNavController().navigateUp()
-//        }
-//        binding.btnComplete.setOnClickListener {
-//            requireActivity().finish()
-//        }
     }
 
 
@@ -56,7 +49,9 @@ class InviteResultFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is InviteResultEvent.SuccessGetInvitationInfo -> Log.e("SuccessGetInvitationInfo", "SuccessGetInvitationInfo")
+                    is InviteResultEvent.SuccessGetInvitationInfo -> {
+                        Log.e("SuccessGetInvitationInfo", "SuccessGetInvitationInfo")
+                    }
                     is InviteResultEvent.ShowSnackBar -> showSnackBar(event.message)
                     is InviteResultEvent.BackButtonClicked -> {
                         findNavController().navigateUp()

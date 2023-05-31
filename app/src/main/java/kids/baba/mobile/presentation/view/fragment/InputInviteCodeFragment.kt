@@ -46,19 +46,6 @@ class InputInviteCodeFragment : Fragment() {
 
     private fun collectState() {
         viewLifecycleOwner.repeatOnStarted {
-//            viewModel.uiState.collect{
-//                when(it){
-//                    is InputCodeState.Idle -> {}
-//                    is InputCodeState.LoadInfo -> {
-//                        val response = it.data
-//                        Log.e("response","$response")
-////                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(response)
-////                        navController.navigate(action)
-//						  findNavController().navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
-//
-//                    }
-//                }
-//            }
             viewModel.eventFlow.collect{event ->
                 when(event){
                     is BabyInviteCodeEvent.SuccessAddBabyWithInviteCode -> {

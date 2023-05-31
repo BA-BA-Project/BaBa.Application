@@ -78,6 +78,8 @@ class MyPageFragment : Fragment() {
                         binding.civMyProfile.circleBackgroundColor =
                             Color.parseColor(it.data.userIconUiModel.iconColor)
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
+
+
                     }
 
                     is MyPageEvent.AddGroup -> {

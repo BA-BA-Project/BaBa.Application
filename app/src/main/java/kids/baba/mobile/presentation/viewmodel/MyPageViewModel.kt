@@ -69,6 +69,7 @@ class MyPageViewModel @Inject constructor(
     fun getMyInfo() = viewModelScope.launch {
         getMemberUseCase.getMeNoPref().map { it.toPresentation() }.collect {
             _eventFlow.emit(MyPageEvent.LoadMyInfo(it))
+
         }
     }
 

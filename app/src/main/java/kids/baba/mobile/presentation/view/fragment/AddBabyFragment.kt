@@ -64,6 +64,7 @@ class AddBabyFragment : Fragment() {
                 date += year
                 date += String.format("%02d", monthOfYear)
                 date += String.format("%02d", dayOfMonth)
+                // 잠시 오류가 나서 주석처리했습니다.
 //                viewModel.birthDay.value = parseDate(date)
                 binding.birthView.etInput.setText(parseDate(date))
 //                Log.e("birth", viewModel.birthDay.value)
