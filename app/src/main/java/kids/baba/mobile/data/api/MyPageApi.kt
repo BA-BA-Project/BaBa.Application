@@ -90,7 +90,7 @@ interface MyPageApi {
     suspend fun deleteGroupMember(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("groupMemberId") memberId: String
-    )
+    ): Response<Unit>
 
     @GET("baby/invitation")
     suspend fun getInvitationInfo(

@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,20 +22,22 @@ class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: EditMemberViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
         isCancelable = true
-        viewModel.dismiss.value = { dismiss() }
-        viewModel.patchMember.value = { itemClick() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.deleteView.tvDeleteDesc.setOnClickListener {
-            viewModel.delete()
-            dismiss()
-        }
+        bindViewModel()
+        collectEvent()
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onCreateView(
@@ -45,19 +46,24 @@ class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogFragmentEditMemberBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        collectEvent()
         return binding.root
     }
 
-    private fun collectEvent(){
+    private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
-                when(event){
-                    is EditGroupMemberEvent.SuccessPatchMemberRelation ->  Log.e(TAG, "SuccessPatchMemberRelation")
-                    is EditGroupMemberEvent.SuccessDeleteMember -> Log.e(TAG, "SuccessDeleteMember")
-                    is EditGroupMemberEvent.ShowSnackBar -> {showSnackBar(event.message)}
+                when (event) {
+                    is EditGroupMemberEvent.SuccessPatchMemberRelation -> {
+                        itemClick()
+                        dismiss()
+                    }
+                    is EditGroupMemberEvent.SuccessDeleteMember -> {
+                        itemClick()
+                        dismiss()
+                    }
+                    is EditGroupMemberEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
                 }
             }
         }

@@ -162,8 +162,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteGroupMember(memberId: String) {
-        api.deleteGroupMember(memberId = memberId)
+    override suspend fun deleteGroupMember(memberId: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteGroupMember(memberId = memberId)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse> {

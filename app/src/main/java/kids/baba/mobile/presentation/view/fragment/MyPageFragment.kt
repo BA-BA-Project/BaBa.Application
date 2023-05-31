@@ -117,9 +117,9 @@ class MyPageFragment : Fragment() {
         binding.rvKids.adapter = babyAdapter
         myPageGroupAdapter = MyPageGroupAdapter(
             showMemberInfo = { group, member ->
-                val editMemberDialog = EditMemberDialog {
-                    viewModel.loadGroups()
-                }
+                val editMemberDialog = EditMemberDialog(
+                    itemClick = { viewModel.loadGroups() }
+                )
                 val bundle = Bundle()
                 bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
                 bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)

@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.GroupMemberInfo
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberRelationUseCase
+import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.event.EditGroupMemberEvent
 import kids.baba.mobile.presentation.model.EditMemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -24,9 +26,7 @@ class EditMemberViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val uiModel = MutableStateFlow(EditMemberUiModel())
-    val input = MutableStateFlow("")
-    val dismiss = MutableStateFlow {}
-    val patchMember = MutableStateFlow {}
+    val relationWithBaby = MutableStateFlow("")
 
     private val _eventFlow = MutableEventFlow<EditGroupMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -39,25 +39,34 @@ class EditMemberViewModel @Inject constructor(
     fun patch() = viewModelScope.launch {
         when (patchOneMemberRelationUseCase.patch(
             memberId = uiModel.value.member?.memberId ?: "",
-            relation = GroupMemberInfo(relationName = input.value)
+            relation = GroupMemberInfo(relationName = relationWithBaby.value)
         )) {
-            is kids.baba.mobile.domain.model.Result.Success -> {
+            is Result.Success -> {
                 _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
-                patchMember.value()
             }
-            is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-            else -> {_eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))}
+            is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+            else -> {
+                _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+            }
         }
-        dismiss()
     }
 
-    fun delete() = viewModelScope.launch {
-        deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
-        patchMember.value()
-        dismiss()
-    }
+    val deleteMember = ComposableDeleteViewData(
+        onDeleteButtonClickEventListener = {
+            viewModelScope.launch {
+                when (deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")) {
+                    is Result.Success -> {
+                        _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
+                    }
+                    is Result.NetworkError -> _eventFlow.emit(
+                        EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed)
+                    )
+                    else -> {
+                        _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+                    }
+                }
+            }
+        }
+    )
 
-    fun dismiss() = viewModelScope.launch {
-        dismiss.value()
-    }
 }
