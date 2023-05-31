@@ -22,7 +22,9 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_CODE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_RESULT_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.SETTING_PAGE
 import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
@@ -51,6 +53,7 @@ class MyPageActivity : AppCompatActivity() {
             ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
             INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
             INVITE_MEMBER_PAGE -> setNavStart(R.id.invite_member_fragment)
+            INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(R.id.invite_member_result_fragment, INVITE_CODE)
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
             BABY_DETAIL_PAGE -> setNavStartWithArg(R.id.baby_detail_fragment, BABY_DETAIL_INFO)
@@ -62,7 +65,8 @@ class MyPageActivity : AppCompatActivity() {
             viewModel.eventFlow.collect {
                 when (it) {
                     MyPageEvent.CompleteAddBaby -> {
-                        val action = AddBabyFragmentDirections.actionAddBabyFragmentToAddCompleteFragment()
+                        val action =
+                            AddBabyFragmentDirections.actionAddBabyFragmentToAddCompleteFragment()
                         navController.navigate(action)
                     }
                     else -> {}
@@ -97,6 +101,16 @@ class MyPageActivity : AppCompatActivity() {
         }
     }
 
+    private fun setNavStartWithCode(fragment: Int, argumentName: String) {
+        val key = intent.getStringExtra(INVITE_CODE)
+        key?.let {
+            val bundle = bundleOf(argumentName to it)
+            navGraph.setStartDestination(fragment)
+            navController.setGraph(navGraph, bundle)
+        }
+    }
+
+
 
     companion object {
         lateinit var instance: MyPageActivity
@@ -119,6 +133,19 @@ class MyPageActivity : AppCompatActivity() {
             }
             context.startActivity(intent)
 
+        }
+
+        fun startActivityWithCode(
+            context: Context,
+            pageName: String,
+            argumentName: String,
+            inviteCode: String
+        ) {
+            val intent = Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_PAGE_NAME, pageName)
+                putExtra(argumentName, inviteCode)
+            }
+            context.startActivity(intent)
         }
 
     }

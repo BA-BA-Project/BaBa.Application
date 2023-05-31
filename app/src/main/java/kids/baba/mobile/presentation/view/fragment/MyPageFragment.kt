@@ -183,5 +183,7 @@ class MyPageFragment : Fragment() {
         const val INVITE_WITH_CODE_PAGE = "inviteBabyPage"
         const val ADD_BABY_PAGE = "addBabyPage"
         const val INVITE_MEMBER_PAGE = "inviteMemberPage"
+        const val INVITE_MEMBER_RESULT_PAGE = "inviteMemberResultPage"
+        const val INVITE_CODE = "inviteCode"
     }
 }

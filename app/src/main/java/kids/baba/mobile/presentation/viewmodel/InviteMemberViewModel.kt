@@ -26,14 +26,33 @@ class InviteMemberViewModel @Inject constructor(
     val eventFlow = _eventFlow.asEventFlow()
 
     fun copyCode(relationInfo: RelationInfo) = viewModelScope.launch {
-        when(val inviteCode = makeInviteCodeUseCase(relationInfo)){
+        when (val inviteCode = makeInviteCodeUseCase(relationInfo)) {
             is kids.baba.mobile.domain.model.Result.Success -> {
                 Log.e("InviteMemberViewModel", "copyCode: Success")
                 _eventFlow.emit(InviteMemberEvent.SuccessCopyInviteCode(inviteCode.data))
             }
+
             is kids.baba.mobile.domain.model.Result.NetworkError -> {
                 _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
             }
+
+            else -> {
+                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+            }
+        }
+    }
+
+    fun sendInvitation(relationInfo: RelationInfo) = viewModelScope.launch {
+        when (val inviteCode = makeInviteCodeUseCase(relationInfo)) {
+            is kids.baba.mobile.domain.model.Result.Success -> {
+                Log.e("InviteMemberViewModel", "copyCode: Success")
+                _eventFlow.emit(InviteMemberEvent.SuccessSendInvitation(inviteCode.data))
+            }
+
+            is kids.baba.mobile.domain.model.Result.NetworkError -> {
+                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+
             else -> {
                 _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
             }

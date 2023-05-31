@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.view.fragment
 
-import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -14,16 +13,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
-import com.kakao.sdk.share.WebSharerClient
-import com.kakao.sdk.template.model.*
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.Link
+import com.kakao.sdk.template.model.TextTemplate
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.domain.model.RelationInfo
 import kids.baba.mobile.presentation.event.InviteMemberEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_CODE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_RESULT_PAGE
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
 
 @AndroidEntryPoint
@@ -40,69 +42,12 @@ class InviteMemberFragment : Fragment() {
             requireActivity().finish()
         }
         binding.btnInvite.setOnClickListener {
-
-            // 템플릿 객체.
-            val defaultText = TextTemplate(
-                text = """
-        바바를 통해 친구네 아이의 성장을
-        확인하고 친구와 소통해봐요!
-    """.trimIndent(),
-                // TODO: Kakao developers 에서 Web 사이트 도메인을 playstore 다운로드 링크로 변경해야 함
-                //  앱이 다운로드되어 있을 때
-                //      1. 로그인을 한 적이 없을 때 그냥 실행
-                //      2. 로그인을 한 적이 있을 때 초대 코드 입력 쪽으로 이동.
-                //  앱이 다운로드되어있지 않을 때 playstore 링크로.-
-                link = Link(
-                    webUrl = "https://developers.kakao.com",
-                    mobileWebUrl = "https://developers.kakao.com"
-                ),
-                buttons = null
-            )
-
-
-            // 카카오톡 설치여부 확인
-            if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
-                // 카카오톡으로 카카오톡 공유 가능
-                ShareClient.instance.shareDefault(requireContext(), defaultText) { sharingResult, error ->
-                    if (error != null) {
-                        Log.e("KAKAO Share", "카카오톡 공유 실패", error)
-                    } else if (sharingResult != null) {
-                        Log.d("KAKAO Share", "카카오톡 공유 성공 ${sharingResult.intent}")
-                        startActivity(sharingResult.intent)
-
-                        // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
-                        Log.w("KAKAO Share", "Warning Msg: ${sharingResult.warningMsg}")
-                        Log.w("KAKAO Share", "Argument Msg: ${sharingResult.argumentMsg}")
-                    }
-                }
-            } else {
-                // 카카오톡 미설치: 웹 공유 사용 권장
-                // 웹 공유 예시 코드
-                val sharerUrl = WebSharerClient.instance.makeDefaultUrl(defaultText)
-
-                // CustomTabs으로 웹 브라우저 열기
-
-                // 1. CustomTabsServiceConnection 지원 브라우저 열기  ex) Chrome, 삼성 인터넷
-                try {
-                    KakaoCustomTabsClient.openWithDefault(requireContext(), sharerUrl)
-                } catch (e: UnsupportedOperationException) {
-                    // CustomTabsServiceConnection 지원 브라우저가 없을 때 예외처리
-                    Log.e("KAKAO Share", "CustomTabs open fail: $e")
-                }
-
-                // 2. CustomTabsServiceConnection 미지원 브라우저 열기 ex) 네이버, 카카오, UC
-                try {
-                    KakaoCustomTabsClient.open(requireContext(), sharerUrl)
-                } catch (e: ActivityNotFoundException) {
-                    // 디바이스에 설치된 인터넷 브라우저가 없을 때 예외처리
-                    Log.e("KAKAO Share", "Browser open fail: $e")
-                }
-            }
-
-            findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
+            val relationGroup = binding.inputGroupView.etInput.text.toString()
+            val relationName = binding.inputRelationView.etInput.text.toString()
+            viewModel.sendInvitation(relationInfo = RelationInfo(relationGroup, relationName))
         }
 
-        binding.btnCopyCode.setOnClickListener{
+        binding.btnCopyCode.setOnClickListener {
             val relationGroup = binding.inputGroupView.etInput.text.toString()
             val relationName = binding.inputRelationView.etInput.text.toString()
             viewModel.copyCode(relationInfo = RelationInfo(relationGroup, relationName))
@@ -112,17 +57,49 @@ class InviteMemberFragment : Fragment() {
 
     }
 
-    private fun collectEvent(){
+    private fun send(inviteCode: String) {
+        val defaultFeed = FeedTemplate(
+            content = Content(
+                title = "아이와 어른의 성장일기",
+                description = "앱 다운로드 후 초대코드를 입력해 가입해봐요",
+                imageUrl = "https://i.ibb.co/xLy2RsJ/2023-05-31-3-27-51.png",
+                imageHeight = 100,
+                imageWidth = 150,
+                link = Link(
+                    androidExecutionParams = mapOf(INVITE_CODE to inviteCode),
+                )
+            ),
+        )
+        if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
+            ShareClient.instance.shareDefault(requireContext(), defaultFeed) { result, t ->
+                if (t != null) {
+                    Log.e("fail", "${t.message}")
+                } else if (result != null) {
+                    startActivity(result.intent)
+                }
+            }
+        }
+    }
+
+    private fun collectEvent() {
         repeatOnStarted {
-            viewModel.eventFlow.collect{ event ->
-                when(event){
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is InviteMemberEvent.ShowSnackBar -> showSnackBar(event.msg)
                     is InviteMemberEvent.SuccessCopyInviteCode -> {
                         Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
-
-                        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipboard =
+                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)
                         clipboard.setPrimaryClip(clip)
+                    }
+
+                    is InviteMemberEvent.SuccessSendInvitation -> {
+                        send(event.inviteCode.inviteCode)
+                        MyPageActivity.startActivityWithCode(
+                            requireContext(),
+                            INVITE_MEMBER_RESULT_PAGE, INVITE_CODE, event.inviteCode.inviteCode
+                        )
                     }
                 }
 
