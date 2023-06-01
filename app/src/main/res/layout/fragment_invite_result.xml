@@ -45,10 +45,9 @@
                     bind:description="@{viewModel.uiModel.addBabyBannerDesc}"
                     bind:title="@{viewModel.uiModel.addBabyBannerTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/name_view"
@@ -56,10 +55,9 @@
                     bind:description="@{viewModel.uiModel.addBabyNameDesc}"
                     bind:title="@{viewModel.uiModel.addBabyNameTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/group_view"
@@ -67,10 +65,9 @@
                     bind:description="@{viewModel.uiModel.addBabyGroupDesc}"
                     bind:title="@{viewModel.uiModel.addBabyGroupTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/relation_view"
@@ -78,10 +75,9 @@
                     bind:description="@{viewModel.uiModel.addBabyRelationDesc}"
                     bind:title="@{viewModel.uiModel.addBabyRelationTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/permission_view"

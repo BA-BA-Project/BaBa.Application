@@ -100,15 +100,11 @@ class BabyDetailFragment : Fragment() {
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
         }
         binding.myGroupView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
             val bottomSheet = GroupEditBottomSheet {}
-            bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
         binding.familyView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
             val bottomSheet = GroupEditBottomSheet {}
-            bottomSheet.arguments = bundle
             bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
         }
     }

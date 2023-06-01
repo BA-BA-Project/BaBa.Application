@@ -66,20 +66,18 @@
                     bind:description="@{viewModel.uiModel.bannerDesc}"
                     bind:title="@{viewModel.uiModel.bannerTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_view"
                     bind:title="@{viewModel.uiModel.nameTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/relation_view"
@@ -87,10 +85,9 @@
                     bind:description="@{viewModel.uiModel.relationDesc}"
                     bind:title="@{viewModel.uiModel.relationTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/birth_view"

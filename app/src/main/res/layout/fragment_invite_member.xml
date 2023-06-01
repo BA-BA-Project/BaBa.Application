@@ -46,10 +46,9 @@
                     bind:description="@{viewmodel.uiModel.bannerDesc}"
                     bind:title="@{viewmodel.uiModel.bannerTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/input_group_view"
@@ -57,10 +56,9 @@
                     bind:description="@{viewmodel.uiModel.inputGroupDesc}"
                     bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/input_relation_view"
