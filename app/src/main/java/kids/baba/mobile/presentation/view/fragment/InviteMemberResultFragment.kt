@@ -20,6 +20,7 @@ class InviteMemberResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
         binding.topAppBar.ivBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -39,8 +40,12 @@ class InviteMemberResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMemberInviteResultBinding.inflate(inflater, container, false)
-        binding.viewmodel = viewModel
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
 }

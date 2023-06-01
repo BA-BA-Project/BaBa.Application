@@ -10,8 +10,8 @@ import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
+import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow

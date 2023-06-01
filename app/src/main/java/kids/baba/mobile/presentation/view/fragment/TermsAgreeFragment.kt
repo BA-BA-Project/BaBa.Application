@@ -45,8 +45,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        bindViewModel()
         initSignToken()
 
         setNextBtn()
@@ -55,14 +54,19 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         collectSignToken()
     }
 
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
     private fun initSignToken() {
         viewModel.setSignToken()
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event ->
-                when(event) {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is TermsAgreeEvent.ShowSnackBar -> showSnackBar(event.text)
                 }
             }
@@ -74,13 +78,13 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         binding.rvTerms.adapter = termsAdapter
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.termsList.collect{
+            viewModel.termsList.collect {
                 termsAdapter.submitList(it)
             }
         }
 
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.isAllChecked.collect{
+            viewModel.isAllChecked.collect {
                 binding.cbAllAgree.isChecked = it
             }
         }
@@ -88,7 +92,7 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
 
     private fun setNextBtn() {
         binding.btnSignUpStart.setOnClickListener {
-            if(viewModel.checkEssentialAllChecked()){
+            if (viewModel.checkEssentialAllChecked()) {
                 viewModel.getSignToken()
             } else {
                 showSnackBar(R.string.required_terms_acceptance)
@@ -96,10 +100,10 @@ class TermsAgreeFragment : Fragment(), TermsAdapter.TermsClickListener {
         }
     }
 
-    private fun collectSignToken(){
+    private fun collectSignToken() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.signToken.collectLatest{
-                if(it.isNotEmpty()){
+            viewModel.signToken.collectLatest {
+                if (it.isNotEmpty()) {
                     activityViewModel.isSignUpStart(it)
                 }
             }

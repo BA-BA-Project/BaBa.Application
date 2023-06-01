@@ -11,9 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
+import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageEvent
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
@@ -44,8 +44,8 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        collectState()
         initView()
+        collectState()
         setBottomSheet()
     }
 

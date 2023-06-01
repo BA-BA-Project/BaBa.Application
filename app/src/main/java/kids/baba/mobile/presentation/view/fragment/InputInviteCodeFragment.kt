@@ -30,7 +30,6 @@ class InputInviteCodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInputInvitecodeBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -41,15 +40,22 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
         collectState()
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun collectState() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect{event ->
-                when(event){
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is BabyInviteCodeEvent.SuccessAddBabyWithInviteCode -> {
-                        val action = InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(event.inviteCode.inviteCode)
+                        val action =
+                            InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(event.inviteCode.inviteCode)
                         findNavController().navigate(action)
                     }
                     is BabyInviteCodeEvent.BackButtonClicked -> requireActivity().finish()

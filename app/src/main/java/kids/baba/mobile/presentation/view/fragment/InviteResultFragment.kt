@@ -15,7 +15,6 @@ import kids.baba.mobile.databinding.FragmentInviteResultBinding
 import kids.baba.mobile.presentation.event.InviteResultEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteResultViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class InviteResultFragment : Fragment() {
@@ -29,8 +28,12 @@ class InviteResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInviteResultBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onDestroyView() {
@@ -40,7 +43,7 @@ class InviteResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        bindViewModel()
         collectEvent()
     }
 
