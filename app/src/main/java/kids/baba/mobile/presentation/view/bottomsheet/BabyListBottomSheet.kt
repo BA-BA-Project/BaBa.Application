@@ -78,7 +78,6 @@ class BabyListBottomSheet(
     }
 
     private fun showSnackBar(@StringRes message: Int) {
-        //TODO 바텀시트에 가려져 스낵바가 보이지 않음
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .apply {
                 anchorView = binding.root
