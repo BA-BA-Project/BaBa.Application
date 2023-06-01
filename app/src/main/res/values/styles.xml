@@ -66,16 +66,28 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="BABA.InputEndBtnStyle" parent="Widget.AppCompat.Button">
+    <style name="BABA.BtnStyle"  parent="Widget.AppCompat.Button">
         <item name="android:textAppearance">@style/BABA.TextStyle.Button</item>
         <item name="android:textStyle">bold</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="BABA.InputEndBtnStyle" parent="BABA.BtnStyle">
+        <item name="android:textAppearance">@style/BABA.TextStyle.Button</item>
         <item name="android:paddingHorizontal">12dp</item>
         <item name="android:paddingVertical">7dp</item>
         <item name="android:background">@drawable/bg_button_next</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Baba.SendBtnStyle" parent="BABA.BtnStyle">
+        <item name="android:elevation">0dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:paddingVertical">7dp</item>
     </style>
 
     <style name="BABA.AlbumDialogStyle" parent="Theme.MaterialComponents.Light.Dialog">
