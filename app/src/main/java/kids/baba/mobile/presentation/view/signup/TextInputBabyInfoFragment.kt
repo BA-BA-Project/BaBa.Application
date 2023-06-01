@@ -2,6 +2,8 @@ package kids.baba.mobile.presentation.view.signup
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentTextInputBabyInfoBinding
 import kids.baba.mobile.presentation.model.ChatItem
 import kids.baba.mobile.presentation.model.UserChatType
@@ -43,7 +46,7 @@ class TextInputBabyInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         focusEditText()
-
+        setTextWatcher()
         binding.apply {
             etTextInput.setOnEditorActionListener(getEditorActionListener(btnSend))
 
@@ -96,7 +99,26 @@ class TextInputBabyInfoFragment : Fragment() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.etTextInput, 0)
     }
+    private fun setTextWatcher(){
+        binding.etTextInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.btnSend.apply {
+                    if(s.isNullOrEmpty()){
+                        isEnabled = false
+                        setTextColor(requireContext().getColor(R.color.text_3))
+                    } else {
+                        isEnabled = true
+                        setTextColor(requireContext().getColor(R.color.baba_main))
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
     private fun hideKeyboard() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.etTextInput.windowToken, 0)

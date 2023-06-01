@@ -244,13 +244,13 @@
                     android:enabled="@{!viewModel.comment.empty}"
                     android:text="@string/send"
                     android:textColor="@{viewModel.comment.empty ? @color/text_3 : @color/baba_main}"
-                    android:textAppearance="@style/BABA.TextStyle.Button"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"
                     app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toEndOf="@id/et_my_comment"
                     app:layout_constraintTop_toTopOf="@id/et_my_comment"
                     tools:enabled="false"/>
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
