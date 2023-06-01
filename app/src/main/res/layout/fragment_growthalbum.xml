@@ -16,8 +16,6 @@
         <import type="java.time.LocalDate" />
 
         <import type="android.view.View" />
-
-        <import type="kids.baba.mobile.presentation.event.GrowthAlbumEvent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
