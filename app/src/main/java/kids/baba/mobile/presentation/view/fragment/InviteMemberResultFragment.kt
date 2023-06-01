@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMemberInviteResultBinding
+import kids.baba.mobile.presentation.event.InviteResultEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteMemberResultViewModel
 
 @AndroidEntryPoint
@@ -25,6 +27,20 @@ class InviteMemberResultFragment : Fragment() {
         }
         binding.btnComplete.setOnClickListener {
             requireActivity().finish()
+        }
+        collectEvent()
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is InviteResultEvent.Success -> {
+                        binding.groupView.tvDesc.text = it.data.relationGroup
+                        binding.relationView.tvDesc.text = it.data.relationName
+                    }
+                }
+            }
         }
     }
 

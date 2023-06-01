@@ -11,13 +11,11 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
-import com.kakao.sdk.template.model.TextTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.domain.model.RelationInfo
@@ -63,12 +61,10 @@ class InviteMemberFragment : Fragment() {
                 title = "아이와 어른의 성장일기",
                 description = "앱 다운로드 후 초대코드를 입력해 가입해봐요",
                 imageUrl = "https://i.ibb.co/xLy2RsJ/2023-05-31-3-27-51.png",
-                imageHeight = 100,
-                imageWidth = 150,
                 link = Link(
-                    androidExecutionParams = mapOf(INVITE_CODE to inviteCode),
+                    androidExecutionParams = mapOf(INVITE_CODE to inviteCode)
                 )
-            ),
+            )
         )
         if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
             ShareClient.instance.shareDefault(requireContext(), defaultFeed) { result, t ->
