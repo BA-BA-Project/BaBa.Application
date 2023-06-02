@@ -171,41 +171,16 @@ class MyPageFragment : Fragment() {
         binding.groupContainer.adapter = myPageGroupAdapter
 
     }
-
-
-    private fun setBottomSheet() {
-        binding.ivEditKids.setOnClickListener {
-            val bottomSheet = BabyEditBottomSheet {
-                EncryptedPrefs.putString("babyGroupTitle", it)
-                binding.tvKidsTitle.text = it
-            }
-            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
-        }
-        binding.ivProfileEditPen.setOnClickListener {
-            val bottomSheet =
-                MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                    lifecycleScope.launch {
-                        editMemberProfileBottomSheetViewModel.edit(profile).join()
-                        viewModel.getMyInfo()
-                        viewModel.loadGroups()
-                    }
-                }
-            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
-        }
-    }
     
     private fun showBabyEditBottomSheet(){
-        val bundle = Bundle()
         val bottomSheet = BabyEditBottomSheet {
             EncryptedPrefs.putString("babyGroupTitle", it)
             binding.tvKidsTitle.text = it
         }
-        bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
     private fun showMemberEditProfileBottomSheet(){
-        val bundle = Bundle()
         val bottomSheet =
             MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
                 lifecycleScope.launch {
@@ -214,7 +189,6 @@ class MyPageFragment : Fragment() {
                     viewModel.loadGroups()
                 }
             }
-        bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
