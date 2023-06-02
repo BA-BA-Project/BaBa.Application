@@ -21,6 +21,7 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_GROUP_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_PAGE
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTENT_PAGE_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_CODE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
@@ -52,7 +53,7 @@ class MyPageActivity : AppCompatActivity() {
         when (intent.getStringExtra(INTENT_PAGE_NAME)) {
             ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
             INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
-            INVITE_MEMBER_PAGE -> setNavStart(R.id.invite_member_fragment)
+            INVITE_MEMBER_PAGE -> setNavStartWithCode(R.id.invite_member_fragment, GROUP_NAME)
             INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(R.id.invite_member_result_fragment, INVITE_CODE)
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
@@ -102,7 +103,7 @@ class MyPageActivity : AppCompatActivity() {
     }
 
     private fun setNavStartWithCode(fragment: Int, argumentName: String) {
-        val key = intent.getStringExtra(INVITE_CODE)
+        val key = intent.getStringExtra(argumentName)
         key?.let {
             val bundle = bundleOf(argumentName to it)
             navGraph.setStartDestination(fragment)
@@ -144,6 +145,22 @@ class MyPageActivity : AppCompatActivity() {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)
                 putExtra(argumentName, inviteCode)
+            }
+            context.startActivity(intent)
+        }
+
+        fun startActivityWithGroupName(
+            context: Context,
+            pageName: String,
+            argumentName: String,
+            inviteCode: String,
+            argumentName2: String,
+            groupName: String
+        ) {
+            val intent = Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_PAGE_NAME, pageName)
+                putExtra(argumentName, inviteCode)
+                putExtra(argumentName2, groupName)
             }
             context.startActivity(intent)
         }

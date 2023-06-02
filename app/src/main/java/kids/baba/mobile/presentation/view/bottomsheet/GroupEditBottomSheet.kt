@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetEditGroupBinding
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel
 
@@ -26,7 +27,12 @@ class GroupEditBottomSheet : BottomSheetDialogFragment() {
         binding.addMemberView.tvAddButtonDesc.isGone = true
 
         binding.addMemberView.ivAddButton.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), INVITE_MEMBER_PAGE)
+            MyPageActivity.startActivityWithCode(
+                requireContext(),
+                INVITE_MEMBER_PAGE,
+                GROUP_NAME,
+                viewModel.groupName.value ?: ""
+            )
         }
 
         binding.nameView.tvEditButton.setOnClickListener {

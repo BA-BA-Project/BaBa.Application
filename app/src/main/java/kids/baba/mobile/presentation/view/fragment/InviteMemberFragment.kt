@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -50,7 +51,11 @@ class InviteMemberFragment : Fragment() {
             val relationName = binding.inputRelationView.etInput.text.toString()
             viewModel.copyCode(relationInfo = RelationInfo(relationGroup, relationName))
         }
+        binding.inputGroupView.etInput.setText(viewModel.groupName.value)
+        binding.inputGroupView.etInput.isEnabled = false
+        binding.inputRelationView.etInput.addTextChangedListener {
 
+        }
         collectEvent()
 
     }
@@ -78,7 +83,7 @@ class InviteMemberFragment : Fragment() {
     }
 
     private fun collectEvent() {
-        repeatOnStarted {
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is InviteMemberEvent.ShowSnackBar -> showSnackBar(event.msg)
@@ -115,6 +120,7 @@ class InviteMemberFragment : Fragment() {
     ): View {
         _binding = FragmentInviteMemberBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

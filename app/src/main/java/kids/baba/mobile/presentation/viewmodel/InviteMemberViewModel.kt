@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,17 +12,18 @@ import kids.baba.mobile.presentation.event.InviteMemberEvent
 import kids.baba.mobile.presentation.model.InviteMemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class InviteMemberViewModel @Inject constructor(
-    private val makeInviteCodeUseCase: MakeInviteCodeUseCase
-
+    private val makeInviteCodeUseCase: MakeInviteCodeUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val uiModel = MutableStateFlow(InviteMemberUiModel())
-
+    val groupName = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
     private val _eventFlow = MutableEventFlow<InviteMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 

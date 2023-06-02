@@ -176,6 +176,7 @@ class MyPageFragment : Fragment() {
 
     companion object {
         const val INTENT_PAGE_NAME = "nextPage"
+        const val GROUP_NAME = "groupName"
         const val ADD_GROUP_PAGE = "addGroupPage"
         const val SETTING_PAGE = "settingPage"
         const val BABY_DETAIL_PAGE = "babyDetailPage"
