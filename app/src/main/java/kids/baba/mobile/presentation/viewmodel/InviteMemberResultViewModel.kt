@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.InviteCode
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
+import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.InviteResultEvent
 import kids.baba.mobile.presentation.model.InviteMemberResultUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -20,11 +21,13 @@ import javax.inject.Inject
 class InviteMemberResultViewModel @Inject constructor(
     private val getBabiesInfoByInviteCodeUseCase: GetBabiesInfoByInviteCodeUseCase,
     private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase,
+    private val getMemberUseCase: GetMemberUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val uiModel = MutableStateFlow(InviteMemberResultUiModel())
     val inviteCode = MutableStateFlow(savedStateHandle[MyPageFragment.INVITE_CODE] ?: "")
     val event = MutableEventFlow<InviteResultEvent>()
+    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
 
     init {
         Log.e("result", inviteCode.value)
@@ -40,7 +43,7 @@ class InviteMemberResultViewModel @Inject constructor(
         }
     }
 
-    private fun registerMember() = viewModelScope.launch {
+    fun registerMember() = viewModelScope.launch {
         addOneBabyWithInviteCodeUseCase.add(InviteCode(inviteCode = inviteCode.value))
     }
 }
