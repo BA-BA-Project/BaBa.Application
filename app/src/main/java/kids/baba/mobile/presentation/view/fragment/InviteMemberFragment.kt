@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view.fragment
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.domain.model.RelationInfo
 import kids.baba.mobile.presentation.event.InviteMemberEvent
@@ -53,8 +55,30 @@ class InviteMemberFragment : Fragment() {
         }
         binding.inputGroupView.etInput.setText(viewModel.groupName.value)
         binding.inputGroupView.etInput.isEnabled = false
+        binding.btnInvite.isEnabled = false
+        binding.btnCopyCode.isEnabled = false
+        binding.inputRelationView.tvEditButton.setOnClickListener {
+            binding.btnInvite.isEnabled = true
+            binding.btnCopyCode.isEnabled = true
+            binding.btnCopyCode.setTextColor(Color.parseColor("#FF3481FF"))
+            binding.btnInvite.setBackgroundResource(R.drawable.button_complete_blue)
+            binding.btnCopyCode.setBackgroundResource(R.drawable.button_complete)
+        }
         binding.inputRelationView.etInput.addTextChangedListener {
-
+            it?.let {
+                if (it.isNotEmpty()) {
+                    binding.inputRelationView.tvEditButton.text = "완료"
+                    binding.inputRelationView.tvEditButton.setTextColor(Color.parseColor("#FF3481FF"))
+                } else {
+                    binding.inputRelationView.tvEditButton.text = "편집"
+                    binding.inputRelationView.tvEditButton.setTextColor(Color.parseColor("#B4B4B4"))
+                    binding.btnInvite.isEnabled = false
+                    binding.btnCopyCode.isEnabled = false
+                    binding.btnCopyCode.setTextColor(Color.parseColor("#B4B4B4"))
+                    binding.btnInvite.setBackgroundResource(R.drawable.button_disable)
+                    binding.btnCopyCode.setBackgroundResource(R.drawable.button_disable2)
+                }
+            }
         }
         collectEvent()
 
