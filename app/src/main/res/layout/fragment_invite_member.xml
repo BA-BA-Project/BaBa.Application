@@ -25,23 +25,15 @@
                 layout="@layout/composable_top_layout"
                 bind:title="@{viewmodel.uiModel.topAppBarTitle}" />
 
-            <include
-                android:id="@+id/banner_view"
-                layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.uiModel.bannerDesc}"
-                bind:title="@{viewmodel.uiModel.bannerTitle}" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#EDEDED" />
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/input_container"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:layout_constraintTop_toBottomOf="@+id/top_container">
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/top_container"
+            app:layout_constraintBottom_toTopOf="@+id/btn_copy_code"
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,15 +41,24 @@
                 android:orientation="vertical">
 
                 <include
+                    android:id="@+id/banner_view"
+                    layout="@layout/composable_banner_view"
+                    bind:description="@{viewmodel.uiModel.bannerDesc}"
+                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
                     android:id="@+id/input_group_view"
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{viewmodel.uiModel.inputGroupDesc}"
                     bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/input_relation_view"

@@ -164,24 +164,23 @@ class MyPageFragment : Fragment() {
                 }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+            }, goToAddMemberPage = {
+                MyPageActivity.startActivity(requireContext(), pageName = INVITE_MEMBER_PAGE)
             }
         )
         binding.groupContainer.adapter = myPageGroupAdapter
 
     }
-
+    
     private fun showBabyEditBottomSheet(){
-        val bundle = Bundle()
         val bottomSheet = BabyEditBottomSheet {
             EncryptedPrefs.putString("babyGroupTitle", it)
             binding.tvKidsTitle.text = it
         }
-        bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
     private fun showMemberEditProfileBottomSheet(){
-        val bundle = Bundle()
         val bottomSheet =
             MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
                 lifecycleScope.launch {
@@ -190,7 +189,6 @@ class MyPageFragment : Fragment() {
                     viewModel.loadGroups()
                 }
             }
-        bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
