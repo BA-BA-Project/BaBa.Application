@@ -25,8 +25,13 @@ class DeleteMemberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDeleteUserBinding.inflate(inflater, container, false)
-        binding.viewmodel = viewModel
+        bindViewModel()
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onDestroyView() {

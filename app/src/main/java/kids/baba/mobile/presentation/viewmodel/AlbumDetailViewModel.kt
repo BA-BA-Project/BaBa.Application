@@ -9,19 +9,10 @@ import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.CommentInput
 import kids.baba.mobile.domain.model.Result
-import kids.baba.mobile.domain.usecase.AddCommentUseCase
-import kids.baba.mobile.domain.usecase.DeleteCommentUseCase
-import kids.baba.mobile.domain.usecase.GetCommentsUseCase
-import kids.baba.mobile.domain.usecase.GetLikeDetailUseCase
-import kids.baba.mobile.domain.usecase.GetMemberUseCase
-import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
+import kids.baba.mobile.domain.usecase.*
 import kids.baba.mobile.presentation.event.AlbumDetailEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.model.AlbumDetailUiModel
-import kids.baba.mobile.presentation.model.AlbumUiModel
-import kids.baba.mobile.presentation.model.CommentTag
-import kids.baba.mobile.presentation.model.CommentUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.*
 import kids.baba.mobile.presentation.state.AlbumDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -131,7 +122,7 @@ class AlbumDetailViewModel @Inject constructor(
                 }
 
                 is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
-                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
+                else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_add_comment_failed))
             }
         }
 
@@ -180,4 +171,12 @@ class AlbumDetailViewModel @Inject constructor(
     }
 
     fun checkMyComment(comment: CommentUiModel) = member.value?.memberId == comment.memberId
+
+    fun showAlbumConfig() = viewModelScope.launch {
+        _eventFlow.emit(AlbumDetailEvent.ShowAlbumConfig)
+    }
+
+    fun dismissDialog() = viewModelScope.launch {
+        _eventFlow.emit(AlbumDetailEvent.DismissAlbumDetail)
+    }
 }

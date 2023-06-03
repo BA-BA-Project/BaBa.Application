@@ -2,23 +2,22 @@ package kids.baba.mobile.presentation.view.fragment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAddbabyBinding
 import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
-import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 @AndroidEntryPoint
 class AddBabyFragment : Fragment() {
@@ -28,7 +27,6 @@ class AddBabyFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private val viewModel: AddBabyViewModel by viewModels()
-    private val activityViewModel: MyPageActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +34,6 @@ class AddBabyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddbabyBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -56,7 +53,7 @@ class AddBabyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        bindViewModel()
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
@@ -77,6 +74,11 @@ class AddBabyFragment : Fragment() {
         collectEvent()
     }
 
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
@@ -85,7 +87,7 @@ class AddBabyFragment : Fragment() {
                         showSnackBar(event.message)
                     }
                     is AddBabyEvent.SuccessAddBaby -> {
-                        activityViewModel.moveToCompleteAddBaby()
+                        findNavController().navigate(R.id.add_complete_fragment)
                     }
                     is AddBabyEvent.BackButtonClicked -> requireActivity().finish()
                 }

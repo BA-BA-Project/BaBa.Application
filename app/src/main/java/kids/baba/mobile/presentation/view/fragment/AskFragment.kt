@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAskBinding
-import kids.baba.mobile.presentation.view.FunctionHolder
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
@@ -23,7 +21,6 @@ class AskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAskBinding.inflate(inflater, container, false)
-        binding.title = getString(R.string.ask)
         return binding.root
     }
 
@@ -34,7 +31,6 @@ class AskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.topAppBar.navigator = findNavController()
-//        binding.topAppBar.function = object : FunctionHolder {}
+        binding.title = getString(R.string.ask)
     }
 }

@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +33,7 @@ class BabyDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
         initializeRecyclerView()
         setBottomSheet()
         collectState()
@@ -93,9 +93,12 @@ class BabyDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBabydetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     private fun initializeRecyclerView() {

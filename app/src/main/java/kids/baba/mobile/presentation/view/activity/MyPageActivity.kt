@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
@@ -13,10 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMyPageBinding
-import kids.baba.mobile.presentation.event.MyPageEvent
-import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.MemberUiModel
-import kids.baba.mobile.presentation.view.fragment.AddBabyFragmentDirections
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_GROUP_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
@@ -26,7 +22,6 @@ import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INTE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_WITH_CODE_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.SETTING_PAGE
-import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
 
 @AndroidEntryPoint
 class MyPageActivity : AppCompatActivity() {
@@ -34,16 +29,13 @@ class MyPageActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
     private lateinit var binding: ActivityMyPageBinding
-    private val viewModel: MyPageActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setNavController()
-        instance = this
 
-        collectEvent()
         setStartDestination()
     }
 
@@ -55,20 +47,6 @@ class MyPageActivity : AppCompatActivity() {
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
             BABY_DETAIL_PAGE -> BABY_DETAIL_INFO.setNavStartWithMember(R.id.baby_detail_fragment)
-        }
-    }
-
-    private fun collectEvent() {
-        repeatOnStarted {
-            viewModel.eventFlow.collect {
-                when (it) {
-                    MyPageEvent.CompleteAddBaby -> {
-                        val action = AddBabyFragmentDirections.actionAddBabyFragmentToAddCompleteFragment()
-                        navController.navigate(action)
-                    }
-                    else -> {}
-                }
-            }
         }
     }
 
@@ -109,8 +87,6 @@ class MyPageActivity : AppCompatActivity() {
 
 
     companion object {
-        lateinit var instance: MyPageActivity
-
         fun startActivity(context: Context, pageName: String) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)

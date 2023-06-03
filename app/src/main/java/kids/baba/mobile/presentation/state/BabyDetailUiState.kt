@@ -8,6 +8,4 @@ sealed class BabyDetailUiState {
     object Loading : BabyDetailUiState()
 
     data class Success(val data: BabyProfileResponse) : BabyDetailUiState()
-
-    data class Error(val t: Throwable) : MyPageEvent()
 }

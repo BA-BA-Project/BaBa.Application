@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -15,7 +14,6 @@ import kids.baba.mobile.databinding.FragmentAddCompleteBinding
 import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddCompleteViewModel
-import kids.baba.mobile.presentation.viewmodel.MyPageActivityViewModel
 
 @AndroidEntryPoint
 class AddCompleteFragment : Fragment() {
@@ -26,10 +24,9 @@ class AddCompleteFragment : Fragment() {
 
     private val viewModel: AddCompleteViewModel by viewModels()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        bindViewModel()
         collectEvent()
         binding.topAppBar.ivBackButton.setOnClickListener {
             findNavController().navigateUp()
@@ -37,6 +34,11 @@ class AddCompleteFragment : Fragment() {
         binding.btnComplete.setOnClickListener {
             requireActivity().finish()
         }
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun collectEvent() {
@@ -72,7 +74,6 @@ class AddCompleteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddCompleteBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
     }
 }

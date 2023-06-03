@@ -23,7 +23,7 @@
             android:id="@+id/tv_top_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:text="@{title}"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -37,7 +37,7 @@
             android:id="@+id/line_view_top"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="25dp"
             android:background="#EDEDED"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
             android:layout_marginBottom="20dp"
             android:onClick="@{ () -> topViewData.onBackButtonClickEventListener.invoke() }"
             android:src="@drawable/ic_back"
-            app:layout_constraintBottom_toTopOf="@+id/line_view_top"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_top_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

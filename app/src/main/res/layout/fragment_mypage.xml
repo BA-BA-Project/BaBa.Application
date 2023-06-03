@@ -29,7 +29,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/my_info"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="150dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/civ_my_profile"
@@ -74,7 +74,7 @@
                         android:onClick="@{() -> viewmodel.onClickSetting()}"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
-                        android:layout_marginTop="55dp"
+                        android:layout_marginTop="35dp"
                         android:layout_marginEnd="20dp"
                         android:src="@drawable/ic_setting"
                         app:layout_constraintEnd_toEndOf="parent"

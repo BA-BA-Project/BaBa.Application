@@ -65,7 +65,10 @@ class BabyListViewModel @Inject constructor(
                 else -> _eventFlow.emit(BabyListEvent.ShowSnackBar(R.string.baba_get_babies_failed))
             }
         }
+    }
 
+    fun moveBabyManagement() = viewModelScope.launch {
+        _eventFlow.emit(BabyListEvent.MoveBabyManagement)
     }
 
 }

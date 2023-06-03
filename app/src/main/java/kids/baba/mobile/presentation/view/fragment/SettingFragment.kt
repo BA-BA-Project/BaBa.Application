@@ -27,9 +27,13 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
+        bindViewModel()
+        return binding.root
+    }
+
+    private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     override fun onDestroyView() {
