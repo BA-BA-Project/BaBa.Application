@@ -321,12 +321,6 @@ class GrowthAlbumFragment : Fragment() {
     }
 
 
-    fun onKeyDown(): Boolean {
-//        binding.babySelectView.isGone = true
-//        binding.babySelectView.maxHeight = 0
-        return true
-    }
-
 
     private fun initializeAlbumHolder() {
         albumAdapter = AlbumAdapter(
