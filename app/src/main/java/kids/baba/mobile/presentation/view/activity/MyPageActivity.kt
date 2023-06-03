@@ -132,21 +132,6 @@ class MyPageActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        fun startActivityWithGroupName(
-            context: Context,
-            pageName: String,
-            argumentName: String,
-            inviteCode: String,
-            argumentName2: String,
-            groupName: String
-        ) {
-            val intent = Intent(context, MyPageActivity::class.java).apply {
-                putExtra(INTENT_PAGE_NAME, pageName)
-                putExtra(argumentName, inviteCode)
-                putExtra(argumentName2, groupName)
-            }
-            context.startActivity(intent)
-        }
         fun startActivityWithGroupName(context: Context, pageName: String, argumentName: String, groupName: String) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)

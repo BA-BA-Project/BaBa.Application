@@ -95,7 +95,12 @@ class MyPageFragment : Fragment() {
                     is MyPageEvent.AddGroup -> {
                         MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
                     }
-                    is MyPageEvent.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
+
+                    is MyPageEvent.Setting -> MyPageActivity.startActivity(
+                        requireContext(),
+                        pageName = SETTING_PAGE
+                    )
+
                     else -> {}
                 }
             }
@@ -144,8 +149,13 @@ class MyPageFragment : Fragment() {
                 }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-            }, goToAddMemberPage = {
-                MyPageActivity.startActivity(requireContext(), pageName = INVITE_MEMBER_PAGE)
+            }, goToAddMemberPage = { group ->
+                MyPageActivity.startActivityWithGroupName(
+                    requireContext(),
+                    INVITE_MEMBER_PAGE,
+                    GROUP_NAME,
+                    group.groupName
+                )
             }
         )
         binding.groupContainer.adapter = myPageGroupAdapter
