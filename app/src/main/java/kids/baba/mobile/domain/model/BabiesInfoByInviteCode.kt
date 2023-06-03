@@ -7,5 +7,5 @@ data class BabiesInfoResponse(
 )
 
 data class BabyName(
-    val babyName : String
+    val babyName: String
 )

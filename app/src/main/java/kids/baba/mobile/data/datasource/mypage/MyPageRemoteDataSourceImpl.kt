@@ -197,5 +197,4 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             result
         }
     }
-
 }

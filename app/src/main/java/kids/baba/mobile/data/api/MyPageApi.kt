@@ -92,9 +92,11 @@ interface MyPageApi {
         @Path("groupMemberId") memberId: String
     )
 
+
     @GET("baby/invitation")
     suspend fun getInvitationInfo(
         @Query("code") inviteCode: String): Response<BabiesInfoResponse>
+
 
     @POST("baby/invite-code")
     suspend fun makeInviteCode(

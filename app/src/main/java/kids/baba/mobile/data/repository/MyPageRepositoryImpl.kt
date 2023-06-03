@@ -52,4 +52,5 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
 
     override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> =
         dataSource.makeInviteCode(relationInfo = relationInfo)
+        
 }
