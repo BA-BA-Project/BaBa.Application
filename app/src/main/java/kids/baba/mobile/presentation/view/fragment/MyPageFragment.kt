@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
@@ -32,6 +33,7 @@ class MyPageFragment : Fragment() {
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
+    private val args: MyPageFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,8 +47,9 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        setClickEvent()
         collectState()
-        setBottomSheet()
+//        setBottomSheet()
     }
 
     override fun onResume() {
@@ -54,6 +57,13 @@ class MyPageFragment : Fragment() {
         viewModel.loadGroups()
         viewModel.loadBabies()
         viewModel.getMyInfo()
+        checkFromBottomNav()
+    }
+
+    private fun checkFromBottomNav() {
+        if (args.fromBabyList) {
+            showBabyEditBottomSheet()
+        }
     }
 
     private fun collectState() {
@@ -134,29 +144,44 @@ class MyPageFragment : Fragment() {
                 }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
+            }, goToAddMemberPage = {
+                MyPageActivity.startActivity(requireContext(), pageName = INVITE_MEMBER_PAGE)
             }
         )
         binding.groupContainer.adapter = myPageGroupAdapter
 
     }
 
-    private fun setBottomSheet() {
-        binding.ivEditKids.setOnClickListener {
-            val bottomSheet = BabyEditBottomSheet(
-                itemClick = {
-                    viewModel.refreshBabyGroupTitle(it)
-                }
-            )
-            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
-        }
-        binding.ivProfileEditPen.setOnClickListener {
-            val bottomSheet = MemberEditProfileBottomSheet(
+    private fun showBabyEditBottomSheet() {
+        val bottomSheet = BabyEditBottomSheet(
+            itemClick =
+            {
+//                EncryptedPrefs.putString("babyGroupTitle", it)
+//                binding.tvKidsTitle.text = it
+                viewModel.refreshBabyGroupTitle(it)
+            }
+        )
+        bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+    }
+
+    private fun showMemberEditProfileBottomSheet() {
+        val bottomSheet =
+            MemberEditProfileBottomSheet(
                 itemClick = {
                     viewModel.getMyInfo()
                     viewModel.loadGroups()
                 }
             )
-            bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+        bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
+    }
+
+
+    private fun setClickEvent() {
+        binding.ivEditKids.setOnClickListener {
+            showBabyEditBottomSheet()
+        }
+        binding.ivProfileEditPen.setOnClickListener {
+            showMemberEditProfileBottomSheet()
         }
     }
 

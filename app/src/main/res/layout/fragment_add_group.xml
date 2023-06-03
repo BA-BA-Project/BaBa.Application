@@ -35,12 +35,6 @@
                 bind:title="@{viewmodel.uiModel.title}"
                 bind:topViewData="@{viewmodel.goToBack}" />
 
-            <include
-                android:id="@+id/banner_view"
-                layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.uiModel.bannerDescription}"
-                bind:title="@{viewmodel.uiModel.bannerTitle}" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -62,26 +56,35 @@
                 android:orientation="vertical">
 
                 <include
+                    android:id="@+id/banner_view"
+                    layout="@layout/composable_banner_view"
+                    bind:description="@{viewmodel.uiModel.bannerDescription}"
+                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_with_desc_view"
                     bind:inputWithDescViewData="@{viewmodel.relationGroupNameViewData}"
                     bind:description="@{viewmodel.uiModel.nameViewDesc}"
                     bind:title="@{viewmodel.uiModel.nameViewTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/color_view"
                     layout="@layout/composable_color_view"
                     bind:title="@{viewmodel.uiModel.colorViewTitle}" />
 
-                <View
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED" />
+                    android:layout_height="wrap_content" />
 
                 <include
                     android:id="@+id/permission_view"

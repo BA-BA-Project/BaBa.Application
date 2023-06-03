@@ -29,6 +29,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
+            android:onClick="@{() -> viewmodel.showBabyList()}"
             android:src="@drawable/profile_baby_1"
             app:backGroundColor="@{viewmodel.growthAlbumState.selectedBaby.groupColor}"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="28dp"
+                android:onClick="@{() -> viewmodel.showAlbumDetail()}"
                 app:cardBackground="@{viewmodel.growthAlbumState.selectedAlbum.cardStyle.iconRes}"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -113,6 +115,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
+                android:onClick="@{() -> viewmodel.showAlbumConfig()}"
                 android:src="@drawable/ic_meatballs_menu"
                 android:visibility="@{viewmodel.growthAlbumState.selectedAlbum.contentId == null ? View.INVISIBLE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_album_date"
@@ -198,7 +201,7 @@
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintStart_toStartOf="@id/tv_album_title"
                 app:layout_constraintTop_toBottomOf="@id/vp_baby_photo"
-                tools:text="좋아요와 댓글을 달아봐요"/>
+                tools:text="좋아요와 댓글을 달아봐요" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

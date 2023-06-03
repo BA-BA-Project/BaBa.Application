@@ -57,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> viewModel.showAlbumConfig()}"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_meatballs_menu"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_album_date"
@@ -116,6 +117,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
                     app:cardCornerRadius="15dp"
+                    android:onClick="@{() -> viewModel.setExpended(true)}"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
                     app:layout_constraintHorizontal_bias="0"
@@ -137,6 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="21dp"
+                    android:onClick="@{() -> viewModel.likeAlbum()}"
                     android:src="@{viewModel.albumDetailUiState.albumDetail.album.like ? @drawable/ic_like_checked : @drawable/ic_like_unchecked}"
                     android:elevation="2dp"
                     android:background="@color/transparent"
@@ -229,24 +232,25 @@
                     android:text="@={viewModel.comment}"
                     android:textColorHint="@color/text_3"
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
-                    app:layout_constraintEnd_toStartOf="@id/tv_send"
+                    app:layout_constraintEnd_toStartOf="@id/btn_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
                     app:layout_constraintTop_toTopOf="@id/civ_my_icon"/>
 
-                <TextView
-                    android:id="@+id/tv_send"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_send"
+                    style="@style/Baba.SendBtnStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:paddingHorizontal="10dp"
+                    android:enabled="@{!viewModel.comment.empty}"
                     android:text="@string/send"
-                    android:textAppearance="@style/BABA.TextStyle.Button"
-                    android:textColor="@color/text_3"
+                    android:textColor="@{viewModel.comment.empty ? @color/text_3 : @color/baba_main}"
                     app:layout_constraintBottom_toBottomOf="@id/et_my_comment"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_album_config"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toEndOf="@id/et_my_comment"
-                    app:layout_constraintTop_toTopOf="@id/et_my_comment" />
+                    app:layout_constraintTop_toTopOf="@id/et_my_comment"
+                    tools:enabled="false"/>
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -261,6 +265,7 @@
             android:layout_marginTop="12dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_dialog_close"
+            android:onClick="@{() -> viewModel.dismissDialog()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
