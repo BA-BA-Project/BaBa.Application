@@ -9,7 +9,6 @@ import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.RelationInfo
 import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.domain.model.Result
-import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableDescView
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
@@ -32,46 +31,10 @@ class InviteMemberViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<InviteMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    fun copyCode(relationInfo: RelationInfo) = viewModelScope.launch {
-        when (val inviteCode = makeInviteCodeUseCase(relationInfo)) {
-            is kids.baba.mobile.domain.model.Result.Success -> {
-                Log.e("InviteMemberViewModel", "copyCode: Success")
-                _eventFlow.emit(InviteMemberEvent.SuccessCopyInviteCode(inviteCode.data))
-            }
-
-            is kids.baba.mobile.domain.model.Result.NetworkError -> {
-                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-            }
-
-            else -> {
-                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-            }
-        }
-    }
-
-    fun sendInvitation(relationInfo: RelationInfo) = viewModelScope.launch {
-        when (val inviteCode = makeInviteCodeUseCase(relationInfo)) {
-            is kids.baba.mobile.domain.model.Result.Success -> {
-                Log.e("InviteMemberViewModel", "copyCode: Success")
-                _eventFlow.emit(InviteMemberEvent.SuccessSendInvitation(inviteCode.data))
-            }
-
-            is kids.baba.mobile.domain.model.Result.NetworkError -> {
-                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-            }
-
-            else -> {
-                _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-            }
-        }
-    }
-
     private val relationState = MutableStateFlow("")
 
     private val groupNameState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
 
-    private val _eventFlow = MutableEventFlow<InviteMemberEvent>()
-    val eventFlow = _eventFlow.asEventFlow()
 
     val goToBack = ComposableTopViewData(
         onBackButtonClickEventListener = {
@@ -101,10 +64,12 @@ class InviteMemberViewModel @Inject constructor(
                 is Result.Success -> {
                     _eventFlow.emit(InviteMemberEvent.CopyInviteCode(inviteCode.data))
                 }
+
                 is Result.NetworkError -> {
                     _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
                 }
+
                 else -> {
                     _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
 
@@ -117,7 +82,25 @@ class InviteMemberViewModel @Inject constructor(
 
     fun inviteWithKakao() {
         viewModelScope.launch {
+            when (val inviteCode = makeInviteCodeUseCase(
+                relationInfo = RelationInfo(
+                    relationGroup = groupNameState.value,
+                    relationName = relationState.value
+                )
+            )) {
+                is Result.Success -> {
+                    Log.e("InviteMemberViewModel", "copyCode: Success")
+                    _eventFlow.emit(InviteMemberEvent.InviteWithKakao(inviteCode.data))
+                }
 
+                is Result.NetworkError -> {
+                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                }
+
+                else -> {
+                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+                }
+            }
         }
     }
 }

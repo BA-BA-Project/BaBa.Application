@@ -41,7 +41,7 @@ class InviteResultViewModel @Inject constructor(
                     } else {
                         "없음"
                     }
-                    _eventFlow.emit(InviteResultEvent.SuccessGetInvitationInfo)
+                    _eventFlow.emit(InviteResultEvent.SuccessGetInvitation)
                 }
                 is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.unvalid_invite_code))

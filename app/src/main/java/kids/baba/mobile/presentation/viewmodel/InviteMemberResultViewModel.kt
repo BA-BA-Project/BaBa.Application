@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.InviteCode
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
@@ -32,14 +33,12 @@ class InviteMemberResultViewModel @Inject constructor(
     init {
         Log.e("result", inviteCode.value)
         getInviteResult()
-        //registerMember() 에러나서 주석처리 400 잘못된 요청입니다.
     }
 
     private fun getInviteResult() = viewModelScope.launch {
-        val inviteCode = getBabiesInfoByInviteCodeUseCase(inviteCode.value)
-        val response = inviteCode.getOrNull()
-        response?.let {
-            event.emit(InviteResultEvent.Success(it))
+        when(val inviteCode = getBabiesInfoByInviteCodeUseCase(inviteCode.value)) {
+            is Result.Success ->  event.emit(InviteResultEvent.SuccessGetInvitationInfo(inviteCode.data))
+            else -> {}
         }
     }
 

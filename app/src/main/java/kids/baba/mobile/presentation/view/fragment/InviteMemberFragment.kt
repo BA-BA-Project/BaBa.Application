@@ -21,21 +21,11 @@ import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
-import kids.baba.mobile.domain.model.RelationInfo
 import kids.baba.mobile.presentation.event.InviteMemberEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_CODE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_RESULT_PAGE
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
-import kids.baba.mobile.databinding.FragmentInviteMemberBinding
-import kids.baba.mobile.presentation.event.InviteMemberEvent
-import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
 
 @AndroidEntryPoint
@@ -50,17 +40,6 @@ class InviteMemberFragment : Fragment() {
 
         binding.topAppBar.ivBackButton.setOnClickListener {
             requireActivity().finish()
-        }
-        binding.btnInvite.setOnClickListener {
-            val relationGroup = binding.inputGroupView.etInput.text.toString()
-            val relationName = binding.inputRelationView.etInput.text.toString()
-            viewModel.sendInvitation(relationInfo = RelationInfo(relationGroup, relationName))
-        }
-
-        binding.btnCopyCode.setOnClickListener {
-            val relationGroup = binding.inputGroupView.etInput.text.toString()
-            val relationName = binding.inputRelationView.etInput.text.toString()
-            viewModel.copyCode(relationInfo = RelationInfo(relationGroup, relationName))
         }
         binding.inputGroupView.etInput.setText(viewModel.groupName.value)
         binding.inputGroupView.etInput.isEnabled = false
@@ -91,7 +70,7 @@ class InviteMemberFragment : Fragment() {
         }
         collectEvent()
         bindViewModel()
-      
+
     }
 
     private fun send(inviteCode: String) {
@@ -114,7 +93,7 @@ class InviteMemberFragment : Fragment() {
                 }
             }
         }
-    
+
     }
 
     private fun bindViewModel() {
@@ -126,42 +105,28 @@ class InviteMemberFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is InviteMemberEvent.ShowSnackBar -> showSnackBar(event.msg)
-                    is InviteMemberEvent.SuccessCopyInviteCode -> {
-                        Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
-                        val clipboard =
-                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)
-                        clipboard.setPrimaryClip(clip)
-                    }
+                    is InviteMemberEvent.ShowSnackBar -> showSnackBar(event.message)
 
-                    is InviteMemberEvent.SuccessSendInvitation -> {
+                    is InviteMemberEvent.GoToBack -> {
+                        requireActivity().finish()
+                    }
+                    is InviteMemberEvent.InviteWithKakao -> {
                         send(event.inviteCode.inviteCode)
                         MyPageActivity.startActivityWithCode(
                             requireContext(),
                             INVITE_MEMBER_RESULT_PAGE, INVITE_CODE, event.inviteCode.inviteCode
                         )
                     }
-          
-                    is InviteMemberEvent.GoToBack -> {
-                        requireActivity().finish()
-                    }
-                    is InviteMemberEvent.InviteWithKakao -> {
-                        findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
-                    }
                     is InviteMemberEvent.CopyInviteCode -> {
-                        findNavController().navigate(R.id.action_invite_member_fragment_to_invite_member_result_fragment)
-                    }
-                    is InviteMemberEvent.ShowSnackBar -> {
-                        showSnackBar(event.message)
+                        Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
+                        val clipboard =
+                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)
+                        clipboard.setPrimaryClip(clip)
                     }
                 }
             }
         }
-    }
-
-    private fun showSnackBar(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

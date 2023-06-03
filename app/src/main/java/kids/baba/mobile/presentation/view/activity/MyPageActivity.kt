@@ -45,31 +45,11 @@ class MyPageActivity : AppCompatActivity() {
         when (intent.getStringExtra(INTENT_PAGE_NAME)) {
             ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
             INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
-            INVITE_MEMBER_PAGE -> setNavStartWithCode(R.id.invite_member_fragment, GROUP_NAME)
-            INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(R.id.invite_member_result_fragment, INVITE_CODE)
-            SETTING_PAGE -> setNavStart(R.id.setting_fragment)
-            ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
-            BABY_DETAIL_PAGE -> setNavStartWithArg(R.id.baby_detail_fragment, BABY_DETAIL_INFO)
-            //
+            INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(R.id.invite_member_result_fragment, INVITE_CODE) //
             INVITE_MEMBER_PAGE -> GROUP_NAME.setNavStartWithString(R.id.invite_member_fragment)
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
             BABY_DETAIL_PAGE -> BABY_DETAIL_INFO.setNavStartWithMember(R.id.baby_detail_fragment)
-        }
-    }
-
-    private fun collectEvent() {
-        repeatOnStarted {
-            viewModel.eventFlow.collect {
-                when (it) {
-                    MyPageEvent.CompleteAddBaby -> {
-                        val action =
-                            AddBabyFragmentDirections.actionAddBabyFragmentToAddCompleteFragment()
-                        navController.navigate(action)
-                    }
-                    else -> {}
-                }
-            }
         }
     }
 
