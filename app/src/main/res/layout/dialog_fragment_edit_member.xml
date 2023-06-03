@@ -189,7 +189,8 @@
                     android:id="@+id/delete_view"
                     layout="@layout/composable_delete_view"
                     bind:delete="@{viewModel.uiModel.delete}"
-                    bind:title="@{viewModel.uiModel.deleteTitle}" />
+                    bind:title="@{viewModel.uiModel.deleteTitle}"
+                    bind:deleteViewData="@{viewModel.delete}"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.cardview.widget.CardView>
