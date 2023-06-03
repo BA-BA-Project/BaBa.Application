@@ -5,37 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.FragmentMypageBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
-import kids.baba.mobile.presentation.event.EditMemberProfileEvent
+import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageUiState
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
-import kids.baba.mobile.presentation.viewmodel.EditMemberProfileBottomSheetViewModel
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
     private var _binding: FragmentMypageBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+
     val viewModel: MyPageViewModel by viewModels()
-    private val editMemberProfileBottomSheetViewModel: EditMemberProfileBottomSheetViewModel by viewModels()
+
     private lateinit var babyAdapter: MemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
@@ -52,9 +46,10 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        collectState()
         initView()
         setClickEvent()
+        collectState()
+//        setBottomSheet()
     }
 
     override fun onResume() {
@@ -66,7 +61,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun checkFromBottomNav() {
-        if(args.fromBabyList){
+        if (args.fromBabyList) {
             showBabyEditBottomSheet()
         }
     }
@@ -74,44 +69,38 @@ class MyPageFragment : Fragment() {
     private fun collectState() {
         initializeRecyclerView()
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.uiState.collect {
+            viewModel.eventFlow.collect {
                 when (it) {
-                    is MyPageUiState.Idle -> {}
-                    is MyPageUiState.LoadMember -> {
+                    is MyPageEvent.Idle -> {}
+                    is MyPageEvent.LoadMember -> {
                         myPageGroupAdapter.submitList(it.data)
                     }
 
-                    is MyPageUiState.LoadBabies -> {
+                    is MyPageEvent.LoadBabies -> {
                         babyAdapter.submitList(it.data.map { baby ->
                             baby.toMember().toPresentation()
                         })
                     }
 
-                    is MyPageUiState.LoadMyInfo -> {
+                    is MyPageEvent.LoadMyInfo -> {
                         binding.tvMyStatusMessage.text = it.data.introduction
                         binding.tvMyName.text = it.data.name
                         binding.civMyProfile.circleBackgroundColor =
                             Color.parseColor(it.data.userIconUiModel.iconColor)
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
+
+
                     }
 
+                    is MyPageEvent.AddGroup -> {
+                        MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
+                    }
+                    is MyPageEvent.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
                     else -> {}
                 }
             }
         }
 
-        viewLifecycleOwner.repeatOnStarted {
-            editMemberProfileBottomSheetViewModel.eventFlow.collect { event ->
-                when (event) {
-                    is EditMemberProfileEvent.SuccessEditMemberProfile -> {
-                        viewModel.loadBabies()
-                    }
-                    is EditMemberProfileEvent.ShowSnackBar -> {
-                        showSnackBar(event.message)
-                    }
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -120,17 +109,8 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() {
-        val title = EncryptedPrefs.getString("babyGroupTitle")
         binding.viewmodel = viewModel
-        binding.tvKidsTitle.text = if (title != "") title else "아이들"
-
-        binding.tvAddGroup.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
-        }
-
-        binding.ivSetting.setOnClickListener {
-            MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
-        }
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun initializeRecyclerView() {
@@ -171,24 +151,27 @@ class MyPageFragment : Fragment() {
         binding.groupContainer.adapter = myPageGroupAdapter
 
     }
-    
-    private fun showBabyEditBottomSheet(){
-        val bottomSheet = BabyEditBottomSheet {
-            EncryptedPrefs.putString("babyGroupTitle", it)
-            binding.tvKidsTitle.text = it
-        }
+
+    private fun showBabyEditBottomSheet() {
+        val bottomSheet = BabyEditBottomSheet(
+            itemClick =
+            {
+//                EncryptedPrefs.putString("babyGroupTitle", it)
+//                binding.tvKidsTitle.text = it
+                viewModel.refreshBabyGroupTitle(it)
+            }
+        )
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
-    private fun showMemberEditProfileBottomSheet(){
+    private fun showMemberEditProfileBottomSheet() {
         val bottomSheet =
-            MemberEditProfileBottomSheet(editMemberProfileBottomSheetViewModel) { profile ->
-                lifecycleScope.launch {
-                    editMemberProfileBottomSheetViewModel.edit(profile).join()
+            MemberEditProfileBottomSheet(
+                itemClick = {
                     viewModel.getMyInfo()
                     viewModel.loadGroups()
                 }
-            }
+            )
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
@@ -202,9 +185,6 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun showSnackBar(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-    }
 
     companion object {
         const val INTENT_PAGE_NAME = "nextPage"
@@ -212,6 +192,7 @@ class MyPageFragment : Fragment() {
         const val SETTING_PAGE = "settingPage"
         const val BABY_DETAIL_PAGE = "babyDetailPage"
         const val BABY_DETAIL_INFO = "babyDetailInfo"
+        const val GROUP_NAME = "groupName"
         const val INVITE_WITH_CODE_PAGE = "inviteBabyPage"
         const val ADD_BABY_PAGE = "addBabyPage"
         const val INVITE_MEMBER_PAGE = "inviteMemberPage"

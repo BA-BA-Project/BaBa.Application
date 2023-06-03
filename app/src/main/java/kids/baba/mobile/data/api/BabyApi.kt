@@ -19,4 +19,6 @@ interface BabyApi {
     //아기 리스트 가져오기
     @GET("baby")
     suspend fun getBaby(@Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)): Response<BabyResponse>
+
+
 }

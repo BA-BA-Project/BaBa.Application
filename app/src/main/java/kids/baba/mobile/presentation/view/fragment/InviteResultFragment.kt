@@ -1,14 +1,19 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentInviteResultBinding
+import kids.baba.mobile.presentation.event.InviteResultEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InviteResultViewModel
 
 @AndroidEntryPoint
@@ -23,8 +28,12 @@ class InviteResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInviteResultBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onDestroyView() {
@@ -34,11 +43,31 @@ class InviteResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
+        bindViewModel()
+        collectEvent()
+    }
+
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is InviteResultEvent.SuccessGetInvitationInfo -> {
+                        Log.e("SuccessGetInvitationInfo", "SuccessGetInvitationInfo")
+                    }
+                    is InviteResultEvent.ShowSnackBar -> showSnackBar(event.message)
+                    is InviteResultEvent.BackButtonClicked -> {
+                        findNavController().navigateUp()
+                    }
+                    is InviteResultEvent.GoToMyPage -> {
+                        requireActivity().finish()
+                    }
+                }
+            }
         }
-        binding.btnComplete.setOnClickListener {
-            requireActivity().finish()
-        }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 }

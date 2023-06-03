@@ -6,6 +6,19 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel" />
+
+        <variable
+            name="nameViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
+
+        <variable
+            name="addButtonViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableAddButtonViewData" />
+
+        <variable
+            name="deleteViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableDeleteViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,9 +68,9 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
+                bind:nameViewData="@{viewModel.composableNameViewData}"
                 bind:button="@{viewModel.uiModel.familyButton}"
-                bind:title="@{viewModel.uiModel.familyName}"
-                bind:function="@{viewModel.patch}"/>
+                bind:title="@{viewModel.uiModel.familyName}" />
 
             <View
                 android:layout_width="match_parent"
@@ -88,9 +101,9 @@
             <include
                 android:id="@+id/delete_view"
                 layout="@layout/composable_delete_view"
+                bind:deleteViewData="@{viewModel.deleteGroup}"
                 bind:delete="@{viewModel.uiModel.deleteDesc}"
-                bind:title="@{viewModel.uiModel.deleteTitle}"
-                bind:function="@{viewModel.delete}"/>
+                bind:title="@{viewModel.uiModel.deleteTitle}" />
 
             <View
                 android:layout_width="match_parent"
@@ -100,8 +113,8 @@
             <include
                 android:id="@+id/add_member_view"
                 layout="@layout/composable_addbutton_view"
-                bind:title="@{viewModel.uiModel.addMemberTitle}"
-                bind:function="@{viewModel.goToAddMemberPage}"/>
+                bind:addButtonViewData="@{viewModel.goToInviteMember}"
+                bind:title="@{viewModel.uiModel.addMemberTitle}" />
 
             <View
                 android:layout_width="match_parent"

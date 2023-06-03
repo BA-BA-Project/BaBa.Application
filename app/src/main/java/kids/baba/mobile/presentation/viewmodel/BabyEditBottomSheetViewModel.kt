@@ -1,15 +1,15 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.presentation.event.BabyEditSheetEvent
+import kids.baba.mobile.core.utils.EncryptedPrefs
+import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
+import kids.baba.mobile.presentation.binding.ComposableNameViewData
+import kids.baba.mobile.presentation.event.BabyGroupEditEvent
 import kids.baba.mobile.presentation.model.BabyEditBottomSheetUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kids.baba.mobile.presentation.view.FunctionHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,35 +17,39 @@ import javax.inject.Inject
 @HiltViewModel
 class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     val uiModel = MutableStateFlow(BabyEditBottomSheetUiModel())
-    var itemClick: (String) -> Unit = {}
-    var dismiss: () -> Unit = {}
-    var getText: () -> String = { "" }
 
-    private val _event = MutableEventFlow<BabyEditSheetEvent>()
-    val event = _event.asEventFlow()
+    private val nameViewLiveData: MutableStateFlow<String> =
+        MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
 
-    val editBabyGroupName = object : FunctionHolder {
-        override fun click() {
+    private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
+
+    val composableNameViewData = ComposableNameViewData(
+        text = nameViewLiveData,
+        onEditButtonClickEventListener = {
             viewModelScope.launch {
-                itemClick(getText())
-                dismiss()
+                _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit(nameViewLiveData.value))
+                EncryptedPrefs.putString("babyGroupTitle", nameViewLiveData.value)
+
             }
         }
-    }
+    )
 
-    val goToAddBabyPage = object : FunctionHolder {
-        override fun click() {
+    val goToAddBaby = ComposableAddButtonViewData(
+        onAddButtonClickEventListener = {
             viewModelScope.launch {
-                _event.emit(BabyEditSheetEvent.GoToAddBabyPage)
+                _eventFlow.emit(BabyGroupEditEvent.GoToAddBaby)
             }
         }
-    }
+    )
 
-    val goToInputInviteCodePage = object : FunctionHolder {
-        override fun click() {
+    val goToInputInviteCode = ComposableAddButtonViewData(
+        onAddButtonClickEventListener = {
             viewModelScope.launch {
-                _event.emit(BabyEditSheetEvent.GoToInputInviteCodePage)
+                _eventFlow.emit(BabyGroupEditEvent.GoToInputInviteCode)
             }
         }
-    }
+    )
+
+
 }

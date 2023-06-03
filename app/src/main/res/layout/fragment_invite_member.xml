@@ -6,6 +6,19 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
+        <variable
+            name="inputWithDescViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
+
+        <variable
+            name="descViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableDescView" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +36,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.uiModel.topAppBarTitle}" />
+                bind:title="@{viewmodel.uiModel.topAppBarTitle}"
+                bind:topViewData="@{viewmodel.goToBack}" />
 
         </LinearLayout>
 
@@ -52,8 +66,9 @@
 
                 <include
                     android:id="@+id/input_group_view"
-                    layout="@layout/composable_input_with_desc_view"
+                    layout="@layout/composable_desc_view"
                     bind:description="@{viewmodel.uiModel.inputGroupDesc}"
+                    bind:descViewData="@{viewmodel.relationGroup}"
                     bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -63,6 +78,7 @@
                 <include
                     android:id="@+id/input_relation_view"
                     layout="@layout/composable_input_with_desc_view"
+                    bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
                     bind:button="@{viewmodel.uiModel.inputRelationButton}"
                     bind:description="@{viewmodel.uiModel.inputRelationDesc}"
                     bind:title="@{viewmodel.uiModel.inputRelationTitle}" />
@@ -82,6 +98,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_complete"
+            android:onClick="@{() -> viewmodel.copyInviteCode()}"
             android:text="@string/copy_invite_code"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
@@ -97,6 +114,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:background="@drawable/button_complete_blue"
+            android:onClick="@{() -> viewmodel.inviteWithKakao()}"
             android:text="@string/invite_kakaotalk"
             android:textColor="@color/white"
             android:textSize="18sp"

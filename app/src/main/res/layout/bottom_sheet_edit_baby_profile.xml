@@ -6,6 +6,11 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.BabyEditProfileBottomSheetViewModel" />
+
+        <variable
+            name="nameViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -56,7 +61,9 @@
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:button="@{viewmodel.button}"
-                bind:title="@{viewmodel.name}" />
+                bind:title="@{viewmodel.name}"
+                bind:nameViewData="@{viewmodel.composableNameViewData}"
+                />
 
 
             <View

@@ -33,6 +33,8 @@
             android:layout_marginStart="19dp"
             android:layout_marginTop="93dp"
             android:src="@drawable/my_profile"
+            app:backGroundColor="@{viewModel.baby.userIconUiModel.iconColor}"
+            app:iconRes="@{viewModel.baby.userIconUiModel.userProfileIconUiModel.iconRes}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,6 +65,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginTop="54dp"
+            android:onClick="@{() -> viewModel.onBackClick()}"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="@id/civ_my_profile"
             app:layout_constraintTop_toTopOf="parent" />

@@ -3,15 +3,19 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kids.baba.mobile.R
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
+import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
-import kids.baba.mobile.presentation.state.MyPageUiState
+import kids.baba.mobile.presentation.util.flow.MutableEventFlow
+import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,46 +27,74 @@ class MyPageViewModel @Inject constructor(
 ) : ViewModel() {
     val groupAddButton = MutableStateFlow("+ 그룹만들기")
 
+    private val _eventFlow = MutableEventFlow<MyPageEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
 
-    private val _uiState = MutableStateFlow<MyPageUiState>(MyPageUiState.Idle)
-    val uiState = _uiState
+    private val _babyGroupTitle = MutableStateFlow(
+        EncryptedPrefs.getString("babyGroupTitle").ifEmpty {
+            "아이들"
+        }
+    )
+    val babyGroupTitle = _babyGroupTitle.asStateFlow()
 
     fun loadGroups() = viewModelScope.launch {
-        getMyPageGroupUseCase.get().catch {
-
-        }.collect {
-            _uiState.value = MyPageUiState.LoadMember(it.groups)
+        when (val result = getMyPageGroupUseCase.get()) {
+            is Result.Success -> {
+                _eventFlow.emit(MyPageEvent.LoadMember(result.data.groups))
+            }
+            is Result.NetworkError -> {
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+            else -> {
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.unknown_error_msg))
+            }
         }
     }
 
     fun loadBabies() = viewModelScope.launch {
-
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data
-                _uiState.value = MyPageUiState.LoadBabies(babies.myBaby + babies.others)
+                _eventFlow.emit(MyPageEvent.LoadBabies(babies.myBaby + babies.others))
             }
-
-            is Result.NetworkError -> _uiState.value = MyPageUiState.Error(result.throwable)
+            is Result.NetworkError -> {
+                _eventFlow.emit(MyPageEvent.Error(result.throwable))
+            }
             else -> {
-                val throwable = result.getThrowableOrNull()
-                if(throwable != null) {
-                    _uiState.value = MyPageUiState.Error(throwable)
-                }
+                _eventFlow.emit(MyPageEvent.Error(Throwable("error")))
             }
         }
     }
 
     fun getMyInfo() = viewModelScope.launch {
-        when(val result = getMemberUseCase.getMeNoPref()){
-            is Result.Success -> _uiState.value = MyPageUiState.LoadMyInfo(result.data.toPresentation())
-            is Result.NetworkError -> _uiState.value = MyPageUiState.Error(result.throwable)
+        when (val result = getMemberUseCase.getMeNoPref()) {
+            is Result.Success -> {
+                _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
+//                _uiState.value = MyPageUiState.LoadMyInfo(result.data.toPresentation())
+            }
+            is Result.NetworkError -> {
+                _eventFlow.emit(MyPageEvent.Error(result.throwable))
+//                _uiState.value = MyPageUiState.Error(result.throwable)
+            }
             else -> {
                 val throwable = result.getThrowableOrNull()
-                if(throwable != null) {
-                    _uiState.value = MyPageUiState.Error(throwable)
+                if (throwable != null) {
+                    _eventFlow.emit(MyPageEvent.Error(throwable))
+//                    _uiState.value = MyPageUiState.Error(throwable)
                 }
             }
         }
+    }
+
+    fun addGroup() = viewModelScope.launch {
+        _eventFlow.emit(MyPageEvent.AddGroup)
+    }
+
+    fun onClickSetting() = viewModelScope.launch {
+        _eventFlow.emit(MyPageEvent.Setting)
+    }
+
+    fun refreshBabyGroupTitle(babyGroupTitle: String) = viewModelScope.launch {
+        _babyGroupTitle.value = babyGroupTitle
     }
 }

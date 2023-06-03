@@ -8,6 +8,19 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.AddBabyViewModel" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
+        <variable
+            name="inputViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
+
+        <variable
+            name="inputWithDescViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +39,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.uiModel.title}" />
+                bind:title="@{viewModel.uiModel.title}"
+                bind:topViewData="@{viewModel.goToBack}" />
 
 
             <View
@@ -73,6 +87,7 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_view"
+                    bind:inputViewData="@{viewModel.composableBabyName}"
                     bind:title="@{viewModel.uiModel.nameTitle}" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -83,6 +98,7 @@
                     android:id="@+id/relation_view"
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{viewModel.uiModel.relationDesc}"
+                    bind:inputWithDescViewData="@{viewModel.composableRelation}"
                     bind:title="@{viewModel.uiModel.relationTitle}" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -92,8 +108,8 @@
                 <include
                     android:id="@+id/birth_view"
                     layout="@layout/composable_input_view"
-                    bind:title="@{viewModel.uiModel.birthTitle}"
-                    bind:editText="@{viewModel.birthDay}"/>
+                    bind:inputViewData="@{viewModel.composableBirthDay}"
+                    bind:title="@{viewModel.uiModel.birthTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -104,6 +120,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:backgroundTint="@color/baba_main"
+            android:onClick="@{() -> viewModel.addBaby()}"
             android:text="@string/add_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

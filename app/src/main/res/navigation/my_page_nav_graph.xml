@@ -35,7 +35,11 @@
         android:id="@+id/input_invite_result_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.InviteResultFragment"
         android:label="InviteResultFragment"
-        tools:layout="@layout/fragment_invite_result" />
+        tools:layout="@layout/fragment_invite_result" >
+        <argument
+            android:name="inviteCode"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/add_baby_fragment"
@@ -58,6 +62,10 @@
         android:name="kids.baba.mobile.presentation.view.fragment.InviteMemberFragment"
         android:label="InviteMemberFragment"
         tools:layout="@layout/fragment_invite_member">
+
+        <argument
+            android:name="groupName"
+            app:argType="string" />
         <action
             android:id="@+id/action_invite_member_fragment_to_invite_member_result_fragment"
             app:destination="@id/invite_member_result_fragment" />

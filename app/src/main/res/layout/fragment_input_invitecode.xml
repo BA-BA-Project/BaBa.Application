@@ -6,6 +6,16 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
+        <variable
+            name="inputViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
+
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,7 +32,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.uiModel.title}" />
+                bind:title="@{viewModel.uiModel.title}"
+                bind:topViewData="@{viewModel.composableBackButton}" />
 
             <include
                 android:id="@+id/banner_view"
@@ -38,6 +49,7 @@
             <include
                 android:id="@+id/input_view"
                 layout="@layout/composable_input_view"
+                bind:inputViewData="@{viewModel.composableInviteCode}"
                 bind:title="@{viewModel.uiModel.inputTitle}" />
         </LinearLayout>
 
@@ -50,6 +62,7 @@
             android:background="@drawable/button_disable"
             android:text="@string/add"
             android:textColor="#B4B4B4"
+            android:onClick="@{() -> viewModel.addBabyWithCode()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

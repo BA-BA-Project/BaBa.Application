@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentSettingBinding
+import kids.baba.mobile.presentation.event.SettingEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.MyPageSettingViewModel
 
 @AndroidEntryPoint
@@ -18,15 +20,20 @@ class SettingFragment : Fragment() {
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: MyPageSettingViewModel by viewModels()
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
+        bindViewModel()
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onDestroyView() {
@@ -36,21 +43,32 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectEvent()
+    }
 
-        binding.tvServiceInfo.setOnClickListener {
-            findNavController().navigate(R.id.action_setting_fragment_to_service_info_fragment)
-        }
-        binding.tvDeleteMember.setOnClickListener {
-            findNavController().navigate(R.id.action_setting_fragment_to_delete_member_fragment)
-        }
-        binding.tvAsk.setOnClickListener {
-            findNavController().navigate(R.id.action_setting_fragment_to_ask_fragment)
-        }
-        binding.tvCreator.setOnClickListener {
-            findNavController().navigate(R.id.action_setting_fragment_to_creator_fragment)
-        }
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            requireActivity().finish()
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is SettingEvent.GoToServiceInfo -> {
+                        findNavController().navigate(R.id.action_setting_fragment_to_service_info_fragment)
+                    }
+                    is SettingEvent.GoToDeleteMember -> {
+                        findNavController().navigate(R.id.action_setting_fragment_to_delete_member_fragment)
+                    }
+                    is SettingEvent.GoToAsk -> {
+                        findNavController().navigate(R.id.action_setting_fragment_to_ask_fragment)
+                    }
+                    is SettingEvent.GoToCreator -> {
+                        findNavController().navigate(R.id.action_setting_fragment_to_creator_fragment)
+                    }
+                    is SettingEvent.BackButtonClicked -> {
+                        requireActivity().finish()
+                    }
+                }
+            }
         }
     }
+
+
 }

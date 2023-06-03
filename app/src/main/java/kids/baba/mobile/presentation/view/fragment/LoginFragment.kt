@@ -55,6 +55,7 @@ class LoginFragment : Fragment() {
 
     private fun initView() {
         binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun showSnackBar(@StringRes text: Int) {

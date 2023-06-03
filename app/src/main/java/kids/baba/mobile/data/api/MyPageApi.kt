@@ -2,15 +2,7 @@ package kids.baba.mobile.data.api
 
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.BabyEdit
-import kids.baba.mobile.domain.model.BabyProfileResponse
-import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.GroupResponse
-import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.Profile
+import kids.baba.mobile.domain.model.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -58,14 +50,14 @@ interface MyPageApi {
     suspend fun addMyBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body baby: MyBaby
-    ):Response<Unit>
+    ): Response<Unit>
 
     //TODO
     @POST("baby/code")
     suspend fun addBabyWithInviteCode(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Body inviteCode: InviteCode
-    )
+    ): Response<Unit>
 
     @DELETE("baby/{babyId}")
     suspend fun deleteBaby(
@@ -99,5 +91,16 @@ interface MyPageApi {
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("groupMemberId") memberId: String
     )
+
+    @GET("baby/invitation")
+    suspend fun getInvitationInfo(
+        @Query("code") inviteCode: String): Response<BabiesInfoResponse>
+
+    @POST("baby/invite-code")
+    suspend fun makeInviteCode(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Body relationInfo: RelationInfo
+    ): Response<InviteCode>
+
 
 }
