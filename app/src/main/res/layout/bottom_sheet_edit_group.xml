@@ -6,6 +6,19 @@
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.EditGroupBottomSheetViewModel" />
+
+        <variable
+            name="nameViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
+
+        <variable
+            name="addButtonViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableAddButtonViewData" />
+
+        <variable
+            name="deleteViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableDeleteViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="@string/manage_kids"
+                android:text="@string/family_setting"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -55,6 +68,7 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
+                bind:nameViewData="@{viewModel.composableNameViewData}"
                 bind:button="@{viewModel.uiModel.familyButton}"
                 bind:title="@{viewModel.uiModel.familyName}" />
 
@@ -87,6 +101,7 @@
             <include
                 android:id="@+id/delete_view"
                 layout="@layout/composable_delete_view"
+                bind:deleteViewData="@{viewModel.deleteGroup}"
                 bind:delete="@{viewModel.uiModel.deleteDesc}"
                 bind:title="@{viewModel.uiModel.deleteTitle}" />
 
@@ -98,6 +113,7 @@
             <include
                 android:id="@+id/add_member_view"
                 layout="@layout/composable_addbutton_view"
+                bind:addButtonViewData="@{viewModel.goToInviteMember}"
                 bind:title="@{viewModel.uiModel.addMemberTitle}" />
 
             <View

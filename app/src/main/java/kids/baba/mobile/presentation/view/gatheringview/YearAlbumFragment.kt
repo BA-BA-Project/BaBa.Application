@@ -25,6 +25,8 @@ class YearAlbumFragment : Fragment() {
 
     private lateinit var adapter: YearAlbumAdapter
 
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentClassifiedAlbumBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,9 +37,7 @@ class YearAlbumFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         initAdapter()
-
         viewLifecycleOwner.repeatOnStarted {
             viewModel.recentYearAlbumListState.collect {
                 adapter.submitList(it)

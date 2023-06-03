@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInputInvitecodeBinding
+import kids.baba.mobile.presentation.event.BabyInviteCodeEvent
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.InputInviteCodeViewModel
 
 @AndroidEntryPoint
@@ -27,7 +30,6 @@ class InputInviteCodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInputInvitecodeBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -38,14 +40,36 @@ class InputInviteCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            requireActivity().finish()
-        }
+        bindViewModel()
+        collectState()
+    }
 
-        binding.btnAddInviteUser.setOnClickListener {
-            val inviteCode = binding.inputView.etInput.text.toString()
-            viewModel.add(inviteCode)
-            findNavController().navigate(R.id.action_input_invite_fragment_to_input_invite_result_fragment)
+    private fun bindViewModel() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun collectState() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is BabyInviteCodeEvent.SuccessAddBabyWithInviteCode -> {
+                        val action =
+                            InputInviteCodeFragmentDirections.actionInputInviteFragmentToInputInviteResultFragment(event.inviteCode.inviteCode)
+                        findNavController().navigate(action)
+                    }
+                    is BabyInviteCodeEvent.BackButtonClicked -> requireActivity().finish()
+                    is BabyInviteCodeEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                }
+            }
+
+
         }
+    }
+
+    private fun showSnackBar(@StringRes text: Int) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 }

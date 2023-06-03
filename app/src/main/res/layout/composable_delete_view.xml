@@ -10,6 +10,14 @@
         <variable
             name="delete"
             type="String" />
+
+        <variable
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
+
+        <variable
+            name="deleteViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableDeleteViewData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:onClick="@{() -> deleteViewData.onDeleteButtonClickEventListener.invoke()}"
             android:text="@{delete}"
             android:textColor="#ff0000"
             android:textSize="18sp"

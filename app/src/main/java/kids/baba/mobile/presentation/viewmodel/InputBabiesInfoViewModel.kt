@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
+import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.SignUpUseCase
 import kids.baba.mobile.presentation.event.InputBabiesInfoEvent
@@ -22,7 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.StringJoiner
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -307,28 +309,46 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            getBabiesInfoByInviteCodeUseCase(inviteCode).onSuccess {
-                val sj = StringJoiner(", ")
-                it.babies.forEach { baby ->
-                    sj.add(baby.babyName)
-                }
-                val babies = sj.toString()
-                val relationName = it.relationName
-                addChat(
-                    ChatItem.BabaFirstChatItem(
-                        String.format(
-                            getStringResource(R.string.babies_info_by_invite_code),
-                            babies,
-                            relationName
+            when(val result = getBabiesInfoByInviteCodeUseCase(inviteCode)){
+                is Result.Success -> {
+                    val sj = StringJoiner(", ")
+                    val babiesList = result.data.babies
+                    val relationName = result.data.relationName
+
+                    babiesList.forEach { baby ->
+                        sj.add(baby.babyName)
+                    }
+                    val babies = sj.toString()
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            String.format(
+                                getStringResource(R.string.babies_info_by_invite_code),
+                                babies,
+                                relationName
+                            )
                         )
                     )
-                )
-                addChat(
-                    ChatItem.BabaFirstChatItem(
-                        getStringResource(R.string.input_end_babies_info)
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.input_end_babies_info)
+                        )
                     )
-                )
-                setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+                    setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
+                }
+                is Result.NetworkError -> {
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.baba_network_failed)
+                        )
+                    )
+                }
+                else -> {
+                    addChat(
+                        ChatItem.BabaFirstChatItem(
+                            getStringResource(R.string.invite_code_error)
+                        )
+                    )
+                }
             }
 
         }
@@ -337,20 +357,26 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun signUpWithBabiesInfo() {
         if (userProfile != null) {
             viewModelScope.launch {
-                signUpUseCase.signUpWithBabiesInfo(
-                    signToken,
-                    SignUpRequestWithBabiesInfo(
-                        userProfile.name,
-                        userProfile.iconName,
-                        relation,
-                        babiesList.value
-                    )
-                ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
-                }.onFailure {
-                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                when (
+                    val result = signUpUseCase.signUpWithBabiesInfo(
+                        signToken,
+                        SignUpRequestWithBabiesInfo(
+                            userProfile.name,
+                            userProfile.iconName,
+                            relation,
+                            babiesList.value
+                        )
+                    )) {
+                    is Result.Success -> {
+                        setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
+                    }
+                    else -> {
+                        val throwable = result.getThrowableOrNull()
+                        if(throwable != null){
+                            setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
+                        }
+                    }
                 }
-
             }
         }
     }
@@ -358,16 +384,23 @@ class InputBabiesInfoViewModel @Inject constructor(
     fun signUpWithInviteCode() {
         if (userProfile != null) {
             viewModelScope.launch {
-                signUpUseCase.signUpWithInviteCode(
-                    signToken, SignUpRequestWithInviteCode(
-                        inviteCode,
-                        userProfile.name,
-                        userProfile.iconName
-                    )
-                ).onSuccess {
-                    setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
-                }.onFailure {
-                    setUiState(InputBabiesInfoUiState.SignUpFailed(it))
+                when (
+                    val result = signUpUseCase.signUpWithInviteCode(
+                        signToken, SignUpRequestWithInviteCode(
+                            inviteCode,
+                            userProfile.name,
+                            userProfile.iconName
+                        )
+                    )) {
+                    is Result.Success -> {
+                        setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
+                    }
+                    else -> {
+                        val throwable = result.getThrowableOrNull()
+                        if(throwable != null){
+                            setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
+                        }
+                    }
                 }
             }
         }

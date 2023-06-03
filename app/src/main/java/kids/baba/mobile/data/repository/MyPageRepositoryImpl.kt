@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRemoteDataSource) :
     MyPageRepository {
-    override suspend fun loadMyPageGroup(): Flow<GroupResponse> = dataSource.loadMyPageGroup()
+    override suspend fun loadMyPageGroup(): Result<GroupResponse> = dataSource.loadMyPageGroup()
 
-    override suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse> =
+    override suspend fun loadBabyProfile(babyId: String) =
         dataSource.loadBabyProfile(babyId = babyId)
 
     override suspend fun addGroup(myPageGroup: MyPageGroup) =
@@ -47,8 +47,10 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         dataSource.deleteGroupMember(memberId = memberId)
     }
 
+    override suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse> =
+        dataSource.getInvitationInfo(inviteCode = inviteCode)
+
     override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> =
         dataSource.makeInviteCode(relationInfo = relationInfo)
-
-
+        
 }

@@ -17,7 +17,7 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.EditMemberViewModel
 
 @AndroidEntryPoint
-class EditMemberDialog : DialogFragment() {
+class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
 
     private var _binding: DialogFragmentEditMemberBinding? = null
     private val binding
@@ -28,6 +28,7 @@ class EditMemberDialog : DialogFragment() {
         setStyle(STYLE_NO_TITLE, R.style.BABA_AlbumDialogStyle)
         isCancelable = true
         viewModel.dismiss.value = { dismiss() }
+        viewModel.patchMember.value = { itemClick() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

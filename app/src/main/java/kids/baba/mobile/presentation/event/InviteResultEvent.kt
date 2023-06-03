@@ -1,7 +1,10 @@
 package kids.baba.mobile.presentation.event
 
-import kids.baba.mobile.domain.model.BabiesInfoResponse
+import androidx.annotation.StringRes
 
-sealed class InviteResultEvent{
-    data class Success(val data: BabiesInfoResponse): InviteResultEvent()
+sealed class InviteResultEvent {
+    object SuccessGetInvitationInfo : InviteResultEvent()
+    object GoToMyPage : InviteResultEvent()
+    object BackButtonClicked : InviteResultEvent()
+    data class ShowSnackBar(@StringRes val message: Int) : InviteResultEvent()
 }

@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +26,7 @@ class EditMemberViewModel @Inject constructor(
     val uiModel = MutableStateFlow(EditMemberUiModel())
     val input = MutableStateFlow("")
     val dismiss = MutableStateFlow {}
+    val patchMember = MutableStateFlow {}
 
     private val _eventFlow = MutableEventFlow<EditGroupMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -41,7 +41,10 @@ class EditMemberViewModel @Inject constructor(
             memberId = uiModel.value.member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = input.value)
         )) {
-            is kids.baba.mobile.domain.model.Result.Success -> {_eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)}
+            is kids.baba.mobile.domain.model.Result.Success -> {
+                _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
+                patchMember.value()
+            }
             is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> {_eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))}
         }
@@ -49,8 +52,8 @@ class EditMemberViewModel @Inject constructor(
     }
 
     fun delete() = viewModelScope.launch {
-        //deleteOneGroupMemberUseCase.delete(member.value?.memberId ?: "")
-        Log.e("123", "delete")
+        deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
+        patchMember.value()
         dismiss()
     }
 

@@ -26,6 +26,13 @@ interface AlbumApi {
         @Query("month") month: Int
     ): Response<AlbumResponse>
 
+    @GET("baby/{babyId}/album/{albumId}")
+    suspend fun gatOneAlbum(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") babyId: String,
+        @Path("contentId") contentId: Int
+    ): Response<Album>
+
     //성장 앨범 추가
     @Multipart
     @POST("baby/{babyId}/album")
@@ -37,32 +44,47 @@ interface AlbumApi {
         @PartMap bodyDataHashMap: HashMap<String, RequestBody>
     ): Response<PostAlbumResponse>
 
+    @DELETE("baby/{babyId}/album/{contentId}")
+    suspend fun deleteAlbum(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") babyId: String,
+        @Path("contentId") contentId: Int
+    ): Response<Unit>
+
     @POST("baby/{babyId}/album/{contentId}/like")
     suspend fun likeAlbum(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
-        @Path("contentId") contentId: String
+        @Path("contentId") contentId: Int
     ): Response<LikeResponse>
 
     @POST("baby/{babyId}/album/{contentId}/comment")
     suspend fun addComment(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") id: String,
-        @Path("contentId") contentId: String,
+        @Path("contentId") contentId: Int,
         @Body commentInput: CommentInput
-    )
+    ): Response<Unit>
+
+    @DELETE("baby/{babyId}/album/{contentId}/comment/{commentId}")
+    suspend fun deleteComment(
+        @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
+        @Path("babyId") id: String,
+        @Path("contentId") contentId: Int,
+        @Path("commentId") commentId: String
+    ): Response<Unit>
 
     @GET("baby/{babyId}/album/{contentId}/comments")
     suspend fun getComments(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("contentId") contentId: String,
+        @Path("contentId") contentId: Int,
         @Path("babyId") id: String
     ): Response<CommentResponse>
 
     @GET("baby/{babyId}/album/{contentId}/likes")
     suspend fun getLikeDetail(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
-        @Path("contentId") contentId: String,
+        @Path("contentId") contentId: Int,
         @Path("babyId") id: String
     ): Response<LikeDetailResponse>
 

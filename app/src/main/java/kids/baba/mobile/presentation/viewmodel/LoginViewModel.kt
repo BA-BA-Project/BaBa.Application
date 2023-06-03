@@ -42,8 +42,13 @@ class LoginViewModel @Inject constructor(
     private suspend fun loginToBaba(socialToken: String) {
         when (val result = loginUseCase.babaLogin(socialToken)) {
             is Result.Success -> {
-                val member = getMemberUseCase.getMe()
-                _eventFlow.emit(LoginEvent.MoveToWelcome(member.name))
+                when(val memberResult = getMemberUseCase.getMe()){
+                    is Result.Success -> {
+                        _eventFlow.emit(LoginEvent.MoveToWelcome(memberResult.data.name))
+                    }
+                    is Result.NetworkError -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
+                    else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_get_member_failed))
+                }
             }
 
             is Result.Failure -> {

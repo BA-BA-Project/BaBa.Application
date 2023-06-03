@@ -5,23 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.databinding.FragmentCreatorBinding
+import kids.baba.mobile.databinding.FragmentDeleteUserBinding
+import kids.baba.mobile.presentation.viewmodel.DeleteMemberViewModel
 
 @AndroidEntryPoint
-class FragmentCreator : Fragment() {
-    private var _binding: FragmentCreatorBinding? = null
+class DeleteMemberFragment : Fragment() {
+
+    private var _binding: FragmentDeleteUserBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
+    private val viewModel: DeleteMemberViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCreatorBinding.inflate(inflater, container, false)
+        _binding = FragmentDeleteUserBinding.inflate(inflater, container, false)
+        bindViewModel()
         return binding.root
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onDestroyView() {
@@ -31,15 +41,6 @@ class FragmentCreator : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.title = "서비스 제작자"
-        binding.design = "기획 및 디자인"
-        binding.designer = "박재희"
-        binding.android = "안드로이드 개발"
-        binding.androidDev = "심지훈\n이윤호\n이호성"
-        binding.backEnd = "백엔드 개발"
-        binding.backEndDev = "김준형\n박성우"
-        binding.helper = "도움주신 분"
-        binding.helperName = "서종환"
 
         binding.topAppBar.ivBackButton.setOnClickListener {
             findNavController().navigateUp()

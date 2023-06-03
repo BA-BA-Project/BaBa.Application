@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddGroupBinding
+import kids.baba.mobile.presentation.adapter.ColorAdapter
 import kids.baba.mobile.presentation.event.AddGroupEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.ColorModel
+import kids.baba.mobile.presentation.model.ColorUiModel
 import kids.baba.mobile.presentation.viewmodel.AddGroupViewModel
 
 @AndroidEntryPoint
@@ -28,7 +30,6 @@ class AddGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddGroupBinding.inflate(inflater, container, false)
-        binding.viewmodel = viewModel
         return binding.root
     }
 
@@ -39,22 +40,45 @@ class AddGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
+
+        setColorButton()
         collectEvent()
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            requireActivity().finish()
+    }
+
+    private fun bindViewModel() {
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun setColorButton() {
+        val colors = mutableListOf<ColorUiModel>().apply {
+            addAll(
+                ColorModel
+                    .values()
+                    .map { ColorUiModel(it.name, it.colorCode) }
+            )
         }
-        binding.btnAdd.setOnClickListener {
-            val name = binding.nameView.etInput.text.toString()
-            viewModel.addGroup(name, "#FFAEBA")
+        val adapter = ColorAdapter { color ->
+            viewModel.color.value = color.value
         }
+        binding.colorView.colorContainer.adapter = adapter
+        adapter.submitList(colors)
     }
 
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is AddGroupEvent.SuccessAddGroup -> { requireActivity().finish() }
-                    is AddGroupEvent.ShowSnackBar -> { showSnackBar(event.message) }
+                    is AddGroupEvent.SuccessAddGroup -> {
+                        requireActivity().finish()
+                    }
+                    is AddGroupEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                    is AddGroupEvent.GoToBack -> {
+                        requireActivity().finish()
+                    }
                 }
             }
         }

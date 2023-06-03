@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
-import kids.baba.mobile.databinding.FragmentAskBinding
+import kids.baba.mobile.databinding.FragmentServiceInfoBinding
 
 @AndroidEntryPoint
-class FragmentAsk : Fragment() {
-    private var _binding: FragmentAskBinding? = null
+class ServiceInfoFragment : Fragment() {
+    private var _binding: FragmentServiceInfoBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
@@ -21,8 +21,8 @@ class FragmentAsk : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAskBinding.inflate(inflater, container, false)
-        binding.title = getString(R.string.ask)
+        _binding = FragmentServiceInfoBinding.inflate(inflater, container, false)
+        binding.title = getString(R.string.service_info)
         return binding.root
     }
 

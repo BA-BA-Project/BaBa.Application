@@ -53,6 +53,7 @@ android {
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://dev.baba.kids/api/\""
+            buildConfigField "String", "BASE_PHOTO_URL", "\"https://baba-images-bucket.s3.ap-northeast-2.amazonaws.com\""
             buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
         product {
@@ -62,6 +63,7 @@ android {
                     KAKAO_NATIVE_APP_KEY: properties.getProperty("kakao.native.app.key")
             ]
             buildConfigField "String", "BASE_URL", "\"https://baba.kids/api/\""
+            buildConfigField "String", "BASE_PHOTO_URL", "\"https://baba-images-bucket.s3.ap-northeast-2.amazonaws.com\""
             buildConfigField "String", "KAKAO_NATIVE_APP_KEY", "\"${properties.getProperty("kakao.native.app.key")}\""
         }
     }

@@ -4,9 +4,9 @@ import kids.baba.mobile.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRepository {
-    suspend fun loadMyPageGroup(): Flow<GroupResponse>
+    suspend fun loadMyPageGroup(): Result<GroupResponse>
 
-    suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse>
+    suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse>
 
     suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit>
 
@@ -16,7 +16,7 @@ interface MyPageRepository {
 
     suspend fun addMyBaby(baby: MyBaby): Result<Unit>
 
-    suspend fun addBabyWithInviteCode(inviteCode: InviteCode)
+    suspend fun addBabyWithInviteCode(inviteCode: InviteCode): Result<Unit>
 
     suspend fun deleteBaby(babyId: String)
 
@@ -27,6 +27,8 @@ interface MyPageRepository {
     suspend fun patchMember(memberId: String, relation: GroupMemberInfo): Result<Unit>
 
     suspend fun deleteGroupMember(memberId: String)
+
+    suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse>
 
     suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode>
 }

@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MyPageRemoteDataSource {
 
-    suspend fun loadMyPageGroup(): Flow<GroupResponse>
+    suspend fun loadMyPageGroup(): Result<GroupResponse>
 
-    suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse>
+    suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse>
 
     suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit>
 
@@ -17,7 +17,7 @@ interface MyPageRemoteDataSource {
 
     suspend fun addMyBaby(baby: MyBaby): Result<Unit>
 
-    suspend fun addBabyWithInviteCode(inviteCode: InviteCode)
+    suspend fun addBabyWithInviteCode(inviteCode: InviteCode): Result<Unit>
 
     suspend fun deleteBaby(babyId: String)
 
@@ -29,5 +29,8 @@ interface MyPageRemoteDataSource {
 
     suspend fun deleteGroupMember(memberId: String)
 
+    suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse>
+
     suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode>
+  
 }

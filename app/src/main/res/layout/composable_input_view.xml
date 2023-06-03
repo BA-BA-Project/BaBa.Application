@@ -10,6 +10,11 @@
         <variable
             name="button"
             type="String" />
+
+        <variable
+            name="inputViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,9 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="28dp"
+            android:text="@{title}"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="@{title}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,6 +44,7 @@
             android:layout_marginEnd="18dp"
             android:text="@{button}"
             android:textColor="#B4B4B4"
+            android:onClick="@{() -> inputViewData.onEditButtonClickEventListener.invoke()}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/et_input"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +59,7 @@
             android:layout_marginBottom="52dp"
             android:background="@drawable/edit_input"
             android:padding="7dp"
+            android:text="@={inputViewData.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_input_button"
             app:layout_constraintStart_toStartOf="parent"

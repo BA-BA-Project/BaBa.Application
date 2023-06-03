@@ -10,19 +10,35 @@ import kids.baba.mobile.databinding.ItemAlbumBinding
 import kids.baba.mobile.presentation.model.AlbumUiModel
 import java.time.LocalDate
 
-class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val createAlbum : () -> Unit) : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
+class AlbumAdapter(
+    private val likeClick: (AlbumUiModel) -> Unit,
+    private val createAlbum: () -> Unit,
+    private val albumClick: () -> Unit
+) : ListAdapter<AlbumUiModel, AlbumAdapter.AlbumViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         val view = ItemAlbumBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AlbumViewHolder(view, likeClick, createAlbum)
+        return AlbumViewHolder(view, likeClick, createAlbum, albumClick)
     }
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class AlbumViewHolder(private val binding: ItemAlbumBinding, likeClick: (AlbumUiModel) -> Unit, createAlbum : () -> Unit) :
+    fun submitListWithCallback(list: List<AlbumUiModel>, submitCallback: () -> Unit){
+        super.submitList(list) {
+            submitCallback()
+        }
+    }
+
+    class AlbumViewHolder(
+        private val binding: ItemAlbumBinding,
+        likeClick: (AlbumUiModel) -> Unit,
+        createAlbum: () -> Unit,
+        albumClick: () -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        private lateinit var album : AlbumUiModel
+        private lateinit var album: AlbumUiModel
+
         init {
             binding.btnAlbumLike.setOnClickListener {
                 likeClick(album)
@@ -30,7 +46,11 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
             binding.btnCreateAlbum.setOnClickListener {
                 createAlbum()
             }
+            itemView.setOnClickListener {
+                albumClick()
+            }
         }
+
         fun bind(album: AlbumUiModel) {
             this.album = album
             val isMyBaby = album.isMyBaby
@@ -38,10 +58,18 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
             binding.photo = album.photo
 
 
-            binding.btnAlbumLike.visibility = if(album.contentId != null){View.VISIBLE} else {View.GONE}
-            binding.btnCreateAlbum.visibility = if(album.contentId == null && isMyBaby){View.VISIBLE} else {View.GONE}
+            binding.btnAlbumLike.visibility = if (album.contentId != null) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            binding.btnCreateAlbum.visibility = if (album.contentId == null && isMyBaby) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
-            if(album.date == LocalDate.now() && album.contentId == null){
+            if (album.date == LocalDate.now() && album.contentId == null) {
                 binding.ivAlbum.visibility = View.INVISIBLE
                 binding.lavTodayAlbum.visibility = View.VISIBLE
                 binding.lavTodayAlbum.playAnimation()
@@ -53,6 +81,7 @@ class AlbumAdapter(private val likeClick : (AlbumUiModel) -> Unit, private val c
 
         }
     }
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<AlbumUiModel>() {
             override fun areItemsTheSame(oldItem: AlbumUiModel, newItem: AlbumUiModel) =

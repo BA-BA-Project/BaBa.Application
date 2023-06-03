@@ -64,5 +64,18 @@
             app:layout_constraintStart_toStartOf="@id/tv_group_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_group_desc"
             tools:listitem="@layout/item_member" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_baba_edit_text"
+            android:text="@string/invite_member"
+            android:textColor="@color/baba_main"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/rv_group_members"
+            app:layout_constraintStart_toStartOf="@id/rv_group_members"
+            app:layout_constraintTop_toBottomOf="@id/tv_group_desc" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

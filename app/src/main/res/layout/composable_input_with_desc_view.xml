@@ -15,7 +15,9 @@
             name="button"
             type="String" />
 
-
+        <variable
+            name="inputWithDescViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,6 +66,7 @@
             android:background="@drawable/edit_input"
             android:padding="7dp"
             android:textColor="#000000"
+            android:text="@={inputWithDescViewData.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_edit_button"
             app:layout_constraintStart_toStartOf="parent"

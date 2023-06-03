@@ -12,7 +12,7 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
     private val api: MyPageApi,
     private val safeApiHelper: SafeApiHelper
 ) : MyPageRemoteDataSource {
-    override suspend fun loadMyPageGroup(): Flow<GroupResponse> {
+    override suspend fun loadMyPageGroup(): Result<GroupResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.loadMyPageGroup()
@@ -21,10 +21,15 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        return if (result is Result.Success) flow { emit(result.data) } else flow {}
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
+//        return if (result is Result.Success) flow { emit(result.data) } else flow {}
     }
 
-    override suspend fun loadBabyProfile(babyId: String): Flow<BabyProfileResponse> {
+    override suspend fun loadBabyProfile(babyId: String): Result<BabyProfileResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.loadBabyProfile(babyId = babyId)
@@ -33,7 +38,12 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        return if (result is Result.Success) flow { emit(result.data) } else flow {}
+
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun addGroup(myPageGroup: MyPageGroup): Result<Unit> {
@@ -92,8 +102,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) {
-        api.addBabyWithInviteCode(inviteCode = inviteCode)
+    override suspend fun addBabyWithInviteCode(inviteCode: InviteCode): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.addBabyWithInviteCode(inviteCode = inviteCode)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun deleteBaby(babyId: String) {
@@ -144,6 +164,22 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deleteGroupMember(memberId: String) {
         api.deleteGroupMember(memberId = memberId)
+    }
+
+    override suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.getInvitationInfo(inviteCode = inviteCode)
+            },
+            mapping = {
+                it
+            }
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> {

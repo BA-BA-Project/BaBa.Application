@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="description"
             type="String" />
+
+        <variable
+            name="addButtonViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableAddButtonViewData" />
+
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -23,25 +32,27 @@
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> addButtonViewData.onAddButtonClickEventListener.invoke()}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/iv_add_button"
-            app:layout_constraintTop_toTopOf="@+id/iv_add_button"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_add_button"
+            app:layout_constraintStart_toEndOf="@+id/iv_add_button"
+            app:layout_constraintTop_toTopOf="@+id/iv_add_button">
+
             <TextView
                 android:id="@+id/tv_add_button_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{title}"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="@{title}"
                 tools:text="초대코드 입력" />
 
             <TextView
@@ -49,9 +60,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:text="@{description}"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:text="@{description}"
                 tools:text="초대받은 코드를 입력해 아이를 추가합니다." />
         </LinearLayout>
 

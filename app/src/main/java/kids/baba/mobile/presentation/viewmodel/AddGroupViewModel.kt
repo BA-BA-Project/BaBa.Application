@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MyPageGroup
 import kids.baba.mobile.domain.usecase.AddOneGroupUseCase
+import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
+import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.AddGroupEvent
 import kids.baba.mobile.presentation.model.AddGroupUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -19,16 +21,31 @@ class AddGroupViewModel @Inject constructor(
     private val addOneGroupUseCase: AddOneGroupUseCase
 ) : ViewModel() {
     val uiModel = MutableStateFlow(AddGroupUiModel())
+    val color = MutableStateFlow("#81E0D5")
 
     private val _eventFlow = MutableEventFlow<AddGroupEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    fun addGroup(relationGroup: String, iconColor: String) = viewModelScope.launch {
+    private val relationGroupName = MutableStateFlow("")
 
+
+    val relationGroupNameViewData = ComposableInputWithDescViewData(
+        text = relationGroupName
+    )
+
+    val goToBack = ComposableTopViewData(
+        onBackButtonClickEventListener = {
+            viewModelScope.launch {
+                _eventFlow.emit(AddGroupEvent.GoToBack)
+            }
+        }
+    )
+
+    fun addGroupComplete() = viewModelScope.launch {
         when (addOneGroupUseCase.add(
             myPageGroup = MyPageGroup(
-                relationGroup = relationGroup,
-                iconColor = iconColor
+                relationGroup = relationGroupName.value,
+                iconColor = color.value
             )
         )) {
             is kids.baba.mobile.domain.model.Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)

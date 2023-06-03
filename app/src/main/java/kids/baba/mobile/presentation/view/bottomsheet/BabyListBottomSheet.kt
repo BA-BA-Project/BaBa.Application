@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.BottomSheetBabyListBinding
 import kids.baba.mobile.presentation.adapter.BabyAdapter
+import kids.baba.mobile.presentation.event.BabyListEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.viewmodel.BabyListViewModel
 
 @AndroidEntryPoint
-class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDialogFragment() {
+class BabyListBottomSheet(
+    val itemClick: (BabyUiModel) -> Unit,
+    val moveBabyManagement: () -> Unit
+) : BottomSheetDialogFragment() {
     private var _binding: BottomSheetBabyListBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -33,7 +39,28 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setBinding()
         setBabyList()
+        collectEvent()
+    }
+
+    private fun setBinding() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun collectEvent() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is BabyListEvent.ShowSnackBar -> showSnackBar(event.message)
+                    is BabyListEvent.MoveBabyManagement -> {
+                        dismiss()
+                        moveBabyManagement()
+                    }
+                }
+            }
+        }
     }
 
     private fun setBabyList() {
@@ -48,7 +75,13 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
                 babiesAdapter.submitList(it)
             }
         }
+    }
 
+    private fun showSnackBar(@StringRes message: Int) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            .apply {
+                anchorView = binding.root
+            }.show()
     }
 
     override fun onDestroyView() {
@@ -58,6 +91,6 @@ class BabyListBottomSheet(val itemClick: (BabyUiModel) -> Unit) : BottomSheetDia
 
     companion object {
         const val TAG = "BabyListBottomSheet"
-        const val SELECTED_BABY_KEY = "SELECTED_BABY"
+        const val SELECTED_BABY_ID_KEY = "SELECTED_BABY"
     }
 }

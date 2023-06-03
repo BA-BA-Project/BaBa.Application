@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +17,7 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -71,7 +71,6 @@ class GatheringAlbumViewModel @Inject constructor(
     fun initAlbum() = viewModelScope.launch {
         getAllAlbums()
         classifyAlbums()
-
     }
 
     private fun classifyAlbums() {
@@ -81,10 +80,10 @@ class GatheringAlbumViewModel @Inject constructor(
             thisYear
         }
 
-        tempYearAlbumCountList.clear()
-        tempMonthAlbumCountList.clear()
-        tempYearAlbumList.clear()
-        tempMonthAlbumList.clear()
+        tempYearAlbumCountList = mutableListOf()
+        tempMonthAlbumCountList = mutableListOf()
+        tempYearAlbumList = mutableListOf()
+        tempMonthAlbumList = mutableListOf()
 
         // 현재 year 에서부터 1년 씩 줄이면서 앨범 필터링
         while (thisYear >= oldestAlbumYear) {
@@ -151,6 +150,13 @@ class GatheringAlbumViewModel @Inject constructor(
         )
     }
 
+    fun deleteAlbum(album: AlbumUiModel){
+        _allAlbumListState.update { it ->
+            it.filter { it != album }
+        }
+    }
+
+
     private suspend fun getAllAlbums() {
         val baby = EncryptedPrefs.getBaby(PrefsKey.BABY_KEY)
         val tempList: MutableList<AlbumUiModel> = mutableListOf()
@@ -158,7 +164,7 @@ class GatheringAlbumViewModel @Inject constructor(
         when (val result = getAllAlbumsUseCase(id = baby.babyId)) {
             is Result.Success -> {
                 result.data.forEach {
-                    tempList.add(it.toPresentation(false)) // false is meaningless value
+                    tempList.add(it.toPresentation(baby.isMyBaby)) // false is meaningless value
                 }
                 _allAlbumListState.value = tempList
             }
@@ -169,8 +175,6 @@ class GatheringAlbumViewModel @Inject constructor(
                 _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
         }
-
-
     }
 
 }
