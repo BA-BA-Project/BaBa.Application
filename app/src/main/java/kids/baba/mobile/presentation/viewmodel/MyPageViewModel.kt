@@ -25,7 +25,7 @@ class MyPageViewModel @Inject constructor(
     private val getBabiesUseCase: GetBabiesUseCase,
     private val getMemberUseCase: GetMemberUseCase
 ) : ViewModel() {
-    val groupAddButton = MutableStateFlow("+ 그룹만들기")
+    val groupAddButton = MutableStateFlow("그룹만들기")
 
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
