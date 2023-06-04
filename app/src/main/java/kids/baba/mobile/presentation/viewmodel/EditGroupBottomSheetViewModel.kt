@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,7 +36,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     private val _color = MutableStateFlow("#81E0D5")
     val color = _color.asStateFlow()
 
-    private val nameViewState: MutableStateFlow<String> = MutableStateFlow("")
+    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(savedStateHandle["groupName"] ?: "")
 
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -45,7 +46,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     }
 
     val composableNameViewData = ComposableNameViewData(
-        initialText = "",
+        initialText = groupName.value,
         text = nameViewState,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
