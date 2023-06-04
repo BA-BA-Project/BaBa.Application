@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_white_radius_15dp"
+                    android:background="@drawable/bg_my_page_card"
                     android:padding="20dp"
                     android:paddingBottom="10dp">
 
@@ -166,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_white_radius_15dp">
+                    android:background="@drawable/bg_my_page_card">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/group_container"
