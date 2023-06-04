@@ -9,7 +9,7 @@
         <item name="colorPrimaryVariant">#2466D0</item>
         <item name="colorOnPrimary">#BBD5FF</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#FFDB29</item>
+        <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">#EFBF14</item>
         <item name="colorOnSecondary">#FFEE9C</item>
         <!-- Status bar color. -->
