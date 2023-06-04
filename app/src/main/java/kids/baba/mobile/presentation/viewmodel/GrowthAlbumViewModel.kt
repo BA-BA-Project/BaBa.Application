@@ -129,15 +129,25 @@ class GrowthAlbumViewModel @Inject constructor(
 
                 val selectedBaby =
                     if (babyId == null) {
-                        myBaby.first().toPresentation()
+                        if(myBaby.isNotEmpty()){
+                            myBaby.first().toPresentation()
+                        } else if (others.isNotEmpty()){
+                            others.first().toPresentation()
+                        } else {
+                            null
+                        }
                     } else {
                         myBaby.firstOrNull { it.babyId == babyId }?.toPresentation()
                             ?: others.firstOrNull { it.babyId == babyId }
                                 ?.toPresentation()
                             ?: myBaby.first().toPresentation()
                     }
-                EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
-                loadAlbum(selectedBaby.copy(selected = true), date)
+                if(selectedBaby != null){
+                    EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
+                    loadAlbum(selectedBaby.copy(selected = true), date)
+                } else{
+                    _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_babies_failed))
+                }
             }
 
             is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
