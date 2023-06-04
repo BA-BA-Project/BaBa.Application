@@ -19,6 +19,7 @@
             android:id="@+id/civ_member_profile"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            app:layout_constraintWidth_max="56dp"
             android:src="@drawable/profile_baby_1"
             app:backGroundColor="@{baby.groupColor}"
             app:layout_constraintBottom_toTopOf="@id/tv_member_name"
