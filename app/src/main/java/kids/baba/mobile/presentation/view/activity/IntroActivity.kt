@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
@@ -93,6 +95,7 @@ class IntroActivity : AppCompatActivity() {
                             TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(
                                 event.signToken
                             )
+                        EncryptedPrefs.putString("babyGroupTitle", "아이들") // 처음 로그인 시 아이들이라는 이름으로 아이 그룹 설정.
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {
