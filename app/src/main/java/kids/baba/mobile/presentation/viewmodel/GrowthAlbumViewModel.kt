@@ -127,26 +127,19 @@ class GrowthAlbumViewModel @Inject constructor(
                 val myBaby = result.data.myBaby
                 val others = result.data.others
 
+                val babies = myBaby + others
                 val selectedBaby =
                     if (babyId == null) {
-                        if(myBaby.isNotEmpty()){
-                            myBaby.first().toPresentation()
-                        } else if (others.isNotEmpty()){
-                            others.first().toPresentation()
-                        } else {
-                            null
-                        }
+                        babies.firstOrNull()
                     } else {
-                        myBaby.firstOrNull { it.babyId == babyId }?.toPresentation()
-                            ?: others.firstOrNull { it.babyId == babyId }
-                                ?.toPresentation()
-                            ?: myBaby.first().toPresentation()
-                    }
+                        babies.firstOrNull{it.babyId == babyId} ?: babies.firstOrNull()
+                    }?.toPresentation()
+
                 if(selectedBaby != null){
                     EncryptedPrefs.putBaby(PrefsKey.BABY_KEY, selectedBaby.toDomain())
                     loadAlbum(selectedBaby.copy(selected = true), date)
                 } else{
-                    _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_babies_failed))
+                    _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_babies_empty))
                 }
             }
 
