@@ -25,7 +25,7 @@ class MyPageViewModel @Inject constructor(
     private val getBabiesUseCase: GetBabiesUseCase,
     private val getMemberUseCase: GetMemberUseCase
 ) : ViewModel() {
-    val groupAddButton = MutableStateFlow("+ 그룹만들기")
+    val groupAddButton = MutableStateFlow("그룹만들기")
 
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -55,7 +55,7 @@ class MyPageViewModel @Inject constructor(
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data
-                _eventFlow.emit(MyPageEvent.LoadBabies(babies.myBaby + babies.others))
+                _eventFlow.emit(MyPageEvent.LoadBabies((babies.myBaby + babies.others).map { it.toPresentation() }))
             }
             is Result.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.Error(result.throwable))

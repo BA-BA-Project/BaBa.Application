@@ -1,8 +1,8 @@
 package kids.baba.mobile.presentation.event
 
 import androidx.annotation.StringRes
-import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Group
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 
 sealed class MyPageEvent {
@@ -10,7 +10,7 @@ sealed class MyPageEvent {
 
     data class LoadMember(val data: List<Group>) : MyPageEvent()
 
-    data class LoadBabies(val data: List<Baby>) : MyPageEvent()
+    data class LoadBabies(val data: List<BabyUiModel>) : MyPageEvent()
 
     data class LoadMyInfo(val data: MemberUiModel) : MyPageEvent()
 
