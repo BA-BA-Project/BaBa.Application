@@ -83,8 +83,7 @@ class BabyDetailViewModel @Inject constructor(
     }
 
     fun delete() = viewModelScope.launch {
-        Log.e("BabyDetailViewModel", "delete: babyId = ${baby.value?.memberId}")
-        when (deleteOneBabyUseCase(babyId = baby.value?.memberId ?: "")) {
+        when (deleteOneBabyUseCase(babyId = baby.value?.babyId ?: "")) {
             is Result.Success -> {
                 Log.e("BabyDetailViewModel", "delete: Success")
                 _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
