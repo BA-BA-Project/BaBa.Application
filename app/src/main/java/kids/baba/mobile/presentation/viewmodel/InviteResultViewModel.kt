@@ -35,7 +35,6 @@ class InviteResultViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = getInvitationInfoUseCase(inviteCode = inviteCodeStr)) {
                 is Result.Success -> {
-                    // TODO: 초대코드로 아이 추가 해야 함.
                     uiModel.update {
                         it.copy(
                             addBabyNameDesc = result.data.babies[0].babyName,

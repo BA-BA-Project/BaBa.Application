@@ -7,7 +7,6 @@ import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.InviteCode
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
-import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.BabyInviteCodeEvent
@@ -21,8 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InputInviteCodeViewModel @Inject constructor(
-    private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase,
-    private val getBabiesInfoByInviteCodeUseCase: GetBabiesInfoByInviteCodeUseCase
+    private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase
 ) : ViewModel() {
     val uiModel = MutableStateFlow(InputInviteCodeUiModel())
     val uiState = MutableStateFlow<InputCodeState>(InputCodeState.Idle)
@@ -53,7 +51,7 @@ class InputInviteCodeViewModel @Inject constructor(
                 is Result.Success -> _eventFlow.emit(
                     BabyInviteCodeEvent.SuccessAddBabyWithInviteCode(
                         inviteCode = InviteCode(
-                            composableInviteCode.text.toString()
+                            inviteCodeState.value
                         )
                     )
                 )

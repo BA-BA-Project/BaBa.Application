@@ -27,8 +27,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:topViewData="@{viewModel.goToBack}"
-                bind:title="@{viewModel.uiModel.addBabyTitle}" />
+                bind:title="@{viewModel.uiModel.addBabyTitle}"
+                bind:topViewData="@{viewModel.goToBack}" />
         </LinearLayout>
 
 
@@ -100,10 +100,10 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:background="@drawable/button_complete"
+            android:onClick="@{() -> viewModel.goToMyPage()}"
             android:text="@string/check"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
-            android:onClick="@{() -> viewModel.goToMyPage()}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
