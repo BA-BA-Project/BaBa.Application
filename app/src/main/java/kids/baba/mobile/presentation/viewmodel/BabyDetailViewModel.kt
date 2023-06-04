@@ -43,7 +43,6 @@ class BabyDetailViewModel @Inject constructor(
     val isMyGroupEmpty = _isMyGroupEmpty.asStateFlow()
 
     init {
-        uiModel.value.babyName = baby.value?.name ?: ""
         load(baby.value?.babyId ?: "")
     }
 
@@ -62,14 +61,10 @@ class BabyDetailViewModel @Inject constructor(
                 )
                 uiModel.update {
                     it.copy(
+                        babyName = baby.value?.name ?: "",
                         babyBirthday = result.data.birthday,
                         familyGroupTitle = result.data.familyGroup.groupName,
-                        myGroupTitle =
-                        if (result.data.myGroup != null) {
-                            result.data.myGroup.groupName
-                        } else {
-                            "내가 속한 그룹 이름"
-                        }
+                        myGroupTitle = result.data.myGroup?.groupName ?: "",
                     )
                 }
             }

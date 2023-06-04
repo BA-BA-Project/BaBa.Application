@@ -105,14 +105,14 @@
             <include
                 android:id="@+id/family_view"
                 layout="@layout/composable_group_view"
-                bind:description="@{viewModel.uiModel.familyGroupDesc}"
+                bind:description="@{String.format(@string/family_group_description)}"
                 bind:groupName="@{viewModel.uiModel.familyGroupTitle}" />
 
             <include
                 android:id="@+id/my_group_view"
                 layout="@layout/composable_group_view"
                 android:visibility="@{viewModel.isMyGroupEmpty() ? View.GONE : View.VISIBLE}"
-                bind:description="@{viewModel.uiModel.myGroupDesc}"
+                bind:description="@{String.format(@string/my_group_description,viewModel.uiModel.familyGroupTitle, viewModel.uiModel.myGroupTitle)}"
                 bind:groupName="@{viewModel.uiModel.myGroupTitle}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
