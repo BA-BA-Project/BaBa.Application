@@ -59,7 +59,7 @@ class InviteResultFragment : Fragment() {
                         showSnackBar(event.message)
                         findNavController().navigateUp()
                     }
-                    is InviteResultEvent.BackButtonClicked -> {
+                    is InviteResultEvent.GoToBack -> {
                         findNavController().navigateUp()
                     }
                     is InviteResultEvent.GoToMyPage -> {

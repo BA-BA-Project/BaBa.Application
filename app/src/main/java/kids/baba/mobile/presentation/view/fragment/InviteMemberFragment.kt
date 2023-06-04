@@ -85,7 +85,6 @@ class InviteMemberFragment : Fragment() {
                         requireActivity().finish()
                     }
                     is InviteMemberEvent.CopyInviteCode -> {
-                        Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
                         val clipboard =
                             requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)

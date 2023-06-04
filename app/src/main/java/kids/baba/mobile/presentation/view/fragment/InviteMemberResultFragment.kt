@@ -24,27 +24,20 @@ class InviteMemberResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         collectEvent()
         bindViewModel()
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.btnComplete.setOnClickListener {
-            requireActivity().finish()
-        }
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.event.collect {
+            viewModel.eventFlow.collect {
                 when (it) {
                     is InviteResultEvent.SuccessGetInvitationInfo -> {
-                        binding.groupView.tvDesc.text = it.data.relationGroup
-                        binding.relationView.tvDesc.text = it.data.relationName
                     }
-                    is InviteResultEvent.BackButtonClicked -> {
-
+                    is InviteResultEvent.SuccessAddMember -> {}
+                    is InviteResultEvent.GoToBack -> {
+                        findNavController().navigateUp()
                     }
                     is InviteResultEvent.GoToMyPage -> {
-
+                        requireActivity().finish()
                     }
                     is InviteResultEvent.ShowSnackBar -> {
 

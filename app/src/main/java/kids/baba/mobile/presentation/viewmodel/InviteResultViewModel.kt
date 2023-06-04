@@ -58,7 +58,7 @@ class InviteResultViewModel @Inject constructor(
     val goToBack = ComposableTopViewData(
         onBackButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(InviteResultEvent.BackButtonClicked)
+                _eventFlow.emit(InviteResultEvent.GoToBack)
             }
         }
     )
