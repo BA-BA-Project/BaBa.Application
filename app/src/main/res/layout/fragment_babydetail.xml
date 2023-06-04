@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
             type="kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,11 +35,11 @@
             android:layout_height="65dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="93dp"
-            android:src="@drawable/my_profile"
-            app:backGroundColor="@{viewModel.baby.userIconUiModel.iconColor}"
-            app:iconRes="@{viewModel.baby.userIconUiModel.userProfileIconUiModel.iconRes}"
+            android:src="@drawable/profile_baby_1"
+            app:backGroundColor="@{viewModel.baby.groupColor}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:civ_circle_background_color="@color/baba_main" />
 
         <TextView
             android:id="@+id/tv_my_name"
@@ -89,25 +92,28 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/bg_my_page_card"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/civ_my_profile">
+            app:layout_constraintTop_toBottomOf="@+id/civ_my_profile"
+            app:layout_constraintVertical_bias="0">
 
             <include
                 android:id="@+id/family_view"
                 layout="@layout/composable_group_view"
-                bind:description="@{viewModel.uiModel.familyGroupDesc}"
+                bind:description="@{String.format(@string/family_group_description)}"
                 bind:groupName="@{viewModel.uiModel.familyGroupTitle}" />
 
             <include
                 android:id="@+id/my_group_view"
                 layout="@layout/composable_group_view"
-                bind:description="@{viewModel.uiModel.myGroupDesc}"
+                android:visibility="@{viewModel.isMyGroupEmpty() ? View.GONE : View.VISIBLE}"
+                bind:description="@{String.format(@string/my_group_description,viewModel.uiModel.familyGroupTitle, viewModel.uiModel.myGroupTitle)}"
                 bind:groupName="@{viewModel.uiModel.myGroupTitle}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

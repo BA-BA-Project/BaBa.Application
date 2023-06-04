@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
-import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.mapper.toMemberUiModel
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
@@ -24,8 +22,8 @@ import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
 
-    private lateinit var familyAdapter: MemberAdapter
-    private lateinit var myGroupAdapter: MemberAdapter
+    private lateinit var familyAdapter: GroupMemberAdapter
+    private lateinit var myGroupAdapter: GroupMemberAdapter
     private var _binding: FragmentBabydetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -46,13 +44,8 @@ class BabyDetailFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is BabyDetailEvent.SuccessBabyDetail -> {
-                        familyAdapter.submitList(event.baby.familyGroup.members.map { member ->
-                            member.toMemberUiModel()
-                        })
-                        // TODO: 아래 세 줄은 제대로 친구추가가 되는지 확인을 위한 임시 코드 (마음대로 지우셔도 됩니다.)
-                        myGroupAdapter.submitList(event.baby.myGroup?.members?.map { member ->
-                            member.toMemberUiModel()
-                        })
+                        familyAdapter.submitList(event.familyMemberList)
+                        myGroupAdapter.submitList(event.myGroupMemberList)
                     }
                     is BabyDetailEvent.SuccessDeleteBaby -> {requireActivity().finish()}
                     is BabyDetailEvent.ShowSnackBar -> {
@@ -108,20 +101,14 @@ class BabyDetailFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        familyAdapter = MemberAdapter {
+        familyAdapter = GroupMemberAdapter {
 
         }
-        myGroupAdapter = MemberAdapter {
+        myGroupAdapter = GroupMemberAdapter {
 
         }
         binding.familyView.rvGroupMembers.adapter = familyAdapter
-        binding.familyView.rvGroupMembers.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
         binding.myGroupView.rvGroupMembers.adapter = myGroupAdapter
-        binding.myGroupView.rvGroupMembers.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
     }
 
     private fun showSnackBar(@StringRes text: Int) {
