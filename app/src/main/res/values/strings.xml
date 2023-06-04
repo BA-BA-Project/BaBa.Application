@@ -169,7 +169,7 @@
     <string name="no_albums_recorded">쉿! 아직 자고있어요</string>
     <string name="add_like_and_comment">좋아요와 댓글을 달아봐요!</string>
     <string name="delete_comment">삭제</string>
-    <string name="calendar_date">%d.%d</string>
+    <string name="calendar_date">%d.%02d</string>
     <string name="baba_get_album_failed">앨범을 불러오는 것에 실패했습니다.</string>
     <string name="baba_get_babies_failed">아기 리스트를 불러오는 것에 실패했습니다.</string>
     <string name="baba_babies_empty">등록된 아이들이 없습니다.</string>
