@@ -54,8 +54,8 @@ class MyPageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadGroups()
         viewModel.loadBabies()
+        viewModel.loadGroups()
         viewModel.getMyInfo()
         checkFromBottomNav()
     }
@@ -77,6 +77,9 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageEvent.LoadBabies -> {
+                        myPageGroupAdapter.setBabies(it.data.filter { babies ->
+                            babies.isMyBaby
+                        })
                         babyAdapter.submitList(it.data)
                     }
 
@@ -134,7 +137,7 @@ class MyPageFragment : Fragment() {
                     viewModel.loadGroups()
                 }
                 val bundle = Bundle()
-//                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
+                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
                 bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
                 editMemberDialog.arguments = bundle
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
