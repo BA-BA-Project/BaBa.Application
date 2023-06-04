@@ -67,6 +67,7 @@
             android:background="@drawable/edit_input"
             android:padding="7dp"
             android:text="@={descViewData.text}"
+            android:enabled="@{descViewData.enabled}"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

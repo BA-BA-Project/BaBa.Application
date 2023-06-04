@@ -30,7 +30,8 @@ class AddGroupViewModel @Inject constructor(
 
 
     val relationGroupNameViewData = ComposableInputWithDescViewData(
-        text = relationGroupName
+        text = relationGroupName,
+        onEditButtonClickEventListener = {}
     )
 
     val goToBack = ComposableTopViewData(
