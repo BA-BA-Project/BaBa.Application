@@ -45,6 +45,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     }
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = "",
         text = nameViewState,
         onEditButtonClickEventListener = {
             viewModelScope.launch {

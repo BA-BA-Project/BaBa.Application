@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,8 +15,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -57,14 +58,13 @@
                 android:layout_marginTop="25dp"
                 android:background="#EDEDED" />
 
+
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:button="@{viewmodel.button}"
-                bind:title="@{viewmodel.name}"
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
-                />
-
+                bind:title="@{viewmodel.name}" />
 
             <View
                 android:layout_width="match_parent"

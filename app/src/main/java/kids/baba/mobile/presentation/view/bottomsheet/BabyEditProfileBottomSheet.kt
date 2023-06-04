@@ -54,8 +54,6 @@ class BabyEditProfileBottomSheet @Inject constructor(
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetEditBabyProfileBinding.inflate(inflater, container, false)
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

@@ -48,6 +48,10 @@ class BabyDetailFragment : Fragment() {
                         familyAdapter.submitList(event.baby.familyGroup.members.map { member ->
                             member.toMemberUiModel()
                         })
+                        // TODO: 아래 세 줄은 제대로 친구추가가 되는지 확인을 위한 임시 코드 (마음대로 지우셔도 됩니다.)
+                        myGroupAdapter.submitList(event.baby.myGroup?.members?.map { member ->
+                            member.toMemberUiModel()
+                        })
                     }
                     is BabyDetailEvent.ShowSnackBar -> {
                         showSnackBar(event.message)

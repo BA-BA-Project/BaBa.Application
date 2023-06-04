@@ -25,6 +25,7 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     val eventFlow = _eventFlow.asEventFlow()
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = "",
         text = nameViewLiveData,
         onEditButtonClickEventListener = {
             viewModelScope.launch {

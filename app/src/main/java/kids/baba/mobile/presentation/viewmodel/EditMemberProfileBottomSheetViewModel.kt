@@ -40,6 +40,7 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     private val introductionViewState: MutableStateFlow<String> = MutableStateFlow("")
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = "",
         text = nameViewState,
         onEditButtonClickEventListener = {}
     )
