@@ -141,7 +141,16 @@ class MyPageFragment : Fragment() {
                 bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
                 editMemberDialog.arguments = bundle
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
-            }, editGroup = { group ->
+            },
+            showBabyInfo = {
+                MyPageActivity.startActivityWithMember(
+                    requireContext(),
+                    pageName = BABY_DETAIL_PAGE,
+                    argumentName = BABY_DETAIL_INFO,
+                    groupMember = it
+                )
+            }
+            , editGroup = { group ->
                 val bundle = Bundle()
                 bundle.putBoolean("family", group.family)
                 bundle.putString("groupName", group.groupName)
