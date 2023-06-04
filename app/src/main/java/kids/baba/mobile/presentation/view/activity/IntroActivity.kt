@@ -95,7 +95,6 @@ class IntroActivity : AppCompatActivity() {
                             TermsAgreeFragmentDirections.actionTermsAgreeFragmentToCreateProfileFragment(
                                 event.signToken
                             )
-                        EncryptedPrefs.putString("babyGroupTitle", "아이들") // 처음 로그인 시 아이들이라는 이름으로 아이 그룹 설정.
                         navController.navigate(action)
                     }
                     is IntroEvent.MoveToInputBabiesInfo -> {
