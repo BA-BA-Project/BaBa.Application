@@ -3,6 +3,7 @@ package kids.baba.mobile.presentation.view.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted

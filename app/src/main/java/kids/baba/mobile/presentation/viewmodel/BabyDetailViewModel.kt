@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,7 +48,6 @@ class BabyDetailViewModel @Inject constructor(
     }
 
     private fun load(babyId: String) = viewModelScope.launch {
-
         when (val result = getBabyProfileUseCase.get(babyId)) {
             is Result.Success -> {
                 val familyGroup = result.data.familyGroup
@@ -82,15 +82,23 @@ class BabyDetailViewModel @Inject constructor(
         _eventFlow.emit(BabyDetailEvent.BackButtonClicked)
     }
 
-    fun delete(babyId: String) = viewModelScope.launch {
-        deleteOneBabyUseCase.delete(babyId)
+    fun delete() = viewModelScope.launch {
+        Log.e("BabyDetailViewModel", "delete: babyId = ${baby.value?.memberId}")
+        when (deleteOneBabyUseCase(babyId = baby.value?.memberId ?: "")) {
+            is Result.Success -> {
+                Log.e("BabyDetailViewModel", "delete: Success")
+                _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
+            }
+            is Result.NetworkError -> {
+                _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+            }
+            else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.unknown_error_msg))
+        }
     }
 
+
     fun refresh(babyName: String) = viewModelScope.launch {
-        uiModel.update {
-            it.copy(
-                babyName = babyName
-            )
-        }
+        uiModel.update { it.copy(babyName = babyName) }
+        baby.update { it?.copy(name = babyName) }
     }
 }

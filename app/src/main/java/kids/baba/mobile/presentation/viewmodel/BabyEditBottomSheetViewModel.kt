@@ -19,12 +19,17 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
     val uiModel = MutableStateFlow(BabyEditBottomSheetUiModel())
 
     private val nameViewLiveData: MutableStateFlow<String> =
-        MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
+        if (EncryptedPrefs.getString("babyGroupTitle").isEmpty()) {
+            MutableStateFlow("아이들")
+        } else {
+            MutableStateFlow(EncryptedPrefs.getString("babyGroupTitle"))
+        }
 
     private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = nameViewLiveData.value,
         text = nameViewLiveData,
         onEditButtonClickEventListener = {
             viewModelScope.launch {

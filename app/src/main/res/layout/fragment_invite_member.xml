@@ -45,9 +45,9 @@
             android:id="@+id/input_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/top_container"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_copy_code"
-            android:layout_marginBottom="20dp">
+            app:layout_constraintTop_toBottomOf="@+id/top_container">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,8 +67,8 @@
                 <include
                     android:id="@+id/input_group_view"
                     layout="@layout/composable_desc_view"
-                    bind:description="@{viewmodel.uiModel.inputGroupDesc}"
                     bind:descViewData="@{viewmodel.relationGroup}"
+                    bind:description="@{viewmodel.uiModel.inputGroupDesc}"
                     bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -78,9 +78,9 @@
                 <include
                     android:id="@+id/input_relation_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
                     bind:button="@{viewmodel.uiModel.inputRelationButton}"
                     bind:description="@{viewmodel.uiModel.inputRelationDesc}"
+                    bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
                     bind:title="@{viewmodel.uiModel.inputRelationTitle}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -97,15 +97,18 @@
             android:layout_height="52dp"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/button_disable2"
+            android:background="@{viewmodel.onComplete ? @drawable/button_complete : @drawable/button_disable2}"
+            android:enabled="@{viewmodel.onComplete.booleanValue() ? true : false}"
             android:onClick="@{() -> viewmodel.copyInviteCode()}"
             android:text="@string/copy_invite_code"
-            android:textColor="@color/gray_10"
+            android:textColor="@{viewmodel.onComplete.booleanValue() ? @color/baba_main : @color/gray_10}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/btn_invite"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            bind:background="@drawable/button_disable2"
+            bind:textColor="@color/gray_10" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_invite"
@@ -113,15 +116,18 @@
             android:layout_height="52dp"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
-            android:background="@drawable/button_disable"
+            android:background="@{viewmodel.onComplete ? @drawable/button_complete_blue : @drawable/button_disable}"
+            android:enabled="@{viewmodel.onComplete.booleanValue() ? true : false}"
             android:onClick="@{() -> viewmodel.inviteWithKakao()}"
             android:text="@string/invite_kakaotalk"
-            android:textColor="@color/white"
+            android:textColor="@{viewmodel.onComplete.booleanValue() ? @color/white : @color/gray_10}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            bind:background="@drawable/button_disable2"
+            bind:textColor="@color/gray_10" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

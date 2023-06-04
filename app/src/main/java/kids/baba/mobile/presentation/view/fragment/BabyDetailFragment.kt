@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
@@ -46,6 +47,7 @@ class BabyDetailFragment : Fragment() {
                         familyAdapter.submitList(event.familyMemberList)
                         myGroupAdapter.submitList(event.myGroupMemberList)
                     }
+                    is BabyDetailEvent.SuccessDeleteBaby -> {requireActivity().finish()}
                     is BabyDetailEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }

@@ -4,8 +4,6 @@ import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MyPageRemoteDataSourceImpl @Inject constructor(
@@ -116,8 +114,19 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteBaby(babyId: String) {
-        api.deleteBaby(babyId = babyId)
+    override suspend fun deleteBaby(babyId: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteBaby(babyId = babyId)
+            },
+            mapping = {}
+        )
+        Log.e("deleteBaby", result.toString())
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit> {
@@ -162,8 +171,18 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteGroupMember(memberId: String) {
-        api.deleteGroupMember(memberId = memberId)
+    override suspend fun deleteGroupMember(memberId: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteGroupMember(memberId = memberId)
+            },
+            mapping = {}
+        )
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse> {

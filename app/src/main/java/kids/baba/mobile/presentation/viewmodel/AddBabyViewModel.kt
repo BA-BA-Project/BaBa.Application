@@ -41,7 +41,8 @@ class AddBabyViewModel @Inject constructor(
     )
 
     val composableRelation = ComposableInputWithDescViewData(
-        text = relation
+        text = relation,
+        onEditButtonClickEventListener = {}
     )
 
     val composableBirthDay = ComposableInputViewData(

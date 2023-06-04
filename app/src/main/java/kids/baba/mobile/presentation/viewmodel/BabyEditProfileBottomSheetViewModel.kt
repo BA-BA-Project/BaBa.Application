@@ -34,6 +34,7 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
     private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name ?: "")
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = baby.value?.name ?: "",
         text = nameViewState,
         onEditButtonClickEventListener = {
             viewModelScope.launch {

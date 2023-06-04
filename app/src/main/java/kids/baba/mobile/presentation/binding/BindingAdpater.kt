@@ -1,17 +1,23 @@
 package kids.baba.mobile.presentation.binding
 
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
 import com.google.android.material.appbar.MaterialToolbar
 import de.hdodenhof.circleimageview.CircleImageView
 import kids.baba.mobile.R
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -97,3 +103,4 @@ fun setDateString(textView: TextView, nowDate: String) {
 fun setTitleDate(materialToolbar: MaterialToolbar, date: LocalDate, formatter: DateTimeFormatter) {
     materialToolbar.title = date.format(formatter)
 }
+

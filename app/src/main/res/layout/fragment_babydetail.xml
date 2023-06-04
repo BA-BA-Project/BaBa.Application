@@ -81,6 +81,7 @@
             android:background="@drawable/bg_my_page_delete_button"
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
+            android:onClick="@{() -> viewModel.delete()}"
             android:text="@string/delete_baby"
             android:textColor="#ff0000"
             android:textSize="12sp"
