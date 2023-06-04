@@ -14,6 +14,7 @@ import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
@@ -118,12 +119,12 @@ class MyPageFragment : Fragment() {
     private fun initializeRecyclerView() {
         babyAdapter = GroupMemberAdapter(
             itemClick = {
-//                MyPageActivity.startActivityWithMember(
-//                    requireContext(),
-//                    pageName = BABY_DETAIL_PAGE,
-//                    argumentName = BABY_DETAIL_INFO,
-//                    memberUiModel = it
-//                )
+                MyPageActivity.startActivityWithMember(
+                    requireContext(),
+                    pageName = BABY_DETAIL_PAGE,
+                    argumentName = BABY_DETAIL_INFO,
+                    groupMember = it as BabyUiModel
+                )
             })
 
         binding.rvKids.adapter = babyAdapter

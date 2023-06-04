@@ -10,7 +10,7 @@ import kids.baba.mobile.domain.usecase.DeleteOneBabyUseCase
 import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.event.BabyDetailEvent
 import kids.baba.mobile.presentation.model.BabyDetailUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -35,11 +35,11 @@ class BabyDetailViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<BabyDetailEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
+    val baby = MutableStateFlow<BabyUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
 
     init {
         uiModel.value.babyName = baby.value?.name ?: ""
-        load(baby.value?.memberId ?: "")
+        load(baby.value?.babyId ?: "")
     }
 
     private fun load(babyId: String) = viewModelScope.launch {

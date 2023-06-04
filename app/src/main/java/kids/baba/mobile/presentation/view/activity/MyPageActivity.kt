@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityMyPageBinding
-import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.GroupMember
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_BABY_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.ADD_GROUP_PAGE
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
@@ -45,7 +45,11 @@ class MyPageActivity : AppCompatActivity() {
         when (intent.getStringExtra(INTENT_PAGE_NAME)) {
             ADD_BABY_PAGE -> setNavStart(R.id.add_baby_fragment)
             INVITE_WITH_CODE_PAGE -> setNavStart(R.id.input_invite_fragment)
-            INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(R.id.invite_member_result_fragment, INVITE_CODE)
+            INVITE_MEMBER_RESULT_PAGE -> setNavStartWithCode(
+                R.id.invite_member_result_fragment,
+                INVITE_CODE
+            )
+
             INVITE_MEMBER_PAGE -> GROUP_NAME.setNavStartWithString(R.id.invite_member_fragment)
             SETTING_PAGE -> setNavStart(R.id.setting_fragment)
             ADD_GROUP_PAGE -> setNavStart(R.id.add_group_fragment)
@@ -67,7 +71,7 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun String.setNavStartWithMember(fragment: Int) {
         val key = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(this, MemberUiModel::class.java)
+            intent.getParcelableExtra(this, GroupMember::class.java)
         } else {
             intent.getParcelableExtra(this)
         }
@@ -98,7 +102,6 @@ class MyPageActivity : AppCompatActivity() {
     }
 
 
-
     companion object {
         fun startActivity(context: Context, pageName: String) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
@@ -111,14 +114,15 @@ class MyPageActivity : AppCompatActivity() {
             context: Context,
             pageName: String,
             argumentName: String,
-            memberUiModel: MemberUiModel
+            groupMember: GroupMember
         ) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)
-                putExtra(argumentName, memberUiModel)
+                putExtra(argumentName, groupMember)
             }
             context.startActivity(intent)
         }
+
         fun startActivityWithCode(
             context: Context,
             pageName: String,
@@ -132,7 +136,12 @@ class MyPageActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        fun startActivityWithGroupName(context: Context, pageName: String, argumentName: String, groupName: String) {
+        fun startActivityWithGroupName(
+            context: Context,
+            pageName: String,
+            argumentName: String,
+            groupName: String
+        ) {
             val intent = Intent(context, MyPageActivity::class.java).apply {
                 putExtra(INTENT_PAGE_NAME, pageName)
                 putExtra(argumentName, groupName)
