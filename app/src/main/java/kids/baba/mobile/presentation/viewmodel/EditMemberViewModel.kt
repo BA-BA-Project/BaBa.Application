@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.GroupMemberInfo
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberRelationUseCase
+import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.event.EditGroupMemberEvent
 import kids.baba.mobile.presentation.model.EditMemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -41,21 +43,25 @@ class EditMemberViewModel @Inject constructor(
             memberId = uiModel.value.member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = input.value)
         )) {
-            is kids.baba.mobile.domain.model.Result.Success -> {
+            is Result.Success -> {
                 _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
                 patchMember.value()
             }
-            is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+            is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> {_eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))}
         }
         dismiss()
     }
 
-    fun delete() = viewModelScope.launch {
-        deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
-        patchMember.value()
-        dismiss()
-    }
+    val delete = ComposableDeleteViewData(
+        onDeleteButtonClickEventListener = {
+            viewModelScope.launch {
+                deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")
+                patchMember.value()
+                dismiss.value()
+            }
+        }
+    )
 
     fun dismiss() = viewModelScope.launch {
         dismiss.value()

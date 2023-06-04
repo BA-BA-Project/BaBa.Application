@@ -1,6 +1,7 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,6 @@ class InviteMemberResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkLogin()
         collectEvent()
         bindViewModel()
         binding.topAppBar.ivBackButton.setOnClickListener {
@@ -57,22 +57,6 @@ class InviteMemberResultFragment : Fragment() {
                     }
                     else -> {}
                 }
-            }
-        }
-    }
-
-    private fun checkLogin() {
-        lifecycleScope.launch {
-            if (viewModel.checkLogin()) {
-                viewModel.registerMember()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.login_request),
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-                IntroActivity.startActivity(requireContext())
             }
         }
     }

@@ -31,14 +31,6 @@ class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
         viewModel.patchMember.value = { itemClick() }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.deleteView.tvDeleteDesc.setOnClickListener {
-            viewModel.delete()
-            dismiss()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

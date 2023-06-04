@@ -45,21 +45,6 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".presentation.view.activity.UrlSchemeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="kakaolink"
-                    android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
-
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
@@ -86,9 +71,19 @@
         </activity>
         <activity
             android:name=".presentation.view.activity.MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="kakaolink"
+                    android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
+            </intent-filter>
+        </activity>
 
         <!-- FileProvider used to share photos with other apps -->
         <provider

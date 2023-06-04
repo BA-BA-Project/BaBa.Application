@@ -112,10 +112,7 @@ class InviteMemberFragment : Fragment() {
                     }
                     is InviteMemberEvent.InviteWithKakao -> {
                         send(event.inviteCode.inviteCode)
-                        MyPageActivity.startActivityWithCode(
-                            requireContext(),
-                            INVITE_MEMBER_RESULT_PAGE, INVITE_CODE, event.inviteCode.inviteCode
-                        )
+                        requireActivity().finish()
                     }
                     is InviteMemberEvent.CopyInviteCode -> {
                         Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
