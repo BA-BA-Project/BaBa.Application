@@ -9,6 +9,8 @@ import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.DeleteOneBabyUseCase
 import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.event.BabyDetailEvent
+import kids.baba.mobile.presentation.mapper.toMemberUiModel
+import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.model.BabyDetailUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.state.BabyDetailUiState
@@ -37,6 +39,9 @@ class BabyDetailViewModel @Inject constructor(
 
     val baby = MutableStateFlow<BabyUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
 
+    private val _isMyGroupEmpty = MutableStateFlow(false)
+    val isMyGroupEmpty = _isMyGroupEmpty.asStateFlow()
+
     init {
         uiModel.value.babyName = baby.value?.name ?: ""
         load(baby.value?.babyId ?: "")
@@ -46,7 +51,15 @@ class BabyDetailViewModel @Inject constructor(
 
         when (val result = getBabyProfileUseCase.get(babyId)) {
             is Result.Success -> {
-                _eventFlow.emit(BabyDetailEvent.SuccessBabyDetail(result.data))
+                val familyGroup = result.data.familyGroup
+                val myGroup = result.data.myGroup
+                _isMyGroupEmpty.value = myGroup == null
+                _eventFlow.emit(
+                    BabyDetailEvent.SuccessBabyDetail(
+                        familyMemberList = familyGroup.babies.map { it.toPresentation() } + familyGroup.members.map { it.toMemberUiModel() },
+                        myGroupMemberList = myGroup?.members?.map { it.toMemberUiModel() } ?: emptyList()
+                    )
+                )
                 uiModel.update {
                     it.copy(
                         babyBirthday = result.data.birthday,
@@ -60,9 +73,11 @@ class BabyDetailViewModel @Inject constructor(
                     )
                 }
             }
+
             is Result.NetworkError -> {
                 _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
             }
+
             else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.unknown_error_msg))
         }
     }
