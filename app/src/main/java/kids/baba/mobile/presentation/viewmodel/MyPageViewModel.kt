@@ -55,7 +55,7 @@ class MyPageViewModel @Inject constructor(
         when (val result = getBabiesUseCase()) {
             is Result.Success -> {
                 val babies = result.data
-                _eventFlow.emit(MyPageEvent.LoadBabies(babies.myBaby + babies.others))
+                _eventFlow.emit(MyPageEvent.LoadBabies((babies.myBaby + babies.others).map { it.toPresentation() }))
             }
             is Result.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.Error(result.throwable))

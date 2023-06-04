@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
-import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
@@ -23,8 +23,8 @@ import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
 @AndroidEntryPoint
 class BabyDetailFragment : Fragment() {
 
-    private lateinit var familyAdapter: MemberAdapter
-    private lateinit var myGroupAdapter: MemberAdapter
+    private lateinit var familyAdapter: GroupMemberAdapter
+    private lateinit var myGroupAdapter: GroupMemberAdapter
     private var _binding: FragmentBabydetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
@@ -102,10 +102,10 @@ class BabyDetailFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        familyAdapter = MemberAdapter {
+        familyAdapter = GroupMemberAdapter {
 
         }
-        myGroupAdapter = MemberAdapter {
+        myGroupAdapter = GroupMemberAdapter {
 
         }
         binding.familyView.rvGroupMembers.adapter = familyAdapter

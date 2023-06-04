@@ -158,7 +158,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_kids_desc"
                         app:spanCount="4"
                         tools:itemCount="6"
-                        tools:listitem="@layout/item_member" />
+                        tools:listitem="@layout/item_group_member" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

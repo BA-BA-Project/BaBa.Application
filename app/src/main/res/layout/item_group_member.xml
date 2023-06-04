@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="member"
+            type="kids.baba.mobile.presentation.model.MemberUiModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_member_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@{member.userIconUiModel.userProfileIconUiModel.iconRes}"
+            app:backGroundColor="@{member.userIconUiModel.iconColor}"
+            app:layout_constraintBottom_toTopOf="@id/tv_member_name"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:civ_circle_background_color="@color/baba_main"
+            tools:src="@drawable/profile_w_5" />
+
+        <TextView
+            android:id="@+id/tv_member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/BABA.TextStyle"
+            android:textSize="14sp"
+            android:text="@{member.name}"
+            app:layout_constraintBottom_toTopOf="@id/tv_member_relation"
+            app:layout_constraintEnd_toEndOf="@id/civ_member_profile"
+            app:layout_constraintStart_toStartOf="@+id/civ_member_profile"
+            app:layout_constraintTop_toBottomOf="@id/civ_member_profile"
+            tools:text="앙쥬" />
+
+        <TextView
+            android:id="@+id/tv_member_relation"
+            style="@style/BABA.TextStyle.Relation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{member.introduction}"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_relation_badge"
+            android:textAppearance="@style/BABA.TextStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/civ_member_profile"
+            app:layout_constraintStart_toStartOf="@+id/civ_member_profile"
+            app:layout_constraintTop_toBottomOf="@id/tv_member_name"
+            tools:text="아이" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

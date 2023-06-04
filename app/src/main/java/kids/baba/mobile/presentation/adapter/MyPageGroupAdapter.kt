@@ -3,14 +3,16 @@ package kids.baba.mobile.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.databinding.ComposableGroupViewBinding
 import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
-import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.GroupMember
 
 class MyPageGroupAdapter(
-    private val showMemberInfo: (Group, MemberUiModel) -> Unit,
+    private val showMemberInfo: (Group, GroupMember) -> Unit,
     private val editGroup: (Group) -> Unit,
     private val goToAddMemberPage: () -> Unit
 ) :
@@ -19,14 +21,14 @@ class MyPageGroupAdapter(
 
     class ViewHolder(
         private val binding: ComposableGroupViewBinding,
-        private val showMemberInfo: (Group, MemberUiModel) -> Unit,
+        private val showMemberInfo: (Group, GroupMember) -> Unit,
         private val editGroup: (Group) -> Unit,
         private val goToAddMemberPage: () -> Unit,
         private var ownerFamily: String
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(group: Group) {
-            val adapter = MemberAdapter { member -> showMemberInfo(group, member) }
+            val adapter = GroupMemberAdapter { member -> showMemberInfo(group, member) }
             binding.groupName = group.groupName
             if (group.family) {
                 binding.description = "모든 그룹과 소식을 공유할 수 있어요"

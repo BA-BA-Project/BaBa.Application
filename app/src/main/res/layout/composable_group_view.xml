@@ -72,7 +72,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_group_desc"
             app:spanCount="4"
             tools:itemCount="5"
-            tools:listitem="@layout/item_member" />
+            tools:listitem="@layout/item_group_member" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_member"

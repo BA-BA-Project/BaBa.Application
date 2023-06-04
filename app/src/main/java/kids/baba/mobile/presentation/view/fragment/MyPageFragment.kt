@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMypageBinding
-import kids.baba.mobile.presentation.adapter.MemberAdapter
+import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.mapper.toPresentation
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
@@ -30,7 +29,7 @@ class MyPageFragment : Fragment() {
 
     val viewModel: MyPageViewModel by viewModels()
 
-    private lateinit var babyAdapter: MemberAdapter
+    private lateinit var babyAdapter: GroupMemberAdapter
     private lateinit var myPageGroupAdapter: MyPageGroupAdapter
 
     private val args: MyPageFragmentArgs by navArgs()
@@ -77,9 +76,7 @@ class MyPageFragment : Fragment() {
                     }
 
                     is MyPageEvent.LoadBabies -> {
-                        babyAdapter.submitList(it.data.map { baby ->
-                            baby.toMember().toPresentation()
-                        })
+                        babyAdapter.submitList(it.data)
                     }
 
                     is MyPageEvent.LoadMyInfo -> {
@@ -114,14 +111,14 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        babyAdapter = MemberAdapter(
+        babyAdapter = GroupMemberAdapter(
             itemClick = {
-                MyPageActivity.startActivityWithMember(
-                    requireContext(),
-                    pageName = BABY_DETAIL_PAGE,
-                    argumentName = BABY_DETAIL_INFO,
-                    memberUiModel = it
-                )
+//                MyPageActivity.startActivityWithMember(
+//                    requireContext(),
+//                    pageName = BABY_DETAIL_PAGE,
+//                    argumentName = BABY_DETAIL_INFO,
+//                    memberUiModel = it
+//                )
             })
 
         binding.rvKids.adapter = babyAdapter
@@ -131,7 +128,7 @@ class MyPageFragment : Fragment() {
                     viewModel.loadGroups()
                 }
                 val bundle = Bundle()
-                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
+//                bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
                 bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
                 editMemberDialog.arguments = bundle
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
