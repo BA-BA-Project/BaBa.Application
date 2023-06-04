@@ -62,7 +62,7 @@ interface MyPageApi {
     suspend fun deleteBaby(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
         @Path("babyId") babyId: String
-    )
+    ): Response<Unit>
 
     @PATCH("members/groups")
     suspend fun patchGroup(

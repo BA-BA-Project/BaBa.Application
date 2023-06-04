@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.datasource.mypage
 
+import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
@@ -113,8 +114,19 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteBaby(babyId: String) {
-        api.deleteBaby(babyId = babyId)
+    override suspend fun deleteBaby(babyId: String): Result<Unit> {
+        val result = safeApiHelper.getSafe(
+            remoteFetch = {
+                api.deleteBaby(babyId = babyId)
+            },
+            mapping = {}
+        )
+        Log.e("deleteBaby", result.toString())
+        return if (result is Result.Failure) {
+            Result.Failure(result.code, result.message, Exception(result.message))
+        } else {
+            result
+        }
     }
 
     override suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit> {

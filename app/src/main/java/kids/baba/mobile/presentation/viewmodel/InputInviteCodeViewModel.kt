@@ -30,10 +30,10 @@ class InputInviteCodeViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<BabyInviteCodeEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val inviteCodeLiveData = MutableStateFlow("")
+    private val inviteCodeState = MutableStateFlow("")
 
     val composableInviteCode = ComposableInputViewData(
-        text = inviteCodeLiveData,
+        text = inviteCodeState,
         onEditButtonClickEventListener = {}
     )
 
@@ -48,7 +48,7 @@ class InputInviteCodeViewModel @Inject constructor(
     fun addBabyWithCode() {
         viewModelScope.launch {
             when (addOneBabyWithInviteCodeUseCase.add(
-                inviteCode = InviteCode(inviteCodeLiveData.value)
+                inviteCode = InviteCode(inviteCodeState.value)
             )) {
                 is Result.Success -> _eventFlow.emit(
                     BabyInviteCodeEvent.SuccessAddBabyWithInviteCode(

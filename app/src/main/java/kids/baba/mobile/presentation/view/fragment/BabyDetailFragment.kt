@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.MemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
@@ -53,6 +54,7 @@ class BabyDetailFragment : Fragment() {
                             member.toMemberUiModel()
                         })
                     }
+                    is BabyDetailEvent.SuccessDeleteBaby -> {requireActivity().finish()}
                     is BabyDetailEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }

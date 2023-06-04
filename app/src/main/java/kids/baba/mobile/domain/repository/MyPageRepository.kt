@@ -18,7 +18,7 @@ interface MyPageRepository {
 
     suspend fun addBabyWithInviteCode(inviteCode: InviteCode): Result<Unit>
 
-    suspend fun deleteBaby(babyId: String)
+    suspend fun deleteBaby(babyId: String): Result<Unit>
 
     suspend fun patchGroup(groupName: String, group: GroupInfo): Result<Unit>
 

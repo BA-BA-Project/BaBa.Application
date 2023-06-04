@@ -31,9 +31,8 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
     override suspend fun addBabyWithInviteCode(inviteCode: InviteCode) =
         dataSource.addBabyWithInviteCode(inviteCode = inviteCode)
 
-    override suspend fun deleteBaby(babyId: String) {
+    override suspend fun deleteBaby(babyId: String) =
         dataSource.deleteBaby(babyId = babyId)
-    }
 
     override suspend fun patchGroup(groupName: String, group: GroupInfo) =
         dataSource.patchGroup(groupName = groupName, group = group)
@@ -52,5 +51,5 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
 
     override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> =
         dataSource.makeInviteCode(relationInfo = relationInfo)
-        
+
 }
