@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.app.DatePickerDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,7 @@ import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.model.AddBabyUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kids.baba.mobile.presentation.view.FunctionHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +33,7 @@ class AddBabyViewModel @Inject constructor(
     private val birthDay = MutableStateFlow("")
     private val babyName = MutableStateFlow("")
     private val relation = MutableStateFlow("")
+    val datePicker = MutableStateFlow<DatePickerDialog?>(null)
 
     val composableBabyName = ComposableInputViewData(
         text = babyName,
@@ -53,6 +56,12 @@ class AddBabyViewModel @Inject constructor(
             }
         }
     )
+
+    val showDatePicker = object : FunctionHolder{
+        override fun click() {
+            datePicker.value?.show()
+        }
+    }
 
     fun addBaby() {
         viewModelScope.launch {

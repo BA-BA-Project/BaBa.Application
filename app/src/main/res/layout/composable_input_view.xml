@@ -15,6 +15,10 @@
             name="inputViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputViewData" />
 
+        <variable
+            name="function"
+            type="kids.baba.mobile.presentation.view.FunctionHolder" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,6 +64,7 @@
             android:background="@drawable/edit_input"
             android:padding="7dp"
             android:text="@={inputViewData.text}"
+            android:onClick="@{() -> function.click()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_input_button"
             app:layout_constraintStart_toStartOf="parent"
