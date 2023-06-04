@@ -17,6 +17,7 @@ import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class AddBabyFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private val viewModel: AddBabyViewModel by viewModels()
+    private val now = LocalDate.now()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,41 +44,36 @@ class AddBabyFragment : Fragment() {
         _binding = null
     }
 
-    private fun parseDate(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        val date = inputFormat.parse(dateString) ?: ""
-        return outputFormat.format(date)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         bindViewModel()
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, year, monthOfYear, dayOfMonth ->
-                var date = ""
-                date += year
-                date += String.format("%02d", monthOfYear)
-                date += String.format("%02d", dayOfMonth)
-                // 잠시 오류가 나서 주석처리했습니다.
-//                viewModel.birthDay.value = parseDate(date)
-                binding.birthView.etInput.setText(parseDate(date))
-//                Log.e("birth", viewModel.birthDay.value)
-            },
-            2023,
-            1,
-            1
-        )
-
         collectEvent()
+    }
+
+    private fun parseDate(year: Int, monthOfYear: Int, dayOfMonth: Int): String {
+        var date = ""
+        date += year
+        date += String.format("%02d", monthOfYear)
+        date += String.format("%02d", dayOfMonth)
+        val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateString = inputFormat.parse(date) ?: ""
+        return outputFormat.format(dateString)
     }
 
     private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                binding.birthView.etInput.setText(parseDate(year, monthOfYear, dayOfMonth))
+            },
+            now.year,
+            now.month.value,
+            now.dayOfMonth
+        )
+        viewModel.datePicker.value = datePickerDialog
     }
 
     private fun collectEvent() {
@@ -86,9 +83,11 @@ class AddBabyFragment : Fragment() {
                     is AddBabyEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }
+
                     is AddBabyEvent.SuccessAddBaby -> {
                         findNavController().navigate(R.id.add_complete_fragment)
                     }
+
                     is AddBabyEvent.BackButtonClicked -> requireActivity().finish()
                 }
             }

@@ -22,17 +22,16 @@ import javax.inject.Inject
 class InviteMemberResultViewModel @Inject constructor(
     private val getBabiesInfoByInviteCodeUseCase: GetBabiesInfoByInviteCodeUseCase,
     private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase,
-    private val getMemberUseCase: GetMemberUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val uiModel = MutableStateFlow(InviteMemberResultUiModel())
     val inviteCode = MutableStateFlow(savedStateHandle[MyPageFragment.INVITE_CODE] ?: "")
     val event = MutableEventFlow<InviteResultEvent>()
-    suspend fun checkLogin() = runCatching { getMemberUseCase.getMe() }.isSuccess
 
     init {
         Log.e("result", inviteCode.value)
         getInviteResult()
+        registerMember()
     }
 
     private fun getInviteResult() = viewModelScope.launch {

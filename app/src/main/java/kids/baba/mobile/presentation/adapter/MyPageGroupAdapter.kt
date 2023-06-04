@@ -14,7 +14,7 @@ import kids.baba.mobile.presentation.model.GroupMember
 class MyPageGroupAdapter(
     private val showMemberInfo: (Group, GroupMember) -> Unit,
     private val editGroup: (Group) -> Unit,
-    private val goToAddMemberPage: () -> Unit
+    private val goToAddMemberPage: (Group) -> Unit
 ) :
     ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(diffUtil) {
     private var ownerFamily = ""
@@ -23,7 +23,7 @@ class MyPageGroupAdapter(
         private val binding: ComposableGroupViewBinding,
         private val showMemberInfo: (Group, GroupMember) -> Unit,
         private val editGroup: (Group) -> Unit,
-        private val goToAddMemberPage: () -> Unit,
+        private val goToAddMemberPage: (Group) -> Unit,
         private var ownerFamily: String
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -39,7 +39,7 @@ class MyPageGroupAdapter(
             if (group.members?.isEmpty() != false) {
                 binding.btnAddMember.visibility = View.VISIBLE
                 binding.btnAddMember.setOnClickListener {
-                    goToAddMemberPage()
+                    goToAddMemberPage(group)
                 }
             }
             binding.rvGroupMembers.adapter = adapter
