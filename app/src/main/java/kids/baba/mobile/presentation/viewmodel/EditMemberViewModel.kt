@@ -69,4 +69,8 @@ class EditMemberViewModel @Inject constructor(
         }
     )
 
+    fun dismiss() = viewModelScope.launch {
+        _eventFlow.emit(EditGroupMemberEvent.DismissDialog)
+    }
+
 }

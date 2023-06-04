@@ -107,9 +107,10 @@
 
                 <include
                     android:id="@+id/birth_view"
-                    layout="@layout/composable_input_view"
+                    layout="@layout/composable_datepicker_view"
                     bind:inputViewData="@{viewModel.composableBirthDay}"
-                    bind:title="@{viewModel.uiModel.birthTitle}" />
+                    bind:title="@{viewModel.uiModel.birthTitle}"
+                    bind:function="@{viewModel.showDatePicker}"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

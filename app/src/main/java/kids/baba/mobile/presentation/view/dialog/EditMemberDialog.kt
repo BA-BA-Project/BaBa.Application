@@ -64,6 +64,7 @@ class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
                     is EditGroupMemberEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }
+                    is EditGroupMemberEvent.DismissDialog -> dismiss()
                 }
             }
         }

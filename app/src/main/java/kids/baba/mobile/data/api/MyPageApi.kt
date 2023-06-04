@@ -52,7 +52,6 @@ interface MyPageApi {
         @Body baby: MyBaby
     ): Response<Unit>
 
-    //TODO
     @POST("baby/code")
     suspend fun addBabyWithInviteCode(
         @Header("Authorization") token: String = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY),
@@ -92,9 +91,11 @@ interface MyPageApi {
         @Path("groupMemberId") memberId: String
     ): Response<Unit>
 
+
     @GET("baby/invitation")
     suspend fun getInvitationInfo(
         @Query("code") inviteCode: String): Response<BabiesInfoResponse>
+
 
     @POST("baby/invite-code")
     suspend fun makeInviteCode(

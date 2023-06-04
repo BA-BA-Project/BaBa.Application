@@ -52,7 +52,7 @@ class InviteResultFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is InviteResultEvent.SuccessGetInvitationInfo -> {
+                    is InviteResultEvent.SuccessGetInvitation -> {
                         Log.e("SuccessGetInvitationInfo", "SuccessGetInvitationInfo")
                     }
                     is InviteResultEvent.ShowSnackBar -> showSnackBar(event.message)
@@ -62,6 +62,7 @@ class InviteResultFragment : Fragment() {
                     is InviteResultEvent.GoToMyPage -> {
                         requireActivity().finish()
                     }
+                    else -> {}
                 }
             }
         }

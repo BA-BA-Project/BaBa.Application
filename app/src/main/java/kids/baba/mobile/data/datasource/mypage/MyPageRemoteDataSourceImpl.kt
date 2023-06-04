@@ -1,11 +1,8 @@
 package kids.baba.mobile.data.datasource.mypage
 
-import android.util.Log
 import kids.baba.mobile.data.api.MyPageApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MyPageRemoteDataSourceImpl @Inject constructor(
@@ -207,5 +204,4 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
             result
         }
     }
-
 }

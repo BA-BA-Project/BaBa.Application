@@ -95,7 +95,12 @@ class MyPageFragment : Fragment() {
                     is MyPageEvent.AddGroup -> {
                         MyPageActivity.startActivity(requireContext(), pageName = ADD_GROUP_PAGE)
                     }
-                    is MyPageEvent.Setting -> MyPageActivity.startActivity(requireContext(), pageName = SETTING_PAGE)
+
+                    is MyPageEvent.Setting -> MyPageActivity.startActivity(
+                        requireContext(),
+                        pageName = SETTING_PAGE
+                    )
+
                     else -> {}
                 }
             }
@@ -144,8 +149,13 @@ class MyPageFragment : Fragment() {
                 }
                 bottomSheet.arguments = bundle
                 bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-            }, goToAddMemberPage = {
-                MyPageActivity.startActivity(requireContext(), pageName = INVITE_MEMBER_PAGE)
+            }, goToAddMemberPage = { group ->
+                MyPageActivity.startActivityWithGroupName(
+                    requireContext(),
+                    INVITE_MEMBER_PAGE,
+                    GROUP_NAME,
+                    group.groupName
+                )
             }
         )
         binding.groupContainer.adapter = myPageGroupAdapter
@@ -188,13 +198,15 @@ class MyPageFragment : Fragment() {
 
     companion object {
         const val INTENT_PAGE_NAME = "nextPage"
+        const val GROUP_NAME = "groupName"
         const val ADD_GROUP_PAGE = "addGroupPage"
         const val SETTING_PAGE = "settingPage"
         const val BABY_DETAIL_PAGE = "babyDetailPage"
         const val BABY_DETAIL_INFO = "babyDetailInfo"
-        const val GROUP_NAME = "groupName"
         const val INVITE_WITH_CODE_PAGE = "inviteBabyPage"
         const val ADD_BABY_PAGE = "addBabyPage"
         const val INVITE_MEMBER_PAGE = "inviteMemberPage"
+        const val INVITE_MEMBER_RESULT_PAGE = "inviteMemberResultPage"
+        const val INVITE_CODE = "inviteCode"
     }
 }

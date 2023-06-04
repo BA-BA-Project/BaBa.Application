@@ -58,6 +58,7 @@
                         android:layout_height="13dp"
                         android:layout_marginTop="27dp"
                         android:layout_marginEnd="24dp"
+                        android:onClick="@{() -> viewModel.dismiss()}"
                         android:src="@drawable/ic_close_dialog"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -120,8 +121,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
-                        android:text="@string/complete"
                         android:onClick="@{() -> viewModel.patch()}"
+                        android:text="@string/complete"
                         android:textColor="@color/baba_main"
                         android:textSize="18sp"
                         android:textStyle="bold"
