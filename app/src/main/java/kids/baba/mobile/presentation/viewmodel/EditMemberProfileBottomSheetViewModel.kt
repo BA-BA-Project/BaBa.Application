@@ -42,6 +42,7 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     val composableNameViewData = ComposableNameViewData(
         initialText = "",
         text = nameViewState,
+        maxLength = 6,
         onEditButtonClickEventListener = {}
     )
 
@@ -70,7 +71,7 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
             }
         },
         maxLength = 20,
-        maxLine = 1
+        maxLine = 2
     )
 
 

@@ -38,7 +38,7 @@ class AddBabyViewModel @Inject constructor(
     val composableBabyName = ComposableInputViewData(
         text = babyName,
         onEditButtonClickEventListener = {}, maxLine = 1,
-        maxLength = 20
+        maxLength = 6
     )
 
     val composableRelation = ComposableInputWithDescViewData(
@@ -49,7 +49,7 @@ class AddBabyViewModel @Inject constructor(
     val composableBirthDay = ComposableInputViewData(
         text = birthDay,
         onEditButtonClickEventListener = {}, maxLine = 1,
-        maxLength = 20
+        maxLength = 10 // 2023-01-01
     )
 
     val goToBack = ComposableTopViewData(

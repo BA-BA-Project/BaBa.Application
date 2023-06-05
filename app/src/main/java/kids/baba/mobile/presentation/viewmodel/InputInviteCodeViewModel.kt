@@ -33,7 +33,7 @@ class InputInviteCodeViewModel @Inject constructor(
     val composableInviteCode = ComposableInputViewData(
         text = inviteCodeState,
         maxLine = 1,
-        maxLength = 20,
+        maxLength = 6,
         onEditButtonClickEventListener = {}
     )
 
