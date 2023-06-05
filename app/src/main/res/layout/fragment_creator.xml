@@ -38,6 +38,9 @@
         <variable
             name="helperName"
             type="String" />
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
 
     </data>
 
@@ -53,7 +56,9 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{title}" />
+                bind:title="@{title}"
+                bind:topViewData="@{topViewData}"
+                />
 
             <include
                 layout="@layout/composable_two_text_view"

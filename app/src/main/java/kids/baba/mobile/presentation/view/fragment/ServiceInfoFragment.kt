@@ -33,11 +33,9 @@ class ServiceInfoFragment : Fragment() {
     private fun setBinding(){
         binding.lifecycleOwner = viewLifecycleOwner
         binding.title = getString(R.string.service_info)
-        binding.topViewData = ComposableTopViewData(
-            onBackButtonClickEventListener = {
-                findNavController().navigateUp()
-            }
-        )
+        binding.topViewData = ComposableTopViewData{
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {
