@@ -68,7 +68,9 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
                     }
                 }
             }
-        }
+        },
+        maxLength = 20,
+        maxLine = 1
     )
 
 

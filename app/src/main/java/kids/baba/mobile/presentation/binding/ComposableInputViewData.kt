@@ -4,5 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ComposableInputViewData(
     val text: MutableStateFlow<String>,
+    val maxLine: Int,
+    val maxLength: Int,
     val onEditButtonClickEventListener: () -> Unit
 )
