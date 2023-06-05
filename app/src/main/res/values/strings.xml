@@ -33,6 +33,7 @@
     <string name="term_1">이용약관 동의</string>
     <string name="term_2">개인정보 수집 및 이용 동의</string>
     <string name="agree_all_terms">약관 전체 동의</string>
+    <string name="baba_ask">문의하기</string>
     <string name="next">다음</string>
     <string name="essential">[필수]</string>
     <string name="choice">[선택]</string>
@@ -212,4 +213,5 @@
     
     <string name="family_group_description">모든 그룹과 소식을 공유할 수 있어요</string>
     <string name="my_group_description">%s, %s의 소식만 볼 수 있어요</string>
+    <string name="choose_email_client">메일 클라이언트를 선택하세요</string>
 </resources>

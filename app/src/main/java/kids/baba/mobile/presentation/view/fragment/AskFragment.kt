@@ -1,5 +1,8 @@
 package kids.baba.mobile.presentation.view.fragment
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,9 +37,10 @@ class AskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
+        setAskBtn()
     }
 
-    private fun setBinding(){
+    private fun setBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.title = getString(R.string.ask)
         binding.topViewData = ComposableTopViewData(
@@ -44,5 +48,21 @@ class AskFragment : Fragment() {
                 findNavController().navigateUp()
             }
         )
+    }
+
+    private fun setAskBtn() {
+        binding.btnComplete.setOnClickListener {
+            val email = getString(R.string.baba_email)
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:$email")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            }
+            try {
+                startActivity(emailIntent)
+            } catch (e: ActivityNotFoundException) {
+                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://mail.google.com/"))
+                startActivity(webIntent)
+            }
+        }
     }
 }

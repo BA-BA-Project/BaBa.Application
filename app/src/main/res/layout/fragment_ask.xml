@@ -50,7 +50,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginBottom="70dp"
             android:background="@drawable/button_disable"
-            android:text="@string/complete"
+            android:text="@string/baba_ask"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
             android:textStyle="bold"
