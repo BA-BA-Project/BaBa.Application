@@ -18,4 +18,9 @@ sealed class MyPageEvent {
     object AddGroup : MyPageEvent()
 
     object Setting : MyPageEvent()
+
+    data class ShowEditMemberBottomSheet(val memberUiModel: MemberUiModel) : MyPageEvent()
+
+    object ShowEditBabyGroupBottomSheet : MyPageEvent()
+
 }

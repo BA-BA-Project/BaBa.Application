@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -15,6 +16,7 @@ import kids.baba.mobile.presentation.adapter.MyPageGroupAdapter
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.model.BabyUiModel
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
@@ -46,9 +48,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView()
-        setClickEvent()
         collectState()
     }
 
@@ -68,26 +68,26 @@ class MyPageFragment : Fragment() {
 
     private fun collectState() {
         initializeRecyclerView()
-        viewLifecycleOwner.repeatOnStarted {
-            viewModel.eventFlow.collect {
-                when (it) {
+        viewLifecycleOwner.repeatOnStarted { event ->
+            viewModel.eventFlow.collect { event ->
+                when (event) {
                     is MyPageEvent.LoadGroups -> {
-                        myPageGroupAdapter.submitList(it.data)
+                        myPageGroupAdapter.submitList(event.data)
                     }
 
                     is MyPageEvent.LoadBabies -> {
-                        myPageGroupAdapter.setBabies(it.data.filter { babies ->
+                        myPageGroupAdapter.setBabies(event.data.filter { babies ->
                             babies.isMyBaby
                         })
-                        babyAdapter.submitList(it.data)
+                        babyAdapter.submitList(event.data)
                     }
 
                     is MyPageEvent.LoadMyInfo -> {
-                        binding.tvMyStatusMessage.text = it.data.introduction
-                        binding.tvMyName.text = it.data.name
+                        binding.tvMyStatusMessage.text = event.data.introduction
+                        binding.tvMyName.text = event.data.name
                         binding.civMyProfile.circleBackgroundColor =
-                            Color.parseColor(it.data.userIconUiModel.iconColor)
-                        binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
+                            Color.parseColor(event.data.userIconUiModel.iconColor)
+                        binding.civMyProfile.setImageResource(event.data.userIconUiModel.userProfileIconUiModel.iconRes)
 
                     }
 
@@ -99,6 +99,10 @@ class MyPageFragment : Fragment() {
                         requireContext(),
                         pageName = SETTING_PAGE
                     )
+
+                    is MyPageEvent.ShowEditMemberBottomSheet -> showMemberEditProfileBottomSheet(event.memberUiModel)
+
+                    is MyPageEvent.ShowEditBabyGroupBottomSheet -> showBabyEditBottomSheet()
 
                     else -> {}
                 }
@@ -180,7 +184,7 @@ class MyPageFragment : Fragment() {
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
     }
 
-    private fun showMemberEditProfileBottomSheet() {
+    private fun showMemberEditProfileBottomSheet(memberUiModel: MemberUiModel) {
         val bottomSheet =
             MemberEditProfileBottomSheet(
                 itemClick = {
@@ -188,17 +192,9 @@ class MyPageFragment : Fragment() {
                     viewModel.loadGroups()
                 }
             )
+        val bundle = bundleOf(MEMBER_UI_MODEL to memberUiModel)
+        bottomSheet.arguments = bundle
         bottomSheet.show(childFragmentManager, BabyEditBottomSheet.TAG)
-    }
-
-
-    private fun setClickEvent() {
-        binding.ivEditKids.setOnClickListener {
-            showBabyEditBottomSheet()
-        }
-        binding.ivProfileEditPen.setOnClickListener {
-            showMemberEditProfileBottomSheet()
-        }
     }
 
 
@@ -214,5 +210,6 @@ class MyPageFragment : Fragment() {
         const val INVITE_MEMBER_PAGE = "inviteMemberPage"
         const val INVITE_MEMBER_RESULT_PAGE = "inviteMemberResultPage"
         const val INVITE_CODE = "inviteCode"
+        const val MEMBER_UI_MODEL = "memberUiModel"
     }
 }

@@ -14,6 +14,7 @@ import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +39,9 @@ class MyPageViewModel @Inject constructor(
         }
     )
     val babyGroupTitle = _babyGroupTitle.asStateFlow()
+
+    private val _myInfoState = MutableStateFlow<MemberUiModel?>(null)
+    val myInfoState = _myInfoState.asStateFlow()
 
     fun loadGroups() = viewModelScope.launch {
         when (val result = getMyPageGroupUseCase.get()) {
@@ -71,6 +75,7 @@ class MyPageViewModel @Inject constructor(
     fun getMyInfo() = viewModelScope.launch {
         when (val result = getMemberUseCase.getMeNoPref()) {
             is Result.Success -> {
+                _myInfoState.value = result.data.toPresentation()
                 _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
             }
             is Result.NetworkError -> {
@@ -83,6 +88,14 @@ class MyPageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun showEditMemberBottomSheet() = viewModelScope.launch {
+        _eventFlow.emit(MyPageEvent.ShowEditMemberBottomSheet(myInfoState.value ?: return@launch))
+    }
+
+    fun showEditBabyGroupBottomSheet() = viewModelScope.launch {
+        _eventFlow.emit(MyPageEvent.ShowEditBabyGroupBottomSheet)
     }
 
     fun addGroup() = viewModelScope.launch {
