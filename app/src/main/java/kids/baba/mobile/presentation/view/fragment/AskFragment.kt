@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentAskBinding
+import kids.baba.mobile.presentation.binding.ComposableTopViewData
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
@@ -31,6 +33,16 @@ class AskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setBinding()
+    }
+
+    private fun setBinding(){
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.title = getString(R.string.ask)
+        binding.topViewData = ComposableTopViewData(
+            onBackButtonClickEventListener = {
+                findNavController().navigateUp()
+            }
+        )
     }
 }

@@ -29,7 +29,6 @@ class ServiceInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBinding()
-
     }
     private fun setBinding(){
         binding.lifecycleOwner = viewLifecycleOwner
