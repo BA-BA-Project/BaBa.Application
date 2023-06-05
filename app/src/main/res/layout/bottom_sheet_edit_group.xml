@@ -69,8 +69,7 @@
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:nameViewData="@{viewModel.composableNameViewData}"
-                bind:button="@{viewModel.uiModel.familyButton}"
-                bind:title="@{viewModel.uiModel.familyName}" />
+                bind:title="@{viewModel.isFamily() ? @string/family_name : @string/group_name}" />
 
             <View
                 android:layout_width="match_parent"
@@ -80,7 +79,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewModel.uiModel.groupColor}" />
+                bind:title="@{String.format(@string/group_color)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -90,8 +89,8 @@
             <include
                 android:id="@+id/permission_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewModel.uiModel.permissionDesc}"
-                bind:title="@{viewModel.uiModel.permission}" />
+                bind:description="@{viewModel.isFamily() ? @string/there_is : @string/there_is_not}"
+                bind:title="@{String.format(@string/permission_to_upload_growth_album)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -101,9 +100,9 @@
             <include
                 android:id="@+id/delete_view"
                 layout="@layout/composable_delete_view"
+                bind:delete="@{String.format(@string/delete)}"
                 bind:deleteViewData="@{viewModel.deleteGroup}"
-                bind:delete="@{viewModel.uiModel.deleteDesc}"
-                bind:title="@{viewModel.uiModel.deleteTitle}" />
+                bind:title="@{String.format(@string/delete_group)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -114,7 +113,7 @@
                 android:id="@+id/add_member_view"
                 layout="@layout/composable_addbutton_view"
                 bind:addButtonViewData="@{viewModel.goToInviteMember}"
-                bind:title="@{viewModel.uiModel.addMemberTitle}" />
+                bind:title="@{String.format(@string/invite_member)}" />
 
             <View
                 android:layout_width="match_parent"

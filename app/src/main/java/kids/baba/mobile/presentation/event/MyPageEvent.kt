@@ -6,17 +6,12 @@ import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 
 sealed class MyPageEvent {
-    object Idle : MyPageEvent()
 
-    data class LoadMember(val data: List<Group>) : MyPageEvent()
+    data class LoadGroups(val data: List<Group>) : MyPageEvent()
 
     data class LoadBabies(val data: List<BabyUiModel>) : MyPageEvent()
 
     data class LoadMyInfo(val data: MemberUiModel) : MyPageEvent()
-
-    data class LoadGroup(val data: String) : MyPageEvent()
-
-    data class Error(val t: Throwable) : MyPageEvent()
 
     data class ShowSnackBar(@StringRes val message: Int) : MyPageEvent()
 

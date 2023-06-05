@@ -193,7 +193,7 @@
                         android:gravity="center_horizontal"
                         android:includeFontPadding="false"
                         android:onClick="@{() -> viewmodel.addGroup()}"
-                        android:text="@{viewmodel.groupAddButton}"
+                        android:text="@string/make_group_text"
                         android:textAppearance="@style/BABA.TextStyle"
                         android:textColor="@color/text_3"
                         android:textSize="16sp"

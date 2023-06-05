@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,9 +14,10 @@ import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.EditGroupSheetEvent
 import kids.baba.mobile.presentation.model.ColorUiModel
-import kids.baba.mobile.presentation.model.EditGroupBottomSheetUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet.Companion.IS_FAMILY_KEY
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -29,21 +29,18 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     private val deleteOneGroupUseCase: DeleteOneGroupUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(EditGroupBottomSheetUiModel())
-    val groupName = MutableStateFlow(savedStateHandle["groupName"] ?: "")
-    private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
 
+    val groupName = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
+    val isFamily = MutableStateFlow(savedStateHandle[IS_FAMILY_KEY] ?: false)
+
+    // TODO: 기존 컬러값을 가져올 수 있는가?
     private val _color = MutableStateFlow("#81E0D5")
     val color = _color.asStateFlow()
 
-    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(savedStateHandle["groupName"] ?: "")
+    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
 
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
-    init {
-        uiModel.value.permissionDesc = if (isFamily.value == true) "있음" else "없음"
-    }
 
     val composableNameViewData = ComposableNameViewData(
         initialText = groupName.value,
@@ -76,6 +73,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     )
 
     val deleteGroup = ComposableDeleteViewData(
+        isFamily = isFamily.value,
         onDeleteButtonClickEventListener = {
             viewModelScope.launch {
                 when (deleteOneGroupUseCase.delete(

@@ -18,6 +18,7 @@ import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditBottomSheet
 import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
+import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet.Companion.IS_FAMILY_KEY
 import kids.baba.mobile.presentation.view.bottomsheet.MemberEditProfileBottomSheet
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kids.baba.mobile.presentation.viewmodel.MyPageViewModel
@@ -49,7 +50,6 @@ class MyPageFragment : Fragment() {
         initView()
         setClickEvent()
         collectState()
-//        setBottomSheet()
     }
 
     override fun onResume() {
@@ -71,8 +71,7 @@ class MyPageFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect {
                 when (it) {
-                    is MyPageEvent.Idle -> {}
-                    is MyPageEvent.LoadMember -> {
+                    is MyPageEvent.LoadGroups -> {
                         myPageGroupAdapter.submitList(it.data)
                     }
 
@@ -89,7 +88,6 @@ class MyPageFragment : Fragment() {
                         binding.civMyProfile.circleBackgroundColor =
                             Color.parseColor(it.data.userIconUiModel.iconColor)
                         binding.civMyProfile.setImageResource(it.data.userIconUiModel.userProfileIconUiModel.iconRes)
-
 
                     }
 
@@ -149,11 +147,11 @@ class MyPageFragment : Fragment() {
                     argumentName = BABY_DETAIL_INFO,
                     groupMember = it
                 )
-            }
-            , editGroup = { group ->
+            }, editGroup = { group ->
                 val bundle = Bundle()
-                bundle.putBoolean("family", group.family)
-                bundle.putString("groupName", group.groupName)
+                bundle.putBoolean(IS_FAMILY_KEY, group.family)
+                bundle.putString(GROUP_NAME, group.groupName)
+                // TODO: bundle 로 그룹 컬러도 보내주어야 함.
                 val bottomSheet = GroupEditBottomSheet {
                     viewModel.loadGroups()
                 }
@@ -176,8 +174,6 @@ class MyPageFragment : Fragment() {
         val bottomSheet = BabyEditBottomSheet(
             itemClick =
             {
-//                EncryptedPrefs.putString("babyGroupTitle", it)
-//                binding.tvKidsTitle.text = it
                 viewModel.refreshBabyGroupTitle(it)
             }
         )

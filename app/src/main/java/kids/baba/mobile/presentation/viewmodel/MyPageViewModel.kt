@@ -1,9 +1,11 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.core.constant.PrefsKey.BABY_GROUP_TITLE_KEY
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.getThrowableOrNull
@@ -23,16 +25,16 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val getMyPageGroupUseCase: GetMyPageGroupUseCase,
     private val getBabiesUseCase: GetBabiesUseCase,
-    private val getMemberUseCase: GetMemberUseCase
+    private val getMemberUseCase: GetMemberUseCase,
+    resources: Resources
 ) : ViewModel() {
-    val groupAddButton = MutableStateFlow("그룹만들기")
 
     private val _eventFlow = MutableEventFlow<MyPageEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     private val _babyGroupTitle = MutableStateFlow(
-        EncryptedPrefs.getString("babyGroupTitle").ifEmpty {
-            "아이들"
+        EncryptedPrefs.getString(BABY_GROUP_TITLE_KEY).ifEmpty {
+            resources.getString(R.string.babys)
         }
     )
     val babyGroupTitle = _babyGroupTitle.asStateFlow()
@@ -40,13 +42,13 @@ class MyPageViewModel @Inject constructor(
     fun loadGroups() = viewModelScope.launch {
         when (val result = getMyPageGroupUseCase.get()) {
             is Result.Success -> {
-                _eventFlow.emit(MyPageEvent.LoadMember(result.data.groups))
+                _eventFlow.emit(MyPageEvent.LoadGroups(result.data.groups))
             }
             is Result.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.unknown_error_msg))
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_group_error_message))
             }
         }
     }
@@ -58,10 +60,10 @@ class MyPageViewModel @Inject constructor(
                 _eventFlow.emit(MyPageEvent.LoadBabies((babies.myBaby + babies.others).map { it.toPresentation() }))
             }
             is Result.NetworkError -> {
-                _eventFlow.emit(MyPageEvent.Error(result.throwable))
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(MyPageEvent.Error(Throwable("error")))
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_baby_error_message))
             }
         }
     }
@@ -72,12 +74,12 @@ class MyPageViewModel @Inject constructor(
                 _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
             }
             is Result.NetworkError -> {
-                _eventFlow.emit(MyPageEvent.Error(result.throwable))
+                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
                 val throwable = result.getThrowableOrNull()
                 if (throwable != null) {
-                    _eventFlow.emit(MyPageEvent.Error(throwable))
+                    _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_my_info_error_message))
                 }
             }
         }

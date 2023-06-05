@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,7 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
         bindViewModel()
         setColorButton()
     }
-       
+
     private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -101,7 +100,7 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
 
     companion object {
         const val TAG = "GroupEditBottomSheet"
-        const val SELECTED_GROUP_KEY = "SELECTED_GROUP"
+        const val IS_FAMILY_KEY = "family"
     }
 
 }
