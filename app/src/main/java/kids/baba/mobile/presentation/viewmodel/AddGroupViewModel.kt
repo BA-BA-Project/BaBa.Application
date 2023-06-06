@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MyPageGroup
+import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.AddOneGroupUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.AddGroupEvent
-import kids.baba.mobile.presentation.model.AddGroupUiModel
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class AddGroupViewModel @Inject constructor(
     private val addOneGroupUseCase: AddOneGroupUseCase
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(AddGroupUiModel())
+
     val color = MutableStateFlow(ColorModel.PINK.colorCode)
     private val relationGroupName = MutableStateFlow("")
 
@@ -47,8 +47,8 @@ class AddGroupViewModel @Inject constructor(
                 groupColor = color.value
             )
         )) {
-            is kids.baba.mobile.domain.model.Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)
-            is kids.baba.mobile.domain.model.Result.NetworkError -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_network_failed))
+            is Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)
+            is Result.NetworkError -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_unknown_error))
         }
 
