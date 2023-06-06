@@ -98,7 +98,7 @@ class BabyDetailViewModel @Inject constructor(
 
 
     fun refresh(babyName: String) = viewModelScope.launch {
-        uiModel.update { it.copy(babyName = babyName) }
+        load(baby.value?.babyId ?: "")
         baby.update { it?.copy(name = babyName) }
     }
 }
