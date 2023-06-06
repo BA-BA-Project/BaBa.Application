@@ -48,20 +48,24 @@ class EditGroupBottomSheetViewModel @Inject constructor(
         onEditButtonClickEventListener = {
             viewModelScope.launch {
                 when (patchOneGroupUseCase.patch(
-                    group = GroupInfo(relationGroup = nameViewState.value), groupName = groupName.value
+                    group = GroupInfo(relationGroup = nameViewState.value),
+                    groupName = groupName.value
                 )) {
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
                 }
             }
-        }
+        },
+        maxLength = 6,
     )
 
     val goToInviteMember = ComposableAddButtonViewData(
@@ -82,9 +86,11 @@ class EditGroupBottomSheetViewModel @Inject constructor(
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }

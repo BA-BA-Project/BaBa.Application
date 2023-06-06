@@ -9,7 +9,7 @@ import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.EditBabyNameUseCase
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.BabyEditEvent
-import kids.baba.mobile.presentation.model.MemberUiModel
+import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
@@ -29,7 +29,7 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
     val name = MutableStateFlow("아이 이름")
     val button = MutableStateFlow("편집")
 
-    val baby = MutableStateFlow<MemberUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
+    val baby = MutableStateFlow<BabyUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
 
     private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name ?: "")
 
@@ -39,21 +39,24 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
         onEditButtonClickEventListener = {
             viewModelScope.launch {
                 when (editBabyNameUseCase.edit(
-                    babyId = baby.value?.memberId ?: "",
+                    babyId = baby.value?.babyId ?: "",
                     name = nameViewState.value
                 )) {
                     is Result.Success -> {
                         _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
                 }
             }
-        }
+        },
+        maxLength = 6,
     )
 
 }

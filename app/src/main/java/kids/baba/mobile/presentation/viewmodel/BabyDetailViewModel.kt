@@ -83,6 +83,7 @@ class BabyDetailViewModel @Inject constructor(
     }
 
     fun delete() = viewModelScope.launch {
+        Log.e("BabyDetailViewModel", "delete: babyId = ${baby.value?.babyId}")
         when (deleteOneBabyUseCase(babyId = baby.value?.babyId ?: "")) {
             is Result.Success -> {
                 Log.e("BabyDetailViewModel", "delete: Success")
@@ -97,7 +98,7 @@ class BabyDetailViewModel @Inject constructor(
 
 
     fun refresh(babyName: String) = viewModelScope.launch {
-        uiModel.update { it.copy(babyName = babyName) }
+        load(baby.value?.babyId ?: "")
         baby.update { it?.copy(name = babyName) }
     }
 }

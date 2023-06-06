@@ -41,7 +41,8 @@ class BabyEditBottomSheetViewModel @Inject constructor(
                 _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit(nameViewLiveData.value))
                 EncryptedPrefs.putString(BABY_GROUP_TITLE_KEY, nameViewLiveData.value)
             }
-        }
+        },
+        maxLength = 10,
     )
 
     val goToAddBaby = ComposableAddButtonViewData(

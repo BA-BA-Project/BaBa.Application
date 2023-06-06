@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,13 +43,16 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     val composableNameViewData = ComposableNameViewData(
         initialText = myInfo?.name ?: "",
         enabled = false,
-        text = nameViewState
+        text = nameViewState,
+        maxLength = 6
     )
 
     val composableIntroductionViewData = ComposableInputViewData(
         initialText = myInfo?.introduction ?: "",
         enabled = false,
-        text = introductionViewState
+        text = introductionViewState,
+        maxLength = 20,
+        maxLine = 2
     )
 
     fun edit() {
@@ -60,12 +62,6 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     }
 
     private suspend fun editMyInfo() {
-        Log.e(
-            "EditMemberProfileBottomSheetViewModel", "Profile:" +
-                    "name: ${nameViewState.value}, " + "introduction: ${introductionViewState.value}, " +
-                    "icon: ${iconState.value}, " + "color: ${colorState.value}"
-        )
-
         when (editProfileUseCase.edit(
             profile = Profile(
                 name = nameViewState.value,

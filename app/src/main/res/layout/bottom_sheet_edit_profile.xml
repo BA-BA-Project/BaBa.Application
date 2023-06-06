@@ -53,32 +53,29 @@
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
                 bind:title="@{viewmodel.uiModel.name}" />
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="#EDEDED" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"/>
 
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
                 bind:title="@{viewmodel.uiModel.bgColor}" />
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="#EDEDED" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"/>
 
             <include
                 android:id="@+id/icon_view"
                 layout="@layout/composable_icon_view" />
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="#EDEDED" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
