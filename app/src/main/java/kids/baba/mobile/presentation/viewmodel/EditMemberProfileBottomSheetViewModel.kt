@@ -18,7 +18,6 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.MEMBER_UI_MODEL
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,38 +32,32 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
 
     val uiModel = MutableStateFlow(EditMemberProfileBottomSheetUiModel())
 
-    private val myInfo = saveStateHandle.get<MemberUiModel>(MEMBER_UI_MODEL)
+    val myInfo = saveStateHandle.get<MemberUiModel>(MEMBER_UI_MODEL)
 
-    private val nameViewState: MutableStateFlow<String> = MutableStateFlow(myInfo?.name ?: "")
-    private val introductionViewState: MutableStateFlow<String> = MutableStateFlow(myInfo?.introduction ?: "")
-
-    private val iconState = MutableStateFlow(
+    val nameViewState: MutableStateFlow<String> = MutableStateFlow(myInfo?.name ?: "")
+    val introductionViewState: MutableStateFlow<String> = MutableStateFlow(myInfo?.introduction ?: "")
+    val iconState = MutableStateFlow(
         myInfo?.userIconUiModel?.userProfileIconUiModel?.name ?: UserProfileIconUiModel.PROFILE_M_1.name
     )
-    private val colorState = MutableStateFlow(myInfo?.userIconUiModel?.iconColor ?: ColorModel.PINK.colorCode)
+    val colorState = MutableStateFlow(myInfo?.userIconUiModel?.iconColor ?: ColorModel.PINK.colorCode)
 
     val composableNameViewData = ComposableNameViewData(
         initialText = myInfo?.name ?: "",
-        text = nameViewState,
-        onEditButtonClickEventListener = {
-            viewModelScope.launch {
-                editMyInfo()
-            }
-        }
+        enabled = false,
+        text = nameViewState
     )
 
     val composableIntroductionViewData = ComposableInputViewData(
         initialText = myInfo?.introduction ?: "",
-        text = introductionViewState,
-        onEditButtonClickEventListener = {
-            viewModelScope.launch {
-                editMyInfo()
-            }
-        }
+        enabled = false,
+        text = introductionViewState
     )
 
-
-    // TODO: dismiss 될 때 editMyInfo
+    fun edit() {
+        viewModelScope.launch {
+            editMyInfo()
+        }
+    }
 
     private suspend fun editMyInfo() {
         Log.e(

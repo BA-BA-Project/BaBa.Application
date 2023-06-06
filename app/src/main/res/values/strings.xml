@@ -226,5 +226,6 @@
     <string name="group_color">그룹 컬러</string>
     <string name="there_is">있음</string>
     <string name="there_is_not">없음</string>
-    
+    <string name="literally_blank" />
+
 </resources>

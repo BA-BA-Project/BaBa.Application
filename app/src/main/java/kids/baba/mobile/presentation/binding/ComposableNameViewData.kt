@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ComposableNameViewData(
     val initialText: String = "",
+    val enabled: Boolean = true,
     val text: MutableStateFlow<String>,
     val onEditButtonClickEventListener: () -> Unit
 )
