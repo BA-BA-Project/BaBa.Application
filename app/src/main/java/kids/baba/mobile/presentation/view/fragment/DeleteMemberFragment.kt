@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentDeleteUserBinding
+import kids.baba.mobile.presentation.adapter.DeleteReasonAdapter
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
+import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.DeleteMemberViewModel
 
 @AndroidEntryPoint
@@ -20,6 +22,8 @@ class DeleteMemberFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: DeleteMemberViewModel by viewModels()
 
+    private lateinit var deleteReasonAdapter: DeleteReasonAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +33,19 @@ class DeleteMemberFragment : Fragment() {
         return binding.root
     }
 
-    private fun bindViewModel() {
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setBinding()
+        setDeleteMemberBtn()
+        setDeleteReasonAdapter()
+        collectDeleteReason()
+    }
+
+
+
+    private fun setBinding() {
         binding.viewmodel = viewModel
         binding.topViewData = ComposableTopViewData {
             findNavController().navigateUp()
@@ -37,14 +53,25 @@ class DeleteMemberFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
+
+    private fun setDeleteReasonAdapter() {
+        deleteReasonAdapter = DeleteReasonAdapter()
+        binding.rvAccountDeleteReason.adapter = deleteReasonAdapter
+    }
+
+    private fun collectDeleteReason() {
+        viewLifecycleOwner.repeatOnStarted {
+            viewModel.deleteReasonList.collect{
+                deleteReasonAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun setDeleteMemberBtn() {
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        bindViewModel()
-
     }
 }
