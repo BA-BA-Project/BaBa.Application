@@ -71,7 +71,7 @@ class BabyDetailViewModel @Inject constructor(
                 _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
             }
 
-            else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.unknown_error_msg))
+            else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.load_baby_error_message))
         }
     }
 
@@ -86,7 +86,7 @@ class BabyDetailViewModel @Inject constructor(
 
             is Result.NetworkError -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
 
-            else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.unknown_error_msg))
+            else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.fail_delete_baby_errer))
         }
     }
 

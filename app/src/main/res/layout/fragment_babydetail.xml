@@ -24,6 +24,7 @@
             android:layout_height="13dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/ic_edit_pen"
+            android:visibility="@{viewModel.baby.isMyBaby ? View.VISIBLE : View.GONE}"
             app:civ_circle_background_color="#EDEDED"
             app:layout_constraintBottom_toBottomOf="@+id/tv_my_name"
             app:layout_constraintStart_toEndOf="@+id/tv_my_name"
