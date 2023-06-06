@@ -45,15 +45,18 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
                     is Result.Success -> {
                         _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
                 }
             }
-        }
+        },
+        maxLength = 6,
     )
 
 }

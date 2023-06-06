@@ -37,7 +37,8 @@ class BabyEditBottomSheetViewModel @Inject constructor() : ViewModel() {
                 EncryptedPrefs.putString("babyGroupTitle", nameViewLiveData.value)
 
             }
-        }
+        },
+        maxLength = 10,
     )
 
     val goToAddBaby = ComposableAddButtonViewData(

@@ -37,7 +37,8 @@ class AddBabyViewModel @Inject constructor(
 
     val composableBabyName = ComposableInputViewData(
         text = babyName,
-        onEditButtonClickEventListener = {}
+        onEditButtonClickEventListener = {}, maxLine = 1,
+        maxLength = 6
     )
 
     val composableRelation = ComposableInputWithDescViewData(
@@ -47,7 +48,8 @@ class AddBabyViewModel @Inject constructor(
 
     val composableBirthDay = ComposableInputViewData(
         text = birthDay,
-        onEditButtonClickEventListener = {}
+        onEditButtonClickEventListener = {}, maxLine = 1,
+        maxLength = 10 // 2023-01-01
     )
 
     val goToBack = ComposableTopViewData(
@@ -58,7 +60,7 @@ class AddBabyViewModel @Inject constructor(
         }
     )
 
-    val showDatePicker = object : FunctionHolder{
+    val showDatePicker = object : FunctionHolder {
         override fun click() {
             datePicker.value?.show()
         }
