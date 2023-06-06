@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentDeleteUserBinding
+import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.viewmodel.DeleteMemberViewModel
 
 @AndroidEntryPoint
@@ -25,12 +26,14 @@ class DeleteMemberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDeleteUserBinding.inflate(inflater, container, false)
-        bindViewModel()
         return binding.root
     }
 
     private fun bindViewModel() {
         binding.viewmodel = viewModel
+        binding.topViewData = ComposableTopViewData {
+            findNavController().navigateUp()
+        }
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
@@ -41,9 +44,7 @@ class DeleteMemberFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
 
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 }
