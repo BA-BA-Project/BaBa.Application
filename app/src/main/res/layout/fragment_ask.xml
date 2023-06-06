@@ -1,47 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="topViewData"
             type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             bind:title="@{title}"
-            bind:topViewData="@{topViewData}"/>
+            bind:topViewData="@{topViewData}" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/email_info"
-            android:textColor="@color/black"
+            android:textColor="@color/text_0"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_complete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_app_bar"
-            app:layout_constraintVertical_bias="0.400" />
+            app:layout_constraintTop_toBottomOf="@+id/top_app_bar" />
 
         <TextView
+            android:id="@+id/tv_baba_mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/baba_email"
-            android:textColor="@color/black"
+            android:textColor="@color/text_0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_delete_account_request"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/tv_delete_account_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@string/request_delete_account"
+            android:textColor="@color/text_0"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_baba_mail" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_complete"

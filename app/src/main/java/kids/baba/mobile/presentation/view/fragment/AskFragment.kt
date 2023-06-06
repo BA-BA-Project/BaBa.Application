@@ -51,6 +51,11 @@ class AskFragment : Fragment() {
     }
 
     private fun setAskBtn() {
+        binding.tvDeleteAccountRequest.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://sites.google.com/view/baba-agree/%EA%B3%84%EC%A0%95-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%82%AD%EC%A0%9C-%EC%9A%94%EC%B2%AD"))
+            startActivity(intent)
+        }
+
         binding.btnComplete.setOnClickListener {
             val email = getString(R.string.baba_email)
             val emailIntent = Intent(Intent.ACTION_SENDTO).apply {

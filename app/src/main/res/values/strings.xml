@@ -151,7 +151,7 @@
     <string name="set_profile">프로필 설정</string>
     <string name="delete_baby">아이 삭제</string>
     <string name="email_info">문의 이메일 정보</string>
-    <string name="baba_email">baba.service.care@gmail.com</string>
+    <string name="baba_email"><u>aba.service.care@gmail.com</u></string>
     <string name="delete_warning">계정을 삭제시 모든 데이터가 삭제되며\n 복구되지 않습니다.</string>
     <string name="manage_baby">아이 관리</string>
     <string name="baby_group">아이 그룹</string>
@@ -219,6 +219,7 @@
     <string name="account_delete_title">계정 삭제</string>
     <string name="account_delete_banner_title">계정을 삭제하려는 이유가\n 무엇인가요?</string>
     <string name="account_delete_banner_desc">서비스 개선을 위해 선택해주세요.</string>
+    <string name="request_delete_account"><u>계정 및 데이터 삭제 직접 요청</u></string>
 
     <string-array name="account_delete_reason">
         <item>데이터 삭제를 위해</item>
