@@ -81,9 +81,9 @@
             android:background="@drawable/bg_baba_edit_text"
             android:text="@string/invite_member"
             android:textColor="@color/baba_main"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_group_desc" />
     </androidx.constraintlayout.widget.ConstraintLayout>

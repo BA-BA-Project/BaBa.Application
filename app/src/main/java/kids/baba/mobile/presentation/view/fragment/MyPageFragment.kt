@@ -155,7 +155,7 @@ class MyPageFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean(IS_FAMILY_KEY, group.family)
                 bundle.putString(GROUP_NAME, group.groupName)
-                bundle.putString(GROUP_COLOR, group.members[0].iconColor)
+                if (group.members.isNotEmpty()) bundle.putString(GROUP_COLOR, group.members[0].iconColor)
 
                 val bottomSheet = GroupEditBottomSheet {
                     viewModel.loadBabies()

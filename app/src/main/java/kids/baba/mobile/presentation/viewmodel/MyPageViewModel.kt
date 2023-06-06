@@ -41,7 +41,7 @@ class MyPageViewModel @Inject constructor(
     val babyGroupTitle = _babyGroupTitle.asStateFlow()
 
     private val _myInfoState = MutableStateFlow<MemberUiModel?>(null)
-    val myInfoState = _myInfoState.asStateFlow()
+    private val myInfoState = _myInfoState.asStateFlow()
 
     fun loadGroups() = viewModelScope.launch {
         when (val result = getMyPageGroupUseCase.get()) {
@@ -63,12 +63,10 @@ class MyPageViewModel @Inject constructor(
                 val babies = result.data
                 _eventFlow.emit(MyPageEvent.LoadBabies((babies.myBaby + babies.others).map { it.toPresentation() }))
             }
-            is Result.NetworkError -> {
-                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
-            }
-            else -> {
-                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_baby_error_message))
-            }
+            is Result.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+
+            else -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_baby_error_message))
+
         }
     }
 
@@ -78,9 +76,8 @@ class MyPageViewModel @Inject constructor(
                 _myInfoState.value = result.data.toPresentation()
                 _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
             }
-            is Result.NetworkError -> {
-                _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
-            }
+            is Result.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+
             else -> {
                 val throwable = result.getThrowableOrNull()
                 if (throwable != null) {

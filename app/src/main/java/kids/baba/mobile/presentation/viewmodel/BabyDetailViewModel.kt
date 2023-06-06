@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -83,15 +82,11 @@ class BabyDetailViewModel @Inject constructor(
     }
 
     fun delete() = viewModelScope.launch {
-        Log.e("BabyDetailViewModel", "delete: babyId = ${baby.value?.babyId}")
         when (deleteOneBabyUseCase(babyId = baby.value?.babyId ?: "")) {
-            is Result.Success -> {
-                Log.e("BabyDetailViewModel", "delete: Success")
-                _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
-            }
-            is Result.NetworkError -> {
-                _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
-            }
+            is Result.Success -> _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
+
+            is Result.NetworkError -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+
             else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.unknown_error_msg))
         }
     }
