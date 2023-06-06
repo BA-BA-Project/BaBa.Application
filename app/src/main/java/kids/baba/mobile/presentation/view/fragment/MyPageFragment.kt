@@ -140,7 +140,7 @@ class MyPageFragment : Fragment() {
                 )
                 val bundle = Bundle()
                 bundle.putParcelable(EditMemberDialog.SELECTED_MEMBER_KEY, member)
-                bundle.putString(EditMemberDialog.SELECTED_MEMBER_RELATION, group.groupName)
+                bundle.putString(EditMemberDialog.SELECTED_GROUP_KEY, group.groupName)
                 editMemberDialog.arguments = bundle
                 editMemberDialog.show(childFragmentManager, EditMemberDialog.TAG)
             },

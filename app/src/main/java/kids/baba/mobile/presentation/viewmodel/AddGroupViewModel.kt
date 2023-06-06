@@ -10,6 +10,7 @@ import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.AddGroupEvent
 import kids.baba.mobile.presentation.model.AddGroupUiModel
+import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,17 +22,14 @@ class AddGroupViewModel @Inject constructor(
     private val addOneGroupUseCase: AddOneGroupUseCase
 ) : ViewModel() {
     val uiModel = MutableStateFlow(AddGroupUiModel())
-    val color = MutableStateFlow("#81E0D5")
+    val color = MutableStateFlow(ColorModel.PINK.colorCode)
+    private val relationGroupName = MutableStateFlow("")
 
     private val _eventFlow = MutableEventFlow<AddGroupEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val relationGroupName = MutableStateFlow("")
-
-
     val relationGroupNameViewData = ComposableInputWithDescViewData(
-        text = relationGroupName,
-        onEditButtonClickEventListener = {}
+        text = relationGroupName
     )
 
     val goToBack = ComposableTopViewData(
@@ -46,7 +44,7 @@ class AddGroupViewModel @Inject constructor(
         when (addOneGroupUseCase.add(
             myPageGroup = MyPageGroup(
                 relationGroup = relationGroupName.value,
-                iconColor = color.value
+                groupColor = color.value
             )
         )) {
             is kids.baba.mobile.domain.model.Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)

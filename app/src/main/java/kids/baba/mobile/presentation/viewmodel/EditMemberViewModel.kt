@@ -11,7 +11,7 @@ import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberRelationUseCase
 import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.event.EditGroupMemberEvent
-import kids.baba.mobile.presentation.model.EditMemberUiModel
+import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
@@ -25,20 +25,19 @@ class EditMemberViewModel @Inject constructor(
     private val deleteOneGroupMemberUseCase: DeleteOneGroupMemberUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(EditMemberUiModel())
-    val relationWithBaby = MutableStateFlow("")
+
+    val member = savedStateHandle.get<MemberUiModel>(EditMemberDialog.SELECTED_MEMBER_KEY)
+    val groupName = savedStateHandle.get<String>(EditMemberDialog.SELECTED_GROUP_KEY)
+
+    val relationWithBaby = MutableStateFlow(member?.introduction ?: "")
 
     private val _eventFlow = MutableEventFlow<EditGroupMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    init {
-        uiModel.value.member = savedStateHandle[EditMemberDialog.SELECTED_MEMBER_KEY]
-        uiModel.value.relation = savedStateHandle[EditMemberDialog.SELECTED_MEMBER_RELATION]
-    }
 
     fun patch() = viewModelScope.launch {
         when (patchOneMemberRelationUseCase.patch(
-            memberId = uiModel.value.member?.memberId ?: "",
+            memberId = member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = relationWithBaby.value)
         )) {
             is Result.Success -> {
@@ -54,7 +53,7 @@ class EditMemberViewModel @Inject constructor(
     val deleteMember = ComposableDeleteViewData(
         onDeleteButtonClickEventListener = {
             viewModelScope.launch {
-                when (deleteOneGroupMemberUseCase.delete(uiModel.value.member?.memberId ?: "")) {
+                when (deleteOneGroupMemberUseCase.delete(member?.memberId ?: "")) {
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
                     }
