@@ -37,14 +37,6 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
     private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.addMemberView.ivAddButton.setOnClickListener {
-            MyPageActivity.startActivityWithCode(
-                requireContext(),
-                INVITE_MEMBER_PAGE,
-                GROUP_NAME,
-                viewModel.groupName.value ?: ""
-            )
-        }
     }
 
     private fun setColorButton() {

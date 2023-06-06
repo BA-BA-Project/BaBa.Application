@@ -6,6 +6,11 @@
         <variable
             name="viewmodel"
             type="kids.baba.mobile.presentation.viewmodel.InviteMemberResultViewModel" />
+
+        <variable
+            name="topViewData"
+            type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +28,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.uiModel.tvTopTitleText}" />
+                bind:title="@{viewmodel.uiModel.tvTopTitleText}"
+                bind:topViewData="@{viewmodel.goToBack}" />
 
             <include
                 android:id="@+id/banner_view"
@@ -78,6 +84,7 @@
             android:textColor="@color/baba_main"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:onClick="@{() -> viewmodel.onCompleteClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

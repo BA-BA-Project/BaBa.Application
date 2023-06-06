@@ -34,7 +34,7 @@ class InviteMemberViewModel @Inject constructor(
     private val relationState = MutableStateFlow("")
 
     private val groupNameState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
-
+    val onComplete= MutableStateFlow(false)
 
     val goToBack = ComposableTopViewData(
         onBackButtonClickEventListener = {
@@ -45,16 +45,21 @@ class InviteMemberViewModel @Inject constructor(
     )
 
     val relationGroup = ComposableDescView(
-        text = groupNameState
+        text = groupNameState,
+        enabled = false
     )
 
     val relationWithBaby = ComposableInputWithDescViewData(
-        text = relationState
+        text = relationState,
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                onComplete.value = true
+            }
+        }
     )
 
     fun copyInviteCode() {
         viewModelScope.launch {
-
             when (val inviteCode = makeInviteCodeUseCase(
                 relationInfo = RelationInfo(
                     relationGroup = groupNameState.value,

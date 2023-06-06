@@ -55,8 +55,11 @@ class InviteResultFragment : Fragment() {
                     is InviteResultEvent.SuccessGetInvitation -> {
                         Log.e("SuccessGetInvitationInfo", "SuccessGetInvitationInfo")
                     }
-                    is InviteResultEvent.ShowSnackBar -> showSnackBar(event.message)
-                    is InviteResultEvent.BackButtonClicked -> {
+                    is InviteResultEvent.ShowSnackBar -> {
+                        showSnackBar(event.message)
+                        findNavController().navigateUp()
+                    }
+                    is InviteResultEvent.GoToBack -> {
                         findNavController().navigateUp()
                     }
                     is InviteResultEvent.GoToMyPage -> {

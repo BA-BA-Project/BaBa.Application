@@ -17,6 +17,7 @@ import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
 import java.text.SimpleDateFormat
+import java.util.*
 import java.time.LocalDate
 import java.util.*
 
@@ -47,6 +48,7 @@ class AddBabyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
+        setCalendar()
         collectEvent()
     }
 
@@ -64,14 +66,19 @@ class AddBabyFragment : Fragment() {
     private fun bindViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    private fun setCalendar() {
+
+        val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
-                binding.birthView.etInput.setText(parseDate(year, monthOfYear, dayOfMonth))
+                binding.birthView.etInput.text = parseDate(year, monthOfYear + 1, dayOfMonth)
             },
-            now.year,
-            now.month.value,
-            now.dayOfMonth
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
         )
         viewModel.datePicker.value = datePickerDialog
     }

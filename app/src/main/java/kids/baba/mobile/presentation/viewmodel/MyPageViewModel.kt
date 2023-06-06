@@ -70,17 +70,14 @@ class MyPageViewModel @Inject constructor(
         when (val result = getMemberUseCase.getMeNoPref()) {
             is Result.Success -> {
                 _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
-//                _uiState.value = MyPageUiState.LoadMyInfo(result.data.toPresentation())
             }
             is Result.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.Error(result.throwable))
-//                _uiState.value = MyPageUiState.Error(result.throwable)
             }
             else -> {
                 val throwable = result.getThrowableOrNull()
                 if (throwable != null) {
                     _eventFlow.emit(MyPageEvent.Error(throwable))
-//                    _uiState.value = MyPageUiState.Error(throwable)
                 }
             }
         }

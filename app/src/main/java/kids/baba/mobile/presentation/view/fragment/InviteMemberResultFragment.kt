@@ -1,23 +1,17 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentMemberInviteResultBinding
 import kids.baba.mobile.presentation.event.InviteResultEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.view.activity.IntroActivity
 import kids.baba.mobile.presentation.viewmodel.InviteMemberResultViewModel
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class InviteMemberResultFragment : Fragment() {
@@ -30,27 +24,20 @@ class InviteMemberResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         collectEvent()
         bindViewModel()
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.btnComplete.setOnClickListener {
-            requireActivity().finish()
-        }
     }
 
     private fun collectEvent() {
         viewLifecycleOwner.repeatOnStarted {
-            viewModel.event.collect {
+            viewModel.eventFlow.collect {
                 when (it) {
                     is InviteResultEvent.SuccessGetInvitationInfo -> {
-                        binding.groupView.tvDesc.text = it.data.relationGroup
-                        binding.relationView.tvDesc.text = it.data.relationName
                     }
-                    is InviteResultEvent.BackButtonClicked -> {
-
+                    is InviteResultEvent.SuccessAddMember -> {}
+                    is InviteResultEvent.GoToBack -> {
+                        findNavController().navigateUp()
                     }
                     is InviteResultEvent.GoToMyPage -> {
-
+                        requireActivity().finish()
                     }
                     is InviteResultEvent.ShowSnackBar -> {
 

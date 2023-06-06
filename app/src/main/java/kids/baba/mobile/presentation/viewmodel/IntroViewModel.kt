@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
+import kids.baba.mobile.presentation.event.DeepLinkEvent
 import kids.baba.mobile.presentation.event.IntroEvent
 import kids.baba.mobile.presentation.model.UserProfile
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
@@ -19,7 +20,19 @@ class IntroViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<IntroEvent>()
     val eventFlow = _eventFlow.asEventFlow()
+
+    private val _deepLinkEvent = MutableEventFlow<DeepLinkEvent>()
+    val deepLinkEvent = _deepLinkEvent.asEventFlow()
+
     suspend fun checkLogin() = getMemberUseCase.getMe() is Result.Success
+    fun handleDeeplink() = viewModelScope.launch {
+        when (getMemberUseCase.getMe()) {
+            is Result.Success -> _deepLinkEvent.emit(DeepLinkEvent.GoToInviteResultPage)
+            is Result.Unexpected -> _deepLinkEvent.emit(DeepLinkEvent.RequestLogin)
+            is Result.Failure -> _deepLinkEvent.emit(DeepLinkEvent.Failure)
+            is Result.NetworkError -> _deepLinkEvent.emit(DeepLinkEvent.NetworkError)
+        }
+    }
 
     fun isOnBoardingEnd() {
         viewModelScope.launch {

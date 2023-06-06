@@ -38,36 +38,6 @@ class InviteMemberFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            requireActivity().finish()
-        }
-        binding.inputGroupView.etInput.setText(viewModel.groupName.value)
-        binding.inputGroupView.etInput.isEnabled = false
-        binding.btnInvite.isEnabled = false
-        binding.btnCopyCode.isEnabled = false
-        binding.inputRelationView.tvEditButton.setOnClickListener {
-            binding.btnInvite.isEnabled = true
-            binding.btnCopyCode.isEnabled = true
-            binding.btnCopyCode.setTextColor(Color.parseColor("#FF3481FF"))
-            binding.btnInvite.setBackgroundResource(R.drawable.button_complete_blue)
-            binding.btnCopyCode.setBackgroundResource(R.drawable.button_complete)
-        }
-        binding.inputRelationView.etInput.addTextChangedListener {
-            it?.let {
-                if (it.isNotEmpty()) {
-                    binding.inputRelationView.tvEditButton.text = "완료"
-                    binding.inputRelationView.tvEditButton.setTextColor(Color.parseColor("#FF3481FF"))
-                } else {
-                    binding.inputRelationView.tvEditButton.text = "편집"
-                    binding.inputRelationView.tvEditButton.setTextColor(Color.parseColor("#B4B4B4"))
-                    binding.btnInvite.isEnabled = false
-                    binding.btnCopyCode.isEnabled = false
-                    binding.btnCopyCode.setTextColor(Color.parseColor("#B4B4B4"))
-                    binding.btnInvite.setBackgroundResource(R.drawable.button_disable)
-                    binding.btnCopyCode.setBackgroundResource(R.drawable.button_disable2)
-                }
-            }
-        }
         collectEvent()
         bindViewModel()
 
@@ -115,7 +85,6 @@ class InviteMemberFragment : Fragment() {
                         requireActivity().finish()
                     }
                     is InviteMemberEvent.CopyInviteCode -> {
-                        Log.e("InviteMemberFragment", "${event.inviteCode.inviteCode} 을 클립보드에 복사.")
                         val clipboard =
                             requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip = ClipData.newPlainText("inviteCode", event.inviteCode.inviteCode)
@@ -137,9 +106,6 @@ class InviteMemberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInviteMemberBinding.inflate(inflater, container, false)
-
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

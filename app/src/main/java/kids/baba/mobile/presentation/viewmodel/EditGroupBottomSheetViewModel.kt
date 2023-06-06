@@ -1,5 +1,6 @@
 package kids.baba.mobile.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,7 +36,8 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     private val _color = MutableStateFlow("#81E0D5")
     val color = _color.asStateFlow()
 
-    private val nameViewState: MutableStateFlow<String> = MutableStateFlow("")
+    private val nameViewState: MutableStateFlow<String> =
+        MutableStateFlow(savedStateHandle["groupName"] ?: "")
 
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -45,24 +47,29 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     }
 
     val composableNameViewData = ComposableNameViewData(
+        initialText = groupName.value,
         text = nameViewState,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
                 when (patchOneGroupUseCase.patch(
-                    group = GroupInfo(relationGroup = nameViewState.value), groupName = groupName.value
+                    group = GroupInfo(relationGroup = nameViewState.value),
+                    groupName = groupName.value
                 )) {
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
                 }
             }
-        }
+        },
+        maxLength = 6,
     )
 
     val goToInviteMember = ComposableAddButtonViewData(
@@ -82,9 +89,11 @@ class EditGroupBottomSheetViewModel @Inject constructor(
                     is Result.Success -> {
                         _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
                     }
+
                     is Result.NetworkError -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
                     }
+
                     else -> {
                         _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
                     }
