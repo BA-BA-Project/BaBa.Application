@@ -39,9 +39,8 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.uiModel.title}"
+                bind:title="@{String.format(@string/add_baby_title)}"
                 bind:topViewData="@{viewModel.goToBack}" />
-
 
             <View
                 android:layout_width="match_parent"
@@ -77,8 +76,8 @@
                     android:id="@+id/banner_view"
                     layout="@layout/composable_banner_view"
                     app:layout_constraintTop_toBottomOf="@+id/top_app_bar"
-                    bind:description="@{viewModel.uiModel.bannerDesc}"
-                    bind:title="@{viewModel.uiModel.bannerTitle}" />
+                    bind:description="@{String.format(@string/add_baby_banner_description)}"
+                    bind:title="@{String.format(@string/add_baby_banner_title)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -88,7 +87,7 @@
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_view"
                     bind:inputViewData="@{viewModel.composableBabyName}"
-                    bind:title="@{viewModel.uiModel.nameTitle}" />
+                    bind:title="@{String.format(@string/baby_name)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -97,9 +96,9 @@
                 <include
                     android:id="@+id/relation_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:description="@{viewModel.uiModel.relationDesc}"
+                    bind:description="@{String.format(@string/relation_between_me_and_baby_description)}"
                     bind:inputWithDescViewData="@{viewModel.composableRelation}"
-                    bind:title="@{viewModel.uiModel.relationTitle}" />
+                    bind:title="@{String.format(@string/relation_between_me_and_baby)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -109,8 +108,7 @@
                     android:id="@+id/birth_view"
                     layout="@layout/composable_datepicker_view"
                     bind:inputViewData="@{viewModel.composableBirthDay}"
-                    bind:title="@{viewModel.uiModel.birthTitle}"
-                    bind:function="@{viewModel.showDatePicker}"/>
+                    bind:title="@{String.format(@string/add_baby_birthday_title)}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -120,11 +118,14 @@
             android:layout_height="70dp"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
-            android:backgroundTint="@color/baba_main"
+            android:background="@{(viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? @color/gray_10 : @color/baba_main}"
+            android:enabled="@{(viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? false : true}"
             android:onClick="@{() -> viewModel.addBaby()}"
             android:text="@string/add_button"
+            android:textColor="@{ (viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? @color/text_3 : @color/white}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
