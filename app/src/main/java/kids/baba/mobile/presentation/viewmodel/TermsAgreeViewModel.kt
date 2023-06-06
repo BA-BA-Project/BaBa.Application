@@ -86,7 +86,7 @@ class TermsAgreeViewModel @Inject constructor(
                     it.toDomain()
                 }
             )
-            when (result){
+            when (result) {
                 is Result.Success -> {
                     _signToken.value = result.data
                 }

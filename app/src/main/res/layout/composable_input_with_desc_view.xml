@@ -12,10 +12,6 @@
             type="String" />
 
         <variable
-            name="button"
-            type="String" />
-
-        <variable
             name="inputWithDescViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
     </data>

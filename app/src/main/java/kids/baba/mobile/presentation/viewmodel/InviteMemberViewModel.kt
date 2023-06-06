@@ -1,19 +1,17 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.RelationInfo
-import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableDescView
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.InviteMemberEvent
-import kids.baba.mobile.presentation.model.InviteMemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
@@ -26,15 +24,14 @@ class InviteMemberViewModel @Inject constructor(
     private val makeInviteCodeUseCase: MakeInviteCodeUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(InviteMemberUiModel())
+
     val groupName = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
     private val _eventFlow = MutableEventFlow<InviteMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    private val relationState = MutableStateFlow("")
+    val relationState = MutableStateFlow("")
 
     private val groupNameState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
-    val onComplete= MutableStateFlow(false)
 
     val goToBack = ComposableTopViewData(
         onBackButtonClickEventListener = {
@@ -50,12 +47,7 @@ class InviteMemberViewModel @Inject constructor(
     )
 
     val relationWithBaby = ComposableInputWithDescViewData(
-        text = relationState,
-        onEditButtonClickEventListener = {
-            viewModelScope.launch {
-                onComplete.value = true
-            }
-        }
+        text = relationState
     )
 
     fun copyInviteCode() {
@@ -66,19 +58,11 @@ class InviteMemberViewModel @Inject constructor(
                     relationName = relationState.value
                 )
             )) {
-                is Result.Success -> {
-                    _eventFlow.emit(InviteMemberEvent.CopyInviteCode(inviteCode.data))
-                }
+                is Result.Success -> _eventFlow.emit(InviteMemberEvent.CopyInviteCode(inviteCode.data))
 
-                is Result.NetworkError -> {
-                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                }
-
-                else -> {
-                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-
-                }
+                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unvalid_invite_code_error))
             }
 
 
@@ -93,18 +77,11 @@ class InviteMemberViewModel @Inject constructor(
                     relationName = relationState.value
                 )
             )) {
-                is Result.Success -> {
-                    Log.e("InviteMemberViewModel", "copyCode: Success")
-                    _eventFlow.emit(InviteMemberEvent.InviteWithKakao(inviteCode.data))
-                }
+                is Result.Success -> _eventFlow.emit(InviteMemberEvent.InviteWithKakao(inviteCode.data))
 
-                is Result.NetworkError -> {
-                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-                }
+                is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                else -> {
-                    _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-                }
+                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unvalid_invite_code_error))
             }
         }
     }

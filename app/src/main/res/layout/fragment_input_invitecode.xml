@@ -31,14 +31,14 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.uiModel.title}"
+                bind:title="@{String.format(@string/add_baby_title)}"
                 bind:topViewData="@{viewModel.composableBackButton}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewModel.uiModel.bannerDesc}"
-                bind:title="@{viewModel.uiModel.bannerTitle}" />
+                bind:description="@{String.format(@string/input_invite_code_banner_description)}"
+                bind:title="@{String.format(@string/input_invite_code_banner_title)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:id="@+id/input_view"
                 layout="@layout/composable_input_view"
                 bind:inputViewData="@{viewModel.composableInviteCode}"
-                bind:title="@{viewModel.uiModel.inputTitle}" />
+                bind:title="@{String.format(@string/input_invite_code)}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton

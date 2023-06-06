@@ -36,7 +36,7 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.uiModel.topAppBarTitle}"
+                bind:title="@{String.format(@string/invite_member)}"
                 bind:topViewData="@{viewmodel.goToBack}" />
 
         </LinearLayout>
@@ -57,8 +57,8 @@
                 <include
                     android:id="@+id/banner_view"
                     layout="@layout/composable_banner_view"
-                    bind:description="@{viewmodel.uiModel.bannerDesc}"
-                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+                    bind:description="@{String.format(@string/can_share_album_and_diary_of_baby)}"
+                    bind:title="@{String.format(@string/invite_member_will_share_album)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -68,8 +68,8 @@
                     android:id="@+id/input_group_view"
                     layout="@layout/composable_desc_view"
                     bind:descViewData="@{viewmodel.relationGroup}"
-                    bind:description="@{viewmodel.uiModel.inputGroupDesc}"
-                    bind:title="@{viewmodel.uiModel.inputGroupTitle}" />
+                    bind:description="@{String.format(@string/which_group_has_member_will_be_invited)}"
+                    bind:title="@{String.format(@string/group_of_invited_member)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -78,10 +78,9 @@
                 <include
                     android:id="@+id/input_relation_view"
                     layout="@layout/composable_input_with_desc_view"
-                    bind:button="@{viewmodel.uiModel.inputRelationButton}"
-                    bind:description="@{viewmodel.uiModel.inputRelationDesc}"
+                    bind:description="@{String.format(@string/invite_member_relation_description)}"
                     bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
-                    bind:title="@{viewmodel.uiModel.inputRelationTitle}" />
+                    bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -97,11 +96,11 @@
             android:layout_height="52dp"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="10dp"
-            android:background="@{viewmodel.onComplete ? @drawable/button_complete : @drawable/button_disable2}"
-            android:enabled="@{viewmodel.onComplete.booleanValue() ? true : false}"
+            android:background="@{(!viewmodel.relationState.empty) ? @drawable/button_complete : @drawable/button_disable2}"
+            android:enabled="@{(!viewmodel.relationState.empty) ? true : false}"
             android:onClick="@{() -> viewmodel.copyInviteCode()}"
             android:text="@string/copy_invite_code"
-            android:textColor="@{viewmodel.onComplete.booleanValue() ? @color/baba_main : @color/gray_10}"
+            android:textColor="@{(!viewmodel.relationState.empty) ? @color/baba_main : @color/gray_10}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/btn_invite"
@@ -116,11 +115,11 @@
             android:layout_height="52dp"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
-            android:background="@{viewmodel.onComplete ? @drawable/button_complete_blue : @drawable/button_disable}"
-            android:enabled="@{viewmodel.onComplete.booleanValue() ? true : false}"
+            android:background="@{(!viewmodel.relationState.empty) ? @drawable/button_complete_blue : @drawable/button_disable}"
+            android:enabled="@{(!viewmodel.relationState.empty) ? true : false}"
             android:onClick="@{() -> viewmodel.inviteWithKakao()}"
             android:text="@string/invite_kakaotalk"
-            android:textColor="@{viewmodel.onComplete.booleanValue() ? @color/white : @color/gray_10}"
+            android:textColor="@{(!viewmodel.relationState.empty) ? @color/white : @color/gray_10}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,8 +19,6 @@ class CropViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val TAG = "CropViewModel"
-
     val currentTakenMediaInCrop = savedStateHandle.get<MediaData>(MEDIA_DATA)
     private val currentTakenMedia =
         MutableStateFlow(savedStateHandle[MEDIA_DATA] ?: MediaData())
@@ -30,11 +27,6 @@ class CropViewModel @Inject constructor(
     fun cropImage(cropImageView: CropImageView) = callbackFlow {
         viewModelScope.launch {
             cropImageView.setOnCropImageCompleteListener { _, result ->
-                Log.d(
-                    TAG, "CropResult - original uri : ${result.originalUri}" +
-                            "  cropped content: ${result.uriContent}"
-                )
-
                 currentTakenMedia.update {
                     it.copy(mediaName = "Cropped", mediaUri = result.uriContent.toString())
                 }

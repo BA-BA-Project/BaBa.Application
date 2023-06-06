@@ -29,8 +29,6 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<EditMemberProfileEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    val uiModel = MutableStateFlow(EditMemberProfileBottomSheetUiModel())
-
     val myInfo = saveStateHandle.get<MemberUiModel>(MEMBER_UI_MODEL)
 
     val nameViewState: MutableStateFlow<String> = MutableStateFlow(myInfo?.name ?: "")

@@ -27,7 +27,7 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.uiModel.addBabyTitle}"
+                bind:title="@{String.format(@string/add_baby_title)}"
                 bind:topViewData="@{viewModel.goToBack}" />
         </LinearLayout>
 
@@ -47,8 +47,8 @@
                 <include
                     android:id="@+id/banner_view"
                     layout="@layout/composable_banner_view"
-                    bind:description="@{viewModel.uiModel.addBabyBannerDesc}"
-                    bind:title="@{viewModel.uiModel.addBabyBannerTitle}" />
+                    bind:description="@{String.format(@string/communicate_and_get_the_baby_story)}"
+                    bind:title="@{String.format(@string/baby_add_complete)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                     android:id="@+id/name_view"
                     layout="@layout/composable_two_text_view"
                     bind:description="@{viewModel.uiModel.addBabyNameDesc}"
-                    bind:title="@{viewModel.uiModel.addBabyNameTitle}" />
+                    bind:title="@{String.format(@string/baby_name)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                     android:id="@+id/group_view"
                     layout="@layout/composable_two_text_view"
                     bind:description="@{viewModel.uiModel.addBabyGroupDesc}"
-                    bind:title="@{viewModel.uiModel.addBabyGroupTitle}" />
+                    bind:title="@{String.format(@string/group_where_i_am_included)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                     android:id="@+id/relation_view"
                     layout="@layout/composable_two_text_view"
                     bind:description="@{viewModel.uiModel.addBabyRelationDesc}"
-                    bind:title="@{viewModel.uiModel.addBabyRelationTitle}" />
+                    bind:title="@{String.format(@string/relation_between_me_and_baby)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                     android:id="@+id/permission_view"
                     layout="@layout/composable_two_text_view"
                     bind:description="@{viewModel.uiModel.addBabyPermissionDesc}"
-                    bind:title="@{viewModel.uiModel.addBabyPermissionTitle}" />
+                    bind:title="@{String.format(@string/permission_to_upload_growth_album)}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

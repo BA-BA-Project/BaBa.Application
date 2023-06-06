@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -56,7 +55,6 @@ class SelectCardViewModel @Inject constructor(
     }
 
     fun onCardSelected(position: Int) = viewModelScope.launch {
-        Log.d(TAG, "selected position: $position")
         _cardPosition.value = position
     }
 
@@ -94,11 +92,9 @@ class SelectCardViewModel @Inject constructor(
                 }
             }
             is Result.NetworkError -> {
-                Log.e(TAG, "NetworkError")
                 _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                Log.e(TAG, "Unexpected Error")
                 _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.post_album_unexpected_result))
             }
 

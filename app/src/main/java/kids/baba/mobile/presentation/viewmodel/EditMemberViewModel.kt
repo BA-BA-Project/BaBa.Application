@@ -35,8 +35,7 @@ class EditMemberViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<EditGroupMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-
-
+    
     fun patch() = viewModelScope.launch {
         when (patchOneMemberRelationUseCase.patch(
             memberId = member?.memberId ?: "",

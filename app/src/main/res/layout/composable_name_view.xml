@@ -8,10 +8,6 @@
             type="String" />
 
         <variable
-            name="button"
-            type="String" />
-
-        <variable
             name="nameViewData"
             type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
 

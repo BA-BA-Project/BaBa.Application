@@ -60,7 +60,6 @@ class BabyDetailViewModel @Inject constructor(
                 )
                 uiModel.update {
                     it.copy(
-                        babyName = baby.value?.name ?: "",
                         babyBirthday = result.data.birthday,
                         familyGroupTitle = result.data.familyGroup.groupName,
                         myGroupTitle = result.data.myGroup?.groupName ?: "",

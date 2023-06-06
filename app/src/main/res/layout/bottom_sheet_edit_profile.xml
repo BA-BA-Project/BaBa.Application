@@ -51,7 +51,7 @@
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
-                bind:title="@{viewmodel.uiModel.name}" />
+                bind:title="@{String.format(@string/my_name)}" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewmodel.uiModel.bgColor}" />
+                bind:title="@{String.format(@string/background_color)}" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -89,9 +89,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="99"
-                    bind:button="@{viewmodel.uiModel.button}"
+                    bind:button="@{String.format(@string/complete)}"
                     bind:inputViewData="@{viewmodel.composableIntroductionViewData}"
-                    bind:title="@{viewmodel.uiModel.intro}" />
+                    bind:title="@{String.format(@string/my_introduction)}" />
 
                 <TextView
                     android:layout_width="wrap_content"

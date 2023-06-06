@@ -10,7 +10,6 @@ import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.BabyGroupEditEvent
-import kids.baba.mobile.presentation.model.BabyEditBottomSheetUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class BabyEditBottomSheetViewModel @Inject constructor(
     resources: Resources
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(BabyEditBottomSheetUiModel())
 
     private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
     val eventFlow = _eventFlow.asEventFlow()

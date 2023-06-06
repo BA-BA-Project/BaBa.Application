@@ -25,7 +25,7 @@ class ClassifiedAlbumDetailViewModel @Inject constructor(
     val monthDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
     val yearDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy")
 
-    fun sort(){
+    fun sort() {
         _albumList.update {
             it.copy(
                 classifiedAlbumList = it.classifiedAlbumList.reversed()

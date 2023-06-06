@@ -26,8 +26,10 @@ class InviteMemberResultViewModel @Inject constructor(
     private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     val uiModel = MutableStateFlow(InviteMemberResultUiModel())
     val inviteCode = MutableStateFlow(savedStateHandle[MyPageFragment.INVITE_CODE] ?: "")
+
     private val _eventFlow = MutableEventFlow<InviteResultEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
