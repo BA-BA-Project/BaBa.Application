@@ -9,19 +9,33 @@ import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ComposableCheckBinding
 import kids.baba.mobile.presentation.model.DeleteReason
 
-class DeleteReasonAdapter : ListAdapter<DeleteReason, DeleteReasonAdapter.DeleteReasonViewHolder>(diffUtil) {
+class DeleteReasonAdapter(
+    private val itemClick: (DeleteReason) -> Unit
+) : ListAdapter<DeleteReason, DeleteReasonAdapter.DeleteReasonViewHolder>(diffUtil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DeleteReasonViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        DeleteReasonViewHolder(parent, itemClick)
 
     override fun onBindViewHolder(holder: DeleteReasonViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class DeleteReasonViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    class DeleteReasonViewHolder(
+        parent: ViewGroup,
+        itemClick: (DeleteReason) -> Unit
+    ) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.composable_check, parent, false)
     ) {
         private val binding = ComposableCheckBinding.bind(itemView)
-        fun bind(deleteReason: DeleteReason){
+        private lateinit var deleteReason: DeleteReason
+        init {
+            binding.root.setOnClickListener {
+                itemClick(deleteReason)
+            }
+        }
+
+        fun bind(deleteReason: DeleteReason) {
+            this.deleteReason = deleteReason
             binding.deleteReason = deleteReason
         }
     }

@@ -55,7 +55,9 @@ class DeleteMemberFragment : Fragment() {
 
 
     private fun setDeleteReasonAdapter() {
-        deleteReasonAdapter = DeleteReasonAdapter()
+        deleteReasonAdapter = DeleteReasonAdapter {
+            viewModel.itemClick(it)
+        }
         binding.rvAccountDeleteReason.adapter = deleteReasonAdapter
     }
 
