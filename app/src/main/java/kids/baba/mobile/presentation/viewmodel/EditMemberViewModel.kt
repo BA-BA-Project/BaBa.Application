@@ -45,7 +45,7 @@ class EditMemberViewModel @Inject constructor(
 
             is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
-            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.invalid_format_error))
 
         }
     }
@@ -62,7 +62,7 @@ class EditMemberViewModel @Inject constructor(
                         when (deleteOneGroupMemberUseCase.delete(memberId = member?.memberId ?: "")) {
                             is Result.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
                             is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-                            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+                            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.invalid_delete_member_error))
                         }
                     }
                     else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.load_my_info_error_message))

@@ -53,7 +53,7 @@ class InviteMemberResultViewModel @Inject constructor(
                 _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.unknown_error_msg))
+                _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.invalid_invite_code))
             }
         }
     }
@@ -69,7 +69,7 @@ class InviteMemberResultViewModel @Inject constructor(
                 _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.unknown_error_msg))
+                _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.cannot_register_member_error))
             }
         }
 

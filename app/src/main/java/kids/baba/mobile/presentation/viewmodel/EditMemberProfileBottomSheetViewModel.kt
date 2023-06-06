@@ -75,7 +75,7 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
                 _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.unknown_error_msg))
+                _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.invalid_format_error))
             }
         }
     }

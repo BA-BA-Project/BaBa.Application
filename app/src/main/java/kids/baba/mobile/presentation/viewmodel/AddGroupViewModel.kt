@@ -49,7 +49,7 @@ class AddGroupViewModel @Inject constructor(
         )) {
             is Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)
             is Result.NetworkError -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_network_failed))
-            else -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_unknown_error))
+            else -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.already_have_same_group_or_format_error))
         }
 
     }

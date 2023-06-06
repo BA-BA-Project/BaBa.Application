@@ -62,7 +62,7 @@ class InviteMemberViewModel @Inject constructor(
 
                 is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unvalid_invite_code_error))
+                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.cannot_generate_invite_code))
             }
 
 
@@ -81,7 +81,7 @@ class InviteMemberViewModel @Inject constructor(
 
                 is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.unvalid_invite_code_error))
+                else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.cannot_generate_invite_code))
             }
         }
     }
