@@ -200,6 +200,7 @@
                     bind:delete="@{String.format(@string/delete_comment)}"
                     bind:deleteViewData="@{viewModel.deleteMember}"
                     bind:title="@{String.format(@string/delete_member_text)}" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.cardview.widget.CardView>

@@ -222,6 +222,7 @@
     <string name="load_group_error_message">그룹 정보를 불러올 수 없습니다.</string>
     <string name="load_baby_error_message">아이 정보를 불러올 수 없습니다.</string>
     <string name="load_my_info_error_message">내 정보를 불러올 수 없습니다.</string>
+    <string name="cannot_delete_myself">계정을 삭제하려면 우측 상단 설정에서 해야 합니다.</string>
 
     <string name="delete_member_text">멤버 삭제하기</string>
     <string name="permission_to_upload_growth_album">성장앨범 업로드 권한</string>

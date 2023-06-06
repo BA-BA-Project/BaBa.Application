@@ -8,6 +8,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.GroupMemberInfo
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
+import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberRelationUseCase
 import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.event.EditGroupMemberEvent
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class EditMemberViewModel @Inject constructor(
     private val patchOneMemberRelationUseCase: PatchOneMemberRelationUseCase,
     private val deleteOneGroupMemberUseCase: DeleteOneGroupMemberUseCase,
+    private val getMemberUseCase: GetMemberUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -40,29 +42,31 @@ class EditMemberViewModel @Inject constructor(
             memberId = member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = relationWithBaby.value)
         )) {
-            is Result.Success -> {
-                _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
-            }
+            is Result.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
+
             is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
-            else -> {
-                _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-            }
+
+            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+
         }
     }
 
     val deleteMember = ComposableDeleteViewData(
         onDeleteButtonClickEventListener = {
             viewModelScope.launch {
-                when (deleteOneGroupMemberUseCase.delete(member?.memberId ?: "")) {
+                when (val myInfo = getMemberUseCase.getMe()) {
                     is Result.Success -> {
-                        _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
+                        if (member?.memberId == myInfo.data.memberId) {
+                            _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.cannot_delete_myself))
+                            return@launch
+                        }
+                        when (deleteOneGroupMemberUseCase.delete(memberId = member?.memberId ?: "")) {
+                            is Result.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
+                            is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                            else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
+                        }
                     }
-                    is Result.NetworkError -> _eventFlow.emit(
-                        EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed)
-                    )
-                    else -> {
-                        _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.unknown_error_msg))
-                    }
+                    else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.load_my_info_error_message))
                 }
             }
         }
