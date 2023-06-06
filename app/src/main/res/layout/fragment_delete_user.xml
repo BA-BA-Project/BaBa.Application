@@ -12,6 +12,9 @@
         <variable
             name="topViewData"
             type="kids.baba.mobile.presentation.binding.ComposableTopViewData" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,17 +28,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:title="@{viewmodel.uiModel.topAppBarTitle}"
+            bind:title="@{String.format(@string/account_delete_title)}"
             bind:topViewData="@{topViewData}" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/container_nestedView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_warning_delete_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_app_bar"
-            app:layout_constraintBottom_toTopOf="@id/tv_warning_delete_account">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -47,19 +50,20 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    bind:description="@{viewmodel.uiModel.bannerDesc}"
-                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+                    bind:description="@{String.format(@string/account_delete_banner_desc)}"
+                    bind:title="@{String.format(@string/account_delete_banner_title)}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_account_delete_reason"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/banner_view"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    bind:listitem="@layout/composable_check"
-                    bind:itemCount="4"/>
+                    bind:itemCount="4"
+                    bind:listitem="@layout/composable_check" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -86,14 +90,15 @@
             android:layout_height="52dp"
             android:layout_marginHorizontal="28dp"
             android:layout_marginBottom="48dp"
-            android:enabled="false"
-            android:background="@drawable/button_disable"
-            app:layout_constraintTop_toBottomOf="@id/tv_warning_delete_account"
+            android:background="@{viewmodel.isAnyChecked ? @drawable/button_complete_red : @drawable/button_disable}"
+            android:enabled="@{viewmodel.isAnyChecked}"
             android:text="@string/complete"
+            android:textColor="@{viewmodel.isAnyChecked ? @color/white : @color/text_3}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_warning_delete_account" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

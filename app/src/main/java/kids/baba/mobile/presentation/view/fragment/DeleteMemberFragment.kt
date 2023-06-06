@@ -45,6 +45,7 @@ class DeleteMemberFragment : Fragment() {
 
 
 
+
     private fun setBinding() {
         binding.viewmodel = viewModel
         binding.topViewData = ComposableTopViewData {

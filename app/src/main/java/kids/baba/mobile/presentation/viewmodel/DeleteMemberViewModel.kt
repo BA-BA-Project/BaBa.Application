@@ -34,7 +34,10 @@ class DeleteMemberViewModel @Inject constructor(
                 }
             }
         }
+        checkAnyChecked()
     }
+
+    private fun checkAnyChecked() = _isAnyChecked.update { deleteReasonList.value.any { it.isChecked } }
 
 
 

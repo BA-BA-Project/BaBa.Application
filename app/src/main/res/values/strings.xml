@@ -215,6 +215,7 @@
     <string name="my_group_description">%s, %s의 소식만 볼 수 있어요</string>
     <string name="choose_email_client">메일 클라이언트를 선택하세요</string>
 
+    <string name="accout_delete">계정 삭제하기</string>
     <string name="account_delete_title">계정 삭제</string>
     <string name="account_delete_banner_title">계정을 삭제하려는 이유가\n 무엇인가요?</string>
     <string name="account_delete_banner_desc">서비스 개선을 위해 선택해주세요.</string>
