@@ -214,4 +214,16 @@
     <string name="family_group_description">모든 그룹과 소식을 공유할 수 있어요</string>
     <string name="my_group_description">%s, %s의 소식만 볼 수 있어요</string>
     <string name="choose_email_client">메일 클라이언트를 선택하세요</string>
+
+    <string name="account_delete_title">계정 삭제</string>
+    <string name="account_delete_banner_title">계정을 삭제하려는 이유가\n 무엇인가요?</string>
+    <string name="account_delete_banner_desc">서비스 개선을 위해 선택해주세요.</string>
+
+    <string-array name="account_delete_reason">
+        <item>데이터 삭제를 위해</item>
+        <item>불편한 사용성으로 인해</item>
+        <item>잦은 오류로 인해</item>
+        <item>낮은 사용 빈도로 인해</item>
+        <item>기타</item>
+    </string-array>
 </resources>
