@@ -68,7 +68,7 @@ class MyPageFragment : Fragment() {
 
     private fun collectState() {
         initializeRecyclerView()
-        viewLifecycleOwner.repeatOnStarted { event ->
+        viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is MyPageEvent.LoadGroups -> {
@@ -155,8 +155,10 @@ class MyPageFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean(IS_FAMILY_KEY, group.family)
                 bundle.putString(GROUP_NAME, group.groupName)
-                // TODO: bundle 로 그룹 컬러도 보내주어야 함.
+                bundle.putString(GROUP_COLOR, group.members[0].iconColor)
+
                 val bottomSheet = GroupEditBottomSheet {
+                    viewModel.loadBabies()
                     viewModel.loadGroups()
                 }
                 bottomSheet.arguments = bundle
@@ -201,6 +203,7 @@ class MyPageFragment : Fragment() {
     companion object {
         const val INTENT_PAGE_NAME = "nextPage"
         const val GROUP_NAME = "groupName"
+        const val GROUP_COLOR = "groupColor"
         const val ADD_GROUP_PAGE = "addGroupPage"
         const val SETTING_PAGE = "settingPage"
         const val BABY_DETAIL_PAGE = "babyDetailPage"
