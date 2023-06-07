@@ -24,6 +24,10 @@ class MyPageGroupAdapter(
     private var ownerFamily = ""
     private var babies: List<BabyUiModel> = emptyList()
 
+
+    fun setOwnerFamily(familyName: String){
+        this.ownerFamily = familyName
+    }
     fun setBabies(babies: List<BabyUiModel>) {
         this.babies = babies
     }
@@ -61,7 +65,6 @@ class MyPageGroupAdapter(
             if (group.family) {
                 binding.description =
                     binding.root.context.getString(R.string.family_group_description)
-                ownerFamily = group.groupName
                 adapter.submitList(babies + group.members.map { it.toMemberUiModel() })
             } else {
                 binding.description = String.format(
