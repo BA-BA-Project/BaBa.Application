@@ -3,16 +3,16 @@
 
     <item android:id="@+id/gathering_view_fragment"
         android:title="@string/collapse"
-        android:icon="@drawable/collapse_off">
+        android:icon="@drawable/selector_collapse_page">
     </item>
 
     <item android:id="@+id/growth_album_fragment"
         android:title="@string/growth_album"
-        android:icon="@drawable/growth_album_off">
+        android:icon="@drawable/selector_album_page">
     </item>
 
     <item android:id="@+id/my_page_fragment"
         android:title="@string/my_page"
-        android:icon="@drawable/my_page_off">
+        android:icon="@drawable/selector_my_page">
     </item>
 </menu>
