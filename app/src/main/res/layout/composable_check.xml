@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
-            name="content"
-            type="String" />
+            name="deleteReason"
+            type="kids.baba.mobile.presentation.model.DeleteReason" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="80dp">
 
@@ -19,26 +19,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:clickable="false"
+            android:buttonTint="@{deleteReason.checked ? @color/baba_sub_9 : @color/teal_200}"
+            android:checked="@{deleteReason.checked}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:checked="true"/>
 
         <TextView
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:text="@{String.format(deleteReason.reason)}"
+            android:textColor="@color/text_0"
             android:textSize="18sp"
-            android:text="@{content}"
             app:layout_constraintBottom_toBottomOf="@+id/cb_check"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cb_check"
             app:layout_constraintTop_toTopOf="@+id/cb_check"
             tools:text="데이터 삭제를 위해" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EDEDED"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

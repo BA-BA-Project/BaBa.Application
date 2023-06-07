@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_page_nav_graph"
-    app:startDestination="@id/my_page_fragment">
-    <fragment
-        android:id="@+id/my_page_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.MyPageFragment"
-        android:label="MyPageFragment"
-        tools:layout="@layout/fragment_mypage"></fragment>
+    app:startDestination="@id/baby_detail_fragment">
+
     <fragment
         android:id="@+id/baby_detail_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.BabyDetailFragment"
@@ -23,9 +19,6 @@
         android:name="kids.baba.mobile.presentation.view.fragment.InputInviteCodeFragment"
         android:label="InputInviteCodeFragment"
         tools:layout="@layout/fragment_input_invitecode">
-<!--        <argument-->
-<!--            android:name="response"-->
-<!--            app:argType="kids.baba.mobile.domain.model.BabiesInfoResponse" />-->
         <action
             android:id="@+id/action_input_invite_fragment_to_input_invite_result_fragment"
             app:destination="@id/input_invite_result_fragment" />
@@ -35,7 +28,7 @@
         android:id="@+id/input_invite_result_fragment"
         android:name="kids.baba.mobile.presentation.view.fragment.InviteResultFragment"
         android:label="InviteResultFragment"
-        tools:layout="@layout/fragment_invite_result" >
+        tools:layout="@layout/fragment_invite_result">
         <argument
             android:name="inviteCode"
             app:argType="string" />
@@ -121,16 +114,5 @@
         android:name="kids.baba.mobile.presentation.view.fragment.CreatorFragment"
         android:label="FragmentCreator"
         tools:layout="@layout/fragment_creator" />
-
-    <fragment
-        android:id="@+id/growth_album_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.GrowthAlbumFragment"
-        android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_growthalbum"></fragment>
-    <fragment
-        android:id="@+id/collapse_fragment"
-        android:name="kids.baba.mobile.presentation.view.fragment.CollapseFragment"
-        android:label="fragment_GrowthAlbumFragment"
-        tools:layout="@layout/fragment_collapse"></fragment>
 
 </navigation>
