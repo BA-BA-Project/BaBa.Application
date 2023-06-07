@@ -62,9 +62,8 @@
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
-                bind:button="@{viewmodel.button}"
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
-                bind:title="@{viewmodel.name}" />
+                bind:title="@{String.format(@string/baby_name)}" />
 
             <View
                 android:layout_width="match_parent"

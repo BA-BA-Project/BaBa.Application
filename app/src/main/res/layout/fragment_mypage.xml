@@ -80,6 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:onClick="@{() -> viewmodel.showEditMemberBottomSheet()}"
                         android:src="@drawable/ic_edit_pen"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_my_status_message"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_edit_my_page"
+                        android:onClick="@{() -> viewmodel.showEditBabyGroupBottomSheet()}"
                         app:layout_constraintEnd_toEndOf="@id/kids_container"
                         app:layout_constraintTop_toTopOf="@+id/tv_kids_title" />
 
@@ -193,7 +195,7 @@
                         android:gravity="center_horizontal"
                         android:includeFontPadding="false"
                         android:onClick="@{() -> viewmodel.addGroup()}"
-                        android:text="@{viewmodel.groupAddButton}"
+                        android:text="@string/make_group_text"
                         android:textAppearance="@style/BABA.TextStyle"
                         android:textColor="@color/text_3"
                         android:textSize="16sp"

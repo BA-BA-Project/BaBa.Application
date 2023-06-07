@@ -18,8 +18,6 @@ import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddBabyViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import java.time.LocalDate
-import java.util.*
 
 @AndroidEntryPoint
 class AddBabyFragment : Fragment() {
@@ -29,7 +27,6 @@ class AddBabyFragment : Fragment() {
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
 
     private val viewModel: AddBabyViewModel by viewModels()
-    private val now = LocalDate.now()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +66,6 @@ class AddBabyFragment : Fragment() {
     }
 
     private fun setCalendar() {
-
         val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
             requireContext(),
@@ -87,13 +83,9 @@ class AddBabyFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is AddBabyEvent.ShowSnackBar -> {
-                        showSnackBar(event.message)
-                    }
+                    is AddBabyEvent.ShowSnackBar -> showSnackBar(event.message)
 
-                    is AddBabyEvent.SuccessAddBaby -> {
-                        findNavController().navigate(R.id.add_complete_fragment)
-                    }
+                    is AddBabyEvent.SuccessAddBaby -> findNavController().navigate(R.id.add_complete_fragment)
 
                     is AddBabyEvent.BackButtonClicked -> requireActivity().finish()
                 }

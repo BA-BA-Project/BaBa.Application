@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentBabydetailBinding
 import kids.baba.mobile.presentation.adapter.GroupMemberAdapter
 import kids.baba.mobile.presentation.event.BabyDetailEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.view.bottomsheet.BabyEditProfileBottomSheet
-import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.BABY_DETAIL_INFO
 import kids.baba.mobile.presentation.viewmodel.BabyDetailViewModel
 
@@ -47,7 +45,9 @@ class BabyDetailFragment : Fragment() {
                         familyAdapter.submitList(event.familyMemberList)
                         myGroupAdapter.submitList(event.myGroupMemberList)
                     }
-                    is BabyDetailEvent.SuccessDeleteBaby -> {requireActivity().finish()}
+                    is BabyDetailEvent.SuccessDeleteBaby -> {
+                        requireActivity().finish()
+                    }
                     is BabyDetailEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }
@@ -74,18 +74,6 @@ class BabyDetailFragment : Fragment() {
             bottomSheet.show(childFragmentManager, BabyEditProfileBottomSheet.TAG)
 
         }
-        binding.myGroupView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet {}
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-        }
-        binding.familyView.ivEditButton.setOnClickListener {
-            val bundle = Bundle()
-            val bottomSheet = GroupEditBottomSheet {}
-            bottomSheet.arguments = bundle
-            bottomSheet.show(childFragmentManager, GroupEditBottomSheet.TAG)
-        }
     }
 
     override fun onCreateView(
@@ -101,14 +89,12 @@ class BabyDetailFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        familyAdapter = GroupMemberAdapter {
-
-        }
-        myGroupAdapter = GroupMemberAdapter {
-
-        }
+        familyAdapter = GroupMemberAdapter {}
+        myGroupAdapter = GroupMemberAdapter {}
         binding.familyView.rvGroupMembers.adapter = familyAdapter
         binding.myGroupView.rvGroupMembers.adapter = myGroupAdapter
+        binding.familyView.ivEditButton.visibility = View.GONE
+        binding.myGroupView.ivEditButton.visibility = View.GONE
     }
 
     private fun showSnackBar(@StringRes text: Int) {
@@ -117,7 +103,6 @@ class BabyDetailFragment : Fragment() {
 
     companion object {
         const val TAG = "BabyDetailFragment"
-        const val SELECTED_BABY_KEY = "SELECTED_BABY_KEY"
     }
 
 }

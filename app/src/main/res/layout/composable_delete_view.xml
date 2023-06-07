@@ -12,19 +12,19 @@
             type="String" />
 
         <variable
-            name="function"
-            type="kids.baba.mobile.presentation.view.FunctionHolder" />
-
-        <variable
             name="deleteViewData"
             type="kids.baba.mobile.presentation.binding.ComposableDeleteViewData" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:visibility="@{deleteViewData.family ? View.GONE : View.VISIBLE}">
 
         <TextView
             android:id="@+id/tv_delete_title"

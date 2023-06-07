@@ -46,11 +46,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_sheet_title" />
 
+
             <include
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
-                bind:title="@{viewmodel.uiModel.name}" />
+                bind:title="@{String.format(@string/my_name)}" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -60,7 +61,7 @@
             <include
                 android:id="@+id/color_view"
                 layout="@layout/composable_color_view"
-                bind:title="@{viewmodel.uiModel.bgColor}" />
+                bind:title="@{String.format(@string/background_color)}" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -76,13 +77,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"/>
 
-            <include
-                android:id="@+id/intro_view"
-                layout="@layout/composable_input_view"
-                bind:button="@{viewmodel.uiModel.button}"
-                bind:inputViewData="@{viewmodel.composableIntroductionViewData}"
-                bind:title="@{viewmodel.uiModel.intro}" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <include
+                    android:id="@+id/intro_view"
+                    layout="@layout/composable_input_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="99"
+                    bind:button="@{String.format(@string/complete)}"
+                    bind:inputViewData="@{viewmodel.composableIntroductionViewData}"
+                    bind:title="@{String.format(@string/my_introduction)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="18dp"
+                    android:layout_weight="1"
+                    android:enabled="@{ (!viewmodel.nameViewState.empty) &amp;&amp; (viewmodel.nameViewState != viewmodel.myInfo.name || viewmodel.introductionViewState != viewmodel.myInfo.introduction || viewmodel.colorState != viewmodel.myInfo.userIconUiModel.iconColor || viewmodel.iconState != viewmodel.myInfo.userIconUiModel.userProfileIconUiModel.name())}"
+                    android:hint="@string/edit"
+                    android:onClick="@{() -> viewmodel.edit()}"
+                    android:text="@{ (!viewmodel.nameViewState.empty) &amp;&amp; ((viewmodel.nameViewState != viewmodel.myInfo.name) || (viewmodel.introductionViewState != viewmodel.myInfo.introduction) || (viewmodel.colorState != viewmodel.myInfo.userIconUiModel.iconColor) || (viewmodel.iconState != viewmodel.myInfo.userIconUiModel.userProfileIconUiModel.name())) ? @string/complete : @string/edit}"
+                    android:textColor="@{ (!viewmodel.nameViewState.empty) &amp;&amp; ((viewmodel.nameViewState != viewmodel.myInfo.name) || (viewmodel.introductionViewState != viewmodel.myInfo.introduction) || (viewmodel.colorState != viewmodel.myInfo.userIconUiModel.iconColor) || (viewmodel.iconState != viewmodel.myInfo.userIconUiModel.userProfileIconUiModel.name())) ? @color/baba_main : @color/gray_50}"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

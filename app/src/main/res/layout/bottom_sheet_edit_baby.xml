@@ -66,9 +66,8 @@
         <include
             android:id="@+id/input_name_view"
             layout="@layout/composable_name_view"
-            bind:button="@{viewModel.uiModel.button}"
             bind:nameViewData="@{viewModel.composableNameViewData}"
-            bind:title="@{viewModel.uiModel.title}" />
+            bind:title="@{String.format(@string/baby_group_name)}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -133,15 +132,15 @@
             android:id="@+id/add_baby_view"
             layout="@layout/composable_addbutton_view"
             bind:addButtonViewData="@{viewModel.goToAddBaby}"
-            bind:description="@{viewModel.uiModel.addBabyDescription}"
-            bind:title="@{viewModel.uiModel.addBabyTitle}" />
+            bind:description="@{String.format(@string/add_baby_directly_description)}"
+            bind:title="@{String.format(@string/add_baby_title)}" />
 
         <include
             android:id="@+id/invite_view"
             layout="@layout/composable_addbutton_view"
             bind:addButtonViewData="@{viewModel.goToInputInviteCode}"
-            bind:description="@{viewModel.uiModel.inputInviteCodeDescription}"
-            bind:title="@{viewModel.uiModel.inputInviteCodeTitle}" />
+            bind:description="@{String.format(@string/input_invite_code_description)}"
+            bind:title="@{String.format(@string/input_invite_code)}" />
 
         <View
             android:layout_width="match_parent"

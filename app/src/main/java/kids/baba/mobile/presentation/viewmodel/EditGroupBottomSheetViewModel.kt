@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,12 +13,14 @@ import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
 import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.EditGroupSheetEvent
+import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
-import kids.baba.mobile.presentation.model.EditGroupBottomSheetUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
+import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet.Companion.IS_FAMILY_KEY
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_COLOR
+import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,82 +30,68 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     private val deleteOneGroupUseCase: DeleteOneGroupUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(EditGroupBottomSheetUiModel())
-    val groupName = MutableStateFlow(savedStateHandle["groupName"] ?: "")
-    private val isFamily = MutableStateFlow<Boolean?>(savedStateHandle["family"])
 
-    private val _color = MutableStateFlow("#81E0D5")
-    val color = _color.asStateFlow()
+    // 기존 그룹 네임과 기존 그룹 컬러
+    val groupName = savedStateHandle.get<String>(GROUP_NAME) ?: ""
+    val groupColor = savedStateHandle.get<String>(GROUP_COLOR) ?: ColorModel.PINK.colorCode
 
-    private val nameViewState: MutableStateFlow<String> =
-        MutableStateFlow(savedStateHandle["groupName"] ?: "")
+    // 바꿀 그룹 네임과 바꿀 그룹 컬러
+    val nameViewState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
+    val groupColorState = MutableStateFlow(savedStateHandle[GROUP_COLOR] ?: ColorModel.PINK.colorCode)
+
+    val isFamily = MutableStateFlow(savedStateHandle[IS_FAMILY_KEY] ?: false)
 
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    init {
-        uiModel.value.permissionDesc = if (isFamily.value == true) "있음" else "없음"
-    }
-
     val composableNameViewData = ComposableNameViewData(
-        initialText = groupName.value,
+        initialText = groupName,
+        enabled = false,
         text = nameViewState,
-        onEditButtonClickEventListener = {
-            viewModelScope.launch {
-                when (patchOneGroupUseCase.patch(
-                    group = GroupInfo(relationGroup = nameViewState.value),
-                    groupName = groupName.value
-                )) {
-                    is Result.Success -> {
-                        _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
-                    }
-
-                    is Result.NetworkError -> {
-                        _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
-                    }
-
-                    else -> {
-                        _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
-                    }
-                }
-            }
-        },
         maxLength = 6,
     )
 
     val goToInviteMember = ComposableAddButtonViewData(
         onAddButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(EditGroupSheetEvent.GoToAddMemberPage(groupName.value))
+                _eventFlow.emit(EditGroupSheetEvent.GoToAddMemberPage(nameViewState.value))
             }
         }
     )
 
     val deleteGroup = ComposableDeleteViewData(
+        isFamily = isFamily.value,
         onDeleteButtonClickEventListener = {
             viewModelScope.launch {
                 when (deleteOneGroupUseCase.delete(
-                    groupName = groupName.value
+                    groupName = groupName
                 )) {
-                    is Result.Success -> {
-                        _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
-                    }
+                    is Result.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
 
-                    is Result.NetworkError -> {
-                        _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
-                    }
+                    is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                    else -> {
-                        _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
-                    }
+                    else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
                 }
             }
         }
     )
 
+    fun editGroupInfo() = viewModelScope.launch {
+        when (patchOneGroupUseCase.patch(
+            group = GroupInfo(relationGroup = nameViewState.value, groupColor = groupColorState.value),
+            groupName = groupName
+        )) {
+            is Result.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
+
+            is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
+
+            else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
+        }
+    }
+
 
     fun setColor(color: ColorUiModel) {
-        _color.value = color.value
+        groupColorState.value = color.value
     }
 
 }

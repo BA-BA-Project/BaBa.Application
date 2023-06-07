@@ -82,6 +82,6 @@ class EditMemberDialog(val itemClick: () -> Unit) : DialogFragment() {
     companion object {
         const val TAG = "EditDialogFragment"
         const val SELECTED_MEMBER_KEY = "SELECTED_MEMBER_KEY"
-        const val SELECTED_MEMBER_RELATION = "SELECTED_MEMBER_RELATION"
+        const val SELECTED_GROUP_KEY = "SELECTED_GROUP_KEY"
     }
 }

@@ -26,9 +26,6 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<BabyEditEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
-    val name = MutableStateFlow("아이 이름")
-    val button = MutableStateFlow("편집")
-
     val baby = MutableStateFlow<BabyUiModel?>(savedStateHandle[BABY_DETAIL_INFO])
 
     private val nameViewState: MutableStateFlow<String> = MutableStateFlow(baby.value?.name ?: "")

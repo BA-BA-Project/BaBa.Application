@@ -7,13 +7,11 @@ import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.SettingEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageSettingViewModel @Inject constructor(): ViewModel() {
-    val title = MutableStateFlow("설정")
+class MyPageSettingViewModel @Inject constructor() : ViewModel() {
 
     private val _eventFlow = MutableEventFlow<SettingEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -33,9 +31,11 @@ class MyPageSettingViewModel @Inject constructor(): ViewModel() {
     fun goToDeleteMember() = viewModelScope.launch {
         _eventFlow.emit(SettingEvent.GoToDeleteMember)
     }
+
     fun goToAsk() = viewModelScope.launch {
         _eventFlow.emit(SettingEvent.GoToAsk)
     }
+
     fun goToCreator() = viewModelScope.launch {
         _eventFlow.emit(SettingEvent.GoToCreator)
     }

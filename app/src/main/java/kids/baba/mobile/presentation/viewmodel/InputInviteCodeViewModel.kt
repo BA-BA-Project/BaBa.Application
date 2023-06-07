@@ -10,7 +10,6 @@ import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
 import kids.baba.mobile.presentation.event.BabyInviteCodeEvent
-import kids.baba.mobile.presentation.model.InputInviteCodeUiModel
 import kids.baba.mobile.presentation.state.InputCodeState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class InputInviteCodeViewModel @Inject constructor(
     private val addOneBabyWithInviteCodeUseCase: AddOneBabyWithInviteCodeUseCase
 ) : ViewModel() {
-    val uiModel = MutableStateFlow(InputInviteCodeUiModel())
     val uiState = MutableStateFlow<InputCodeState>(InputCodeState.Idle)
 
     private val _eventFlow = MutableEventFlow<BabyInviteCodeEvent>()

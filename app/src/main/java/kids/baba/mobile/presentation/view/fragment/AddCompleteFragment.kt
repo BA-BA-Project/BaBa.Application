@@ -28,12 +28,7 @@ class AddCompleteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
         collectEvent()
-        binding.topAppBar.ivBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.btnComplete.setOnClickListener {
-            requireActivity().finish()
-        }
+
     }
 
     private fun bindViewModel() {
@@ -45,15 +40,12 @@ class AddCompleteFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is AddBabyEvent.SuccessAddBaby -> {
-                        requireActivity().finish()
-                    }
-                    is AddBabyEvent.ShowSnackBar -> {
-                        showSnackBar(event.message)
-                    }
-                    is AddBabyEvent.BackButtonClicked -> {
-                        findNavController().navigateUp()
-                    }
+                    is AddBabyEvent.SuccessAddBaby -> requireActivity().finish()
+
+                    is AddBabyEvent.ShowSnackBar -> showSnackBar(event.message)
+
+                    is AddBabyEvent.BackButtonClicked -> findNavController().navigateUp()
+
                 }
             }
         }

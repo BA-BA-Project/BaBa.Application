@@ -21,14 +21,14 @@
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/composable_top_layout"
-            binds:title="@{viewModel.uiModel.title}"
+            binds:title="@{String.format(@string/add_baby_title)}"
             binds:topViewData="@{viewModel.goToBack}" />
 
         <TextView
             android:id="@+id/tv_added"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.uiModel.bannerTitle}"
+            android:text="@{String.format(@string/baby_add_complete)}"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{viewModel.uiModel.bannerDescription}"
+            android:text="@{String.format(@string/save_your_memories)}"
             android:textColor="#B4B4B4"
             android:textSize="15sp"
             android:textStyle="bold"

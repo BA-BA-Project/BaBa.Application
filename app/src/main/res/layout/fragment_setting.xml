@@ -24,7 +24,7 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewModel.title}"
+                bind:title="@{String.format(@string/setting)}"
                 bind:topViewData="@{viewModel.composableBackButton}" />
 
             <TextView

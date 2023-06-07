@@ -28,14 +28,14 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.uiModel.tvTopTitleText}"
+                bind:title="@{String.format(@string/invite_member)}"
                 bind:topViewData="@{viewmodel.goToBack}" />
 
             <include
                 android:id="@+id/banner_view"
                 layout="@layout/composable_banner_view"
-                bind:description="@{viewmodel.uiModel.tvBannerDescText}"
-                bind:title="@{viewmodel.uiModel.tvBannerTitleText}" />
+                bind:description="@{String.format(@string/enjoy_with_your_members)}"
+                bind:title="@{String.format(@string/invite_member_complete)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                 android:id="@+id/group_view"
                 layout="@layout/composable_two_text_view"
                 bind:description="@{viewmodel.uiModel.tvGroupDescText}"
-                bind:title="@{viewmodel.uiModel.tvGroupTitleText}" />
+                bind:title="@{String.format(@string/group_of_invited_member)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:id="@+id/relation_view"
                 layout="@layout/composable_two_text_view"
                 bind:description="@{viewmodel.uiModel.tvRelationDescText}"
-                bind:title="@{viewmodel.uiModel.tvRelationTitleText}" />
+                bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}" />
 
             <View
                 android:layout_width="match_parent"
@@ -69,8 +69,8 @@
             <include
                 android:id="@+id/permission_view"
                 layout="@layout/composable_two_text_view"
-                bind:description="@{viewmodel.uiModel.tvPermissionDescText}"
-                bind:title="@{viewmodel.uiModel.tvPermissionTitleText}" />
+                bind:description="@{String.format(@string/there_is_not)}"
+                bind:title="@{String.format(@string/permission_to_upload_growth_album)}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -80,11 +80,11 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="70dp"
             android:background="@drawable/button_complete"
+            android:onClick="@{() -> viewmodel.onCompleteClick()}"
             android:text="@string/check"
             android:textColor="@color/baba_main"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:onClick="@{() -> viewmodel.onCompleteClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

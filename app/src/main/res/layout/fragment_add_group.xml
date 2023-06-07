@@ -32,7 +32,7 @@
             <include
                 android:id="@+id/top_app_bar"
                 layout="@layout/composable_top_layout"
-                bind:title="@{viewmodel.uiModel.title}"
+                bind:title="@{String.format(@string/add_group)}"
                 bind:topViewData="@{viewmodel.goToBack}" />
 
             <View
@@ -58,8 +58,8 @@
                 <include
                     android:id="@+id/banner_view"
                     layout="@layout/composable_banner_view"
-                    bind:description="@{viewmodel.uiModel.bannerDescription}"
-                    bind:title="@{viewmodel.uiModel.bannerTitle}" />
+                    bind:description="@{String.format(@string/add_group_banner_description)}"
+                    bind:title="@{String.format(@string/add_group_banner_title)}" />
 
 
                 <com.google.android.material.divider.MaterialDivider
@@ -69,9 +69,9 @@
                 <include
                     android:id="@+id/name_view"
                     layout="@layout/composable_input_with_desc_view"
+                    bind:description="@{String.format(@string/group_name_description)}"
                     bind:inputWithDescViewData="@{viewmodel.relationGroupNameViewData}"
-                    bind:description="@{viewmodel.uiModel.nameViewDesc}"
-                    bind:title="@{viewmodel.uiModel.nameViewTitle}" />
+                    bind:title="@{String.format(@string/group_name)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 <include
                     android:id="@+id/color_view"
                     layout="@layout/composable_color_view"
-                    bind:title="@{viewmodel.uiModel.colorViewTitle}" />
+                    bind:title="@{String.format(@string/group_color)}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -89,8 +89,8 @@
                 <include
                     android:id="@+id/permission_view"
                     layout="@layout/composable_two_text_view"
-                    bind:description="@{viewmodel.uiModel.permissionViewDesc}"
-                    bind:title="@{viewmodel.uiModel.permissionViewTitle}" />
+                    bind:description="@{String.format(@string/there_is_not)}"
+                    bind:title="@{String.format(@string/permission_to_upload_growth_album)}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
