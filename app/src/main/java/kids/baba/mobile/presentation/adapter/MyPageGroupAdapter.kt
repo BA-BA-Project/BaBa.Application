@@ -8,41 +8,36 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ComposableGroupViewBinding
-import kids.baba.mobile.domain.model.Group
 import kids.baba.mobile.presentation.mapper.toMemberUiModel
 import kids.baba.mobile.presentation.model.BabyUiModel
 import kids.baba.mobile.presentation.model.GroupMember
+import kids.baba.mobile.presentation.model.GroupUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 
 class MyPageGroupAdapter(
-    private val showMemberInfo: (Group, GroupMember) -> Unit,
+    private val showMemberInfo: (GroupUiModel, GroupMember) -> Unit,
     private val showBabyInfo: (BabyUiModel) -> Unit,
-    private val editGroup: (Group) -> Unit,
-    private val goToAddMemberPage: (Group) -> Unit
+    private val editGroup: (GroupUiModel) -> Unit,
+    private val goToAddMemberPage: (GroupUiModel) -> Unit
 ) :
-    ListAdapter<Group, MyPageGroupAdapter.ViewHolder>(diffUtil) {
-    private var ownerFamily = ""
+    ListAdapter<GroupUiModel, MyPageGroupAdapter.ViewHolder>(diffUtil) {
     private var babies: List<BabyUiModel> = emptyList()
 
 
-    fun setOwnerFamily(familyName: String){
-        this.ownerFamily = familyName
-    }
     fun setBabies(babies: List<BabyUiModel>) {
         this.babies = babies
     }
 
     class ViewHolder(
         private val binding: ComposableGroupViewBinding,
-        private val showMemberInfo: (Group, GroupMember) -> Unit,
+        private val showMemberInfo: (GroupUiModel, GroupMember) -> Unit,
         private val showBabyInfo: (BabyUiModel) -> Unit,
-        private val editGroup: (Group) -> Unit,
-        private val goToAddMemberPage: (Group) -> Unit,
-        private var ownerFamily: String,
+        private val editGroup: (GroupUiModel) -> Unit,
+        private val goToAddMemberPage: (GroupUiModel) -> Unit,
         private var babies: List<BabyUiModel>
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        lateinit var group: Group
+        lateinit var group: GroupUiModel
         lateinit var adapter: GroupMemberAdapter
 
         init {
@@ -51,7 +46,7 @@ class MyPageGroupAdapter(
             }
         }
 
-        fun bind(group: Group) {
+        fun bind(group: GroupUiModel) {
             this.group = group
             adapter = GroupMemberAdapter { groupMember ->
                 when (groupMember) {
@@ -69,7 +64,7 @@ class MyPageGroupAdapter(
             } else {
                 binding.description = String.format(
                     binding.root.context.getString(R.string.my_group_description),
-                    ownerFamily,
+                    group.ownerFamily,
                     group.groupName
                 )
                 adapter.submitList(group.members.map { it.toMemberUiModel() })
@@ -93,7 +88,6 @@ class MyPageGroupAdapter(
             showBabyInfo,
             editGroup,
             goToAddMemberPage,
-            ownerFamily,
             babies
         )
     }
@@ -103,11 +97,11 @@ class MyPageGroupAdapter(
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Group>() {
-            override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean =
+        val diffUtil = object : DiffUtil.ItemCallback<GroupUiModel>() {
+            override fun areItemsTheSame(oldItem: GroupUiModel, newItem: GroupUiModel): Boolean =
                 oldItem.groupName == newItem.groupName
 
-            override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean =
+            override fun areContentsTheSame(oldItem: GroupUiModel, newItem: GroupUiModel): Boolean =
                 oldItem == newItem
 
         }

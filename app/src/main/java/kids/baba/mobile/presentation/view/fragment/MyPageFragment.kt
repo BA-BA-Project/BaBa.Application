@@ -72,7 +72,6 @@ class MyPageFragment : Fragment() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is MyPageEvent.LoadGroups -> {
-                        myPageGroupAdapter.setOwnerFamily(event.data.first{it.family}.groupName)
                         myPageGroupAdapter.submitList(event.data)
                     }
 
