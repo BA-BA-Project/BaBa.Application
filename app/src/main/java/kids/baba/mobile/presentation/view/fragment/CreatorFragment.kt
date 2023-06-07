@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentCreatorBinding
+import kids.baba.mobile.presentation.binding.ComposableTopViewData
 
 @AndroidEntryPoint
 class CreatorFragment : Fragment() {
@@ -31,6 +32,13 @@ class CreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setBinding()
+
+    }
+
+    private fun setBinding() {
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.title = "서비스 제작자"
         binding.design = "기획 및 디자인"
         binding.designer = "박재희"
@@ -41,7 +49,7 @@ class CreatorFragment : Fragment() {
         binding.helper = "도움주신 분"
         binding.helperName = "서종환"
 
-        binding.topAppBar.ivBackButton.setOnClickListener {
+        binding.topViewData = ComposableTopViewData {
             findNavController().navigateUp()
         }
     }
