@@ -33,6 +33,7 @@
     <string name="term_1">이용약관 동의</string>
     <string name="term_2">개인정보 수집 및 이용 동의</string>
     <string name="agree_all_terms">약관 전체 동의</string>
+    <string name="baba_ask">문의하기</string>
     <string name="next">다음</string>
     <string name="essential">[필수]</string>
     <string name="choice">[선택]</string>
@@ -150,7 +151,7 @@
     <string name="set_profile">프로필 설정</string>
     <string name="delete_baby">아이 삭제</string>
     <string name="email_info">문의 이메일 정보</string>
-    <string name="baba_email">baba.service.care@gmail.com</string>
+    <string name="baba_email"><u>baba.service.care@gmail.com</u></string>
     <string name="delete_warning">계정을 삭제시 모든 데이터가 삭제되며\n 복구되지 않습니다.</string>
     <string name="manage_baby">아이 관리</string>
     <string name="baby_group">아이 그룹</string>
@@ -213,7 +214,6 @@
 
     <string name="family_group_description">모든 그룹과 소식을 공유할 수 있어요</string>
     <string name="my_group_description">%s, %s의 소식만 볼 수 있어요</string>
-
     <string name="name">이름</string>
     <string name="family_name">가족 이름</string>
 
@@ -285,5 +285,21 @@
     <string name="cannot_load_albums">앨범 리스트를 불러올 수 없습니다.</string>
     <string name="cannot_register_member_error">멤버를 등록하지 못했습니다.</string>
     <string name="cannot_generate_invite_code">초대 코드 생성에 실패했습니다.</string>
+    <string name="choose_email_client">메일 클라이언트를 선택하세요</string>
+
+    <string name="accout_delete">계정 삭제하기</string>
+    <string name="account_delete_title">계정 삭제</string>
+    <string name="account_delete_banner_title">계정을 삭제하려는 이유가\n 무엇인가요?</string>
+    <string name="account_delete_banner_desc">서비스 개선을 위해 선택해주세요.</string>
+    <string name="request_delete_account"><u>계정 및 데이터 삭제 직접 요청</u></string>
+
+    <string-array name="account_delete_reason">
+        <item>데이터 삭제를 위해</item>
+        <item>불편한 사용성으로 인해</item>
+        <item>잦은 오류로 인해</item>
+        <item>낮은 사용 빈도로 인해</item>
+        <item>기타</item>
+    </string-array>
+
 
 </resources>
