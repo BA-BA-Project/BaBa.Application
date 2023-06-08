@@ -39,17 +39,11 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
                     babyId = baby.value?.babyId ?: "",
                     name = nameViewState.value
                 )) {
-                    is Result.Success -> {
-                        _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
-                    }
+                    is Result.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
 
-                    is Result.NetworkError -> {
-                        _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
-                    }
+                    is Result.NetworkError -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                    else -> {
-                        _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.unknown_error_msg))
-                    }
+                    else -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.already_have_same_name_or_format_error))
                 }
             }
         },

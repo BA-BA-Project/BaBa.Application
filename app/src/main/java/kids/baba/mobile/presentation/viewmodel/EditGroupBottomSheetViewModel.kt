@@ -70,7 +70,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
                     is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
 
-                    else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
+                    else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.invalid_delete_group_error))
                 }
             }
         }
@@ -85,7 +85,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
             is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
 
-            else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.unknown_error_msg))
+            else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.already_have_same_group_or_format_error))
         }
     }
 

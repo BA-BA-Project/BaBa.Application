@@ -1,6 +1,5 @@
 package kids.baba.mobile.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +30,6 @@ class InviteResultViewModel @Inject constructor(
     private val inviteCodeStr = savedStateHandle.get<String>("inviteCode").toString()
 
     init {
-        Log.e("InviteResultViewModel", "init inviteCodeStr: $inviteCodeStr")
         viewModelScope.launch {
             when (val result = getInvitationInfoUseCase(inviteCode = inviteCodeStr)) {
                 is Result.Success -> {
@@ -50,7 +48,7 @@ class InviteResultViewModel @Inject constructor(
                     _eventFlow.emit(InviteResultEvent.SuccessGetInvitation)
                 }
                 is Result.NetworkError -> _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
-                else -> _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.unvalid_invite_code))
+                else -> _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.invalid_invite_code))
             }
         }
     }

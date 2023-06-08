@@ -172,7 +172,7 @@ class GatheringAlbumViewModel @Inject constructor(
                 _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
-                _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+                _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.cannot_load_albums))
             }
         }
     }

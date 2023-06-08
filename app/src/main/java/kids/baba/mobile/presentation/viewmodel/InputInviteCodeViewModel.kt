@@ -56,7 +56,7 @@ class InputInviteCodeViewModel @Inject constructor(
                     )
                 )
                 is Result.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.baba_network_failed))
-                else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.unvalid_invite_code))
+                else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.invalid_invite_code))
             }
 
         }
