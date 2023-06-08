@@ -229,7 +229,7 @@
     <string name="add_baby_banner_description">직접 성장앨범을 기록할 아이를 만들어요</string>
     <string name="baby_name">아이 이름</string>
     <string name="relation_between_me_and_baby">나와 아이의 관계</string>
-    <string name="relation_between_me_and_baby_description">내가 추가한 아이들와 나의 관계입니다.</string>
+    <string name="relation_between_me_and_baby_description">현재 나의 아이가 있는 경우, 사용하고 있는 관계명을 적어주세요.</string>
     <string name="add_baby_birthday_title">아이 생일 혹은 출산 예정일</string>
 
     <string name="already_have_same_name_or_format_error">이미 동일한 이름의 아이가 있거나 입력 형식이 올바르지 않습니다.</string>
