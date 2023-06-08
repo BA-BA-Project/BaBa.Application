@@ -80,7 +80,6 @@
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="28dp"
                 android:onClick="@{() -> viewmodel.showAlbumDetail()}"
-                app:cardBackground="@{viewmodel.growthAlbumState.selectedAlbum.cardStyle.iconRes}"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:4"
@@ -88,8 +87,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeColor="@color/baba_main"
-                app:strokeWidth="1dp"
-                tools:background="@drawable/card_candy_1" />
+                app:strokeWidth="1dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackground="@{viewmodel.growthAlbumState.selectedAlbum.cardStyle.iconRes}"
+                    tools:background="@drawable/card_candy_1"
+                    />
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/tv_album_date"
