@@ -40,7 +40,9 @@
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_my_name"
+                        app:layout_constraintEnd_toStartOf="@id/tv_my_status_message"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/iv_setting"
                         tools:civ_circle_background_color="@color/yellow"
@@ -63,16 +65,18 @@
 
                     <TextView
                         android:id="@+id/tv_my_status_message"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:includeFontPadding="false"
+                        android:maxLines="2"
                         android:textAppearance="@style/BABA.TextStyle"
                         android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="@id/civ_my_profile"
-                        app:layout_constraintEnd_toEndOf="@id/my_info"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="@+id/tv_my_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/iv_profile_edit_pen"
+                        app:layout_constraintStart_toEndOf="@+id/civ_my_profile"
                         app:layout_constraintTop_toBottomOf="@+id/tv_my_name"
+                        app:layout_constraintWidth_max="wrap"
                         tools:text="아이와 보내는 소중한 시간" />
 
                     <ImageView
@@ -84,7 +88,6 @@
                         android:src="@drawable/ic_edit_pen"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_my_status_message"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toEndOf="@+id/tv_my_status_message"
                         app:layout_constraintTop_toTopOf="@+id/tv_my_status_message" />
 
@@ -129,8 +132,8 @@
                         android:id="@+id/iv_edit_kids"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_edit_my_page"
                         android:onClick="@{() -> viewmodel.showEditBabyGroupBottomSheet()}"
+                        android:src="@drawable/ic_edit_my_page"
                         app:layout_constraintEnd_toEndOf="@id/kids_container"
                         app:layout_constraintTop_toTopOf="@+id/tv_kids_title" />
 
