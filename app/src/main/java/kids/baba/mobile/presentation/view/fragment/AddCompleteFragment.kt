@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentAddCompleteBinding
+import kids.baba.mobile.presentation.event.AddBabyCompleteEvent
 import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
 import kids.baba.mobile.presentation.viewmodel.AddCompleteViewModel
@@ -40,20 +41,14 @@ class AddCompleteFragment : Fragment() {
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is AddBabyEvent.SuccessAddBaby -> requireActivity().finish()
+                    is AddBabyCompleteEvent.SuccessAddBaby -> requireActivity().finish()
 
-                    is AddBabyEvent.ShowSnackBar -> showSnackBar(event.message)
-
-                    is AddBabyEvent.BackButtonClicked -> findNavController().navigateUp()
-
+                    is AddBabyCompleteEvent.BackButtonClicked -> findNavController().navigateUp()
                 }
             }
         }
     }
 
-    private fun showSnackBar(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

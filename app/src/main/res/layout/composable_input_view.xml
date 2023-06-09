@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
+            tools:text="편집"
             android:enabled="@{ inputViewData.enabled ? ((inputViewData.text.equals(inputViewData.initialText) || inputViewData.text.empty) ? false : true) : false}"
             android:onClick="@{() -> inputViewData.onEditButtonClickEventListener.invoke()}"
             android:text="@{ inputViewData.enabled ? ((inputViewData.text.equals(inputViewData.initialText) || inputViewData.text.empty) ? @string/edit : @string/complete) : @string/literally_blank}"

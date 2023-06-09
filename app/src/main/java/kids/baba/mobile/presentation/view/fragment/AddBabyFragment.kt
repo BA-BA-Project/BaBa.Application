@@ -1,10 +1,14 @@
 package kids.baba.mobile.presentation.view.fragment
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,6 +89,16 @@ class AddBabyFragment : Fragment() {
                 when (event) {
                     is AddBabyEvent.ShowSnackBar -> showSnackBar(event.message)
 
+                    is AddBabyEvent.NameInputEnd -> {
+                        keyboardDown(binding.nameView.etInput)
+                        viewScroll(binding.relationView.etInput)
+                    }
+
+                    is AddBabyEvent.RelationInputEnd -> {
+                        keyboardDown(binding.relationView.etInput)
+                        viewScroll(binding.birthView.etInput)
+                    }
+
                     is AddBabyEvent.SuccessAddBaby -> findNavController().navigate(R.id.add_complete_fragment)
 
                     is AddBabyEvent.BackButtonClicked -> requireActivity().finish()
@@ -93,7 +107,20 @@ class AddBabyFragment : Fragment() {
         }
     }
 
+
     private fun showSnackBar(@StringRes text: Int) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun keyboardDown(editText: EditText){
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+    private fun viewScroll(targetView: View){
+        targetView.requestFocus()
+        binding.containerNestedView.post {
+            binding.containerNestedView.smoothScrollTo(0, targetView.top)
+        }
     }
 }
