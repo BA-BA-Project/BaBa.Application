@@ -14,6 +14,7 @@ import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMyPageGroupUseCase
 import kids.baba.mobile.presentation.event.MyPageEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
+import kids.baba.mobile.presentation.mapper.toUiModel
 import kids.baba.mobile.presentation.model.MemberUiModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
@@ -46,7 +47,7 @@ class MyPageViewModel @Inject constructor(
     fun loadGroups() = viewModelScope.launch {
         when (val result = getMyPageGroupUseCase.get()) {
             is Result.Success -> {
-                _eventFlow.emit(MyPageEvent.LoadGroups(result.data.groups))
+                _eventFlow.emit(MyPageEvent.LoadGroups(result.data.groups.toUiModel()))
             }
             is Result.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
