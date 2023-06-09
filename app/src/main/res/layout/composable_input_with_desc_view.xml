@@ -12,6 +12,10 @@
             type="String" />
 
         <variable
+            name="isFocusing"
+            type="Boolean" />
+
+        <variable
             name="inputWithDescViewData"
             type="kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData" />
     </data>
@@ -76,10 +80,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
-            android:enabled="@{inputWithDescViewData.text.empty ? false : true}"
-            android:onClick="@{() -> inputWithDescViewData.onEditButtonClickEventListener.invoke()}"
-            android:text="@{inputWithDescViewData.text.empty ? @string/edit : @string/complete}"
-            android:textColor="@{inputWithDescViewData.text.empty ? @color/text_3 : @color/baba_main}"
+            android:onClick="@{() -> inputWithDescViewData.onEditButtonClickEventListener.invoke(isFocusing)}"
+            android:text="@{ isFocusing ? @string/complete : @string/edit}"
+            android:textColor="@{ isFocusing ? @color/baba_main : @color/text_3}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_input"
             app:layout_constraintEnd_toEndOf="parent"

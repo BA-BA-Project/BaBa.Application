@@ -51,6 +51,16 @@ class AddBabyFragment : Fragment() {
         bindViewModel()
         setCalendar()
         collectEvent()
+        setEditTextFocusEvent()
+    }
+
+    private fun setEditTextFocusEvent() {
+        binding.nameView.etInput.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.nameFocus(hasFocus)
+        }
+        binding.relationView.etInput.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.relationFocus(hasFocus)
+        }
     }
 
     private fun parseDate(year: Int, monthOfYear: Int, dayOfMonth: Int): String {
@@ -89,14 +99,21 @@ class AddBabyFragment : Fragment() {
                 when (event) {
                     is AddBabyEvent.ShowSnackBar -> showSnackBar(event.message)
 
-                    is AddBabyEvent.NameInputEnd -> {
-                        keyboardDown(binding.nameView.etInput)
-                        viewScroll(binding.relationView.etInput)
+                    is AddBabyEvent.NameInputEvent -> {
+                        if (event.isComplete) {
+                            viewScroll(binding.relationView.etInput)
+                        } else {
+                            binding.nameView.etInput.requestFocus()
+                        }
                     }
 
-                    is AddBabyEvent.RelationInputEnd -> {
-                        keyboardDown(binding.relationView.etInput)
-                        viewScroll(binding.birthView.etInput)
+                    is AddBabyEvent.RelationInputEvent -> {
+                        if (event.isComplete) {
+                            keyboardDown(binding.relationView.etInput)
+                            viewScroll(binding.birthView.etInput)
+                        } else {
+                            binding.relationView.etInput.requestFocus()
+                        }
                     }
 
                     is AddBabyEvent.SuccessAddBaby -> findNavController().navigate(R.id.add_complete_fragment)

@@ -15,6 +15,8 @@ import kids.baba.mobile.presentation.event.AddBabyEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,13 +34,19 @@ class AddBabyViewModel @Inject constructor(
 
     val datePicker = MutableStateFlow<DatePickerDialog?>(null)
 
+    private val _nameFocus = MutableStateFlow(false)
+    val nameFocus = _nameFocus.asStateFlow()
+
+    private val _relationFocus = MutableStateFlow(false)
+    val relationFocus = _relationFocus.asStateFlow()
+
     val composableBabyName = ComposableInputViewData(
         text = babyName,
         maxLine = 1,
         maxLength = 6,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(AddBabyEvent.NameInputEnd)
+                _eventFlow.emit(AddBabyEvent.NameInputEvent(it))
             }
         }
     )
@@ -47,7 +55,7 @@ class AddBabyViewModel @Inject constructor(
         text = relation,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(AddBabyEvent.RelationInputEnd)
+                _eventFlow.emit(AddBabyEvent.RelationInputEvent(it))
             }
         }
     )
@@ -85,7 +93,9 @@ class AddBabyViewModel @Inject constructor(
         }
     }
 
+    fun nameFocus(hasFocus: Boolean) = _nameFocus.update { hasFocus }
 
+    fun relationFocus(hasFocus: Boolean) = _relationFocus.update { hasFocus }
 
 
 }

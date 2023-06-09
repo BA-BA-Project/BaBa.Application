@@ -4,9 +4,9 @@ import androidx.annotation.StringRes
 
 sealed class AddBabyEvent{
 
-    object NameInputEnd : AddBabyEvent()
-    object RelationInputEnd : AddBabyEvent()
+    data class NameInputEvent(val isComplete: Boolean) : AddBabyEvent()
+    data class RelationInputEvent(val isComplete: Boolean) : AddBabyEvent()
     object SuccessAddBaby : AddBabyEvent()
     data class ShowSnackBar(@StringRes val message: Int) : AddBabyEvent()
-    object BackButtonClicked: AddBabyEvent()
+    object BackButtonClicked : AddBabyEvent()
 }
