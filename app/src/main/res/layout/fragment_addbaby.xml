@@ -112,20 +112,21 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_baby"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
-            android:background="@{(viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? @color/gray_10 : @color/baba_main}"
+            android:background="@{(viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? @drawable/button_disable2 : @drawable/button_complete_blue}"
             android:enabled="@{(viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? false : true}"
             android:onClick="@{() -> viewModel.addBaby()}"
             android:text="@string/add_button"
             android:textColor="@{ (viewModel.composableBabyName.text.empty || viewModel.composableRelation.text.empty || viewModel.composableBirthDay.text.empty) ? @color/text_3 : @color/white}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            bind:textColor="@color/text_3"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
