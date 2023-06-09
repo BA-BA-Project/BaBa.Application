@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
-import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.databinding.ActivityIntroBinding
 import kids.baba.mobile.presentation.event.DeepLinkEvent
 import kids.baba.mobile.presentation.event.IntroEvent

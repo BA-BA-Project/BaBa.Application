@@ -119,7 +119,7 @@
             android:enabled="@{(!viewmodel.relationState.empty) ? true : false}"
             android:onClick="@{() -> viewmodel.inviteWithKakao()}"
             android:text="@string/invite_kakaotalk"
-            android:textColor="@{(viewmodel.relationState.empty) ? @color/text_3 : @color/white }"
+            android:textColor="@{viewmodel.relationState.empty ? @color/text_3 : @color/white }"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
