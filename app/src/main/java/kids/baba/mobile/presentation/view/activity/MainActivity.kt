@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
         binding.btvMenu.setupWithNavController(navController)
+        binding.btvMenu.itemIconTintList = null
 
         binding.btvMenu.setOnItemSelectedListener { item ->
             val builder = NavOptions.Builder().setLaunchSingleTop(true)
