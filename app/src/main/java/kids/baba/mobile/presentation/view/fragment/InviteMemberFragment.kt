@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -80,6 +81,11 @@ class InviteMemberFragment : Fragment() {
                     is InviteMemberEvent.GoToBack -> {
                         requireActivity().finish()
                     }
+
+                    is InviteMemberEvent.InputEnd -> {
+                        keyboardDown()
+                    }
+
                     is InviteMemberEvent.InviteWithKakao -> {
                         send(event.inviteCode.inviteCode)
                         requireActivity().finish()
@@ -93,6 +99,11 @@ class InviteMemberFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun keyboardDown() {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.inputRelationView.etInput.windowToken, 0)
     }
 
     override fun onDestroyView() {

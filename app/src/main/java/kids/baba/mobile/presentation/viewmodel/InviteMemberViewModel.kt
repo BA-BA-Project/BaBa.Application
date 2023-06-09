@@ -47,7 +47,12 @@ class InviteMemberViewModel @Inject constructor(
     )
 
     val relationWithBaby = ComposableInputWithDescViewData(
-        text = relationState
+        text = relationState,
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                _eventFlow.emit(InviteMemberEvent.InputEnd)
+            }
+        }
     )
 
     fun copyInviteCode() {
