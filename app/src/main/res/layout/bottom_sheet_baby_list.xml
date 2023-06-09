@@ -57,7 +57,7 @@
             android:textAppearance="@style/BABA.TextStyle"
             android:textColor="@color/text_0"
             android:onClick="@{() -> viewModel.moveBabyManagement()}"
-            app:icon="@drawable/ic_add"
+            app:icon="@drawable/ic_add_circle"
             app:iconTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
