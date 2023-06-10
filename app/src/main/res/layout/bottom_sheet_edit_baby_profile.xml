@@ -63,7 +63,8 @@
                 android:id="@+id/name_view"
                 layout="@layout/composable_name_view"
                 bind:nameViewData="@{viewmodel.composableNameViewData}"
-                bind:title="@{String.format(@string/baby_name)}" />
+                bind:title="@{String.format(@string/baby_name)}"
+                bind:isFocusing="@{viewmodel.nameFocus}" />
 
             <View
                 android:layout_width="match_parent"
