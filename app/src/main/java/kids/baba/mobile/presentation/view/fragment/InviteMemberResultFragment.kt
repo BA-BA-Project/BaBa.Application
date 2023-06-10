@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.databinding.FragmentMemberInviteResultBinding
 import kids.baba.mobile.presentation.event.InviteResultEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
+import kids.baba.mobile.presentation.view.activity.MainActivity
 import kids.baba.mobile.presentation.viewmodel.InviteMemberResultViewModel
 
 @AndroidEntryPoint
@@ -37,6 +38,7 @@ class InviteMemberResultFragment : Fragment() {
                         findNavController().navigateUp()
                     }
                     is InviteResultEvent.GoToMyPage -> {
+                        MainActivity.startActivity(requireActivity())
                         requireActivity().finish()
                     }
                     is InviteResultEvent.ShowSnackBar -> {
