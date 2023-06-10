@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
-import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import kids.baba.mobile.R
 import kids.baba.mobile.databinding.ActivityIntroBinding
@@ -49,7 +47,6 @@ class IntroActivity : AppCompatActivity() {
         setNavController()
         collectDeeplinkEvent()
         collectEvent()
-        Log.d("keyHash", Utility.getKeyHash(this))
     }
 
     private fun collectDeeplinkEvent() {
