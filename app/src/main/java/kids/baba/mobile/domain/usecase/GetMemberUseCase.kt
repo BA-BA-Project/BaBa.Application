@@ -15,20 +15,26 @@ class GetMemberUseCase @Inject constructor(private val memberRepository: MemberR
     suspend fun getMe(): Result<MemberModel> {
         val member = runCatching { EncryptedPrefs.getMember(PrefsKey.MEMBER_KEY) }.getOrNull()
         return if (member == null) {
-            val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
-
-            if (accessToken.isEmpty()) {
-                val msg = "accessToken이 존재하지 않음."
-                Log.e(tag, msg)
-                Result.Unexpected(TokenEmptyException(msg))
-            } else {
-                memberRepository.getMe(accessToken)
-            }
+            getMeNoPref()
         } else {
             Result.Success(member)
         }
     }
 
-    suspend fun getMeNoPref() =
-        memberRepository.getMe(EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY))
+    suspend fun getMeNoPref() : Result<MemberModel> {
+        val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
+
+        return if (accessToken.isEmpty()) {
+            val msg = "accessToken이 존재하지 않음."
+            Log.e(tag, msg)
+            Result.Unexpected(TokenEmptyException(msg))
+        } else {
+            val result = memberRepository.getMe(accessToken)
+            if(result is Result.Success){
+                EncryptedPrefs.putMember(PrefsKey.MEMBER_KEY, result.data)
+            }
+            result
+        }
+
+    }
 }
