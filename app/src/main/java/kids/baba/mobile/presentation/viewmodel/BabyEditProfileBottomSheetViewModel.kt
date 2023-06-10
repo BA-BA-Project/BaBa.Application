@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Baby
 import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.usecase.EditBabyNameUseCase
 import kids.baba.mobile.presentation.binding.ComposableNameViewData

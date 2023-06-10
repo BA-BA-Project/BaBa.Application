@@ -80,19 +80,6 @@
                     bind:title="@{viewModel.isFamily() ? @string/family_name : @string/group_name}"
                     bind:isFocusing="@{viewModel.nameFocus}" />
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_gravity="center_vertical"-->
-                <!--                    android:layout_marginEnd="18dp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:enabled="@{ ( (!viewModel.nameViewState.empty) &amp;&amp; ((viewModel.nameViewState != viewModel.groupName) || (viewModel.groupColorState != viewModel.groupColor)) ) }"-->
-                <!--                    android:hint="@string/edit"-->
-                <!--                    android:onClick="@{() -> viewModel.editGroupInfo()}"-->
-                <!--                    android:text="@{ ( (!viewModel.nameViewState.empty) &amp;&amp; ((viewModel.nameViewState != viewModel.groupName) || (viewModel.groupColorState != viewModel.groupColor)) ) ? @string/complete : @string/edit }"-->
-                <!--                    android:textColor="@{ ( (!viewModel.nameViewState.empty) &amp;&amp; ((viewModel.nameViewState != viewModel.groupName) || (viewModel.groupColorState != viewModel.groupColor)) ) ? @color/baba_main : @color/gray_50 }"-->
-                <!--                    android:textSize="18sp" />-->
-
 
             </LinearLayout>
 

@@ -12,7 +12,6 @@ import kids.baba.mobile.domain.usecase.PatchOneGroupUseCase
 import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
 import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
-import kids.baba.mobile.presentation.event.BabyGroupEditEvent
 import kids.baba.mobile.presentation.event.EditGroupSheetEvent
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
