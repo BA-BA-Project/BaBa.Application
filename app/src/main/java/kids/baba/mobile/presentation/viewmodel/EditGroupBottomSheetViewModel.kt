@@ -46,7 +46,6 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     val composableNameViewData = ComposableNameViewData(
         initialText = groupName,
-        enabled = false,
         text = nameViewState,
         maxLength = 6,
     )

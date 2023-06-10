@@ -40,14 +40,12 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
 
     val composableNameViewData = ComposableNameViewData(
         initialText = myInfo?.name ?: "",
-        enabled = false,
         text = nameViewState,
         maxLength = 6
     )
 
     val composableIntroductionViewData = ComposableInputViewData(
         initialText = myInfo?.introduction ?: "",
-        enabled = false,
         text = introductionViewState,
         maxLength = 20,
         maxLine = 2
