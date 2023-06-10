@@ -28,7 +28,7 @@
     <string name="baba_greeting_1">안녕😄</string>
     <string name="baba_greeting_2">반가워, 바바!</string>
     <string name="send">전송</string>
-    <string name="can_enter_up_to_10_chars">최대 10자 입력 가능해요</string>
+    <string name="can_enter_up_to_6_chars">최대 6자 입력 가능해요</string>
     <string name="see_term_content"><u>보기</u></string>
     <string name="term_1">이용약관 동의</string>
     <string name="term_2">개인정보 수집 및 이용 동의</string>

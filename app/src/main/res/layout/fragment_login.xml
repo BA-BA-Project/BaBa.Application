@@ -55,7 +55,7 @@
             android:layout_marginBottom="20dp"
             android:background="@color/white"
             android:onClick="@{() -> viewModel.loginWithKakao()}"
-            android:src="@drawable/kakao_login_medium_wide"
+            android:src="@drawable/kakao_login"
             app:layout_constraintBottom_toTopOf="@+id/tv_terms_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
