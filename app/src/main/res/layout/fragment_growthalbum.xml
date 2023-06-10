@@ -78,24 +78,25 @@
                 android:id="@+id/cv_baby_album"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_bias="0"
                 android:layout_marginHorizontal="28dp"
+                android:layout_marginTop="20dp"
                 android:onClick="@{() -> viewmodel.showAlbumDetail()}"
                 app:cardCornerRadius="15dp"
+                app:cardElevation="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0"
                 app:strokeColor="@color/baba_main"
-                app:strokeWidth="1dp"
-                app:cardElevation="12dp">
+                app:strokeWidth="1dp">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardBackground="@{viewmodel.growthAlbumState.selectedAlbum.cardStyle.iconRes}"
-                    tools:background="@drawable/card_candy_1"
-                    />
+                    tools:background="@drawable/card_candy_1" />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
