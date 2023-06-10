@@ -67,7 +67,8 @@
             android:id="@+id/input_name_view"
             layout="@layout/composable_name_view"
             bind:nameViewData="@{viewModel.composableNameViewData}"
-            bind:title="@{String.format(@string/baby_group_name)}" />
+            bind:title="@{String.format(@string/baby_group_name)}"
+            bind:isFocusing="@{viewModel.nameFocus}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

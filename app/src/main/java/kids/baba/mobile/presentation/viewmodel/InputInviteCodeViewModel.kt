@@ -14,6 +14,8 @@ import kids.baba.mobile.presentation.state.InputCodeState
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,13 +28,20 @@ class InputInviteCodeViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<BabyInviteCodeEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
+    private val _inviteCodeFocus = MutableStateFlow(false)
+    val inviteCodeFocus = _inviteCodeFocus.asStateFlow()
+
     private val inviteCodeState = MutableStateFlow("")
 
     val composableInviteCode = ComposableInputViewData(
         text = inviteCodeState,
         maxLine = 1,
         maxLength = 6,
-        onEditButtonClickEventListener = {}
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                _eventFlow.emit(BabyInviteCodeEvent.InviteCodeInput(it))
+            }
+        }
     )
 
     val composableBackButton = ComposableTopViewData(
@@ -55,10 +64,14 @@ class InputInviteCodeViewModel @Inject constructor(
                         )
                     )
                 )
+
                 is Result.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.invalid_invite_code))
             }
 
         }
     }
+
+    fun changeInviteCodeFocus(hasFocus: Boolean) = _inviteCodeFocus.update { hasFocus }
+
 }

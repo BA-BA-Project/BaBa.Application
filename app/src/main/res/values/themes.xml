@@ -12,6 +12,8 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">#EFBF14</item>
         <item name="colorOnSecondary">#FFEE9C</item>
+
+        <item name="colorAccent">@color/baba_main</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

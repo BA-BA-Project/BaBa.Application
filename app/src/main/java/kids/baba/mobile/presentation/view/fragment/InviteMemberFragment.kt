@@ -3,14 +3,15 @@ package kids.baba.mobile.presentation.view.fragment
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.StringRes
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -19,13 +20,10 @@ import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
-import kids.baba.mobile.R
 import kids.baba.mobile.databinding.FragmentInviteMemberBinding
 import kids.baba.mobile.presentation.event.InviteMemberEvent
 import kids.baba.mobile.presentation.extension.repeatOnStarted
-import kids.baba.mobile.presentation.view.activity.MyPageActivity
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_CODE
-import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.INVITE_MEMBER_RESULT_PAGE
 import kids.baba.mobile.presentation.viewmodel.InviteMemberViewModel
 
 @AndroidEntryPoint
@@ -35,12 +33,14 @@ class InviteMemberFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: InviteMemberViewModel by viewModels()
 
+    private lateinit var imm: InputMethodManager
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        collectEvent()
         bindViewModel()
-
+        setInputManager()
+        setEditTextFocusEvent()
+        collectEvent()
     }
 
     private fun send(inviteCode: String) {
@@ -80,10 +80,20 @@ class InviteMemberFragment : Fragment() {
                     is InviteMemberEvent.GoToBack -> {
                         requireActivity().finish()
                     }
+
+                    is InviteMemberEvent.RelationInput -> {
+                        if (event.isComplete) {
+                            keyboardDown(binding.inputRelationView.etInput)
+                        } else {
+                            keyboardShow(binding.inputRelationView.etInput)
+                        }
+                    }
+
                     is InviteMemberEvent.InviteWithKakao -> {
                         send(event.inviteCode.inviteCode)
                         requireActivity().finish()
                     }
+
                     is InviteMemberEvent.CopyInviteCode -> {
                         val clipboard =
                             requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -93,6 +103,35 @@ class InviteMemberFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setInputManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun setEditTextFocusEvent() {
+        binding.inputRelationView.etInput.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.changeRelationFocus(hasFocus)
+        }
+        binding.inputRelationView.etInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                keyboardDown(binding.inputRelationView.etInput)
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+
+    private fun keyboardShow(editText: EditText) {
+        editText.requestFocus()
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onDestroyView() {

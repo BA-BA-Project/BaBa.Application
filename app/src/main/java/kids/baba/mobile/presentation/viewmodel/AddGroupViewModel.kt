@@ -14,6 +14,8 @@ import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,11 +27,19 @@ class AddGroupViewModel @Inject constructor(
     val color = MutableStateFlow(ColorModel.PINK.colorCode)
     private val relationGroupName = MutableStateFlow("")
 
+    private val _relationFocus = MutableStateFlow(false)
+    val relationFocus = _relationFocus.asStateFlow()
+
     private val _eventFlow = MutableEventFlow<AddGroupEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
     val relationGroupNameViewData = ComposableInputWithDescViewData(
-        text = relationGroupName
+        text = relationGroupName,
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                _eventFlow.emit(AddGroupEvent.RelationInput(it))
+            }
+        }
     )
 
     val goToBack = ComposableTopViewData(
@@ -53,4 +63,6 @@ class AddGroupViewModel @Inject constructor(
         }
 
     }
+
+    fun changeRelationFocus(hasFocus: Boolean) = _relationFocus.update { hasFocus }
 }

@@ -80,7 +80,8 @@
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{String.format(@string/invite_member_relation_description)}"
                     bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
-                    bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}" />
+                    bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}"
+                    bind:isFocusing="@{viewmodel.relationFocus}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -93,40 +94,40 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_copy_code"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="10dp"
-            android:background="@{(!viewmodel.relationState.empty) ? @drawable/button_complete : @drawable/button_disable2}"
+            android:background="@{(!viewmodel.relationState.empty) ? @drawable/button_complete : @drawable/button_disable_transparent}"
             android:enabled="@{(!viewmodel.relationState.empty) ? true : false}"
             android:onClick="@{() -> viewmodel.copyInviteCode()}"
             android:text="@string/copy_invite_code"
-            android:textColor="@{(!viewmodel.relationState.empty) ? @color/baba_main : @color/gray_10}"
+            android:textColor="@{(!viewmodel.relationState.empty) ? @color/baba_main : @color/text_3}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/btn_invite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            bind:background="@drawable/button_disable2"
-            bind:textColor="@color/gray_10" />
+            bind:background="@drawable/button_disable_transparent"
+            bind:textColor="@color/text_3" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_invite"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="52dp"
             android:background="@{(!viewmodel.relationState.empty) ? @drawable/button_complete_blue : @drawable/button_disable}"
             android:enabled="@{(!viewmodel.relationState.empty) ? true : false}"
             android:onClick="@{() -> viewmodel.inviteWithKakao()}"
             android:text="@string/invite_kakaotalk"
-            android:textColor="@{(!viewmodel.relationState.empty) ? @color/white : @color/gray_10}"
+            android:textColor="@{viewmodel.relationState.empty ? @color/text_3 : @color/white }"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            bind:background="@drawable/button_disable2"
-            bind:textColor="@color/gray_10" />
+            bind:background="@drawable/button_disable"
+            bind:textColor="@color/text_3" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

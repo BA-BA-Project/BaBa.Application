@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ComposableInputWithDescViewData(
     val text: MutableStateFlow<String>,
-    val onEditButtonClickEventListener: () -> Unit = {}
+    val onEditButtonClickEventListener: (Boolean) -> Unit = {}
 )

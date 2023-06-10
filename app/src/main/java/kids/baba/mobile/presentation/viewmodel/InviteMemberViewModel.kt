@@ -16,6 +16,8 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +31,8 @@ class InviteMemberViewModel @Inject constructor(
     private val _eventFlow = MutableEventFlow<InviteMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
 
+    private val _relationFocus = MutableStateFlow(false)
+    val relationFocus = _relationFocus.asStateFlow()
     val relationState = MutableStateFlow("")
 
     private val groupNameState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
@@ -47,7 +51,12 @@ class InviteMemberViewModel @Inject constructor(
     )
 
     val relationWithBaby = ComposableInputWithDescViewData(
-        text = relationState
+        text = relationState,
+        onEditButtonClickEventListener = {
+            viewModelScope.launch {
+                _eventFlow.emit(InviteMemberEvent.RelationInput(it))
+            }
+        }
     )
 
     fun copyInviteCode() {
@@ -85,4 +94,6 @@ class InviteMemberViewModel @Inject constructor(
             }
         }
     }
+
+    fun changeRelationFocus(hasFocus: Boolean) = _relationFocus.update { hasFocus }
 }

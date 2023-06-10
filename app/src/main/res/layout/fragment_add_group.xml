@@ -71,7 +71,8 @@
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{String.format(@string/group_name_description)}"
                     bind:inputWithDescViewData="@{viewmodel.relationGroupNameViewData}"
-                    bind:title="@{String.format(@string/group_name)}" />
+                    bind:title="@{String.format(@string/group_name)}"
+                    bind:isFocusing="@{viewmodel.relationFocus}" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
