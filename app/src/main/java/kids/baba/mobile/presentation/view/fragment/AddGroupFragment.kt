@@ -1,9 +1,13 @@
 package kids.baba.mobile.presentation.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,6 +28,8 @@ class AddGroupFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: AddGroupViewModel by viewModels()
 
+    private lateinit var imm: InputMethodManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +47,8 @@ class AddGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
-
+        setInputMethodManager()
+        setEditTextFocusEvent()
         setColorButton()
         collectEvent()
     }
@@ -66,16 +73,55 @@ class AddGroupFragment : Fragment() {
         adapter.submitList(colors)
     }
 
+    private fun setInputMethodManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun setEditTextFocusEvent() {
+        binding.nameView.etInput.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.changeRelationFocus(hasFocus)
+        }
+        binding.nameView.etInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                keyboardDown(binding.nameView.etInput)
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+
+    private fun keyboardShow(editText: EditText) {
+        editText.requestFocus()
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
     private fun collectEvent() {
         repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
+                    is AddGroupEvent.RelationInput -> {
+                        if (event.isComplete) {
+                            keyboardDown(binding.nameView.etInput)
+                        } else {
+                            keyboardShow(binding.nameView.etInput)
+                        }
+                    }
+
                     is AddGroupEvent.SuccessAddGroup -> {
                         requireActivity().finish()
                     }
+
                     is AddGroupEvent.ShowSnackBar -> {
                         showSnackBar(event.message)
                     }
+
                     is AddGroupEvent.GoToBack -> {
                         requireActivity().finish()
                     }
