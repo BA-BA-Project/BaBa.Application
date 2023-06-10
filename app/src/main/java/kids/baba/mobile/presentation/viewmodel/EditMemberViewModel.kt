@@ -17,6 +17,8 @@ import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kids.baba.mobile.presentation.view.dialog.EditMemberDialog
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +37,21 @@ class EditMemberViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<EditGroupMemberEvent>()
     val eventFlow = _eventFlow.asEventFlow()
-    
+
+    private val _relationFocus = MutableStateFlow(false)
+    val relationFocus = _relationFocus.asStateFlow()
+
+
+    fun inputHandling(isComplete: Boolean) {
+        if (isComplete) {
+            patch()
+        } else {
+            viewModelScope.launch {
+                _eventFlow.emit(EditGroupMemberEvent.RelationInput)
+            }
+        }
+    }
+
     fun patch() = viewModelScope.launch {
         when (patchOneMemberRelationUseCase.patch(
             memberId = member?.memberId ?: "",
@@ -65,6 +81,7 @@ class EditMemberViewModel @Inject constructor(
                             else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.invalid_delete_member_error))
                         }
                     }
+
                     else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.load_my_info_error_message))
                 }
             }
@@ -74,5 +91,7 @@ class EditMemberViewModel @Inject constructor(
     fun dismiss() = viewModelScope.launch {
         _eventFlow.emit(EditGroupMemberEvent.DismissDialog)
     }
+
+    fun relationChange(hasFocus: Boolean) = _relationFocus.update { hasFocus }
 
 }

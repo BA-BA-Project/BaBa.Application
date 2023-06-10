@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -112,6 +111,7 @@
                         android:layout_marginEnd="9dp"
                         android:background="@drawable/edit_input"
                         android:maxLines="1"
+                        android:inputType="text"
                         android:padding="5dp"
                         android:text="@={viewModel.relationWithBaby}"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -123,16 +123,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
-                        android:enabled="@{(viewModel.relationWithBaby.empty || viewModel.member.introduction == viewModel.relationWithBaby) ? false : true}"
-                        android:onClick="@{() -> viewModel.patch()}"
-                        android:text="@{(viewModel.relationWithBaby.empty || viewModel.member.introduction == viewModel.relationWithBaby) ? @string/edit : @string/complete}"
-                        android:textColor="@{(viewModel.relationWithBaby.empty || viewModel.member.introduction == viewModel.relationWithBaby) ? @color/text_3 : @color/baba_main}"
+                        android:onClick="@{() -> viewModel.inputHandling(viewModel.relationFocus)}"
+                        android:text="@{viewModel.relationFocus ? @string/complete : @string/edit}"
+                        android:textColor="@{viewModel.relationFocus ? @color/baba_main : @color/text_3}"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/complete" />
+                        bind:text="@string/complete" />
 
                     <View
                         android:layout_width="0dp"
@@ -144,55 +143,6 @@
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/group_in"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_relation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@{viewModel.groupName}"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/iv_change_relation"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/iv_change_relation"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="24dp"
-                        android:src="@drawable/ic_arrow_down"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:background="#EDEDED"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
                     android:id="@+id/delete_view"
