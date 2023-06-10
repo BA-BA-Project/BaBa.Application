@@ -49,7 +49,8 @@
                 android:id="@+id/input_view"
                 layout="@layout/composable_input_view"
                 bind:inputViewData="@{viewModel.composableInviteCode}"
-                bind:title="@{String.format(@string/input_invite_code)}" />
+                bind:title="@{String.format(@string/input_invite_code)}"
+                bind:isFocusing="@{viewModel.inviteCodeFocus}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
