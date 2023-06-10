@@ -143,16 +143,14 @@ class IntroActivity : AppCompatActivity() {
                         ).show()
                     }
 
+
                     else -> Unit
                 }
             }
         }
     }
 
-    private fun requestLogin() {
-        showToast(R.string.login_request)
-        finish()
-    }
+    private fun requestLogin() = showToast(R.string.login_request)
 
     private fun goToInviteResultPage() {
         intent.data?.let { deepLinkUri ->
