@@ -13,6 +13,8 @@ import kids.baba.mobile.presentation.event.BabyGroupEditEvent
 import kids.baba.mobile.presentation.util.flow.MutableEventFlow
 import kids.baba.mobile.presentation.util.flow.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,9 @@ class BabyEditBottomSheetViewModel @Inject constructor(
 
     private val _eventFlow = MutableEventFlow<BabyGroupEditEvent>()
     val eventFlow = _eventFlow.asEventFlow()
+
+    private val _nameFocus = MutableStateFlow(false)
+    val nameFocus = _nameFocus.asStateFlow()
 
     private val nameViewLiveData: MutableStateFlow<String> =
         if (EncryptedPrefs.getString(BABY_GROUP_TITLE_KEY).isEmpty()) {
@@ -36,8 +41,12 @@ class BabyEditBottomSheetViewModel @Inject constructor(
         text = nameViewLiveData,
         onEditButtonClickEventListener = {
             viewModelScope.launch {
-                _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit(nameViewLiveData.value))
-                EncryptedPrefs.putString(BABY_GROUP_TITLE_KEY, nameViewLiveData.value)
+                if (it) {
+                    _eventFlow.emit(BabyGroupEditEvent.SuccessBabyGroupEdit(nameViewLiveData.value))
+                    EncryptedPrefs.putString(BABY_GROUP_TITLE_KEY, nameViewLiveData.value)
+                } else {
+                    _eventFlow.emit(BabyGroupEditEvent.NameInput)
+                }
             }
         },
         maxLength = 10,
@@ -58,5 +67,7 @@ class BabyEditBottomSheetViewModel @Inject constructor(
             }
         }
     )
+
+    fun nameFocusChange(hasFocus: Boolean) = _nameFocus.update { hasFocus }
 
 }

@@ -8,6 +8,10 @@
             type="String" />
 
         <variable
+            name="isFocusing"
+            type="Boolean" />
+
+        <variable
             name="nameViewData"
             type="kids.baba.mobile.presentation.binding.ComposableNameViewData" />
 
@@ -39,10 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:enabled="@{ nameViewData.enabled ? ((nameViewData.text.equals(nameViewData.initialText) || nameViewData.text.empty) ? false : true) : false}"
-            android:onClick="@{() -> nameViewData.onEditButtonClickEventListener.invoke()}"
-            android:text="@{ nameViewData.enabled ? ((nameViewData.text.equals(nameViewData.initialText) || nameViewData.text.empty) ? @string/edit : @string/complete) : @string/literally_blank}"
-            android:textColor="@{ nameViewData.enabled ? (( nameViewData.text.equals(nameViewData.initialText) || nameViewData.text.empty) ? @color/gray_50 : @color/baba_main) : @color/gray_50}"
+            android:onClick="@{() -> nameViewData.onEditButtonClickEventListener.invoke(isFocusing)}"
+            android:text="@{ isFocusing ? @string/complete : @string/edit}"
+            android:textColor="@{ isFocusing ? @color/baba_main : @color/text_3}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

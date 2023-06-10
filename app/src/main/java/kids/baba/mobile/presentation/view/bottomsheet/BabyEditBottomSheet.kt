@@ -1,9 +1,13 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -23,9 +27,13 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
     private val binding
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: BabyEditBottomSheetViewModel by viewModels()
+
+    private lateinit var imm: InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
+        setInputManager()
+        setEditTextFocusEvent()
         collectEvent()
     }
 
@@ -52,15 +60,24 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
-                    is BabyGroupEditEvent.SuccessBabyGroupEdit -> {
-                        itemClick(event.babyGroupTitle)
-                        dismiss()
+                    is BabyGroupEditEvent.NameInput -> {
+                        keyboardShow(binding.inputNameView.tvEdit)
                     }
-                    is BabyGroupEditEvent.GoToAddBaby -> MyPageActivity.startActivity(requireContext(), ADD_BABY_PAGE)
+
+                    is BabyGroupEditEvent.SuccessBabyGroupEdit -> {
+                        groupNameChange(event.babyGroupTitle)
+                    }
+
+                    is BabyGroupEditEvent.GoToAddBaby -> MyPageActivity.startActivity(
+                        requireContext(),
+                        ADD_BABY_PAGE
+                    )
+
                     is BabyGroupEditEvent.GoToInputInviteCode -> MyPageActivity.startActivity(
                         requireContext(),
                         INVITE_WITH_CODE_PAGE
                     )
+
                     is BabyGroupEditEvent.ShowSnackBar -> showSnackBar(event.message)
                 }
             }
@@ -69,6 +86,41 @@ class BabyEditBottomSheet(val itemClick: (String) -> Unit) : BottomSheetDialogFr
 
     private fun showSnackBar(@StringRes text: Int) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun setEditTextFocusEvent() {
+        binding.inputNameView.tvEdit.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.nameFocusChange(hasFocus)
+        }
+        binding.inputNameView.tvEdit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                keyboardDown(binding.inputNameView.tvEdit)
+                groupNameChange(binding.inputNameView.tvEdit.text.toString())
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun setInputManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+
+    private fun keyboardShow(editText: EditText) {
+        editText.requestFocus()
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun groupNameChange(groupName: String) {
+        itemClick(groupName)
+        dismiss()
     }
 
     companion object {
