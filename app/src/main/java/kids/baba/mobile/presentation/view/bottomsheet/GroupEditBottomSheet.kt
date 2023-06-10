@@ -1,9 +1,13 @@
 package kids.baba.mobile.presentation.view.bottomsheet
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +30,13 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
         get() = checkNotNull(_binding) { "binding was accessed outside of view lifecycle" }
     private val viewModel: EditGroupBottomSheetViewModel by viewModels()
 
+    private lateinit var imm: InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectEvent()
         bindViewModel()
+        setInputManager()
+        setEditTextFocusEvent()
         setColorButton()
     }
 
@@ -59,14 +66,20 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
         viewLifecycleOwner.repeatOnStarted {
             viewModel.eventFlow.collect { event ->
                 when (event) {
+                    is EditGroupSheetEvent.NameInput -> {
+                        keyboardShow(binding.nameView.tvEdit)
+                    }
+
                     is EditGroupSheetEvent.SuccessPatchGroupRelation -> {
                         itemClick()
                         dismiss()
                     }
+
                     is EditGroupSheetEvent.SuccessDeleteGroup -> {
                         itemClick()
                         dismiss()
                     }
+
                     is EditGroupSheetEvent.ShowSnackBar -> {
                         dismiss()
                     }
@@ -83,6 +96,37 @@ class GroupEditBottomSheet(val itemClick: () -> Unit) : BottomSheetDialogFragmen
             }
         }
     }
+
+    private fun setInputManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun setEditTextFocusEvent() {
+        binding.nameView.tvEdit.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.changeNameFocus(hasFocus)
+        }
+        binding.nameView.tvEdit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                keyboardDown(binding.nameView.tvEdit)
+                viewModel.editGroupInfo()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+
+    private fun keyboardShow(editText: EditText) {
+        editText.requestFocus()
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

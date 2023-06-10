@@ -12,6 +12,7 @@ import kids.baba.mobile.domain.usecase.PatchOneGroupUseCase
 import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
 import kids.baba.mobile.presentation.binding.ComposableDeleteViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
+import kids.baba.mobile.presentation.event.BabyGroupEditEvent
 import kids.baba.mobile.presentation.event.EditGroupSheetEvent
 import kids.baba.mobile.presentation.model.ColorModel
 import kids.baba.mobile.presentation.model.ColorUiModel
@@ -21,6 +22,8 @@ import kids.baba.mobile.presentation.view.bottomsheet.GroupEditBottomSheet.Compa
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_COLOR
 import kids.baba.mobile.presentation.view.fragment.MyPageFragment.Companion.GROUP_NAME
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,9 +40,13 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     // 바꿀 그룹 네임과 바꿀 그룹 컬러
     val nameViewState = MutableStateFlow(savedStateHandle[GROUP_NAME] ?: "")
-    val groupColorState = MutableStateFlow(savedStateHandle[GROUP_COLOR] ?: ColorModel.PINK.colorCode)
+    val groupColorState =
+        MutableStateFlow(savedStateHandle[GROUP_COLOR] ?: ColorModel.PINK.colorCode)
 
     val isFamily = MutableStateFlow(savedStateHandle[IS_FAMILY_KEY] ?: false)
+
+    private val _nameFocus = MutableStateFlow(false)
+    val nameFocus = _nameFocus.asStateFlow()
 
     private val _eventFlow = MutableEventFlow<EditGroupSheetEvent>()
     val eventFlow = _eventFlow.asEventFlow()
@@ -48,6 +55,16 @@ class EditGroupBottomSheetViewModel @Inject constructor(
         initialText = groupName,
         text = nameViewState,
         maxLength = 6,
+        onEditButtonClickEventListener = {
+            if (it) {
+                editGroupInfo()
+            } else {
+                viewModelScope.launch {
+                    _eventFlow.emit(EditGroupSheetEvent.NameInput)
+                }
+            }
+
+        }
     )
 
     val goToInviteMember = ComposableAddButtonViewData(
@@ -77,7 +94,10 @@ class EditGroupBottomSheetViewModel @Inject constructor(
 
     fun editGroupInfo() = viewModelScope.launch {
         when (patchOneGroupUseCase.patch(
-            group = GroupInfo(relationGroup = nameViewState.value, groupColor = groupColorState.value),
+            group = GroupInfo(
+                relationGroup = nameViewState.value,
+                groupColor = groupColorState.value
+            ),
             groupName = groupName
         )) {
             is Result.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
@@ -92,5 +112,7 @@ class EditGroupBottomSheetViewModel @Inject constructor(
     fun setColor(color: ColorUiModel) {
         groupColorState.value = color.value
     }
+
+    fun changeNameFocus(hasFocus: Boolean) = _nameFocus.update { hasFocus }
 
 }
