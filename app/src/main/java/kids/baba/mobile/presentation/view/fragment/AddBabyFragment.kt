@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.StringRes
@@ -32,6 +33,8 @@ class AddBabyFragment : Fragment() {
 
     private val viewModel: AddBabyViewModel by viewModels()
 
+    private lateinit var imm: InputMethodManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +52,7 @@ class AddBabyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
+        setInputManager()
         setCalendar()
         collectEvent()
         setEditTextFocusEvent()
@@ -60,6 +64,15 @@ class AddBabyFragment : Fragment() {
         }
         binding.relationView.etInput.setOnFocusChangeListener { _, hasFocus ->
             viewModel.relationFocus(hasFocus)
+        }
+        binding.relationView.etInput.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                keyboardDown(binding.relationView.etInput)
+                viewScroll(binding.birthView.etInput)
+                true
+            } else {
+                false
+            }
         }
     }
 
@@ -103,7 +116,7 @@ class AddBabyFragment : Fragment() {
                         if (event.isComplete) {
                             viewScroll(binding.relationView.etInput)
                         } else {
-                            binding.nameView.etInput.requestFocus()
+                            keyboardShow(binding.nameView.etInput)
                         }
                     }
 
@@ -112,7 +125,7 @@ class AddBabyFragment : Fragment() {
                             keyboardDown(binding.relationView.etInput)
                             viewScroll(binding.birthView.etInput)
                         } else {
-                            binding.relationView.etInput.requestFocus()
+                            keyboardShow(binding.relationView.etInput)
                         }
                     }
 
@@ -129,12 +142,22 @@ class AddBabyFragment : Fragment() {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun keyboardDown(editText: EditText){
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun setInputManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
         imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
-    private fun viewScroll(targetView: View){
+
+    private fun keyboardShow(editText: EditText) {
+        editText.requestFocus()
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun viewScroll(targetView: View) {
         targetView.requestFocus()
         binding.containerNestedView.post {
             binding.containerNestedView.smoothScrollTo(0, targetView.top)
