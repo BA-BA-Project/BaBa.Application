@@ -80,7 +80,8 @@
                     layout="@layout/composable_input_with_desc_view"
                     bind:description="@{String.format(@string/invite_member_relation_description)}"
                     bind:inputWithDescViewData="@{viewmodel.relationWithBaby}"
-                    bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}" />
+                    bind:title="@{String.format(@string/relation_bw_baby_and_invited_member)}"
+                    bind:isFocusing="@{viewmodel.relationFocus}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
