@@ -1,12 +1,15 @@
 package kids.baba.mobile.presentation.view.dialog
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.annotation.StringRes
 import androidx.core.animation.doOnEnd
@@ -44,6 +47,8 @@ class AlbumDetailDialog(
     private lateinit var commentAdapter: AlbumDetailCommentAdapter
     private lateinit var likeUsersAdapter: LikeUsersAdapter
 
+    private lateinit var imm: InputMethodManager
+
     @Inject
     lateinit var downloadNotificationManager: DownLoadNotificationManager
 
@@ -75,6 +80,7 @@ class AlbumDetailDialog(
         setCommentRecyclerView()
         setLikeUsersRecyclerView()
         setImgScaleAnim()
+        setInputManager()
         collectAlbumDetail()
         collectEvent()
     }
@@ -120,6 +126,7 @@ class AlbumDetailDialog(
                     postDelayed({ smoothScrollToPosition(commentAdapter.itemCount - 1) }, 500)
                 }
             }
+            keyboardDown(binding.etMyComment)
         }
         commentAdapter = AlbumDetailCommentAdapter(
             itemClick = { comment ->
@@ -224,6 +231,15 @@ class AlbumDetailDialog(
                 }
             }
         }
+    }
+
+    private fun setInputManager() {
+        imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    private fun keyboardDown(editText: EditText) {
+        editText.clearFocus()
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
 
