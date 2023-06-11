@@ -13,6 +13,12 @@
         <variable
             name="description"
             type="String" />
+
+        <variable
+            name="isGroupEmpty"
+            type="Boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,7 +90,7 @@
             android:background="@color/transparent"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:visibility="gone"
+            android:visibility="@{isGroupEmpty ? View.VISIBLE : View.GONE}"
             android:text="@string/invite_member"
             android:textColor="@color/baba_main"
             app:layout_constraintBottom_toBottomOf="parent"

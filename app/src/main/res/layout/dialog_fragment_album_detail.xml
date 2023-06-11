@@ -57,8 +57,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:onClick="@{() -> viewModel.showAlbumConfig()}"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> viewModel.showAlbumConfig()}"
                     android:src="@drawable/ic_meatballs_menu"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_album_date"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -116,8 +116,8 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
-                    app:cardCornerRadius="15dp"
                     android:onClick="@{() -> viewModel.setExpended(true)}"
+                    app:cardCornerRadius="15dp"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="@+id/tv_album_relation"
                     app:layout_constraintHorizontal_bias="0"
@@ -139,13 +139,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="21dp"
+                    android:background="@color/transparent"
+                    android:elevation="2dp"
                     android:onClick="@{() -> viewModel.likeAlbum()}"
                     android:src="@{viewModel.albumDetailUiState.albumDetail.album.like ? @drawable/ic_like_checked : @drawable/ic_like_unchecked}"
-                    android:elevation="2dp"
-                    android:background="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_baby_Photo"
                     app:layout_constraintEnd_toEndOf="@+id/cv_baby_Photo"
-                    tools:src="@drawable/ic_like_unchecked"/>
+                    tools:src="@drawable/ic_like_unchecked" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -226,7 +226,8 @@
                     android:layout_marginStart="6dp"
                     android:background="@drawable/bg_baba_edit_text"
                     android:hint="@{@string/add_comment(viewModel.baby.name)}"
-                    android:maxLines="1"
+                    android:maxLength="250"
+                    android:maxLines="2"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
                     android:text="@={viewModel.comment}"
@@ -234,7 +235,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/civ_my_icon"
                     app:layout_constraintEnd_toStartOf="@id/btn_send"
                     app:layout_constraintStart_toEndOf="@id/civ_my_icon"
-                    app:layout_constraintTop_toTopOf="@id/civ_my_icon"/>
+                    app:layout_constraintTop_toTopOf="@id/civ_my_icon" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_send"
@@ -249,8 +250,7 @@
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toEndOf="@id/et_my_comment"
                     app:layout_constraintTop_toTopOf="@id/et_my_comment"
-                    tools:enabled="false"/>
-
+                    tools:enabled="false" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -264,8 +264,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_dialog_close"
             android:onClick="@{() -> viewModel.dismissDialog()}"
+            android:src="@drawable/ic_dialog_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

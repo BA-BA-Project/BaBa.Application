@@ -66,6 +66,7 @@
             android:background="@drawable/edit_input"
             android:inputType="text"
             android:maxLines="1"
+            android:maxLength="6"
             android:padding="7dp"
             android:text="@={inputWithDescViewData.text}"
             android:textColor="#000000"
