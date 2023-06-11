@@ -1,7 +1,6 @@
 package kids.baba.mobile.presentation.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -57,6 +56,7 @@ class MyPageGroupAdapter(
 
             binding.groupName = group.groupName
             binding.rvGroupMembers.adapter = adapter
+            binding.isGroupEmpty = group.members.isEmpty()
             if (group.family) {
                 binding.description =
                     binding.root.context.getString(R.string.family_group_description)
@@ -68,9 +68,6 @@ class MyPageGroupAdapter(
                     group.groupName
                 )
                 adapter.submitList(group.members.map { it.toMemberUiModel() })
-            }
-            if (group.members.isEmpty()) {
-                binding.btnAddMember.visibility = View.VISIBLE
             }
             binding.ivEditButton.setOnClickListener {
                 editGroup(group)
