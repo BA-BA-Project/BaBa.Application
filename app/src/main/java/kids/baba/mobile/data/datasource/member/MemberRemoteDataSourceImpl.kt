@@ -11,7 +11,9 @@ class MemberRemoteDataSourceImpl @Inject constructor(
     private val safeApiHelper: SafeApiHelper
 ) : MemberRemoteDataSource {
     override suspend fun getMe(accessToken: String) = safeApiHelper.getSafe(
-        remoteFetch = { memberApi.getMe(accessToken) },
+        remoteFetch = {
+            memberApi.getMe(accessToken)
+        },
         mapping = { it }
     )
 
@@ -28,7 +30,7 @@ class MemberRemoteDataSourceImpl @Inject constructor(
         signToken: String,
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
     ) = safeApiHelper.getSafe(
-        remoteFetch = {memberApi.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)},
-        mapping = {it}
+        remoteFetch = { memberApi.signUpWithInviteCode(signToken, signUpRequestWithInviteCode) },
+        mapping = { it }
     )
 }

@@ -5,12 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.BuildConfig
-import kids.baba.mobile.data.api.AlbumApi
-import kids.baba.mobile.data.api.AuthApi
-import kids.baba.mobile.data.api.BabyApi
-import kids.baba.mobile.data.api.FileApi
-import kids.baba.mobile.data.api.MemberApi
-import kids.baba.mobile.data.api.MyPageApi
+import kids.baba.mobile.data.api.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

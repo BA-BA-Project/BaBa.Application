@@ -7,10 +7,9 @@ import okhttp3.RequestBody
 interface AlbumRemoteDataSource {
     suspend fun getAlbum(id: String, year: Int, month: Int): Result<List<Album>>
 
-    suspend fun getOneAlbum(babyId:String, contentId: Int): Result<Album>
+    suspend fun getOneAlbum(babyId: String, contentId: Int): Result<Album>
 
     suspend fun postAlbum(
-        accessToken: String,
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
@@ -24,7 +23,7 @@ interface AlbumRemoteDataSource {
 
     suspend fun addComment(id: String, contentId: Int, commentInput: CommentInput): Result<Unit>
 
-    suspend fun deleteComment(id: String, contentId: Int, commentId: String) : Result<Unit>
+    suspend fun deleteComment(id: String, contentId: Int, commentId: String): Result<Unit>
 
     suspend fun getComment(id: String, contentId: Int): Result<List<Comment>>
 

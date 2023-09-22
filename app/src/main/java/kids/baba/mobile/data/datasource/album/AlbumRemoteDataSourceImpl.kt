@@ -3,12 +3,7 @@ package kids.baba.mobile.data.datasource.album
 import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.data.api.AlbumApi
 import kids.baba.mobile.data.network.SafeApiHelper
-import kids.baba.mobile.domain.model.Album
-import kids.baba.mobile.domain.model.Comment
-import kids.baba.mobile.domain.model.CommentInput
-import kids.baba.mobile.domain.model.LikeDetailResponse
-import kids.baba.mobile.domain.model.PostAlbumResponse
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -39,19 +34,18 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             remoteFetch = {
                 api.gatOneAlbum(babyId = babyId, contentId = contentId)
             },
-            mapping = {it}
+            mapping = { it }
         )
 
 
     override suspend fun postAlbum(
-        accessToken: String,
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
     ): Result<PostAlbumResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
-                api.postAlbum(accessToken, id, photo, bodyDataHashMap)
+                api.postAlbum(id, photo, bodyDataHashMap)
             },
             mapping = {
                 it

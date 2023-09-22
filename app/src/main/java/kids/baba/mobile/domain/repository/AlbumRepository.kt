@@ -15,7 +15,6 @@ interface AlbumRepository {
     suspend fun getOneAlbum(babyId: String, contentId: Int): Result<Album>
 
     suspend fun postAlbum(
-        accessToken: String,
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>

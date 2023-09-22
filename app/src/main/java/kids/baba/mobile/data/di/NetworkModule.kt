@@ -96,14 +96,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesAuthorizationInterceptor() = Interceptor { chain ->
+    fun provideAuthorizationInterceptor() = Interceptor { chain ->
         val request = chain.request().newBuilder()
-        val hasAuthorization = chain.request().headers.names().contains("Authorization")
+        val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
+        request.header("Authorization", "Bearer $accessToken")
 
-        if (hasAuthorization) {
-            val accessToken = chain.request().header("Authorization")
-            request.header("Authorization", "Bearer $accessToken")
-        }
+        Log.e("AuthorizationInterceptor", "request.build: ${request.build()}")
+        // 가로챈 요청을 다시 보내기
         chain.proceed(request.build())
     }
 
@@ -116,10 +115,14 @@ object NetworkModule {
         val tag = "TokenAuthenticator"
         val isPathRefresh =
             response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
+
         if (response.code == 401 && !isPathRefresh) {
             try {
+                Log.e("NetworkModule", "provideTokenAuthenticator called \n 토큰 갱신 시도")
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
                 val tokenRefreshRequest = TokenRefreshRequest(refreshToken)
+
+                // 토큰 갱신
                 val resp = authApi.tokenRefresh(tokenRefreshRequest).execute()
                 EncryptedPrefs.clearPrefs()
 
@@ -146,6 +149,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSafeApi() : SafeApiHelper = SafeApiHelperImpl()
+    fun provideSafeApi(): SafeApiHelper = SafeApiHelperImpl()
 
 }

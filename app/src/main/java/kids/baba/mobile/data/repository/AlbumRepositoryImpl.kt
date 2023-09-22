@@ -22,11 +22,10 @@ class AlbumRepositoryImpl @Inject constructor(private val dataSource: AlbumRemot
     override suspend fun getOneAlbum(babyId: String, contentId: Int) = dataSource.getOneAlbum(babyId, contentId)
 
     override suspend fun postAlbum(
-        accessToken: String,
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ) = dataSource.postAlbum(accessToken, id, photo, bodyDataHashMap)
+    ) = dataSource.postAlbum(id, photo, bodyDataHashMap)
 
     override suspend fun deleteAlbum(babyId: String, contentId: Int) =
         dataSource.deleteAlbum(babyId, contentId)

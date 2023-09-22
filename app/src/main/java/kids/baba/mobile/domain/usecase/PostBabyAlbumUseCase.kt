@@ -17,9 +17,8 @@ class PostBabyAlbumUseCase @Inject constructor(private val albumRepository: Albu
     ): Result<PostAlbumResponse> {
 
         val babyId = run { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }
-        val accessToken = run { EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY) }
 
-        return albumRepository.postAlbum(accessToken = accessToken, id = babyId, photo, bodyDataHashMap)
+        return albumRepository.postAlbum(id = babyId, photo, bodyDataHashMap)
     }
 
 }

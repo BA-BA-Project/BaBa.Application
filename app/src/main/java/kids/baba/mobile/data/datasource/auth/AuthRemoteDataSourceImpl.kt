@@ -42,6 +42,6 @@ class AuthRemoteDataSourceImpl @Inject constructor(
             remoteFetch = {
                 api.getSignToken(signTokenRequest)
             },
-            mapping = {it.signToken}
+            mapping = { it.signToken }
         )
 }

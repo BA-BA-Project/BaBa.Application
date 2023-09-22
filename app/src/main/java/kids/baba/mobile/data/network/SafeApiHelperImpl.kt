@@ -1,6 +1,5 @@
 package kids.baba.mobile.data.network
 
-import android.util.Log
 import com.google.gson.Gson
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.core.error.UnKnownException
