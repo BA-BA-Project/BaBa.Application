@@ -115,6 +115,9 @@ object NetworkModule {
         val tag = "TokenAuthenticator"
         val isPathRefresh =
             response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
+        Log.e(tag, "isPathRefresh: $isPathRefresh " +
+                "\n url: ${response.request.url.toUrl()} " +
+                "\n response: $response")
 
         if (response.code == 401 && !isPathRefresh) {
             try {

@@ -6,7 +6,7 @@ import retrofit2.Response
 interface SafeApiHelper {
     suspend fun <ResultType, RequestType> getSafe(
         remoteFetch: suspend () -> Response<RequestType>,
-        mapping: (RequestType) -> (ResultType)
+        mapping: (RequestType) -> (ResultType),
     ): Result<ResultType>
 
 }

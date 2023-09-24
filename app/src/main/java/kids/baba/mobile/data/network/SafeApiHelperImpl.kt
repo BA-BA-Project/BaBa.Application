@@ -1,5 +1,6 @@
 package kids.baba.mobile.data.network
 
+import android.util.Log
 import com.google.gson.Gson
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.core.error.UnKnownException
@@ -20,6 +21,7 @@ class SafeApiHelperImpl @Inject constructor(
         lateinit var result: Result<ResultType>
         runCatching { remoteFetch() }
             .onSuccess {
+                Log.e("SafeApiHelper", "Successful: $it")
                 if (it.isSuccessful) {
                     val body = it.body()
                     result = if (body != null) {
@@ -49,6 +51,16 @@ class SafeApiHelperImpl @Inject constructor(
                     else -> Result.Unexpected(it)
                 }
             }
+
+        if (result is Result.Failure) {
+            if ((result as Result.Failure).code == 401) {
+                Log.e("SafeApiHelper", "한번 더 call")
+
+                return getSafe(remoteFetch, mapping)
+            }
+        }
+
+        Log.e("SafeApiHelper", "마지막 Response: $result ")
         return result
     }
 }
