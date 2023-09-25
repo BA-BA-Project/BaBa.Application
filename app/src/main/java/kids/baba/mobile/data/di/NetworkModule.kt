@@ -113,13 +113,13 @@ object NetworkModule {
         authApi: AuthApi
     ) = Authenticator { _, response ->
         val tag = "TokenAuthenticator"
-        val isPathRefresh =
-            response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
-        Log.e(tag, "isPathRefresh: $isPathRefresh " +
+//        val isPathRefresh =
+//            response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
+        Log.e(tag, /*"isPathRefresh: $isPathRefresh " +*/
                 "\n url: ${response.request.url.toUrl()} " +
                 "\n response: $response")
 
-        if (response.code == 401 && !isPathRefresh) {
+        if (response.code == 401 /*&& !isPathRefresh*/) {
             try {
                 Log.e("NetworkModule", "provideTokenAuthenticator called \n 토큰 갱신 시도")
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)

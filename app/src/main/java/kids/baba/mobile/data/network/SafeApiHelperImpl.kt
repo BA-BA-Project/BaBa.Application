@@ -2,6 +2,7 @@ package kids.baba.mobile.data.network
 
 import android.util.Log
 import com.google.gson.Gson
+import kids.baba.mobile.core.error.InvalidAccessTokenException
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.core.error.UnKnownException
 import kids.baba.mobile.domain.model.ErrorResponse
@@ -9,6 +10,7 @@ import kids.baba.mobile.domain.model.Result
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class SafeApiHelperImpl @Inject constructor(
 ) : SafeApiHelper {
@@ -19,6 +21,7 @@ class SafeApiHelperImpl @Inject constructor(
     ): Result<ResultType> {
 
         lateinit var result: Result<ResultType>
+
         runCatching { remoteFetch() }
             .onSuccess {
                 Log.e("SafeApiHelper", "Successful: $it")
@@ -42,7 +45,13 @@ class SafeApiHelperImpl @Inject constructor(
                     if (errorMessage.isNullOrBlank()) {
                         errorMessage = "Unknown Error"
                     }
-                    result = Result.Failure(it.code(), errorMessage, UnKnownException())
+
+                    result = if (it.code() == 401) {
+                        Result.Failure(it.code(), errorMessage, InvalidAccessTokenException())
+                    } else {
+                        Result.Failure(it.code(), errorMessage, UnKnownException())
+                    }
+
                 }
             }
             .onFailure {
@@ -52,10 +61,20 @@ class SafeApiHelperImpl @Inject constructor(
                 }
             }
 
+/*
         if (result is Result.Failure) {
             if ((result as Result.Failure).code == 401) {
-                Log.e("SafeApiHelper", "한번 더 call")
+                Log.e("SafeApiHelper", "한번 더 call " +
+                        "\n result: $result")
+                return getSafe(remoteFetch, mapping)
+            }
+        }
+*/
 
+        if (result is Result.Failure) {
+            if ((result as Result.Failure).throwable is InvalidAccessTokenException) {
+                Log.e("SafeApiHelper", "한번 더 call " +
+                        "\n result: $result")
                 return getSafe(remoteFetch, mapping)
             }
         }
