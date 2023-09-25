@@ -6,11 +6,10 @@ import kids.baba.mobile.core.error.InvalidAccessTokenException
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.core.error.UnKnownException
 import kids.baba.mobile.domain.model.ErrorResponse
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class SafeApiHelperImpl @Inject constructor(
 ) : SafeApiHelper {
@@ -18,68 +17,65 @@ class SafeApiHelperImpl @Inject constructor(
     override suspend fun <ResultType, RequestType> getSafe(
         remoteFetch: suspend () -> Response<RequestType>,
         mapping: (RequestType) -> ResultType
-    ): Result<ResultType> {
+    ): ApiResult<ResultType> {
 
-        lateinit var result: Result<ResultType>
+        lateinit var apiResult: ApiResult<ResultType>
 
         runCatching { remoteFetch() }
             .onSuccess {
-                Log.e("SafeApiHelper", "Successful: $it")
                 if (it.isSuccessful) {
                     val body = it.body()
-                    result = if (body != null) {
-                        Result.Success(mapping(body))
-                    } else {
-                        Result.Unexpected(NullBodyException("Body가 null임"))
-                    }
+                    apiResult = successApiResult<RequestType, ResultType>(body, mapping)
                 } else {
-                    var errorMessage = try {
-                        gson.fromJson(
-                            it.errorBody()?.string(),
-                            ErrorResponse::class.java
-                        )?.message
-                    } catch (e: Exception) {
-                        null
-                    }
-
-                    if (errorMessage.isNullOrBlank()) {
-                        errorMessage = "Unknown Error"
-                    }
-
-                    result = if (it.code() == 401) {
-                        Result.Failure(it.code(), errorMessage, InvalidAccessTokenException())
-                    } else {
-                        Result.Failure(it.code(), errorMessage, UnKnownException())
-                    }
-
+                    val errorMessage = setErrorMessage(it)
+                    apiResult = errorCodeApiResult(it, errorMessage)
                 }
             }
             .onFailure {
-                result = when (it) {
-                    is IOException -> Result.NetworkError(it)
-                    else -> Result.Unexpected(it)
+                apiResult = when (it) {
+                    is IOException -> ApiResult.NetworkError(it)
+                    else -> ApiResult.Unexpected(it)
                 }
             }
 
-/*
-        if (result is Result.Failure) {
-            if ((result as Result.Failure).code == 401) {
-                Log.e("SafeApiHelper", "한번 더 call " +
-                        "\n result: $result")
-                return getSafe(remoteFetch, mapping)
-            }
-        }
-*/
-
-        if (result is Result.Failure) {
-            if ((result as Result.Failure).throwable is InvalidAccessTokenException) {
-                Log.e("SafeApiHelper", "한번 더 call " +
-                        "\n result: $result")
-                return getSafe(remoteFetch, mapping)
-            }
+        if ((apiResult as? ApiResult.Failure)?.throwable is InvalidAccessTokenException) {
+            return getSafe(remoteFetch, mapping)
         }
 
-        Log.e("SafeApiHelper", "마지막 Response: $result ")
-        return result
+        return apiResult
+    }
+
+    private fun <RequestType, ResultType> successApiResult(
+        body: RequestType?,
+        mapping: (RequestType) -> ResultType
+    ) = if (body != null) {
+        ApiResult.Success(mapping(body))
+    } else {
+        ApiResult.Unexpected(NullBodyException("Body가 null임"))
+    }
+
+    private fun <RequestType> errorCodeApiResult(
+        it: Response<RequestType>,
+        errorMessage: String?
+    ) = if (it.code() == 401) {
+        ApiResult.Failure(it.code(), errorMessage, InvalidAccessTokenException())
+    } else {
+        ApiResult.Failure(it.code(), errorMessage, UnKnownException())
+    }
+
+    private fun <RequestType> setErrorMessage(it: Response<RequestType>): String {
+        var errorMessage = try {
+            gson.fromJson(
+                it.errorBody()?.string(),
+                ErrorResponse::class.java
+            )?.message
+        } catch (e: Exception) {
+            null
+        }
+
+        if (errorMessage.isNullOrBlank()) {
+            errorMessage = "Unknown Error"
+        }
+        return errorMessage
     }
 }

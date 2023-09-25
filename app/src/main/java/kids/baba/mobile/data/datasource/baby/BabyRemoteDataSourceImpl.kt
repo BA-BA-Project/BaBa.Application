@@ -3,7 +3,7 @@ package kids.baba.mobile.data.datasource.baby
 import kids.baba.mobile.data.api.BabyApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.BabyResponse
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import javax.inject.Inject
 
 class BabyRemoteDataSourceImpl @Inject constructor(
@@ -15,7 +15,7 @@ class BabyRemoteDataSourceImpl @Inject constructor(
         mapping = {it}
     )
 
-    override suspend fun getBaby() : Result<BabyResponse>{
+    override suspend fun getBaby() : ApiResult<BabyResponse>{
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 babyApi.getBaby()

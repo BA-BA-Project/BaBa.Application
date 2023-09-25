@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.DeleteOneBabyUseCase
 import kids.baba.mobile.domain.usecase.GetBabyProfileUseCase
 import kids.baba.mobile.presentation.event.BabyDetailEvent
@@ -48,7 +48,7 @@ class BabyDetailViewModel @Inject constructor(
 
     private fun load(babyId: String) = viewModelScope.launch {
         when (val result = getBabyProfileUseCase.get(babyId)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 val familyGroup = result.data.familyGroup
                 val myGroup = result.data.myGroup
                 _isMyGroupEmpty.value = myGroup == null
@@ -67,7 +67,7 @@ class BabyDetailViewModel @Inject constructor(
                 }
             }
 
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
             }
 
@@ -82,9 +82,9 @@ class BabyDetailViewModel @Inject constructor(
 
     fun delete() = viewModelScope.launch {
         when (deleteOneBabyUseCase(babyId = baby.value?.babyId ?: "")) {
-            is Result.Success -> _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
+            is ApiResult.Success -> _eventFlow.emit(BabyDetailEvent.SuccessDeleteBaby)
 
-            is Result.NetworkError -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.baba_network_failed))
 
             else -> _eventFlow.emit(BabyDetailEvent.ShowSnackBar(R.string.fail_delete_baby_errer))
         }

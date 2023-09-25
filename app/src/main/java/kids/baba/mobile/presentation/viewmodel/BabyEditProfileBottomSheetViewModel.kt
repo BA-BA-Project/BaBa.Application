@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.EditBabyNameUseCase
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
 import kids.baba.mobile.presentation.event.BabyEditEvent
@@ -46,9 +46,9 @@ class BabyEditProfileBottomSheetViewModel @Inject constructor(
                         babyId = baby.value?.babyId ?: "",
                         name = nameViewState.value
                     )) {
-                        is Result.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
+                        is ApiResult.Success -> _eventFlow.emit(BabyEditEvent.SuccessBabyEdit(babyName = nameViewState.value))
 
-                        is Result.NetworkError -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
+                        is ApiResult.NetworkError -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.baba_network_failed))
 
                         else -> _eventFlow.emit(BabyEditEvent.ShowSnackBar(R.string.already_have_same_name_or_format_error))
                     }

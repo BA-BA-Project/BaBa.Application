@@ -17,7 +17,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         year: Int,
         month: Int,
-    ): Result<List<Album>> {
+    ): ApiResult<List<Album>> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.getAlbum(id = id, year = year, month = month)
@@ -29,7 +29,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getOneAlbum(babyId: String, contentId: Int): Result<Album> =
+    override suspend fun getOneAlbum(babyId: String, contentId: Int): ApiResult<Album> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.gatOneAlbum(babyId = babyId, contentId = contentId)
@@ -42,7 +42,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         photo: MultipartBody.Part,
         bodyDataHashMap: HashMap<String, RequestBody>
-    ): Result<PostAlbumResponse> {
+    ): ApiResult<PostAlbumResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.postAlbum(id, photo, bodyDataHashMap)
@@ -51,9 +51,9 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        return if (result is Result.Failure) {
+        return if (result is ApiResult.Failure) {
             if (result.code == 413) {
-                Result.Failure(result.code, result.message, EntityTooLargeException())
+                ApiResult.Failure(result.code, result.message, EntityTooLargeException())
             } else {
                 result
             }
@@ -62,7 +62,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeAlbum(id: String, contentId: Int): Result<Boolean> {
+    override suspend fun likeAlbum(id: String, contentId: Int): ApiResult<Boolean> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.likeAlbum(id = id, contentId = contentId)
@@ -86,7 +86,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         contentId: Int,
         commentInput: CommentInput
-    ): Result<Unit> =
+    ): ApiResult<Unit> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.addComment(id = id, contentId = contentId, commentInput = commentInput)
@@ -98,7 +98,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
         id: String,
         contentId: Int,
         commentId: String
-    ): Result<Unit> =
+    ): ApiResult<Unit> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.deleteComment(id = id, contentId = contentId, commentId = commentId)
@@ -106,7 +106,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             mapping = {}
         )
 
-    override suspend fun getComment(id: String, contentId: Int): Result<List<Comment>> =
+    override suspend fun getComment(id: String, contentId: Int): ApiResult<List<Comment>> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.getComments(id = id, contentId = contentId)
@@ -116,7 +116,7 @@ class AlbumRemoteDataSourceImpl @Inject constructor(
             }
         )
 
-    override suspend fun getLikeDetail(id: String, contentId: Int): Result<LikeDetailResponse> =
+    override suspend fun getLikeDetail(id: String, contentId: Int): ApiResult<LikeDetailResponse> =
         safeApiHelper.getSafe(
             remoteFetch = {
                 api.getLikeDetail(id = id, contentId = contentId)

@@ -3,12 +3,11 @@ package kids.baba.mobile.data.repository
 import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSource
 import kids.baba.mobile.domain.model.*
 import kids.baba.mobile.domain.repository.MyPageRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRemoteDataSource) :
     MyPageRepository {
-    override suspend fun loadMyPageGroup(): Result<GroupResponse> = dataSource.loadMyPageGroup()
+    override suspend fun loadMyPageGroup(): ApiResult<GroupResponse> = dataSource.loadMyPageGroup()
 
     override suspend fun loadBabyProfile(babyId: String) =
         dataSource.loadBabyProfile(babyId = babyId)
@@ -17,14 +16,14 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         dataSource.addGroup(myPageGroup = myPageGroup)
 
 
-    override suspend fun editProfile(profile: Profile): Result<Unit> {
+    override suspend fun editProfile(profile: Profile): ApiResult<Unit> {
         return dataSource.editProfile(profile = profile)
     }
 
     override suspend fun editBabyName(babyId: String, name: String) =
         dataSource.editBabyName(babyId = babyId, name = name)
 
-    override suspend fun addMyBaby(baby: MyBaby): Result<Unit> {
+    override suspend fun addMyBaby(baby: MyBaby): ApiResult<Unit> {
         return dataSource.addMyBaby(baby = baby)
     }
 
@@ -46,10 +45,10 @@ class MyPageRepositoryImpl @Inject constructor(private val dataSource: MyPageRem
         dataSource.deleteGroupMember(memberId = memberId)
 
 
-    override suspend fun getInvitationInfo(inviteCode: String): Result<BabiesInfoResponse> =
+    override suspend fun getInvitationInfo(inviteCode: String): ApiResult<BabiesInfoResponse> =
         dataSource.getInvitationInfo(inviteCode = inviteCode)
 
-    override suspend fun makeInviteCode(relationInfo: RelationInfo): Result<InviteCode> =
+    override suspend fun makeInviteCode(relationInfo: RelationInfo): ApiResult<InviteCode> =
         dataSource.makeInviteCode(relationInfo = relationInfo)
 
 }

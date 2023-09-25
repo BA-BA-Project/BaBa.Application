@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetSignTokenUseCase
 import kids.baba.mobile.domain.usecase.GetTermsListUseCase
 import kids.baba.mobile.presentation.event.TermsAgreeEvent
@@ -48,8 +48,8 @@ class TermsAgreeViewModel @Inject constructor(
     private fun getTerms() {
         viewModelScope.launch {
             when (val result = getTermsListUseCase(socialToken)) {
-                is Result.Success -> _termsList.value = result.data.map { it.toPresentation() }
-                is Result.NetworkError -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> _termsList.value = result.data.map { it.toPresentation() }
+                is ApiResult.NetworkError -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_loading_failed))
             }
         }
@@ -87,10 +87,10 @@ class TermsAgreeViewModel @Inject constructor(
                 }
             )
             when (result) {
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     _signToken.value = result.data
                 }
-                is Result.NetworkError -> {
+                is ApiResult.NetworkError -> {
                     _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
                 }
                 else -> _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_terms_agree_failed))

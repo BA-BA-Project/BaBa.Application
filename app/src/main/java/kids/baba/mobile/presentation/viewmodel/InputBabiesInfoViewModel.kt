@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.model.getThrowableOrNull
@@ -310,7 +310,7 @@ class InputBabiesInfoViewModel @Inject constructor(
         )
         viewModelScope.launch {
             when(val result = getBabiesInfoByInviteCodeUseCase(inviteCode)){
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     val sj = StringJoiner(", ")
                     val babiesList = result.data.babies
                     val relationName = result.data.relationName
@@ -335,7 +335,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                     )
                     setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
                 }
-                is Result.NetworkError -> {
+                is ApiResult.NetworkError -> {
                     addChat(
                         ChatItem.BabaFirstChatItem(
                             getStringResource(R.string.baba_network_failed)
@@ -367,7 +367,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                             babiesList.value
                         )
                     )) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                     }
                     else -> {
@@ -392,7 +392,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                             userProfile.iconName
                         )
                     )) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                     }
                     else -> {

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.presentation.event.BabyListEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
@@ -38,7 +38,7 @@ class BabyListViewModel @Inject constructor(
         val selectedBabyId: String? = savedStateHandle[SELECTED_BABY_ID_KEY]
         viewModelScope.launch {
             when (val result = getBabiesUseCase()) {
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     val babies = result.data.toPresentation()
                     _babyList.value = babies.myBaby + babies.othersBaby
 
@@ -61,7 +61,7 @@ class BabyListViewModel @Inject constructor(
                     }
                 }
 
-                is Result.NetworkError -> _eventFlow.emit(BabyListEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(BabyListEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(BabyListEvent.ShowSnackBar(R.string.baba_get_babies_failed))
             }
         }

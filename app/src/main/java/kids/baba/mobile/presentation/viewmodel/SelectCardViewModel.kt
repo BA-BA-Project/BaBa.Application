@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.error.EntityTooLargeException
 import kids.baba.mobile.domain.model.MediaData
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.PostBabyAlbumUseCase
 import kids.baba.mobile.presentation.event.PostAlbumEvent
 import kids.baba.mobile.presentation.extension.FileUtil
@@ -81,17 +81,17 @@ class SelectCardViewModel @Inject constructor(
         requestHashMap["cardStyle"] = defaultCardUiModelArray[cardPosition.value].name.toPlainRequestBody()
 
         when (val result = postBabyAlbumUseCase.postAlbum(photoFile, requestHashMap)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _eventFlow.emit(PostAlbumEvent.MoveToMain)
             }
-            is Result.Failure -> {
+            is ApiResult.Failure -> {
                 if (result.throwable is EntityTooLargeException) {
                     _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.post_album_entity_too_large))
                 } else {
                     _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.post_album_failed))
                 }
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(PostAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
