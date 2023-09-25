@@ -35,11 +35,7 @@ object ApiModule {
         @NetworkModule.BabaClient
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory)
-        .build()
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
 
     @AuthRetrofit
     @Singleton
@@ -48,21 +44,29 @@ object ApiModule {
         @NetworkModule.AuthClient
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory)
-        .build()
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
 
     @FileRetrofit
     @Singleton
     @Provides
     fun provideFileDownRetrofit(
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_PHOTO_URL)
+    ): Retrofit = buildFileDownRetrofit(gsonConverterFactory)
+
+    private fun buildBaseRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ) = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_URL)
+        .client(okHttpClient)
         .addConverterFactory(gsonConverterFactory)
         .build()
+
+    private fun buildFileDownRetrofit(gsonConverterFactory: GsonConverterFactory) =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_PHOTO_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .build()
 
 
     @Singleton

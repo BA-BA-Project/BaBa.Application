@@ -1,12 +1,11 @@
 package kids.baba.mobile.data.network
 
-import android.util.Log
 import com.google.gson.Gson
 import kids.baba.mobile.core.error.InvalidAccessTokenException
 import kids.baba.mobile.core.error.NullBodyException
 import kids.baba.mobile.core.error.UnKnownException
-import kids.baba.mobile.domain.model.ErrorResponse
 import kids.baba.mobile.domain.model.ApiResult
+import kids.baba.mobile.domain.model.ErrorResponse
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject

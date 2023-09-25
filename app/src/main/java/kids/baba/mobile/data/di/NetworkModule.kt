@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.core.error.TokenRefreshFailedException
@@ -81,15 +80,12 @@ object NetworkModule {
     @AuthClient
     @Singleton
     @Provides
-    fun provideAuthClient(
-        authorizationInterceptor: Interceptor
-    ): OkHttpClient {
+    fun provideAuthClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         builder.apply {
             addInterceptor(loggingInterceptor)
-            addInterceptor(authorizationInterceptor)
         }
         return builder.build()
     }
@@ -100,9 +96,6 @@ object NetworkModule {
         val request = chain.request().newBuilder()
         val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
         request.header("Authorization", "Bearer $accessToken")
-
-        Log.e("AuthorizationInterceptor", "request.build: ${request.build()}")
-        // 가로챈 요청을 다시 보내기
         chain.proceed(request.build())
     }
 
@@ -113,19 +106,10 @@ object NetworkModule {
         authApi: AuthApi
     ) = Authenticator { _, response ->
         val tag = "TokenAuthenticator"
-//        val isPathRefresh =
-//            response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
-        Log.e(tag, /*"isPathRefresh: $isPathRefresh " +*/
-                "\n url: ${response.request.url.toUrl()} " +
-                "\n response: $response")
-
-        if (response.code == 401 /*&& !isPathRefresh*/) {
+        if (response.code == 401) {
             try {
-                Log.e("NetworkModule", "provideTokenAuthenticator called \n 토큰 갱신 시도")
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
                 val tokenRefreshRequest = TokenRefreshRequest(refreshToken)
-
-                // 토큰 갱신
                 val resp = authApi.tokenRefresh(tokenRefreshRequest).execute()
                 EncryptedPrefs.clearPrefs()
 
