@@ -41,6 +41,17 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class AuthClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpClient
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class NormalAuthInterceptor
+
+    @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpAuthInterceptor
+
     @Singleton
     @Provides
     fun provideGsonBuilder(): GsonBuilder {
@@ -63,6 +74,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideBabaClient(
+        @NormalAuthInterceptor
         authorizationInterceptor: Interceptor,
         tokenAuthenticator: Authenticator
     ): OkHttpClient {
@@ -74,6 +86,23 @@ object NetworkModule {
             addInterceptor(authorizationInterceptor)
         }
         builder.authenticator(tokenAuthenticator)
+        return builder.build()
+    }
+
+    @SignUpClient
+    @Singleton
+    @Provides
+    fun provideSignUpClient(
+        @SignUpAuthInterceptor
+        authorizationInterceptor: Interceptor
+    ): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.apply {
+            addInterceptor(loggingInterceptor)
+            addInterceptor(authorizationInterceptor)
+        }
         return builder.build()
     }
 
@@ -92,12 +121,24 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAuthorizationInterceptor() = Interceptor { chain ->
+    @NormalAuthInterceptor
+    fun provideNormalAuthorizationInterceptor() = Interceptor { chain ->
         val request = chain.request().newBuilder()
         val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
         request.header("Authorization", "Bearer $accessToken")
         chain.proceed(request.build())
     }
+
+    @Singleton
+    @Provides
+    @SignUpAuthInterceptor
+    fun provideSignUpAuthorizationInterceptor() = Interceptor { chain ->
+        val request = chain.request().newBuilder()
+        val signToken = EncryptedPrefs.getString(PrefsKey.SIGN_TOKEN_KEY)
+        request.header("Authorization", "Bearer $signToken")
+        chain.proceed(request.build())
+    }
+
 
     @Singleton
     @Provides

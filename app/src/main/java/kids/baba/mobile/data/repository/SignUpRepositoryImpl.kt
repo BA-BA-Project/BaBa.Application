@@ -10,13 +10,13 @@ class SignUpRepositoryImpl @Inject constructor(
     private val signUpRemoteDataSource: SignUpRemoteDataSource
 ) : SignUpRepository {
     override suspend fun signUpWithBabiesInfo(
-        signToken: String,
+        /*signToken: String,*/
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
-    ) = signUpRemoteDataSource.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
+    ) = signUpRemoteDataSource.signUpWithBabiesInfo(/*signToken,*/ signUpRequestWithBabiesInfo)
 
     override suspend fun signUpWithInviteCode(
-        signToken: String,
+        /*signToken: String,*/
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
-    ) = signUpRemoteDataSource.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
+    ) = signUpRemoteDataSource.signUpWithInviteCode(/*signToken,*/ signUpRequestWithInviteCode)
 
 }

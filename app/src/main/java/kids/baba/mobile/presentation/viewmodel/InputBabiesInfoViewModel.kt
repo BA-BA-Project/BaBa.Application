@@ -36,7 +36,7 @@ class InputBabiesInfoViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
-    private val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
+//    private val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
     private val _uiState: MutableStateFlow<InputBabiesInfoUiState> =
         MutableStateFlow(InputBabiesInfoUiState.Loading)
@@ -359,7 +359,7 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithBabiesInfo(
-                        signToken,
+                        /*signToken,*/
                         SignUpRequestWithBabiesInfo(
                             userProfile.name,
                             userProfile.iconName,
@@ -386,7 +386,7 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithInviteCode(
-                        signToken, SignUpRequestWithInviteCode(
+                        /*signToken,*/ SignUpRequestWithInviteCode(
                             inviteCode,
                             userProfile.name,
                             userProfile.iconName

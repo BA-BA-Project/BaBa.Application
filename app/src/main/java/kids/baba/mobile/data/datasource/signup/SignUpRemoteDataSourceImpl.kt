@@ -11,18 +11,18 @@ class SignUpRemoteDataSourceImpl @Inject constructor(
     private val safeApiHelper: SafeApiHelper
 ) : SignUpRemoteDataSource {
     override suspend fun signUpWithBabiesInfo(
-        signToken: String,
+        /*signToken: String,*/
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
     ) = safeApiHelper.getSafe(
-        remoteFetch = { signUpApi.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo) },
+        remoteFetch = { signUpApi.signUpWithBabiesInfo(/*signToken,*/ signUpRequestWithBabiesInfo) },
         mapping = { it }
     )
 
     override suspend fun signUpWithInviteCode(
-        signToken: String,
+        /*signToken: String,*/
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
     ) = safeApiHelper.getSafe(
-        remoteFetch = { signUpApi.signUpWithInviteCode(signToken, signUpRequestWithInviteCode) },
+        remoteFetch = { signUpApi.signUpWithInviteCode(/*signToken,*/ signUpRequestWithInviteCode) },
         mapping = { it }
     )
 

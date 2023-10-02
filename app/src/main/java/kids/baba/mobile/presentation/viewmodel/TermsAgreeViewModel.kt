@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
+import kids.baba.mobile.core.constant.PrefsKey.SIGN_TOKEN_KEY
+import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetSignTokenUseCase
 import kids.baba.mobile.domain.usecase.GetTermsListUseCase
@@ -89,6 +91,7 @@ class TermsAgreeViewModel @Inject constructor(
             when (result) {
                 is ApiResult.Success -> {
                     _signToken.value = result.data
+                    EncryptedPrefs.putString(SIGN_TOKEN_KEY, result.data)
                 }
                 is ApiResult.NetworkError -> {
                     _eventFlow.emit(TermsAgreeEvent.ShowSnackBar(R.string.baba_network_failed))
