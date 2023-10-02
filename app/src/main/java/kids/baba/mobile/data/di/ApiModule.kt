@@ -97,6 +97,12 @@ object ApiModule {
 
     @Singleton
     @Provides
+    fun provideSignUpApi(
+        @BabaRetrofit retrofit: Retrofit
+    ): SignUpApi = retrofit.create(SignUpApi::class.java)
+
+    @Singleton
+    @Provides
     fun provideFileDownApi(
         @FileRetrofit retrofit: Retrofit
     ): FileApi = retrofit.create(FileApi::class.java)

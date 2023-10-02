@@ -6,23 +6,29 @@ import kids.baba.mobile.domain.model.Result
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.model.TokenResponse
-import kids.baba.mobile.domain.repository.MemberRepository
+import kids.baba.mobile.domain.repository.SignUpRepository
 import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(
-    private val memberRepository: MemberRepository
+    private val signUpRepository: SignUpRepository
 ) {
-    suspend fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo): Result<TokenResponse>{
-        val result = memberRepository.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
-        if ( result is Result.Success){
+    suspend fun signUpWithBabiesInfo(
+        signToken: String,
+        signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
+    ): Result<TokenResponse> {
+        val result = signUpRepository.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
+        if (result is Result.Success) {
             setJWTToken(result.data)
         }
         return result
     }
 
-    suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode): Result<TokenResponse>{
-        val result = memberRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
-        if ( result is Result.Success){
+    suspend fun signUpWithInviteCode(
+        signToken: String,
+        signUpRequestWithInviteCode: SignUpRequestWithInviteCode
+    ): Result<TokenResponse> {
+        val result = signUpRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
+        if (result is Result.Success) {
             setJWTToken(result.data)
         }
         return result

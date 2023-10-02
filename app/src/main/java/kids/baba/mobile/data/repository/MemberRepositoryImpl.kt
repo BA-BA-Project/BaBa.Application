@@ -10,6 +10,7 @@ class MemberRepositoryImpl @Inject constructor(private val memberRemoteDataSourc
     MemberRepository {
     override suspend fun getMe(accessToken: String) = memberRemoteDataSource.getMe(accessToken)
 
+    // TODO: 제거
     override suspend fun signUpWithBabiesInfo(
         signToken: String,
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo

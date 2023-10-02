@@ -17,6 +17,7 @@ class MemberRemoteDataSourceImpl @Inject constructor(
         mapping = { it }
     )
 
+    // TODO: 없애기
     override suspend fun signUpWithBabiesInfo(
         signToken: String,
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo,
@@ -25,7 +26,7 @@ class MemberRemoteDataSourceImpl @Inject constructor(
         mapping = { it }
     )
 
-
+    // TODO: 없애기
     override suspend fun signUpWithInviteCode(
         signToken: String,
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode

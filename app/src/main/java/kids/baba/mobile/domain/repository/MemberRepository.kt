@@ -9,6 +9,7 @@ import kids.baba.mobile.domain.model.TokenResponse
 interface MemberRepository {
     suspend fun getMe(accessToken: String): Result<MemberModel>
 
+    // TODO: 없애기
     suspend fun signUpWithBabiesInfo(signToken: String, signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo): Result<TokenResponse>
 
     suspend fun signUpWithInviteCode(signToken: String, signUpRequestWithInviteCode: SignUpRequestWithInviteCode): Result<TokenResponse>
