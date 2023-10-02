@@ -1,7 +1,6 @@
 package kids.baba.mobile.domain.usecase
 
 import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.MyBaby
 import kids.baba.mobile.domain.repository.MyPageRepository
 import javax.inject.Inject
 

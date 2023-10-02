@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey.BABY_GROUP_TITLE_KEY
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.model.getThrowableOrNull
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
@@ -46,10 +46,10 @@ class MyPageViewModel @Inject constructor(
 
     fun loadGroups() = viewModelScope.launch {
         when (val result = getMyPageGroupUseCase.get()) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _eventFlow.emit(MyPageEvent.LoadGroups(result.data.groups.toUiModel()))
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
@@ -60,11 +60,11 @@ class MyPageViewModel @Inject constructor(
 
     fun loadBabies() = viewModelScope.launch {
         when (val result = getBabiesUseCase()) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 val babies = result.data
                 _eventFlow.emit(MyPageEvent.LoadBabies((babies.myBaby + babies.others).map { it.toPresentation() }))
             }
-            is Result.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
 
             else -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.load_baby_error_message))
 
@@ -73,11 +73,11 @@ class MyPageViewModel @Inject constructor(
 
     fun getMyInfo() = viewModelScope.launch {
         when (val result = getMemberUseCase.getMeNoPref()) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _myInfoState.value = result.data.toPresentation()
                 _eventFlow.emit(MyPageEvent.LoadMyInfo(result.data.toPresentation()))
             }
-            is Result.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(MyPageEvent.ShowSnackBar(R.string.baba_network_failed))
 
             else -> {
                 val throwable = result.getThrowableOrNull()

@@ -11,5 +11,6 @@ class AuthRepositoryImpl @Inject constructor(private val authRemoteDataSource: A
     override suspend fun login(socialToken: String) = authRemoteDataSource.login(socialToken)
     override suspend fun getTerms(socialToken: String) = authRemoteDataSource.getTerms(socialToken)
 
-    override suspend fun getSignToken(signTokenRequest: SignTokenRequest) = authRemoteDataSource.getSignToken(signTokenRequest)
+    override suspend fun getSignToken(signTokenRequest: SignTokenRequest) =
+        authRemoteDataSource.getSignToken(signTokenRequest)
 }

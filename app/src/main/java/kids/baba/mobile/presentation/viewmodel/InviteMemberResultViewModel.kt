@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesInfoByInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
@@ -40,7 +40,7 @@ class InviteMemberResultViewModel @Inject constructor(
 
     private fun getInviteResult() = viewModelScope.launch {
         when (val babiesData = getBabiesInfoByInviteCodeUseCase(inviteCode.value)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _eventFlow.emit(InviteResultEvent.SuccessGetInvitationInfo(babiesData.data))
                 uiModel.update {
                     it.copy(
@@ -49,7 +49,7 @@ class InviteMemberResultViewModel @Inject constructor(
                     )
                 }
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {
@@ -62,10 +62,10 @@ class InviteMemberResultViewModel @Inject constructor(
         addOneBabyWithInviteCodeUseCase.add(InviteCode(inviteCode = inviteCode.value))
 
         when (val result = addOneBabyWithInviteCodeUseCase.add(InviteCode(inviteCode = inviteCode.value))) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _eventFlow.emit(InviteResultEvent.SuccessAddMember)
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(InviteResultEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {

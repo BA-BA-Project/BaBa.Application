@@ -2,7 +2,7 @@ package kids.baba.mobile.domain.usecase
 
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.model.TokenResponse
@@ -15,9 +15,9 @@ class SignUpUseCase @Inject constructor(
     suspend fun signUpWithBabiesInfo(
         signToken: String,
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
-    ): Result<TokenResponse> {
+    ): ApiResult<TokenResponse> {
         val result = signUpRepository.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo)
-        if (result is Result.Success) {
+        if (result is ApiResult.Success) {
             setJWTToken(result.data)
         }
         return result
@@ -26,9 +26,9 @@ class SignUpUseCase @Inject constructor(
     suspend fun signUpWithInviteCode(
         signToken: String,
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
-    ): Result<TokenResponse> {
+    ): ApiResult<TokenResponse> {
         val result = signUpRepository.signUpWithInviteCode(signToken, signUpRequestWithInviteCode)
-        if (result is Result.Success) {
+        if (result is ApiResult.Success) {
             setJWTToken(result.data)
         }
         return result

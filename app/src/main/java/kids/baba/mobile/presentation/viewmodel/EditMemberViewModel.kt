@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.GroupMemberInfo
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.DeleteOneGroupMemberUseCase
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.PatchOneMemberRelationUseCase
@@ -57,9 +57,9 @@ class EditMemberViewModel @Inject constructor(
             memberId = member?.memberId ?: "",
             relation = GroupMemberInfo(relationName = relationWithBaby.value)
         )) {
-            is Result.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
+            is ApiResult.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessPatchMemberRelation)
 
-            is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
             else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.invalid_format_error))
 
@@ -70,14 +70,14 @@ class EditMemberViewModel @Inject constructor(
         onDeleteButtonClickEventListener = {
             viewModelScope.launch {
                 when (val myInfo = getMemberUseCase.getMe()) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         if (member?.memberId == myInfo.data.memberId) {
                             _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.cannot_delete_myself))
                             return@launch
                         }
                         when (deleteOneGroupMemberUseCase.delete(memberId = member?.memberId ?: "")) {
-                            is Result.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
-                            is Result.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                            is ApiResult.Success -> _eventFlow.emit(EditGroupMemberEvent.SuccessDeleteMember)
+                            is ApiResult.NetworkError -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.baba_network_failed))
                             else -> _eventFlow.emit(EditGroupMemberEvent.ShowSnackBar(R.string.invalid_delete_member_error))
                         }
                     }
