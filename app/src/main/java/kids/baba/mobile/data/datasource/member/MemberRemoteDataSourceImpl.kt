@@ -2,8 +2,6 @@ package kids.baba.mobile.data.datasource.member
 
 import kids.baba.mobile.data.api.MemberApi
 import kids.baba.mobile.data.network.SafeApiHelper
-import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
-import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import javax.inject.Inject
 
 class MemberRemoteDataSourceImpl @Inject constructor(
@@ -14,24 +12,6 @@ class MemberRemoteDataSourceImpl @Inject constructor(
         remoteFetch = {
             memberApi.getMe(accessToken)
         },
-        mapping = { it }
-    )
-
-    // TODO: 없애기
-    override suspend fun signUpWithBabiesInfo(
-        signToken: String,
-        signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo,
-    ) = safeApiHelper.getSafe(
-        remoteFetch = { memberApi.signUpWithBabiesInfo(signToken, signUpRequestWithBabiesInfo) },
-        mapping = { it }
-    )
-
-    // TODO: 없애기
-    override suspend fun signUpWithInviteCode(
-        signToken: String,
-        signUpRequestWithInviteCode: SignUpRequestWithInviteCode
-    ) = safeApiHelper.getSafe(
-        remoteFetch = { memberApi.signUpWithInviteCode(signToken, signUpRequestWithInviteCode) },
         mapping = { it }
     )
 }
