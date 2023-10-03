@@ -1,12 +1,13 @@
 package kids.baba.mobile.data.network
 
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import retrofit2.Response
 
 interface SafeApiHelper {
     suspend fun <ResultType, RequestType> getSafe(
         remoteFetch: suspend () -> Response<RequestType>,
-        mapping: (RequestType) -> (ResultType)
-    ): Result<ResultType>
+        mapping: (RequestType) -> (ResultType),
+        canRecursive: Boolean = true
+    ): ApiResult<ResultType>
 
 }

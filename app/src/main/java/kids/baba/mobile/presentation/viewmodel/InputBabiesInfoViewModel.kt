@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.model.SignUpRequestWithBabiesInfo
 import kids.baba.mobile.domain.model.SignUpRequestWithInviteCode
 import kids.baba.mobile.domain.model.getThrowableOrNull
@@ -36,7 +36,6 @@ class InputBabiesInfoViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
-    private val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
     private val _uiState: MutableStateFlow<InputBabiesInfoUiState> =
         MutableStateFlow(InputBabiesInfoUiState.Loading)
@@ -309,8 +308,8 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            when(val result = getBabiesInfoByInviteCodeUseCase(inviteCode)){
-                is Result.Success -> {
+            when (val result = getBabiesInfoByInviteCodeUseCase(inviteCode)) {
+                is ApiResult.Success -> {
                     val sj = StringJoiner(", ")
                     val babiesList = result.data.babies
                     val relationName = result.data.relationName
@@ -335,7 +334,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                     )
                     setUiState(InputBabiesInfoUiState.GetBabiesInfoByInviteCode)
                 }
-                is Result.NetworkError -> {
+                is ApiResult.NetworkError -> {
                     addChat(
                         ChatItem.BabaFirstChatItem(
                             getStringResource(R.string.baba_network_failed)
@@ -359,7 +358,6 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithBabiesInfo(
-                        signToken,
                         SignUpRequestWithBabiesInfo(
                             userProfile.name,
                             userProfile.iconName,
@@ -367,12 +365,12 @@ class InputBabiesInfoViewModel @Inject constructor(
                             babiesList.value
                         )
                     )) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                     }
                     else -> {
                         val throwable = result.getThrowableOrNull()
-                        if(throwable != null){
+                        if (throwable != null) {
                             setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
                         }
                     }
@@ -386,18 +384,18 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithInviteCode(
-                        signToken, SignUpRequestWithInviteCode(
+                        SignUpRequestWithInviteCode(
                             inviteCode,
                             userProfile.name,
                             userProfile.iconName
                         )
                     )) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         setUiState(InputBabiesInfoUiState.SignUpSuccess(userProfile.name))
                     }
                     else -> {
                         val throwable = result.getThrowableOrNull()
-                        if(throwable != null){
+                        if (throwable != null) {
                             setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
                         }
                     }

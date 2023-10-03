@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MyPageGroup
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AddOneGroupUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
@@ -57,8 +57,8 @@ class AddGroupViewModel @Inject constructor(
                 groupColor = color.value
             )
         )) {
-            is Result.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)
-            is Result.NetworkError -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.Success -> _eventFlow.emit(AddGroupEvent.SuccessAddGroup)
+            is ApiResult.NetworkError -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(AddGroupEvent.ShowSnackBar(R.string.already_have_same_group_or_format_error))
         }
 

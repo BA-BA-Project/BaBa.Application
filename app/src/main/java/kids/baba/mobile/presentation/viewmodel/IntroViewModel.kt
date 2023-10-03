@@ -3,7 +3,7 @@ package kids.baba.mobile.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.presentation.event.DeepLinkEvent
 import kids.baba.mobile.presentation.event.IntroEvent
@@ -24,13 +24,13 @@ class IntroViewModel @Inject constructor(
     private val _deepLinkEvent = MutableEventFlow<DeepLinkEvent>()
     val deepLinkEvent = _deepLinkEvent.asEventFlow()
 
-    suspend fun checkLogin() = getMemberUseCase.getMe() is Result.Success
+    suspend fun checkLogin() = getMemberUseCase.getMe(callFromServer = false) is ApiResult.Success
     fun handleDeeplink() = viewModelScope.launch {
         when (getMemberUseCase.getMe()) {
-            is Result.Success -> _deepLinkEvent.emit(DeepLinkEvent.GoToInviteResultPage)
-            is Result.Unexpected -> _deepLinkEvent.emit(DeepLinkEvent.RequestLogin)
-            is Result.Failure -> _deepLinkEvent.emit(DeepLinkEvent.Failure)
-            is Result.NetworkError -> _deepLinkEvent.emit(DeepLinkEvent.NetworkError)
+            is ApiResult.Success -> _deepLinkEvent.emit(DeepLinkEvent.GoToInviteResultPage)
+            is ApiResult.Unexpected -> _deepLinkEvent.emit(DeepLinkEvent.RequestLogin)
+            is ApiResult.Failure -> _deepLinkEvent.emit(DeepLinkEvent.Failure)
+            is ApiResult.NetworkError -> _deepLinkEvent.emit(DeepLinkEvent.NetworkError)
         }
     }
 

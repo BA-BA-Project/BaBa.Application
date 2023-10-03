@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class DeleteCommentUseCase @Inject constructor(private val repository: AlbumRepository) {
 
-    suspend operator fun invoke(id: String, contentId: Int, commentId: String,) =
+    suspend operator fun invoke(id: String, contentId: Int, commentId: String) =
         repository.deleteComment(id, contentId, commentId)
 }

@@ -4,7 +4,7 @@ import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.data.api.AuthApi
 import kids.baba.mobile.data.network.SafeApiHelper
 import kids.baba.mobile.domain.model.LoginRequest
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.model.SignTokenRequest
 import kids.baba.mobile.domain.model.TokenResponse
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     private val api: AuthApi,
     private val safeApiHelper: SafeApiHelper
 ) : AuthRemoteDataSource {
-    override suspend fun login(socialToken: String): Result<TokenResponse> {
+    override suspend fun login(socialToken: String): ApiResult<TokenResponse> {
         val result = safeApiHelper.getSafe(
             remoteFetch = {
                 api.login(LoginRequest(socialToken))
@@ -22,8 +22,8 @@ class AuthRemoteDataSourceImpl @Inject constructor(
                 it
             }
         )
-        return if (result is Result.Failure) {
-            Result.Failure(result.code, result.message, UserNotFoundException("신규 로그인"))
+        return if (result is ApiResult.Failure) {
+            ApiResult.Failure(result.code, result.message, UserNotFoundException("신규 로그인"))
         } else {
             result
         }
@@ -42,6 +42,6 @@ class AuthRemoteDataSourceImpl @Inject constructor(
             remoteFetch = {
                 api.getSignToken(signTokenRequest)
             },
-            mapping = {it.signToken}
+            mapping = { it.signToken }
         )
 }

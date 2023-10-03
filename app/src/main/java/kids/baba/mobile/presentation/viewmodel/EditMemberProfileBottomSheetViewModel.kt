@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.Profile
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.EditProfileUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
 import kids.baba.mobile.presentation.binding.ComposableNameViewData
@@ -89,10 +89,10 @@ class EditMemberProfileBottomSheetViewModel @Inject constructor(
                 iconColor = colorState.value
             )
         )) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 _eventFlow.emit(EditMemberProfileEvent.SuccessEditMemberProfile)
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(EditMemberProfileEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {

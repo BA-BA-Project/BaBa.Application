@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.error.UserNotFoundException
 import kids.baba.mobile.core.error.kakao.KakaoLoginCanceledException
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetMemberUseCase
 import kids.baba.mobile.domain.usecase.LoginUseCase
 import kids.baba.mobile.presentation.event.LoginEvent
@@ -41,17 +41,17 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun loginToBaba(socialToken: String) {
         when (val result = loginUseCase.babaLogin(socialToken)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 when(val memberResult = getMemberUseCase.getMe()){
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         _eventFlow.emit(LoginEvent.MoveToWelcome(memberResult.data.name))
                     }
-                    is Result.NetworkError -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
+                    is ApiResult.NetworkError -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
                     else -> _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_get_member_failed))
                 }
             }
 
-            is Result.Failure -> {
+            is ApiResult.Failure -> {
                 if (result.throwable is UserNotFoundException) {
                     _eventFlow.emit(LoginEvent.MoveToAgree(socialToken))
                 } else {
@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(
                 }
             }
 
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(LoginEvent.ShowSnackBar(R.string.baba_network_failed))
             }
 

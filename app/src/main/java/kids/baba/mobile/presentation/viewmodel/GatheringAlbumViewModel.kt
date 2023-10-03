@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetAllAlbumsUseCase
 import kids.baba.mobile.presentation.event.GatheringAlbumEvent
 import kids.baba.mobile.presentation.mapper.toPresentation
@@ -162,13 +162,13 @@ class GatheringAlbumViewModel @Inject constructor(
         val tempList: MutableList<AlbumUiModel> = mutableListOf()
 
         when (val result = getAllAlbumsUseCase(id = baby.babyId)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 result.data.forEach {
                     tempList.add(it.toPresentation(baby.isMyBaby)) // false is meaningless value
                 }
                 _allAlbumListState.value = tempList
             }
-            is Result.NetworkError -> {
+            is ApiResult.NetworkError -> {
                 _eventFlow.emit(GatheringAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             }
             else -> {

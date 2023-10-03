@@ -5,12 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kids.baba.mobile.BuildConfig
-import kids.baba.mobile.data.api.AlbumApi
-import kids.baba.mobile.data.api.AuthApi
-import kids.baba.mobile.data.api.BabyApi
-import kids.baba.mobile.data.api.FileApi
-import kids.baba.mobile.data.api.MemberApi
-import kids.baba.mobile.data.api.MyPageApi
+import kids.baba.mobile.data.api.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +22,10 @@ object ApiModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
     annotation class AuthRetrofit
 
     @Qualifier
@@ -40,11 +39,16 @@ object ApiModule {
         @NetworkModule.BabaClient
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory)
-        .build()
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
+
+    @SignUpRetrofit
+    @Singleton
+    @Provides
+    fun provideSignUpRetrofit(
+        @NetworkModule.SignUpClient
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
 
     @AuthRetrofit
     @Singleton
@@ -53,21 +57,29 @@ object ApiModule {
         @NetworkModule.AuthClient
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory)
-        .build()
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
 
     @FileRetrofit
     @Singleton
     @Provides
     fun provideFileDownRetrofit(
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_PHOTO_URL)
+    ): Retrofit = buildFileDownRetrofit(gsonConverterFactory)
+
+    private fun buildBaseRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ) = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_URL)
+        .client(okHttpClient)
         .addConverterFactory(gsonConverterFactory)
         .build()
+
+    private fun buildFileDownRetrofit(gsonConverterFactory: GsonConverterFactory) =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_PHOTO_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .build()
 
 
     @Singleton
@@ -99,6 +111,12 @@ object ApiModule {
     fun provideMyPageApi(
         @BabaRetrofit retrofit: Retrofit
     ): MyPageApi = retrofit.create(MyPageApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideSignUpApi(
+        @SignUpRetrofit retrofit: Retrofit
+    ): SignUpApi = retrofit.create(SignUpApi::class.java)
 
     @Singleton
     @Provides

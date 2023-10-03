@@ -8,7 +8,7 @@ import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
 import kids.baba.mobile.domain.model.CommentInput
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AddCommentUseCase
 import kids.baba.mobile.domain.usecase.DeleteCommentUseCase
 import kids.baba.mobile.domain.usecase.GetCommentsUseCase
@@ -77,8 +77,8 @@ class AlbumDetailViewModel @Inject constructor(
     private fun initModel() {
         viewModelScope.launch {
             when(val result = getMemberUseCase.getMe()){
-                is Result.Success -> _member.value = result.data.toPresentation()
-                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> _member.value = result.data.toPresentation()
+                is ApiResult.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_get_member_failed))
             }
         }
@@ -92,7 +92,7 @@ class AlbumDetailViewModel @Inject constructor(
             val likeDetailResult = getLikeDetailUseCase(baby.babyId, contentId)
             val commentsResult = getCommentsUseCase(baby.babyId, contentId)
             when {
-                likeDetailResult is Result.Success && commentsResult is Result.Success -> {
+                likeDetailResult is ApiResult.Success && commentsResult is ApiResult.Success -> {
                     val likeDetail = likeDetailResult.data
                     val comments = commentsResult.data
                     _albumDetailUiState.update { uiState ->
@@ -106,7 +106,7 @@ class AlbumDetailViewModel @Inject constructor(
                     }
                 }
 
-                likeDetailResult is Result.NetworkError || commentsResult is Result.NetworkError -> {
+                likeDetailResult is ApiResult.NetworkError || commentsResult is ApiResult.NetworkError -> {
                     _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 }
 
@@ -124,13 +124,13 @@ class AlbumDetailViewModel @Inject constructor(
             val commentInput =
                 CommentInput(tag = commentTag.value?.memberId ?: "", comment = comment.value)
             when (addCommentUseCase(baby.babyId, contentId, commentInput)) {
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     getAlbumDetailData()
                     comment.value = ""
                     addSuccess()
                 }
 
-                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_add_comment_failed))
             }
         }
@@ -151,8 +151,8 @@ class AlbumDetailViewModel @Inject constructor(
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (contentId != null) {
             when (deleteCommentUseCase(baby.babyId, contentId, commentId)) {
-                is Result.Success -> getAlbumDetailData()
-                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> getAlbumDetailData()
+                is ApiResult.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_delete_comment_failed))
             }
         }
@@ -162,7 +162,7 @@ class AlbumDetailViewModel @Inject constructor(
         val contentId = albumDetailUiState.value.albumDetail.album.contentId
         if (contentId != null) {
             when (val result = likeAlbumUseCase(baby.babyId, contentId)) {
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     getAlbumDetailData()
                     _albumDetailUiState.update { uiState ->
                         uiState.copy(
@@ -173,7 +173,7 @@ class AlbumDetailViewModel @Inject constructor(
                     }
                 }
 
-                is Result.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumDetailEvent.ShowSnackBar(R.string.baba_like_album_failed))
             }
         }

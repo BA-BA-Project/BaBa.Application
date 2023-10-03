@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.GroupInfo
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.DeleteOneGroupUseCase
 import kids.baba.mobile.domain.usecase.PatchOneGroupUseCase
 import kids.baba.mobile.presentation.binding.ComposableAddButtonViewData
@@ -81,9 +81,9 @@ class EditGroupBottomSheetViewModel @Inject constructor(
                 when (deleteOneGroupUseCase.delete(
                     groupName = groupName
                 )) {
-                    is Result.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
+                    is ApiResult.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessDeleteGroup)
 
-                    is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
+                    is ApiResult.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
 
                     else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.invalid_delete_group_error))
                 }
@@ -99,9 +99,9 @@ class EditGroupBottomSheetViewModel @Inject constructor(
             ),
             groupName = groupName
         )) {
-            is Result.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
+            is ApiResult.Success -> _eventFlow.emit(EditGroupSheetEvent.SuccessPatchGroupRelation)
 
-            is Result.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.baba_network_failed))
 
             else -> _eventFlow.emit(EditGroupSheetEvent.ShowSnackBar(R.string.already_have_same_group_or_format_error))
         }

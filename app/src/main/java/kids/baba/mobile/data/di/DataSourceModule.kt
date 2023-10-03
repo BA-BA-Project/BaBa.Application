@@ -18,6 +18,8 @@ import kids.baba.mobile.data.datasource.member.MemberRemoteDataSource
 import kids.baba.mobile.data.datasource.member.MemberRemoteDataSourceImpl
 import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSource
 import kids.baba.mobile.data.datasource.mypage.MyPageRemoteDataSourceImpl
+import kids.baba.mobile.data.datasource.signup.SignUpRemoteDataSource
+import kids.baba.mobile.data.datasource.signup.SignUpRemoteDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -36,6 +38,9 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMyPageRemoteDataSource(myPageRemoteDataSourceImpl: MyPageRemoteDataSourceImpl): MyPageRemoteDataSource
+
+    @Binds
+    abstract fun bindSignUpRemoteDataSource(signUpRemoteDataSourceImpl: SignUpRemoteDataSourceImpl): SignUpRemoteDataSource
 
     @Binds
     abstract fun bindFileRemoteDataSource(fileRemoteDataSourceImpl: FileRemoteDataSourceImpl): FileRemoteDataSource

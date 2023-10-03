@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.RelationInfo
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.MakeInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableDescView
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
@@ -67,9 +67,9 @@ class InviteMemberViewModel @Inject constructor(
                     relationName = relationState.value
                 )
             )) {
-                is Result.Success -> _eventFlow.emit(InviteMemberEvent.CopyInviteCode(inviteCode.data))
+                is ApiResult.Success -> _eventFlow.emit(InviteMemberEvent.CopyInviteCode(inviteCode.data))
 
-                is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
                 else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.cannot_generate_invite_code))
             }
@@ -86,9 +86,9 @@ class InviteMemberViewModel @Inject constructor(
                     relationName = relationState.value
                 )
             )) {
-                is Result.Success -> _eventFlow.emit(InviteMemberEvent.InviteWithKakao(inviteCode.data))
+                is ApiResult.Success -> _eventFlow.emit(InviteMemberEvent.InviteWithKakao(inviteCode.data))
 
-                is Result.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.baba_network_failed))
 
                 else -> _eventFlow.emit(InviteMemberEvent.ShowSnackBar(R.string.cannot_generate_invite_code))
             }

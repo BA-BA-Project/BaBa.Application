@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.error.TokenEmptyException
 import kids.baba.mobile.core.error.TokenRefreshFailedException
@@ -42,6 +41,18 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class AuthClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpClient
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class NormalAuthInterceptor
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpAuthInterceptor
+
     @Singleton
     @Provides
     fun provideGsonBuilder(): GsonBuilder {
@@ -64,6 +75,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideBabaClient(
+        @NormalAuthInterceptor
         authorizationInterceptor: Interceptor,
         tokenAuthenticator: Authenticator
     ): OkHttpClient {
@@ -78,10 +90,11 @@ object NetworkModule {
         return builder.build()
     }
 
-    @AuthClient
+    @SignUpClient
     @Singleton
     @Provides
-    fun provideAuthClient(
+    fun provideSignUpClient(
+        @SignUpAuthInterceptor
         authorizationInterceptor: Interceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
@@ -94,18 +107,39 @@ object NetworkModule {
         return builder.build()
     }
 
+    @AuthClient
     @Singleton
     @Provides
-    fun providesAuthorizationInterceptor() = Interceptor { chain ->
-        val request = chain.request().newBuilder()
-        val hasAuthorization = chain.request().headers.names().contains("Authorization")
-
-        if (hasAuthorization) {
-            val accessToken = chain.request().header("Authorization")
-            request.header("Authorization", "Bearer $accessToken")
+    fun provideAuthClient(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.apply {
+            addInterceptor(loggingInterceptor)
         }
+        return builder.build()
+    }
+
+    @NormalAuthInterceptor
+    @Singleton
+    @Provides
+    fun provideNormalAuthorizationInterceptor() = Interceptor { chain ->
+        val request = chain.request().newBuilder()
+        val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
+        request.header("Authorization", "Bearer $accessToken")
         chain.proceed(request.build())
     }
+
+    @SignUpAuthInterceptor
+    @Singleton
+    @Provides
+    fun provideSignUpAuthorizationInterceptor() = Interceptor { chain ->
+        val request = chain.request().newBuilder()
+        val signToken = EncryptedPrefs.getString(PrefsKey.SIGN_TOKEN_KEY)
+        request.header("Authorization", "Bearer $signToken")
+        chain.proceed(request.build())
+    }
+
 
     @Singleton
     @Provides
@@ -114,9 +148,7 @@ object NetworkModule {
         authApi: AuthApi
     ) = Authenticator { _, response ->
         val tag = "TokenAuthenticator"
-        val isPathRefresh =
-            response.request.url.toUrl().toString() == BuildConfig.BASE_URL + "auth/refresh"
-        if (response.code == 401 && !isPathRefresh) {
+        if (response.code == 401) {
             try {
                 val refreshToken = EncryptedPrefs.getString(PrefsKey.REFRESH_TOKEN_KEY)
                 val tokenRefreshRequest = TokenRefreshRequest(refreshToken)
@@ -146,6 +178,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSafeApi() : SafeApiHelper = SafeApiHelperImpl()
+    fun provideSafeApi(): SafeApiHelper = SafeApiHelperImpl()
 
 }

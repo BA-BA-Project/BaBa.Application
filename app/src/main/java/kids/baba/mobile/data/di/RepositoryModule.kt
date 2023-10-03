@@ -32,5 +32,8 @@ abstract class RepositoryModule {
     abstract fun bindMyPageRepository(myPageRepositoryImpl: MyPageRepositoryImpl): MyPageRepository
 
     @Binds
+    abstract fun bindSignUpRepository(signUpRepositoryImpl: SignUpRepositoryImpl): SignUpRepository
+
+    @Binds
     abstract fun bindFileRemoteRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
 }

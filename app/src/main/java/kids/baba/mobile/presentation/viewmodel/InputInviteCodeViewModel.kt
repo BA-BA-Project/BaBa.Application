@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.InviteCode
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AddOneBabyWithInviteCodeUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
 import kids.baba.mobile.presentation.binding.ComposableTopViewData
@@ -57,7 +57,7 @@ class InputInviteCodeViewModel @Inject constructor(
             when (addOneBabyWithInviteCodeUseCase.add(
                 inviteCode = InviteCode(inviteCodeState.value)
             )) {
-                is Result.Success -> _eventFlow.emit(
+                is ApiResult.Success -> _eventFlow.emit(
                     BabyInviteCodeEvent.SuccessAddBabyWithInviteCode(
                         inviteCode = InviteCode(
                             inviteCodeState.value
@@ -65,7 +65,7 @@ class InputInviteCodeViewModel @Inject constructor(
                     )
                 )
 
-                is Result.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(BabyInviteCodeEvent.ShowSnackBar(R.string.invalid_invite_code))
             }
 

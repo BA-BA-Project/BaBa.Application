@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.GetAlbumsFromBabyIdUseCase
 import kids.baba.mobile.domain.usecase.GetBabiesUseCase
 import kids.baba.mobile.domain.usecase.LikeAlbumUseCase
@@ -52,7 +52,7 @@ class GrowthAlbumViewModel @Inject constructor(
         }
 
         when (val result = getAlbumsFromBabyIdUseCase.getMonthAlbum(selectedBaby.babyId, nowYear, nowMonth)) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 val albumList = result.data
                 albumList.forEach {
                     val day = it.date.dayOfMonth
@@ -68,7 +68,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
             }
 
-            is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_album_failed))
         }
     }
@@ -123,7 +123,7 @@ class GrowthAlbumViewModel @Inject constructor(
     fun initBabyAndAlbum(date: LocalDate) = viewModelScope.launch {
         val babyId = runCatching { EncryptedPrefs.getBaby(PrefsKey.BABY_KEY).babyId }.getOrNull()
         when (val result = getBabiesUseCase()) {
-            is Result.Success -> {
+            is ApiResult.Success -> {
                 val myBaby = result.data.myBaby
                 val others = result.data.others
 
@@ -143,7 +143,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 }
             }
 
-            is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+            is ApiResult.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
             else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_get_babies_failed))
         }
     }
@@ -154,7 +154,7 @@ class GrowthAlbumViewModel @Inject constructor(
                 growthAlbumState.value.selectedBaby.babyId,
                 album.contentId
             )) {
-                is Result.Success -> {
+                is ApiResult.Success -> {
                     var selectedAlbum = growthAlbumState.value.selectedAlbum
                     val growthAlbumList = growthAlbumState.value.growthAlbumList.map {
                         if (it == album) {
@@ -172,7 +172,7 @@ class GrowthAlbumViewModel @Inject constructor(
                     }
                 }
 
-                is Result.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.NetworkError -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(GrowthAlbumEvent.ShowSnackBar(R.string.baba_like_album_failed))
             }
         }

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kids.baba.mobile.R
 import kids.baba.mobile.domain.model.MyBaby
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AddOneMyBabyUseCase
 import kids.baba.mobile.presentation.binding.ComposableInputViewData
 import kids.baba.mobile.presentation.binding.ComposableInputWithDescViewData
@@ -86,8 +86,8 @@ class AddBabyViewModel @Inject constructor(
                     birthday = birthDay.value
                 )
             )) {
-                is Result.Success -> _eventFlow.emit(AddBabyEvent.SuccessAddBaby)
-                is Result.NetworkError -> _eventFlow.emit(AddBabyEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> _eventFlow.emit(AddBabyEvent.SuccessAddBaby)
+                is ApiResult.NetworkError -> _eventFlow.emit(AddBabyEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AddBabyEvent.ShowSnackBar(R.string.already_have_same_name_or_format_error))
             }
         }

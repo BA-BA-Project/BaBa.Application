@@ -8,7 +8,7 @@ import kids.baba.mobile.BuildConfig
 import kids.baba.mobile.R
 import kids.baba.mobile.core.constant.PrefsKey
 import kids.baba.mobile.core.utils.EncryptedPrefs
-import kids.baba.mobile.domain.model.Result
+import kids.baba.mobile.domain.model.ApiResult
 import kids.baba.mobile.domain.usecase.AlbumDeleteUseCase
 import kids.baba.mobile.domain.usecase.DownloadPhotoUseCase
 import kids.baba.mobile.presentation.event.AlbumConfigEvent
@@ -41,8 +41,8 @@ class AlbumConfigViewModel @Inject constructor(
         val contentId = album.value.contentId
         if (contentId != null) {
             when (albumDeleteUseCase(baby.babyId, contentId)) {
-                is Result.Success -> _eventFlow.emit(AlbumConfigEvent.DeleteAlbum)
-                is Result.NetworkError -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> _eventFlow.emit(AlbumConfigEvent.DeleteAlbum)
+                is ApiResult.NetworkError -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_album_delete_failed))
             }
         }
@@ -56,8 +56,8 @@ class AlbumConfigViewModel @Inject constructor(
         withContext(Dispatchers.IO){
             val fileUrl = album.value.photo.substringAfter(BuildConfig.BASE_PHOTO_URL)
             when(val result = downloadPhotoUseCase(fileUrl, "${baby.name}_${album.value.date}")){
-                is Result.Success -> _eventFlow.emit(AlbumConfigEvent.ShowDownSuccessNotification(result.data))
-                is Result.NetworkError ->_eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
+                is ApiResult.Success -> _eventFlow.emit(AlbumConfigEvent.ShowDownSuccessNotification(result.data))
+                is ApiResult.NetworkError ->_eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_network_failed))
                 else -> _eventFlow.emit(AlbumConfigEvent.ShowSnackBar(R.string.baba_photo_download_failed))
             }
         }
