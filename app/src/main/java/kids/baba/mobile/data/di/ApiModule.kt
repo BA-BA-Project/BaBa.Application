@@ -22,6 +22,10 @@ object ApiModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
+    annotation class SignUpRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
     annotation class AuthRetrofit
 
     @Qualifier
@@ -33,6 +37,15 @@ object ApiModule {
     @Provides
     fun provideBabaRetrofit(
         @NetworkModule.BabaClient
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
+
+    @SignUpRetrofit
+    @Singleton
+    @Provides
+    fun provideSignUpRetrofit(
+        @NetworkModule.SignUpClient
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit = buildBaseRetrofit(okHttpClient, gsonConverterFactory)
@@ -102,7 +115,7 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideSignUpApi(
-        @BabaRetrofit retrofit: Retrofit
+        @SignUpRetrofit retrofit: Retrofit
     ): SignUpApi = retrofit.create(SignUpApi::class.java)
 
     @Singleton
