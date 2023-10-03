@@ -49,6 +49,7 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class NormalAuthInterceptor
 
+    @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class SignUpAuthInterceptor
 
@@ -119,9 +120,9 @@ object NetworkModule {
         return builder.build()
     }
 
+    @NormalAuthInterceptor
     @Singleton
     @Provides
-    @NormalAuthInterceptor
     fun provideNormalAuthorizationInterceptor() = Interceptor { chain ->
         val request = chain.request().newBuilder()
         val accessToken = EncryptedPrefs.getString(PrefsKey.ACCESS_TOKEN_KEY)
@@ -129,9 +130,9 @@ object NetworkModule {
         chain.proceed(request.build())
     }
 
+    @SignUpAuthInterceptor
     @Singleton
     @Provides
-    @SignUpAuthInterceptor
     fun provideSignUpAuthorizationInterceptor() = Interceptor { chain ->
         val request = chain.request().newBuilder()
         val signToken = EncryptedPrefs.getString(PrefsKey.SIGN_TOKEN_KEY)

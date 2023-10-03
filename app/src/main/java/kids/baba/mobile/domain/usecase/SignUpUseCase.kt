@@ -13,10 +13,9 @@ class SignUpUseCase @Inject constructor(
     private val signUpRepository: SignUpRepository
 ) {
     suspend fun signUpWithBabiesInfo(
-        /*signToken: String,*/
         signUpRequestWithBabiesInfo: SignUpRequestWithBabiesInfo
     ): ApiResult<TokenResponse> {
-        val result = signUpRepository.signUpWithBabiesInfo(/*signToken,*/ signUpRequestWithBabiesInfo)
+        val result = signUpRepository.signUpWithBabiesInfo(signUpRequestWithBabiesInfo)
         if (result is ApiResult.Success) {
             setJWTToken(result.data)
         }
@@ -24,7 +23,6 @@ class SignUpUseCase @Inject constructor(
     }
 
     suspend fun signUpWithInviteCode(
-        /*signToken: String,*/
         signUpRequestWithInviteCode: SignUpRequestWithInviteCode
     ): ApiResult<TokenResponse> {
         val result = signUpRepository.signUpWithInviteCode(/*signToken,*/ signUpRequestWithInviteCode)

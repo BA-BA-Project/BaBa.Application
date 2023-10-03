@@ -359,7 +359,6 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithBabiesInfo(
-                        /*signToken,*/
                         SignUpRequestWithBabiesInfo(
                             userProfile.name,
                             userProfile.iconName,
@@ -386,7 +385,7 @@ class InputBabiesInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 when (
                     val result = signUpUseCase.signUpWithInviteCode(
-                        /*signToken,*/ SignUpRequestWithInviteCode(
+                        SignUpRequestWithInviteCode(
                             inviteCode,
                             userProfile.name,
                             userProfile.iconName
