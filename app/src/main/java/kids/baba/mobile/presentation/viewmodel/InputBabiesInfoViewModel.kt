@@ -36,7 +36,6 @@ class InputBabiesInfoViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val userProfile = savedStateHandle.get<UserProfile>(KEY_USER_PROFILE)
-//    private val signToken = savedStateHandle[KEY_SIGN_TOKEN] ?: ""
 
     private val _uiState: MutableStateFlow<InputBabiesInfoUiState> =
         MutableStateFlow(InputBabiesInfoUiState.Loading)
@@ -309,7 +308,7 @@ class InputBabiesInfoViewModel @Inject constructor(
             )
         )
         viewModelScope.launch {
-            when(val result = getBabiesInfoByInviteCodeUseCase(inviteCode)){
+            when (val result = getBabiesInfoByInviteCodeUseCase(inviteCode)) {
                 is ApiResult.Success -> {
                     val sj = StringJoiner(", ")
                     val babiesList = result.data.babies
@@ -371,7 +370,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                     }
                     else -> {
                         val throwable = result.getThrowableOrNull()
-                        if(throwable != null){
+                        if (throwable != null) {
                             setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
                         }
                     }
@@ -396,7 +395,7 @@ class InputBabiesInfoViewModel @Inject constructor(
                     }
                     else -> {
                         val throwable = result.getThrowableOrNull()
-                        if(throwable != null){
+                        if (throwable != null) {
                             setUiState(InputBabiesInfoUiState.SignUpFailed(throwable))
                         }
                     }

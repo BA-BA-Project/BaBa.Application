@@ -24,7 +24,6 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
         } else {
             result
         }
-//        return if (result is Result.Success) flow { emit(result.data) } else flow {}
     }
 
     override suspend fun loadBabyProfile(babyId: String): ApiResult<BabyProfileResponse> {
