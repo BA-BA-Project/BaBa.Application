@@ -7,6 +7,7 @@ interface SafeApiHelper {
     suspend fun <ResultType, RequestType> getSafe(
         remoteFetch: suspend () -> Response<RequestType>,
         mapping: (RequestType) -> (ResultType),
+        canRecursive: Boolean = true
     ): ApiResult<ResultType>
 
 }

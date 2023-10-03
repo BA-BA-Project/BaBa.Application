@@ -24,7 +24,7 @@ class IntroViewModel @Inject constructor(
     private val _deepLinkEvent = MutableEventFlow<DeepLinkEvent>()
     val deepLinkEvent = _deepLinkEvent.asEventFlow()
 
-    suspend fun checkLogin() = getMemberUseCase.getMe() is ApiResult.Success
+    suspend fun checkLogin() = getMemberUseCase.getMe(callFromServer = false) is ApiResult.Success
     fun handleDeeplink() = viewModelScope.launch {
         when (getMemberUseCase.getMe()) {
             is ApiResult.Success -> _deepLinkEvent.emit(DeepLinkEvent.GoToInviteResultPage)

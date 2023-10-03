@@ -8,9 +8,9 @@ class MemberRemoteDataSourceImpl @Inject constructor(
     private val memberApi: MemberApi,
     private val safeApiHelper: SafeApiHelper
 ) : MemberRemoteDataSource {
-    override suspend fun getMe(accessToken: String) = safeApiHelper.getSafe(
+    override suspend fun getMe() = safeApiHelper.getSafe(
         remoteFetch = {
-            memberApi.getMe(accessToken)
+            memberApi.getMe()
         },
         mapping = { it }
     )

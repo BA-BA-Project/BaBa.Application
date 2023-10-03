@@ -15,7 +15,8 @@ class SafeApiHelperImpl @Inject constructor(
     private val gson = Gson()
     override suspend fun <ResultType, RequestType> getSafe(
         remoteFetch: suspend () -> Response<RequestType>,
-        mapping: (RequestType) -> ResultType
+        mapping: (RequestType) -> ResultType,
+        canRecursive: Boolean
     ): ApiResult<ResultType> {
 
         lateinit var apiResult: ApiResult<ResultType>
@@ -38,9 +39,10 @@ class SafeApiHelperImpl @Inject constructor(
             }
 
         if ((apiResult as? ApiResult.Failure)?.throwable is InvalidAccessTokenException) {
-            return getSafe(remoteFetch, mapping)
+            if (canRecursive) {
+                return getSafe(remoteFetch, mapping, canRecursive = false)
+            }
         }
-
         return apiResult
     }
 

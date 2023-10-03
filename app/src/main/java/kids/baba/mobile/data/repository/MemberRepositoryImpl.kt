@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(private val memberRemoteDataSource: MemberRemoteDataSource) :
     MemberRepository {
-    override suspend fun getMe(accessToken: String) = memberRemoteDataSource.getMe(accessToken)
+    override suspend fun getMe() = memberRemoteDataSource.getMe()
 }
